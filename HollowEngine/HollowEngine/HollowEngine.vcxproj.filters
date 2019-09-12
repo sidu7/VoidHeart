@@ -15,12 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp">
+    <ClCompile Include="src\Hollow\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Test.h">
+    <ClInclude Include="src\Hollow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
