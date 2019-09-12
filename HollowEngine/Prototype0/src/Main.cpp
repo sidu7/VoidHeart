@@ -14,9 +14,8 @@ public:
 	}
 };
 
-int main()
+
+Hollow::Application* Hollow::CreateApplication()
 {
-	Prototype0* app = new Prototype0();
-	app->Run();
-	delete app;
+	return new Prototype0();
 }

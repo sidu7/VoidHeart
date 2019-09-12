@@ -13,4 +13,7 @@ namespace Hollow {
 		void Run();
 	};
 
+	//To be defined in CLIENT
+	Application* CreateApplication();
+
 }

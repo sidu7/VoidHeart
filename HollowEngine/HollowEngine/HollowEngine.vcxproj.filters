@@ -23,5 +23,8 @@
     <ClInclude Include="src\Hollow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hollow\EntryPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
