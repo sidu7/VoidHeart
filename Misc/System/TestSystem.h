@@ -1,0 +1,13 @@
+#pragma once
+
+#include "System.h"
+
+class TestSystem : public System
+{
+public:
+	TestSystem();
+	virtual ~TestSystem();
+
+	void Update();
+	void AddGameObject(GameObject* pGameObject);
+};
