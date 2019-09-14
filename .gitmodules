@@ -1,0 +1,3 @@
+[submodule "HollowEngine/HollowEngine/vendor/spdlog"]
+	path = HollowEngine/HollowEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
