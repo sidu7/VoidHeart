@@ -18,19 +18,10 @@ void TestSystem::Update()
 	{
 		TestComponent* pTestComponent = pGameObject->GetComponent<TestComponent>();
 		std::cout << pTestComponent->mValue << std::endl;
-
 	}
 }
 
 void TestSystem::AddGameObject(GameObject* pGameObject)
 {
-	// Check for components then add to list
-	if (pGameObject->GetComponent<TestComponent>())
-	{
-		mGameObjects.push_back(pGameObject);
-	}
-	if (pGameObject->GetComponent<FakeComponent>())
-	{
-		std::cout << "Have a fake component" << std::endl;
-	}
+	CheckComponents<TestComponent,FakeComponent>(pGameObject);
 }
