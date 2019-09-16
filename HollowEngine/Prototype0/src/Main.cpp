@@ -5,12 +5,10 @@ class Prototype0 : public Hollow::Application
 public:
 	Prototype0()
 	{
-
 	}
 	
 	~Prototype0()
 	{
-
 	}
 };
 
