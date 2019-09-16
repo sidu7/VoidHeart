@@ -1,4 +1,7 @@
 #include"Application.h"
+#include "../Utils/Test.h"
+
+
 
 namespace Hollow {
 
@@ -14,6 +17,8 @@ namespace Hollow {
 
 	void Application::Run()
 	{
+		Test::Instance().work();
+		
 		while (true);
 	}
 }

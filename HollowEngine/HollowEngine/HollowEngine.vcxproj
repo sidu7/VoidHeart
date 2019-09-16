@@ -16,6 +16,9 @@
   <ItemGroup>
     <ClInclude Include="src\Hollow.h" />
     <ClInclude Include="src\Hollow\EntryPoint.h" />
+    <ClInclude Include="src\Utils\Profiler.h" />
+    <ClInclude Include="src\Utils\Singleton.h" />
+    <ClInclude Include="src\Utils\Test.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
