@@ -22,6 +22,14 @@
     <ClCompile Include="src\Hollow\Log.cpp" />
     <ClCompile Include="src\Hollow\Application.cpp" />
     <ClCompile Include="src\Hollow\GameWindow.cpp" />
+    <ClCompile Include="src\Hollow\Managers\SystemManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../hollowpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Hollow\Systems\TempSystem.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../hollowpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Hollow\Application.h" />
@@ -32,6 +40,9 @@
     <ClInclude Include="src\Hollow\EntryPoint.h" />
     <ClInclude Include="src\Hollow\GameWindow.h" />
     <ClInclude Include="src\Hollow\Window.h" />
+    <ClInclude Include="src\Hollow\Managers\SystemManager.h" />
+    <ClInclude Include="src\Hollow\Systems\System.h" />
+    <ClInclude Include="src\Hollow\Systems\TempSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
