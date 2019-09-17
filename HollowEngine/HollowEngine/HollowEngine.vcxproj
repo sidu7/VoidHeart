@@ -92,7 +92,7 @@
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
-
+IF NOT EXIST Prototype0 ( mkdir Prototype0)
 copy /y $(ProjectName)\*.dll Prototype0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -117,6 +117,11 @@ copy /y $(ProjectName)\*.dll Prototype0</Command>
       <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>cd $(SolutionDir)bin\$(Configuration)
+IF NOT EXIST Prototype0 ( mkdir Prototype0)
+copy /y $(ProjectName)\*.dll Prototype0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
