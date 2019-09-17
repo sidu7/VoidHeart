@@ -1,11 +1,11 @@
 #pragma once
 
-#include "hzpch.h"
-#include "Hazel/Core.h"
+#include "../hollowpch.h"
+#include "../Core.h"
 
-namespace Hazel {
+namespace Hollow {
 
-	// Events in Hazel are currently blocking, meaning when an event occurs it
+	// Events in Hollow are currently blocking, meaning when an event occurs it
 	// immediately gets dispatched and must be dealt with right then an there.
 	// For the future, a better strategy might be to buffer events in an event
 	// bus and process them during the "event" part of the update stage.
@@ -14,7 +14,6 @@ namespace Hazel {
 	{
 		None = 0,
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-		AppTick, AppUpdate, AppRender,
 		KeyPressed, KeyReleased, KeyTyped,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
@@ -35,7 +34,7 @@ namespace Hazel {
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
-	class HAZEL_API Event
+	class HOLLOW_API Event
 	{
 	public:
 		bool Handled = false;
@@ -55,7 +54,7 @@ namespace Hazel {
 	{
 	public:
 		EventDispatcher(Event& event)
-			: m_Event(event)
+			: mEvent(event)
 		{
 		}
 		
@@ -63,15 +62,15 @@ namespace Hazel {
 		template<typename T, typename F>
 		bool Dispatch(const F& func)
 		{
-			if (m_Event.GetEventType() == T::GetStaticType())
+			if (mEvent.GetEventType() == T::GetStaticType())
 			{
-				m_Event.Handled = func(static_cast<T&>(m_Event));
+				mEvent.Handled = func(static_cast<T&>(mEvent));
 				return true;
 			}
 			return false;
 		}
 	private:
-		Event& m_Event;
+		Event& mEvent;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& e)
