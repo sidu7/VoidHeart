@@ -2,6 +2,7 @@
 
 #include"Application.h"
 
+#include "Log.h"
 namespace Hollow {
 
 	Application::Application()
@@ -16,8 +17,10 @@ namespace Hollow {
 
 	void Application::Run()
 	{
+		
 		while (true)
 		{
+			HW_CORE_WARN("TEST");
 		}
 	}
 }
