@@ -3,10 +3,15 @@
 #include <vector>
 #include "../Core/GameObject.h"
 
+template<typename T>
 class System
 {
+private:
+	static T instance;
 public:
-	System() {}
+	System() {
+		//add this system T to system manager's list
+	}
 	virtual ~System() {}
 	virtual void Update() = 0;
 	virtual void AddGameObject(GameObject* pGameObject) = 0;
