@@ -9,17 +9,17 @@
 
 namespace Hollow {
 
-	bool InputManager::IsKeyPressed(int keycode)
+	bool InputManager::IsKeyPressed(unsigned int keycode)
 	{
 		return mCurrentState[keycode];
 	}
 
-	bool InputManager::IsKeyTriggered(int keycode)
+	bool InputManager::IsKeyTriggered(unsigned int keycode)
 	{
 		return mCurrentState[keycode] && !mPreviousState[keycode];
 	}
 
-	bool InputManager::IsMouseButtonPressed(int button)
+	bool InputManager::IsMouseButtonPressed(unsigned int button)
 	{
 		return mCurrentMouseState[button];
 	}
@@ -84,12 +84,6 @@ namespace Hollow {
 		SDL_memcpy(mPreviousState, mCurrentState, 512 * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
-
-		
-		if(IsKeyPressed(SDL_SCANCODE_A))
-		{
-			HW_TRACE("A Pressed");
-		}
 	}
 
 

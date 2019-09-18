@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include <utility>
+#include <SDL2/SDL_hints.h>
 
 namespace Hollow {
 
@@ -10,9 +11,9 @@ namespace Hollow {
 		friend class Singleton<InputManager>;
 		
 	public:
-		bool IsKeyPressed(int keycode);
-		bool IsKeyTriggered(int keycode);
-		bool IsMouseButtonPressed(int button);
+		bool IsKeyPressed(unsigned int keycode);
+		bool IsKeyTriggered(unsigned int keycode);
+		bool IsMouseButtonPressed(unsigned int button);
 		std::pair<float, float> GetMousePosition();
 		float GetMouseX();
 		float GetMouseY();
@@ -23,8 +24,8 @@ namespace Hollow {
 		
 	private:
 		InputManager() {}
-		unsigned int mCurrentState[512];
-		unsigned int mPreviousState[512];
+		Uint8 mCurrentState[512];
+		Uint8 mPreviousState[512];
 		bool mPrevMouseState[3];
 		bool mCurrentMouseState[3];
 	};
