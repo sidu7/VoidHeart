@@ -2,9 +2,9 @@
 
 #include "System.h"
 
-class TestSystem : public System
-{
-public:
+class TestSystem : public System<TestSystem>
+{	
+public:	
 	TestSystem();
 	virtual ~TestSystem();
 
