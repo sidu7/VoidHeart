@@ -1,18 +1,21 @@
 #pragma once
 
-#include "Window.h"
-
 namespace Hollow {
-	class GameWindow : public Window
+	class HOLLOW_API GameWindow
 	{
 	public:
 		GameWindow(std::string title = "Hollow Engine", int width = 1024, int height = 720);
-		virtual ~GameWindow();
+		~GameWindow();
+
+		inline SDL_Window* GetWindow() { return mpWindow; }
+		inline SDL_GLContext GetContext() { return mContext; }
 
 	private:
-		virtual void Initialize();
+		void Initialize();
 
 	private:
+		SDL_Window* mpWindow;
+		SDL_GLContext mContext;
 		std::string mTitle;
 		int mWidth;
 		int mHeight;

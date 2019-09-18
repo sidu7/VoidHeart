@@ -27,3 +27,6 @@
 
 // TODO: Add ifdef guards if more platforms
 #include <Windows.h>
+
+// Our stuff, only add things here that don't change
+#include "Hollow/Log.h"
