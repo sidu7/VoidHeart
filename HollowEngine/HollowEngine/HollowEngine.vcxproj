@@ -35,6 +35,14 @@
     <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Hollow\Managers\SystemManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../hollowpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Hollow\Systems\TempSystem.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../hollowpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hollowpch.h" />
@@ -53,6 +61,9 @@
     <ClInclude Include="vendor\Include\ImGui\imstb_rectpack.h" />
     <ClInclude Include="vendor\Include\ImGui\imstb_textedit.h" />
     <ClInclude Include="vendor\Include\ImGui\imstb_truetype.h" />
+    <ClInclude Include="src\Hollow\Managers\SystemManager.h" />
+    <ClInclude Include="src\Hollow\Systems\System.h" />
+    <ClInclude Include="src\Hollow\Systems\TempSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -113,7 +124,7 @@
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
-
+IF NOT EXIST Prototype0 ( mkdir Prototype0)
 copy /y $(ProjectName)\*.dll Prototype0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -138,6 +149,11 @@ copy /y $(ProjectName)\*.dll Prototype0</Command>
       <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>cd $(SolutionDir)bin\$(Configuration)
+IF NOT EXIST Prototype0 ( mkdir Prototype0)
+copy /y $(ProjectName)\*.dll Prototype0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
