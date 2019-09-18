@@ -1,32 +1,28 @@
 #pragma once
 
-#include "Hazel/Core.h"
+#include "Core.h"
+#include <utility>
 
-namespace Hazel {
+namespace Hollow {
 
-	class HAZEL_API Input
+	class HOLLOW_API InputManager : public Singleton<InputManager>
 	{
-	protected:
-		Input() = default;
 	public:
-		Input(const Input&) = delete;
-		Input& operator=(const Input&) = delete;
+		bool IsKeyPressed(int keycode);
+		bool IsKeyTriggered(int keycode);
+		bool IsMouseButtonPressed(int button);
+		std::pair<float, float> GetMousePosition();
+		float GetMouseX();
+		float GetMouseY();
 
-		inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedImpl(keycode); }
+		void Init();
+		void Update();
 
-		inline static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedImpl(button); }
-		inline static std::pair<float, float> GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
-		inline static float GetMouseX() { return s_Instance->GetMouseXImpl(); }
-		inline static float GetMouseY() { return s_Instance->GetMouseYImpl(); }
-	protected:
-		virtual bool IsKeyPressedImpl(int keycode) = 0;
-
-		virtual bool IsMouseButtonPressedImpl(int button) = 0;
-		virtual std::pair<float, float> GetMousePositionImpl() = 0;
-		virtual float GetMouseXImpl() = 0;
-		virtual float GetMouseYImpl() = 0;
 	private:
-		static Input* s_Instance;
+		Uint8 mCurrentState[512];
+		Uint8 mPreviousState[512];
+		bool mPrevMouseState[3];
+		bool mCurrentMouseState[3];
 	};
 
 }

@@ -12,11 +12,16 @@ namespace Hollow {
 		Application();
 		virtual ~Application();
 
+		inline static Application& Instance() { return *instance; }
+
 		void Run();
+		Window& GetWindow();
 
 	private:
 		std::unique_ptr<Window> mWindow;
 		bool mIsRunning;
+
+		static Application* instance;
 	};
 
 	//To be defined in CLIENT

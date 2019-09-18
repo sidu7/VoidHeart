@@ -21,6 +21,11 @@ namespace Hollow {
 	{
 	}
 
+	void* GameWindow::GetWindow()
+	{
+		return mWindow;
+	}
+
 	void GameWindow::Initialize()
 	{
 		std::cout << "Creating SDL window" << std::endl;
@@ -33,14 +38,14 @@ namespace Hollow {
 		}
 
 		// Create SDL window
-		SDL_Window* window = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, SDL_WINDOW_OPENGL);
+		mWindow = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, SDL_WINDOW_OPENGL);
 
-		if (window == NULL)
+		if (mWindow == NULL)
 		{
 			std::cout << "Could not create window: " << SDL_GetError();
 		}
 
-		SDL_GLContext context = SDL_GL_CreateContext(window);
+		SDL_GLContext context = SDL_GL_CreateContext(mWindow);
 
 		//glewInit();
 		//if (!GLEW_VERSION_2_0)

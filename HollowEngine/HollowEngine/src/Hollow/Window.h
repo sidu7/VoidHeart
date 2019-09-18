@@ -10,5 +10,6 @@ namespace Hollow {
 		virtual ~Window() = default;
 
 		static Window* Create(std::string title, int width, int height);
+		virtual void* GetWindow() = 0;
 	};
 }
