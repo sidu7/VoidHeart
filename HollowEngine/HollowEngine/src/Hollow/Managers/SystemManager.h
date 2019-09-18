@@ -7,13 +7,9 @@ namespace Hollow
 
 	class SystemManager
 	{
+		SINGLETON(SystemManager)
 	public:
 		~SystemManager();
-		static SystemManager& Instance()
-		{
-			static SystemManager instance;
-			return instance;
-		}
 
 		void RegisterSystem(System* system)
 		{

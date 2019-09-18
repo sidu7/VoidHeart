@@ -1,148 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="src\hollowpch.cpp" />
+    <ClCompile Include="src\Hollow\Log.cpp" />
+    <ClCompile Include="src\Hollow\Application.cpp" />
+    <ClCompile Include="src\Hollow\GameWindow.cpp" />
+    <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Hollow\Managers\SystemManager.cpp" />
+    <ClCompile Include="src\Hollow\Systems\TempSystem.cpp" />
+    <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Hollow\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\GameWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\Log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hollowpch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\Include\ImGui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\Include\ImGui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\Include\ImGui\imgui_impl_sdl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\Include\ImGui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\Include\ImGui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\Systems\TempSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\Managers\SystemManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\Managers\RenderManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Hollow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\EntryPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\GameWindow.h">
-    <ClInclude Include="src\Utils\Profiler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utils\Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utils\Test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\GameWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Events\ApplicationEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Events\Event.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Events\KeyEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Events\MouseEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hollowpch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imgui_impl_sdl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\Include\ImGui\imstb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Systems\System.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Systems\TempSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Managers\SystemManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Managers\RenderManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="src\hollowpch.h" />
+    <ClInclude Include="src\Hollow\Application.h" />
+    <ClInclude Include="src\Hollow\Core.h" />
+    <ClInclude Include="src\Hollow\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Hollow\Events\Event.h" />
+    <ClInclude Include="src\Hollow\Events\KeyEvent.h" />
+    <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
+    <ClInclude Include="src\Hollow\Log.h" />
+    <ClInclude Include="src\Hollow.h" />
+    <ClInclude Include="src\Hollow\EntryPoint.h" />
+    <ClInclude Include="src\Utils\Profiler.h" />
+    <ClInclude Include="src\Utils\Singleton.h" />
+    <ClInclude Include="src\Utils\Test.h" />
+    <ClInclude Include="src\Hollow\GameWindow.h" />
+    <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
+    <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
+    <ClInclude Include="vendor\Include\ImGui\imgui.h" />
+    <ClInclude Include="vendor\Include\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="vendor\Include\ImGui\imgui_impl_sdl.h" />
+    <ClInclude Include="vendor\Include\ImGui\imgui_internal.h" />
+    <ClInclude Include="vendor\Include\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="vendor\Include\ImGui\imstb_textedit.h" />
+    <ClInclude Include="vendor\Include\ImGui\imstb_truetype.h" />
+    <ClInclude Include="src\Hollow\Managers\SystemManager.h" />
+    <ClInclude Include="src\Hollow\Systems\System.h" />
+    <ClInclude Include="src\Hollow\Systems\TempSystem.h" />
+    <ClInclude Include="src\Hollow\Managers\InputManager.h" />
   </ItemGroup>
 </Project>

@@ -1,24 +1,17 @@
 #pragma once
 
-// Use this to create Singletons easily (Not too many)
-// The inherited class needs to set the Singleton instantiation as a friend
-// Ex. class Test : public Singleton<Test>
-// { friend class Singleton<Test>;
-// ... }
+// Use this macro inside class to make a class singleton
+// class Example {
+//		SINGLETON(Example)
+//		... rest of the class stuff
 
-template<class T>
-class Singleton
-{
-protected:
-	Singleton() {}
-public:
-
-	Singleton(Singleton const&) = delete;
-	void operator=(Singleton const&) = delete;
-
-	static T& Instance()
-	{
-		static T instance;
-		return instance;
-	}
-};
+#define SINGLETON(x) private: x() {}		\
+public: x(const x&) = delete;				\
+		x& operator= (const x&) = delete;	\
+		x(x &&) = delete;					\
+		x & operator=(x &&) = delete;		\
+		static x& Instance()				\
+		{									\
+			static x instance;				\
+			return instance;				\
+		}

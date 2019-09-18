@@ -4,10 +4,6 @@
 #include "../GameWindow.h"
 
 namespace Hollow {
-	RenderManager::RenderManager(GameWindow* pWindow)
-	{
-		Init(pWindow);
-	}
 
 	RenderManager::~RenderManager()
 	{

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../Utils/Singleton.h"
-
 #ifdef HW_PLATFORM_WINDOWS
 	#ifdef HW_BUILD_DLL
 		#define HOLLOW_API __declspec(dllexport)

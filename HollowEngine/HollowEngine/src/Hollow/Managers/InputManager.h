@@ -1,14 +1,10 @@
 #pragma once
 
-#include "Core.h"
-#include <utility>
-
 namespace Hollow {
 
-	class HOLLOW_API InputManager : public Singleton<InputManager>
+	class HOLLOW_API InputManager
 	{
-		friend class Singleton<InputManager>;
-		
+		SINGLETON(InputManager)		
 	public:
 		bool IsKeyPressed(unsigned int keycode);
 		bool IsKeyTriggered(unsigned int keycode);
@@ -22,7 +18,6 @@ namespace Hollow {
 	
 		
 	private:
-		InputManager() {}
 		Uint8 mCurrentState[512];
 		Uint8 mPreviousState[512];
 		bool mPrevMouseState[3];
