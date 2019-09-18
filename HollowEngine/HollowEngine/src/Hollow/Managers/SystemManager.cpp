@@ -1,4 +1,5 @@
-#include "../hollowpch.h"
+#include <hollowpch.h>
+
 #include "SystemManager.h"
 #include "../Systems/System.h"
 #include "../Log.h"

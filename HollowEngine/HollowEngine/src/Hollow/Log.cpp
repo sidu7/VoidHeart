@@ -1,4 +1,4 @@
-#include "hollowpch.h"
+#include <hollowpch.h>
 
 #include "Log.h"
 

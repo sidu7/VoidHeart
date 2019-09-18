@@ -1,10 +1,10 @@
 #pragma once
-
 #include "Core.h"
-
-#include "Window.h"
+#include "GameWindow.h"
 
 namespace Hollow {
+
+	class RenderManager;
 
 	class HOLLOW_API Application
 	{
@@ -14,9 +14,12 @@ namespace Hollow {
 
 		void Run();
 
+		inline GameWindow* GetWindow() { return mpWindow; }
+
 	private:
-		std::unique_ptr<Window> mWindow;
+		GameWindow* mpWindow;
 		bool mIsRunning;
+		RenderManager* mpRenderManager;
 	};
 
 	//To be defined in CLIENT
