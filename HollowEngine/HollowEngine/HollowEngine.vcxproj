@@ -17,6 +17,7 @@
     <ClCompile Include="src\Hollow\Log.cpp" />
     <ClCompile Include="src\Hollow\Application.cpp" />
     <ClCompile Include="src\Hollow\GameWindow.cpp" />
+    <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -36,11 +37,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Hollow\Managers\SystemManager.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../hollowpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\Hollow\Systems\TempSystem.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../hollowpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemGroup>
@@ -52,7 +53,7 @@
     <ClInclude Include="src\Hollow.h" />
     <ClInclude Include="src\Hollow\EntryPoint.h" />
     <ClInclude Include="src\Hollow\GameWindow.h" />
-    <ClInclude Include="src\Hollow\Window.h" />
+    <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui_impl_opengl3.h" />

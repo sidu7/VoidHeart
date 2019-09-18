@@ -2,16 +2,7 @@
 
 #include "GameWindow.h"
 
-#include <SDL2/SDL.h>
-
-
 namespace Hollow {
-
-	Window* Window::Create(std::string title, int width, int height)
-	{
-		return new GameWindow(title, width, height);
-	}
-
 	GameWindow::GameWindow(std::string title, int width, int height) : mTitle(title), mWidth(width), mHeight(height)
 	{
 		Initialize();
@@ -23,31 +14,25 @@ namespace Hollow {
 
 	void GameWindow::Initialize()
 	{
-		std::cout << "Creating SDL window" << std::endl;
-
+		HW_CORE_INFO("Creating SDL window");
+		static bool initSDL = true;
 		// Init SDL if it needs to be
-		if (true)
+		if (initSDL)
 		{
-			std::cout << "Initalizing SDL" << std::endl;
-			SDL_Init(SDL_INIT_VIDEO);
+			HW_CORE_INFO("Initalizing SDL");
+			SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
+			initSDL = false;
 		}
 
 		// Create SDL window
-		SDL_Window* window = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, SDL_WINDOW_OPENGL);
+		mpWindow = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, SDL_WINDOW_OPENGL);
 
-		if (window == NULL)
+		if (mpWindow == NULL)
 		{
-			std::cout << "Could not create window: " << SDL_GetError();
+			HW_CORE_ERROR("Could not create window: {0}", SDL_GetError());
 		}
 
-		SDL_GLContext context = SDL_GL_CreateContext(window);
-
-		//glewInit();
-		//if (!GLEW_VERSION_2_0)
-		{
-			//std::cout << "Needs OpenGL version 2.0 or better" << std::endl;
-			//return 1;
-		}
-	
+		// Create OpenGL context
+		mContext = SDL_GL_CreateContext(mpWindow);	
 	}
 }

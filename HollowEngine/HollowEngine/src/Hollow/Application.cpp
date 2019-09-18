@@ -1,13 +1,17 @@
 #include <hollowpch.h>
 
 #include"Application.h"
+
 #include "Managers/SystemManager.h"
+#include "Managers/RenderManager.h"
 
 namespace Hollow {
 	Application::Application()
 	{
-		mWindow = std::unique_ptr<Window>(Window::Create("Hollow Engine", 1280, 720));
+		mpWindow = new GameWindow("Hollow Engine", 1280, 720);
 		mIsRunning = true;
+		// Initalize managers
+		mpRenderManager = new RenderManager(mpWindow);
 	}
 
 	Application::~Application()
@@ -18,7 +22,8 @@ namespace Hollow {
 	{
 		while (true)
 		{
-			SystemManager::Instance().Update();
+			//SystemManager::Instance().Update();
+			mpRenderManager->Update();
 		}
 	}
 }
