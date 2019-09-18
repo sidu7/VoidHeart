@@ -3,7 +3,7 @@
 #include"Application.h"
 #include "Events/ApplicationEvent.h"
 
-#include "InputManager.h"
+#include "Managers/InputManager.h"
 
 #include "Managers/SystemManager.h"
 #include "Managers/RenderManager.h"
@@ -21,7 +21,7 @@ namespace Hollow {
 
 		mIsRunning = true;
 		// Initalize managers
-		mpRenderManager = new RenderManager(mpWindow);
+		RenderManager::Instance().Init(mpWindow);
 	}
 
 	Application::~Application()
@@ -33,10 +33,8 @@ namespace Hollow {
 		
 		while (true)
 		{
-			HW_CORE_WARN("TEST");
 			SystemManager::Instance().Update();
-			//SystemManager::Instance().Update();
-			mpRenderManager->Update();
+			RenderManager::Instance().Update();
 			InputManager::Instance().Update();
 		}
 	}
