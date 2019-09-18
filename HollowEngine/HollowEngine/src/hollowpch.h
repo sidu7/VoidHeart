@@ -15,6 +15,9 @@
 #include <vector>
 #include <unordered_map>
 
+//Indexing
+#include <typeindex>
+
 // Rendering related libraries
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
