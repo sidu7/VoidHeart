@@ -2,7 +2,6 @@
 
 #include "Core.h"
 #include <utility>
-#include <SDL2/SDL_hints.h>
 
 namespace Hollow {
 

@@ -12,7 +12,7 @@ namespace Hollow {
 		Application();
 		virtual ~Application();
 
-		inline static Application& Instance() { return *instance; }
+		//inline static Application& Instance() { return *instance; }
 
 		void Run();
 
@@ -22,7 +22,7 @@ namespace Hollow {
 		GameWindow* mpWindow;
 		bool mIsRunning;
 
-		static Application* instance;
+		//static Application* instance;
 		RenderManager* mpRenderManager;
 	};
 

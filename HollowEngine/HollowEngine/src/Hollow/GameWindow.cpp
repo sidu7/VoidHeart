@@ -12,11 +12,6 @@ namespace Hollow {
 	{
 	}
 
-	void* GameWindow::GetWindow()
-	{
-		return mWindow;
-	}
-
 	void GameWindow::Initialize()
 	{
 		HW_CORE_INFO("Creating SDL window");

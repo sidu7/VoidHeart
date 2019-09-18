@@ -1,11 +1,8 @@
-#include "hollowpch.h"
+#include <hollowpch.h>
 #include "InputManager.h"
-#include "Application.h"
 
 #include <SDL2/SDL_keyboard.h>
 #include <SDL2/SDL_mouse.h>
-#include <SDL2/SDL_gamecontroller.h>
-#include "GameWindow.h"
 
 namespace Hollow {
 
@@ -84,6 +81,11 @@ namespace Hollow {
 		SDL_memcpy(mPreviousState, mCurrentState, 512 * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
+
+		if(IsKeyPressed(SDL_SCANCODE_A))
+		{
+			HW_TRACE("A pressed");
+		}
 	}
 
 

@@ -2,7 +2,7 @@
 
 #include"Application.h"
 #include "Events/ApplicationEvent.h"
-#include "../Utils/Test.h"
+
 #include "InputManager.h"
 
 #include "Managers/SystemManager.h"
@@ -12,8 +12,8 @@
 namespace Hollow {
 	Application::Application()
 	{
+		//instance = this;
 		mpWindow = new GameWindow("Hollow Engine", 1280, 720);
-		instance = this;
 		
 		WindowResizeEvent re(1280, 720);
 		
@@ -28,11 +28,6 @@ namespace Hollow {
 	{
 	}
 
-	Window& Application::GetWindow()
-	{
-		return *mpWindow;
-	}
-
 	void Application::Run()
 	{
 		
@@ -42,7 +37,7 @@ namespace Hollow {
 			SystemManager::Instance().Update();
 			//SystemManager::Instance().Update();
 			mpRenderManager->Update();
-		InputManager::Instance().Update();
+			InputManager::Instance().Update();
 		}
 	}
 }
