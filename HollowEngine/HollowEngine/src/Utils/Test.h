@@ -1,5 +1,7 @@
-#include "Singleton.h"
+#pragma once
+
 #include "Profiler.h"
+#include "Singleton.h"
 
 class Test : public Singleton<Test>
 {

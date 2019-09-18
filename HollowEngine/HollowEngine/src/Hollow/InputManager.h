@@ -5,8 +5,10 @@
 
 namespace Hollow {
 
-	class HOLLOW_API InputManager //: public Singleton<InputManager>
+	class HOLLOW_API InputManager : public Singleton<InputManager>
 	{
+		friend class Singleton<InputManager>;
+		
 	public:
 		bool IsKeyPressed(int keycode);
 		bool IsKeyTriggered(int keycode);
@@ -17,8 +19,10 @@ namespace Hollow {
 
 		void Init();
 		void Update();
-
+	
+		
 	private:
+		InputManager() {}
 		unsigned int mCurrentState[512];
 		unsigned int mPreviousState[512];
 		bool mPrevMouseState[3];

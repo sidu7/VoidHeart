@@ -58,6 +58,20 @@ namespace Hollow {
 
 	void InputManager::Update()
 	{
+		SDL_Event e;
+		while (SDL_PollEvent(&e) != 0)
+		{
+
+			if (e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				mCurrentMouseState[e.button.button - 1] = true;
+			}
+			if (e.type == SDL_MOUSEBUTTONUP)
+			{
+				mCurrentMouseState[e.button.button - 1] = false;
+			}
+		}
+		
 		//fetch keyboard state
 		int numberOfFetchedKeys = 0;
 		const Uint8* pCurrentKeyStates = SDL_GetKeyboardState(&numberOfFetchedKeys);
@@ -66,14 +80,12 @@ namespace Hollow {
 		{
 			numberOfFetchedKeys = 512;
 		}
-
-		SDL_JoystickEventState(1);
+		
 		SDL_memcpy(mPreviousState, mCurrentState, 512 * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
 
-		//test
-
+		
 		if(IsKeyPressed(SDL_SCANCODE_A))
 		{
 			HW_TRACE("A Pressed");

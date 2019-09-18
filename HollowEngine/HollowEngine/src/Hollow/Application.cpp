@@ -3,6 +3,7 @@
 #include"Application.h"
 #include "Events/ApplicationEvent.h"
 #include "../Utils/Test.h"
+#include "InputManager.h"
 
 namespace Hollow {
 	Application* Application::instance = nullptr;
@@ -30,10 +31,10 @@ namespace Hollow {
 
 	void Application::Run()
 	{
-		Test::Instance().work();
-		
+	
 		while (true)
 		{
+		InputManager::Instance().Update();
 		}
 	}
 }
