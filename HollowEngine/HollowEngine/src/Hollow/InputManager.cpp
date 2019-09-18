@@ -1,5 +1,5 @@
 #include "hollowpch.h"
-#include "Input.h"
+#include "InputManager.h"
 #include "Application.h"
 
 #include <SDL2/SDL_keyboard.h>
@@ -14,7 +14,10 @@ namespace Hollow {
 		return mCurrentState[keycode];
 	}
 
-
+	bool InputManager::IsKeyTriggered(int keycode)
+	{
+		return mCurrentState[keycode] && !mPreviousState[keycode];
+	}
 
 	bool InputManager::IsMouseButtonPressed(int button)
 	{
@@ -25,26 +28,24 @@ namespace Hollow {
 
 	std::pair<float, float> InputManager::GetMousePosition()
 	{
-		auto window = static_cast<SDL_Window*>(Application::Instance().GetWindow().GetWindow());
-
-		double xpos, ypos;
-
-		//glfwGetCursorPos(window, &xpos, &ypos);
+		int xpos, ypos;
+		SDL_GetMouseState(&xpos, &ypos);
+		
 		return { (float)xpos, (float)ypos };
 	}
 
 	float InputManager::GetMouseX()
 	{
-		//auto [x, y] = GetMousePosition();
-		return 0;// x;
+		auto pos = GetMousePosition();
+		return pos.first;
 	}
 
 
 
 	float InputManager::GetMouseY()
 	{
-		//auto [x, y] = GetMousePositionImpl();
-		return 0;//y;
+		auto pos = GetMousePosition();
+		return pos.second;
 	}
 
 	void InputManager::Init()
@@ -69,6 +70,14 @@ namespace Hollow {
 		SDL_JoystickEventState(1);
 		SDL_memcpy(mPreviousState, mCurrentState, 512 * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
+		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
+
+		//test
+
+		if(IsKeyPressed(SDL_SCANCODE_A))
+		{
+			HW_TRACE("A Pressed");
+		}
 	}
 
 

@@ -5,7 +5,7 @@
 
 namespace Hollow {
 
-	class HOLLOW_API InputManager : public Singleton<InputManager>
+	class HOLLOW_API InputManager //: public Singleton<InputManager>
 	{
 	public:
 		bool IsKeyPressed(int keycode);
@@ -19,8 +19,8 @@ namespace Hollow {
 		void Update();
 
 	private:
-		Uint8 mCurrentState[512];
-		Uint8 mPreviousState[512];
+		unsigned int mCurrentState[512];
+		unsigned int mPreviousState[512];
 		bool mPrevMouseState[3];
 		bool mCurrentMouseState[3];
 	};

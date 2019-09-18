@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include <SDL2/SDL.h>
 
 namespace Hollow {
 	class GameWindow : public Window

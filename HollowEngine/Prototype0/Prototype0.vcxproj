@@ -63,8 +63,9 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd $(SolutionDir)bin\$(Configuration)
+
+copy /y HollowEngine\*.dll $(ProjectName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
