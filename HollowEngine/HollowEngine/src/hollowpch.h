@@ -25,6 +25,12 @@
 #include <ImGui/imgui_impl_opengl3.h>
 #include <ImGui/imgui_impl_sdl.h>
 
+// Serialization library
+#include <rapidjson/document.h>
+//#ifdef _MSC_VER   // Might need it for rapidjson... 
+//#undef GetObject
+//#endif
+
 // TODO: Add ifdef guards if more platforms
 #include <Windows.h>
 
