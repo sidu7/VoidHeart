@@ -1,4 +1,5 @@
 #pragma once
+#include <hollowpch.h>
 
 // For use by Hollow Prototypes/Applications
 
