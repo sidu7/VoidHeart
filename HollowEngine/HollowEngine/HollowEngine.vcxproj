@@ -21,6 +21,7 @@
     <ClCompile Include="src\Hollow\Application.cpp" />
     <ClCompile Include="src\Hollow\GameWindow.cpp" />
     <ClCompile Include="src\Hollow\Managers\GameObjectManager.cpp" />
+    <ClCompile Include="src\Hollow\Managers\MemoryManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -66,6 +67,7 @@
     <ClInclude Include="src\Hollow.h" />
     <ClInclude Include="src\Hollow\EntryPoint.h" />
     <ClInclude Include="src\Hollow\Managers\GameObjectManager.h" />
+    <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
     <ClInclude Include="src\Utils\Profiler.h" />
     <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Utils\Test.h" />

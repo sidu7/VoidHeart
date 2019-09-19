@@ -7,6 +7,7 @@
 
 #include "Managers/SystemManager.h"
 #include "Managers/RenderManager.h"
+#include "Managers/MemoryManager.h"
 
 #include "Log.h"
 namespace Hollow {
@@ -21,6 +22,7 @@ namespace Hollow {
 
 		mIsRunning = true;
 		// Initalize managers
+		MemoryManager::Instance().Init();
 		RenderManager::Instance().Init(mpWindow);
 	}
 

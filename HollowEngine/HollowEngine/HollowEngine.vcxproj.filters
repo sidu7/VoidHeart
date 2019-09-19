@@ -31,6 +31,7 @@
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\GameObjectManager.cpp" />
     <ClCompile Include="src\Hollow\GameObjectFactory.cpp" />
+    <ClCompile Include="src\Hollow\Managers\MemoryManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hollowpch.h" />
@@ -91,5 +92,6 @@
     <ClInclude Include="src\Hollow\Components\TestComponent.h" />
     <ClInclude Include="src\Hollow\Managers\GameObjectManager.h" />
     <ClInclude Include="src\Hollow\GameObjectFactory.h" />
+    <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include"GameObjectFactory.h"
 #include "GameObject.h"
 #include "Components/TestComponent.h"
+#include "Managers/MemoryManager.h"
 
 namespace Hollow {
 
@@ -35,8 +36,14 @@ namespace Hollow {
 			for (unsigned int i = 0; i < comp.Size(); ++i)
 			{
 				std::string Comptype = comp[i]["Type"].GetString();
-								pNewComponent = pNewGameObject->AddComponent<typeid(map[""])>();
-				pNewComponent->Serialize(comp[i].GetObject());
+
+				Component* pComp = MemoryManager::Instance().NewComponent(Comptype.c_str());
+				pNewGameObject->AddComponent(pComp);
+
+				//[comp].CreateCompoent();
+
+				//pNewComponent = pNewGameObject->AddComponent<typeid(map[""])>();
+				//pNewComponent->Serialize(comp[i].GetObject());
 				/*if (Comptype == "Particle")
 				{
 					ParticleSystem::GetInstance()->mParticleQueue.push_back((ParticleEmitter*)(pNewComponent));
