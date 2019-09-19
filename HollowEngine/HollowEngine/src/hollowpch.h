@@ -40,8 +40,6 @@
 #include "Hollow/Log.h"
 #include "Utils/Singleton.h"
 #include "Utils/Profiler.h"
-#include "Utils/JSONHelper.h"
-#include "Utils/Profiler.h"
 
 // GetObject() is defined by Windows and conflicts with GetObject() of rapidjson
 #ifdef _MSC_VER   
