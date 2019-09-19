@@ -16,6 +16,9 @@
 #include <vector>
 #include <unordered_map>
 
+//Indexing
+#include <typeindex>
+
 // Rendering related libraries
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
@@ -28,9 +31,7 @@
 
 // Serialization library
 #include <rapidjson/document.h>
-//#ifdef _MSC_VER   // Might need it for rapidjson... 
-//#undef GetObject
-//#endif
+
 
 // TODO: Add ifdef guards if more platforms
 #include <Windows.h>
@@ -40,3 +41,9 @@
 #include "Utils/Singleton.h"
 #include "Utils/Profiler.h"
 #include "Utils/JSONHelper.h"
+#include "Utils/Profiler.h"
+
+// GetObject() is defined by Windows and conflicts with GetObject() of rapidjson
+#ifdef _MSC_VER   
+#undef GetObject
+#endif
