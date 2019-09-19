@@ -21,6 +21,10 @@ namespace Hollow
 			mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject));
 		}
 
+		void DeleteAllGameObjects() 
+		{
+			mGameObjects.clear();
+		}
 	protected:
 		//template<typename First> // 1 template parameter
 		//void CheckComponents(GameObject* pGameObject)

@@ -3,6 +3,7 @@
 
 namespace Hollow
 {
+	class GameObject;
 	class System;
 
 	class SystemManager
@@ -17,6 +18,9 @@ namespace Hollow
 		}
 
 		void Update();
+		void AddObjectToSystems(GameObject* GameObject);
+		void DeleteGameObejectInSystems(GameObject* GameObject);
+		void DeleteAllGameObjectsInSystems();
 
 	private:
 		std::vector<System*> mSystems;

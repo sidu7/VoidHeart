@@ -1,31 +1,45 @@
 #pragma once
-
 #include "hollowpch.h"
-#include "Components/TestComponent.h"
 
-class GameObject
-{
-public:
-	GameObject() : mID(0),mActive(true)
+namespace Hollow {
+	class Component;
+	class GameObject
 	{
-	}
-	~GameObject();
+	public:
+		GameObject();
+		~GameObject();
+
+		template <typename T>
+		T* GetComponent();
+	
+		template <typename T>
+		void AddComponent(T* pComponent);
+
+		template <typename T>
+		void AddComponent(T* pComponent, std::type_info index);
+
+	public:
+		std::unordered_map<std::type_index, Component*> mComponents;
+		unsigned int mID;
+		bool mActive;
+	};
 
 	template <typename T>
-	T* GetComponent()
+	T* GameObject::GetComponent()
 	{
 		// Map find
 		return static_cast<T*>(mComponents[std::type_index(typeid(T))]);
 	}
 
 	template <typename T>
-	void AddComponent(T* pComponent)
+	void GameObject::AddComponent(T* pComponent)
 	{
 		mComponents[std::type_index(typeid(T))] = pComponent;
 	}
 
-public:
-	std::unordered_map<std::type_index, Component*> mComponents;
-	unsigned int mID;
-	bool mActive;
-};
+	template <typename T>
+	void GameObject::AddComponent(T* pComponent,std::type_info index)
+	{
+		mComponents[std::type_index(index)] = pComponent;
+	}
+}

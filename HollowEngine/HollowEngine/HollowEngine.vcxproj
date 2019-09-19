@@ -15,6 +15,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Hollow\GameObject.cpp" />
+    <ClCompile Include="src\Hollow\GameObjectFactory.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Log.cpp" />
     <ClCompile Include="src\Hollow\Application.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="src\Hollow\Events\KeyEvent.h" />
     <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
     <ClInclude Include="src\Hollow\GameObject.h" />
+    <ClInclude Include="src\Hollow\GameObjectFactory.h" />
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
     <ClInclude Include="src\Hollow\Log.h" />
     <ClInclude Include="src\Hollow.h" />
