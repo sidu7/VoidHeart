@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <functional>
 #include <fstream>
+#include <filesystem>
 
 // Data structures
 #include <string>
@@ -38,3 +39,4 @@
 #include "Hollow/Log.h"
 #include "Utils/Singleton.h"
 #include "Utils/Profiler.h"
+#include "Utils/JSONHelper.h"
