@@ -8,11 +8,11 @@ namespace Hollow {
 
 	class RenderManager
 	{
+		SINGLETON(RenderManager)
 	public:
-		RenderManager(GameWindow* pWindow = nullptr);
 		~RenderManager();
 
-		void Init(GameWindow* pWindow);
+		void Init(GameWindow* pWindow = nullptr);
 
 		void Update();
 

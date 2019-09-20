@@ -8,18 +8,20 @@ namespace Hollow {
 
 	class HOLLOW_API Application
 	{
+		//SINGLETON(Application)
 	public:
 		Application();
 		virtual ~Application();
 
-		void Run();
+		//inline static Application& Instance() { return *instance; }
 
-		inline GameWindow* GetWindow() { return mpWindow; }
+		void Run();
 
 	private:
 		GameWindow* mpWindow;
 		bool mIsRunning;
-		RenderManager* mpRenderManager;
+
+		//static Application* instance;
 	};
 
 	//To be defined in CLIENT

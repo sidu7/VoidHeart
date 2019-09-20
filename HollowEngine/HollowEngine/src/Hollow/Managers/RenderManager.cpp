@@ -6,10 +6,6 @@
 #include "../Graphics/Shader.h"
 
 namespace Hollow {
-	RenderManager::RenderManager(GameWindow* pWindow)
-	{
-		Init(pWindow);
-	}
 
 	RenderManager::~RenderManager()
 	{
