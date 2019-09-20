@@ -38,7 +38,7 @@
 #include <Windows.h>
 
 // Our stuff, only add things here that don't change
-#include "Hollow/Log.h"
+#include "Utils/Log.h"
 #include "Utils/Singleton.h"
 #include "Utils/Profiler.h"
 

@@ -1,15 +1,14 @@
 #include <hollowpch.h>
 
 #include"Application.h"
-#include "Events/ApplicationEvent.h"
+#include "Hollow/Events/ApplicationEvent.h"
 
-#include "Managers/InputManager.h"
+#include "Hollow/Managers/InputManager.h"
 
-#include "Managers/SystemManager.h"
-#include "Managers/RenderManager.h"
-#include "Managers/MemoryManager.h"
+#include "Hollow/Managers/SystemManager.h"
+#include "Hollow/Managers/RenderManager.h"
+#include "Hollow/Managers/MemoryManager.h"
 
-#include "Log.h"
 namespace Hollow {
 	Application::Application()
 	{

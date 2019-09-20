@@ -3,9 +3,8 @@
 
 // For use by Hollow Prototypes/Applications
 
-#include "Hollow/Application.h"
-#include "Hollow/Log.h"
+#include "Hollow/Core/Application.h"
 
 // --Entry Point----------------------------
-#include "Hollow/EntryPoint.h"
+#include "Hollow/Core/EntryPoint.h"
 // -----------------------------------------

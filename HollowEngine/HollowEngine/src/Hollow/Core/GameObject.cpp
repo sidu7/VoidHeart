@@ -1,6 +1,6 @@
 #include <hollowpch.h>
-#include "GameObject.h"
-#include "Components/Component.h"
+#include "Hollow/Core/GameObject.h"
+#include "Hollow/Components/Component.h"
 
 namespace Hollow {
 

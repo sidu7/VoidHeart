@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "../Managers/SystemManager.h"
-#include "Hollow/GameObject.h"
+#include "Hollow/Managers/SystemManager.h"
+#include "Hollow/Core/GameObject.h"
 
 
 namespace Hollow

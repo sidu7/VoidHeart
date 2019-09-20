@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../hollowpch.h"
-#include "../Core.h"
+#include <hollowpch.h>
+
+#include "Hollow/Core/Core.h"
 
 namespace Hollow {
 

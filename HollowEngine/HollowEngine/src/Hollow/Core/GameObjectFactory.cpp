@@ -1,8 +1,8 @@
-#include"hollowpch.h"
-#include"GameObjectFactory.h"
-#include "GameObject.h"
-#include "Components/TestComponent.h"
-#include "Managers/MemoryManager.h"
+#include <hollowpch.h>
+#include "Hollow/Core/GameObjectFactory.h"
+#include "Hollow/Core/GameObject.h"
+#include "Hollow/Components/TestComponent.h"
+#include "Hollow/Managers/MemoryManager.h"
 
 namespace Hollow {
 

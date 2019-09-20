@@ -14,14 +14,14 @@
     <ClCompile Include="src\hollowpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Hollow\GameObject.cpp" />
-    <ClCompile Include="src\Hollow\GameObjectFactory.cpp" />
+    <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
+    <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
-    <ClCompile Include="src\Hollow\Log.cpp" />
-    <ClCompile Include="src\Hollow\Application.cpp" />
-    <ClCompile Include="src\Hollow\GameWindow.cpp" />
+    <ClCompile Include="src\Utils\Log.cpp" />
+    <ClCompile Include="src\Hollow\Core\Application.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\GameWindow.cpp" />
     <ClCompile Include="src\Hollow\Managers\GameObjectManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\MemoryManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
@@ -54,29 +54,29 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hollowpch.h" />
-    <ClInclude Include="src\Hollow\Application.h" />
+    <ClInclude Include="src\Hollow\Core\Application.h" />
     <ClInclude Include="src\Hollow\Components\Component.h" />
     <ClInclude Include="src\Hollow\Components\TestComponent.h" />
-    <ClInclude Include="src\Hollow\Core.h" />
+    <ClInclude Include="src\Hollow\Core\Core.h" />
     <ClInclude Include="src\Hollow\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Hollow\Events\Event.h" />
     <ClInclude Include="src\Hollow\Events\KeyEvent.h" />
     <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
-    <ClInclude Include="src\Hollow\GameObject.h" />
-    <ClInclude Include="src\Hollow\GameObjectFactory.h" />
+    <ClInclude Include="src\Hollow\Core\GameObject.h" />
+    <ClInclude Include="src\Hollow\Core\GameObjectFactory.h" />
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
     <ClInclude Include="src\Hollow\Graphics\Camera.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
-    <ClInclude Include="src\Hollow\Log.h" />
+    <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Hollow.h" />
-    <ClInclude Include="src\Hollow\EntryPoint.h" />
+    <ClInclude Include="src\Hollow\Core\EntryPoint.h" />
     <ClInclude Include="src\Hollow\Managers\GameObjectManager.h" />
     <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
     <ClInclude Include="src\Utils\Profiler.h" />
     <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Utils\Test.h" />
-    <ClInclude Include="src\Hollow\GameWindow.h" />
+    <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />

@@ -2,7 +2,6 @@
 
 #include "SystemManager.h"
 #include "../Systems/System.h"
-#include "../Log.h"
 
 namespace Hollow
 {

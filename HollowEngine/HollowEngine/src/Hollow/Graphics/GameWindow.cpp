@@ -33,6 +33,9 @@ namespace Hollow {
 		}
 
 		// Create OpenGL context
-		mContext = SDL_GL_CreateContext(mpWindow);	
+		mContext = SDL_GL_CreateContext(mpWindow);
+		
+		// Set this flag if Vysnc is wanted
+		SDL_GL_SetSwapInterval(0);
 	}
 }

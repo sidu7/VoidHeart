@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Core.h"
+#include "Hollow/Core/Core.h"
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 

@@ -2,7 +2,7 @@
 
 namespace Hollow {
 	class GameObject;
-	class GameObjectFactory 
+	class GameObjectFactory
 	{
 		SINGLETON(GameObjectFactory)
 	public:

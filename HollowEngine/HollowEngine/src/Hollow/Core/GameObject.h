@@ -2,7 +2,7 @@
 
 namespace Hollow {
 	class Component;
-	class GameObject
+	class HOLLOW_API GameObject
 	{
 	public:
 		GameObject();

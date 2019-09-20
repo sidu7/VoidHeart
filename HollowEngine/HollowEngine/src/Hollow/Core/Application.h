@@ -1,5 +1,4 @@
 #pragma once
-#include "Hollow/Core/Core.h"
 #include "Hollow/Graphics/GameWindow.h"
 
 namespace Hollow {

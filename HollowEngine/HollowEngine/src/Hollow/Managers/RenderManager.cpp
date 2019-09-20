@@ -1,9 +1,9 @@
 #include <hollowpch.h>
 #include "RenderManager.h"
 
-#include "../GameWindow.h"
-#include "../Graphics/Camera.h"
-#include "../Graphics/Shader.h"
+#include "Hollow/Graphics/GameWindow.h"
+#include "Hollow/Graphics/Camera.h"
+#include "Hollow/Graphics/Shader.h"
 
 namespace Hollow {
 

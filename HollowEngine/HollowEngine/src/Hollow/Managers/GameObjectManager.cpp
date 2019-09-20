@@ -1,8 +1,10 @@
 #include "hollowpch.h"
+
 #include "GameObjectManager.h"
 #include "SystemManager.h"
-#include "../GameObject.h"
 #include "MemoryManager.h"
+
+#include "Hollow/Core/GameObject.h"
 
 namespace Hollow {
 	void GameObjectManager::AddGameObject(GameObject* GameObject)

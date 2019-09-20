@@ -1,7 +1,6 @@
 #include <hollowpch.h>
+
 #include "TempSystem.h"
-#include "../Log.h"
-#include <iostream>
 
 void Hollow::TempSystem::Update()
 {
