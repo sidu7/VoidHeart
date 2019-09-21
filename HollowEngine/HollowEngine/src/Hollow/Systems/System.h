@@ -6,7 +6,7 @@
 
 namespace Hollow
 {
-	class System
+	class HOLLOW_API System
 	{
 	public:
 		System(System* instance) {

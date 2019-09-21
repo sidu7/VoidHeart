@@ -12,9 +12,6 @@
     <ClCompile Include="src\Hollow\Managers\SystemManager.cpp" />
     <ClCompile Include="src\Hollow\Systems\TempSystem.cpp" />
     <ClCompile Include="src\hollowpch.cpp" />
-    <ClCompile Include="src\Hollow\Log.cpp" />
-    <ClCompile Include="src\Hollow\Application.cpp" />
-    <ClCompile Include="src\Hollow\GameWindow.cpp" />
     <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui_demo.cpp" />
@@ -34,6 +31,11 @@
     <ClCompile Include="src\Hollow\Core\Application.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
+    <ClCompile Include="src\Hollow\Components\Shape.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\ElementArrayBuffer.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
+    <ClCompile Include="src\Utils\GLCall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hollow\Application.cpp">
@@ -77,12 +79,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Hollow\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Hollow\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Application.h" />
     <ClInclude Include="src\Hollow\Core.h" />
@@ -90,13 +86,10 @@
     <ClInclude Include="src\Hollow\Events\Event.h" />
     <ClInclude Include="src\Hollow\Events\KeyEvent.h" />
     <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
-    <ClInclude Include="src\Hollow\Log.h" />
     <ClInclude Include="src\Hollow.h" />
-    <ClInclude Include="src\Hollow\EntryPoint.h" />
     <ClInclude Include="src\Utils\Profiler.h" />
     <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Utils\Test.h" />
-    <ClInclude Include="src\Hollow\GameWindow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />
@@ -164,5 +157,11 @@
     <ClInclude Include="src\Hollow\Core\EntryPoint.h" />
     <ClInclude Include="src\Hollow\Core\GameObject.h" />
     <ClInclude Include="src\Hollow\Core\GameObjectFactory.h" />
+    <ClInclude Include="src\Hollow\Components\Shape.h" />
+    <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
+    <ClInclude Include="src\Hollow\Graphics\ElementArrayBuffer.h" />
+    <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
+    <ClInclude Include="src\Utils\GLCall.h" />
+    <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
   </ItemGroup>
 </Project>

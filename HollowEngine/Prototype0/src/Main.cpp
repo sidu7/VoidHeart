@@ -1,5 +1,7 @@
 #include <Hollow.h>
 
+#include "Hollow/Core/EntryPoint.h"
+
 class Prototype0 : public Hollow::Application
 {
 public:

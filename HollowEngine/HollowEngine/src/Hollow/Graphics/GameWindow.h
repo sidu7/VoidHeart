@@ -9,6 +9,8 @@ namespace Hollow {
 
 		inline SDL_Window* GetWindow() { return mpWindow; }
 		inline SDL_GLContext GetContext() { return mContext; }
+		inline int GetWidth() { return mWidth; }
+		inline int GetHeight() { return mHeight; }
 
 	private:
 		void Initialize();

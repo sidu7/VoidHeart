@@ -1,5 +1,5 @@
 #include <hollowpch.h>
-
+#include "Utils/GLCall.h"
 #include "Shader.h"
 
 namespace Hollow {
@@ -39,56 +39,56 @@ namespace Hollow {
 
 		// Create the shader program
 		mProgram = glCreateProgram();
-		glAttachShader(mProgram, shaderID);
-		glLinkProgram(mProgram);
+		GLCall(glAttachShader(mProgram, shaderID));
+		GLCall(glLinkProgram(mProgram));
 
 		// Delete linked shader
-		glDeleteShader(shaderID);
+		GLCall(glDeleteShader(shaderID));
 	}
 
 	void Shader::Use()
 	{
-		glUseProgram(mProgram);
+		GLCall(glUseProgram(mProgram));
 	}
 
 	void Shader::Unbind()
 	{
-		glUseProgram(0);
+		GLCall(glUseProgram(0));
 	}
 
 	void Shader::SetInt(const std::string& name, int value) const
 	{
-		glUniform1i(glGetUniformLocation(mProgram, name.c_str()), value);
+		GLCall(glUniform1i(glGetUniformLocation(mProgram, name.c_str()), value));
 	}
 
 	void Shader::SetUInt(const std::string& name, unsigned int value) const
 	{
-		glUniform1ui(glGetUniformLocation(mProgram, name.c_str()), value);
+		GLCall(glUniform1ui(glGetUniformLocation(mProgram, name.c_str()), value));
 	}
 
 	void Shader::SetFloat(const std::string& name, float value) const
 	{
-		glUniform1f(glGetUniformLocation(mProgram, name.c_str()), value);
+		GLCall(glUniform1f(glGetUniformLocation(mProgram, name.c_str()), value));
 	}
 
 	void Shader::SetVec2(const std::string& name, const glm::vec2& value) const
 	{
-		glUniform2fv(glGetUniformLocation(mProgram, name.c_str()), 1, &value[0]);
+		GLCall(glUniform2fv(glGetUniformLocation(mProgram, name.c_str()), 1, &value[0]));
 	}
 
 	void Shader::SetVec3(const std::string& name, const glm::vec3& value) const
 	{
-		glUniform3fv(glGetUniformLocation(mProgram, name.c_str()), 1, &value[0]);
+		GLCall(glUniform3fv(glGetUniformLocation(mProgram, name.c_str()), 1, &value[0]));
 	}
 
 	void Shader::SetVec3(const std::string& name, float x, float y, float z) const
 	{
-		glUniform3f(glGetUniformLocation(mProgram, name.c_str()), x, y, z);
+		GLCall(glUniform3f(glGetUniformLocation(mProgram, name.c_str()), x, y, z));
 	}
 
 	void Shader::SetMat4(const std::string& name, const glm::mat4& mat) const
 	{
-		glUniformMatrix4fv(glGetUniformLocation(mProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+		GLCall(glUniformMatrix4fv(glGetUniformLocation(mProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]));
 	}
 
 	std::stringstream Shader::CopyFileToStringStream(const GLchar* pFilePath)
@@ -107,12 +107,12 @@ namespace Hollow {
 		GLuint shaderId = glCreateShader(shaderType);
 
 		// Compile the shader
-		glShaderSource(shaderId, 1, &shaderSource, nullptr);
-		glCompileShader(shaderId);
+		GLCall(glShaderSource(shaderId, 1, &shaderSource, nullptr));
+		GLCall(glCompileShader(shaderId));
 
 		// Print errors
 		GLint success;
-		glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
+		GLCall(glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success));
 		if (!success)
 		{
 			GLchar errorLog[512];
@@ -126,13 +126,13 @@ namespace Hollow {
 	void Shader::CreateAndCompileProgram(GLuint vertexId, GLuint fragmentId)
 	{
 		mProgram = glCreateProgram();
-		glAttachShader(mProgram, vertexId);
-		glAttachShader(mProgram, fragmentId);
-		glLinkProgram(mProgram);
+		GLCall(glAttachShader(mProgram, vertexId));
+		GLCall(glAttachShader(mProgram, fragmentId));
+		GLCall(glLinkProgram(mProgram));
 
 		// Print linking errors
 		GLint success;
-		glGetProgramiv(mProgram, GL_LINK_STATUS, &success);
+		GLCall(glGetProgramiv(mProgram, GL_LINK_STATUS, &success));
 		if (!success)
 		{
 			GLchar errorLog[512];
