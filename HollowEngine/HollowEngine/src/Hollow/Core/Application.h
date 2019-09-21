@@ -1,6 +1,5 @@
 #pragma once
-#include "Core.h"
-#include "GameWindow.h"
+#include "Hollow/Graphics/GameWindow.h"
 
 namespace Hollow {
 
@@ -8,6 +7,7 @@ namespace Hollow {
 
 	class HOLLOW_API Application
 	{
+		//SINGLETON(Application)
 	public:
 		Application();
 		virtual ~Application();
@@ -16,14 +16,11 @@ namespace Hollow {
 
 		void Run();
 
-		inline GameWindow& GetWindow() { return *mpWindow; }
-
 	private:
 		GameWindow* mpWindow;
 		bool mIsRunning;
 
 		//static Application* instance;
-		RenderManager* mpRenderManager;
 	};
 
 	//To be defined in CLIENT

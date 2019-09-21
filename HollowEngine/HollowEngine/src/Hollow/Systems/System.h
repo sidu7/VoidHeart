@@ -1,12 +1,12 @@
 #pragma once
 #include <vector>
-#include "../Managers/SystemManager.h"
+#include "Hollow/Managers/SystemManager.h"
+#include "Hollow/Core/GameObject.h"
 
-class GameObject;
 
 namespace Hollow
 {
-	class System
+	class HOLLOW_API System
 	{
 	public:
 		System(System* instance) {
@@ -21,24 +21,28 @@ namespace Hollow
 			mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject));
 		}
 
+		void DeleteAllGameObjects() 
+		{
+			mGameObjects.clear();
+		}
 	protected:
-		//template<typename First> // 1 template parameter
-		//void CheckComponents(GameObject* pGameObject)
-		//{
-		//	if (pGameObject->GetComponent<First>())
-		//	{
-		//		mGameObjects.push_back(pGameObject);
-		//	}
-		//}
+		template<typename First> // 1 template parameter
+		void CheckComponents(GameObject* pGameObject)
+		{
+			if (pGameObject->GetComponent<First>())
+			{
+				mGameObjects.push_back(pGameObject);
+			}
+		}
 
-		//template<typename First, typename Second, typename ... Rest> // >=2 template parameters
-		//void CheckComponents(GameObject* pGameObject)
-		//{
-		//	if (pGameObject->GetComponent<First>())
-		//	{
-		//		CheckComponents<Second, Rest...>(pGameObject);
-		//	}
-		//}
+		template<typename First, typename Second, typename ... Rest> // >=2 template parameters
+		void CheckComponents(GameObject* pGameObject)
+		{
+			if (pGameObject->GetComponent<First>())
+			{
+				CheckComponents<Second, Rest...>(pGameObject);
+			}
+		}
 
 	protected:
 		std::vector<GameObject*> mGameObjects;

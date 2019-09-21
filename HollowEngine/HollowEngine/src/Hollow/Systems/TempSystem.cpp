@@ -1,14 +1,19 @@
 #include <hollowpch.h>
+
 #include "TempSystem.h"
-#include "../Log.h"
-#include <iostream>
+#include "Hollow/Components/TestComponent.h"
 
-void Hollow::TempSystem::Update()
+namespace Hollow
 {
-	//HW_CORE_TRACE("Temp System Updating");
-	//std::cout << "Temp System Updating" << std::endl;
-}
+	TempSystem TempSystem::instance;
 
-void Hollow::TempSystem::AddGameObject(GameObject* object)
-{
+	void TempSystem::Update()
+	{
+		HW_CORE_TRACE("Test system has {0} gameobjects", mGameObjects.size());
+	}
+
+	void TempSystem::AddGameObject(GameObject* object)
+	{
+		CheckComponents<TestComponent>(object);
+	}
 }

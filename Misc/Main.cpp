@@ -11,6 +11,7 @@ int main()
 	// Game object manager
 	{
 		GameObject* pGameObject = new GameObject();
+		pGameObject->AddComponent<TestComponent>();
 		//for(all systems)
 		pTestSystem->AddGameObject(pGameObject);
 	}

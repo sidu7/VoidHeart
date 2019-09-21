@@ -2,7 +2,6 @@
 
 #include "SystemManager.h"
 #include "../Systems/System.h"
-#include "../Log.h"
 
 namespace Hollow
 {
@@ -16,6 +15,27 @@ namespace Hollow
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
 		{
 			mSystems[i]->Update();
+		}
+	}
+	void SystemManager::AddObjectToSystems(GameObject* GameObject)
+	{
+		for (unsigned int i = 0; i < mSystems.size(); ++i)
+		{
+			mSystems[i]->AddGameObject(GameObject);
+		}
+	}
+	void SystemManager::DeleteGameObejectInSystems(GameObject* GameObject)
+	{
+		for (unsigned int i = 0; i < mSystems.size(); ++i)
+		{
+			mSystems[i]->DeleteGameObject(GameObject);
+		}
+	}
+	void SystemManager::DeleteAllGameObjectsInSystems()
+	{
+		for (unsigned int i = 0; i < mSystems.size(); ++i)
+		{
+			mSystems[i]->DeleteAllGameObjects();
 		}
 	}
 }

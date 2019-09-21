@@ -3,17 +3,14 @@
 
 namespace Hollow
 {
+	class GameObject;
 	class System;
 
 	class SystemManager
 	{
+		SINGLETON(SystemManager)
 	public:
 		~SystemManager();
-		static SystemManager& Instance()
-		{
-			static SystemManager instance;
-			return instance;
-		}
 
 		void RegisterSystem(System* system)
 		{
@@ -21,6 +18,9 @@ namespace Hollow
 		}
 
 		void Update();
+		void AddObjectToSystems(GameObject* GameObject);
+		void DeleteGameObejectInSystems(GameObject* GameObject);
+		void DeleteAllGameObjectsInSystems();
 
 	private:
 		std::vector<System*> mSystems;
