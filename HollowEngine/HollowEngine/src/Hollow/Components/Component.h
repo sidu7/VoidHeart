@@ -1,18 +1,5 @@
 #pragma once
-#include "../Managers/MemoryManager.h"
-
-#define REGISTER(x) public:													\
-					std::type_index GetIndex()								\
-					{														\
-						return std::type_index(typeid(x));		\
-					}														\
-					private:												\
-					static x instance;										\
-					x* CreateComponent()									\
-					{														\
-						return new x();										\
-					}
-
+#include "Hollow/Managers/MemoryManager.h"
 
 namespace Hollow
 {
@@ -20,17 +7,22 @@ namespace Hollow
 	{
 		friend class MemoryManager;
 	public:
-		Component(const char* name,Component* component) {
+		Component(std::string name) {
+			mComponentName = name;
+		}
+		Component(std::string name,Component* component) {
 			MemoryManager::Instance().RegisterComponent(name, component);
 			mComponentName = name;
 		}
 
+		virtual void Init() = 0;
 		virtual std::type_index GetIndex() = 0;
 		virtual void Clear() = 0;
 		virtual ~Component() {}
-		
+
 		std::string mComponentName;
-	private:
+
+	protected:
 		virtual Component* CreateComponent() = 0;
 	};
 }

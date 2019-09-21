@@ -24,7 +24,13 @@ namespace Hollow {
 	template <typename T>
 	T* GameObject::GetComponent()
 	{
-		// Map find
-		return static_cast<T*>(mComponents[std::type_index(typeid(T))]);
+		if (mComponents.find(std::type_index(typeid(T))) != mComponents.end())
+		{
+			return static_cast<T*>(mComponents[std::type_index(typeid(T))]);
+		}
+		else
+		{
+			return nullptr;
+		}
 	}
 }

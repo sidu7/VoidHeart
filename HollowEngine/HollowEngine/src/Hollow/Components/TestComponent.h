@@ -7,15 +7,12 @@ namespace Hollow
 	// Test Component has to be deleted afterwards
 	class TestComponent : public Component
 	{
-		REGISTER(TestComponent)
+		REGISTERCOMPONENT(TestComponent,"TestComponent")
 	public:
-		TestComponent() : Component("TestComponent", this), mValue(5) {
-		}
 		
+		void Init();
 		void Clear() {}
 		virtual ~TestComponent() {}
 		int mValue = 0;
 	};
-
-	TestComponent TestComponent::instance;
 }

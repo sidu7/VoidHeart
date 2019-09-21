@@ -3,7 +3,7 @@
 
 namespace Hollow{
 	class GameObject;
-	class GameObjectManager 
+	class HOLLOW_API GameObjectManager 
 	{
 		SINGLETON(GameObjectManager);
 	public:

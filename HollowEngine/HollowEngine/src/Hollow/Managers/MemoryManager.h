@@ -1,5 +1,5 @@
 #pragma once
-#include <Hollow\Systems\System.h>
+#include "Hollow/Systems/System.h"
 
 #define MAX_OBJECTS 1000
 
@@ -7,24 +7,22 @@ namespace Hollow
 {
 	class Component;
 
-	class MemoryManager
+	class HOLLOW_API MemoryManager
 	{
 		SINGLETON(MemoryManager)
 	public:
 		void Init();
-		void RegisterComponent(const char* name, Component* component)
-		{
-			mComponentPool[name].push_back(component);
-		}
-
-		Component* NewComponent(const char* name);
+		void RegisterComponent(std::string name, Component* component);
+	
+		Component* NewComponent(std::string name);
 		void DeleteComponent(Component* component);
 
 		GameObject* NewGameObject();
 		void DeleteGameObject(GameObject* gameobject);
 
-	public:
-		std::unordered_map<const char*,std::list<Component*>> mComponentPool;
+	private:
+		std::unordered_map<std::string,std::list<Component*>> mComponentPool;
 		std::list<GameObject*> mGameObjectPool;
+		std::vector<std::pair<std::string, Component*>> mComponents;
 	};
 }

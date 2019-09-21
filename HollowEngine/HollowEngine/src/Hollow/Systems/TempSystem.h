@@ -6,16 +6,10 @@ namespace Hollow
 {
 	class TempSystem : public System
 	{
-	private:
-		static TempSystem instance;
-		TempSystem() : System(this) {
-			std::cout << "TempSystem registered" << std::endl;
-		}
+		REGISTERSYSTEM(TempSystem)
 	public:		
 		~TempSystem() {}
 		void Update();
 		void AddGameObject(GameObject* object);
 	};
-
-	TempSystem TempSystem::instance;
 }

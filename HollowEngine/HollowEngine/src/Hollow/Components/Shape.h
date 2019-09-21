@@ -11,9 +11,8 @@ namespace Hollow {
 
 	class HOLLOW_API Shape : public Component
 	{
-		REGISTER(Shape);
+		REGISTERCOMPONENT(Shape, "Shape");
 	public:
-		Shape();
 		void Init();
 
 		void Clear() {}

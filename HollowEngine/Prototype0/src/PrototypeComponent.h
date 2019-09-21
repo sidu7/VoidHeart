@@ -4,9 +4,9 @@
 
 class PrototypeComponent : public Hollow::Component
 {
-	REGISTER(PrototypeComponent);
+	REGISTERCOMPONENT(PrototypeComponent,"PrototypeComponent");
 public:
-	PrototypeComponent();
+	void Init();
 	virtual ~PrototypeComponent();
 	void Clear();
 

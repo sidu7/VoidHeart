@@ -9,10 +9,6 @@ namespace Hollow
 {
 	Shape Shape::instance;
 
-	Shape::Shape() : Component("Shape", this)
-	{	
-	}
-
 	void Shape::Init()
 	{
 		// Create buffers

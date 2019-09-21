@@ -2,7 +2,7 @@
 
 PrototypeComponent PrototypeComponent::instance;
 
-PrototypeComponent::PrototypeComponent(): Hollow::Component("PrototypeComponent",this)
+void PrototypeComponent::Init()
 {
 }
 

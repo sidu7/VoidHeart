@@ -5,15 +5,30 @@
 
 namespace Hollow
 {
-	Component* MemoryManager::NewComponent(const char* name)
+	void MemoryManager::RegisterComponent(std::string name, Component* component)
 	{
-		Component* comp = mComponentPool[name].front();
-		mComponentPool[name].pop_front();
+		mComponents.push_back(std::make_pair(name, component));
+	}
+
+	Component* MemoryManager::NewComponent(std::string name)
+	{
+		Component* comp = nullptr;
+		if (mComponentPool.find(name) != mComponentPool.end())
+		{
+			comp = mComponentPool[name].front();
+			mComponentPool[name].pop_front();
+			comp->Init();
+		}
+		else
+		{
+			HW_CORE_ERROR("Component {0} not found", name);
+		}
 		return comp;
 	}
 
 	void MemoryManager::DeleteComponent(Component* component)
 	{
+		component->Clear();
 		mComponentPool[component->mComponentName.c_str()].push_back(component);
 	}
 
@@ -33,15 +48,19 @@ namespace Hollow
 
 	void MemoryManager::Init()
 	{
-		for (auto list : mComponentPool)
+		// Create Components Pool
+		for (unsigned int i = 0; i < mComponents.size(); ++i)
 		{
-			Component* component = list.second.front();
-			for (unsigned int i = 0; i < MAX_OBJECTS - 1; ++i)
+			Component* component = mComponents[i].second->CreateComponent();
+			std::list<Component*> newlist;
+			for (unsigned int i = 0; i < MAX_OBJECTS; ++i)
 			{
-				list.second.push_back(component->CreateComponent());
+				newlist.push_back(component->CreateComponent());
 			}
+			mComponentPool[component->mComponentName.c_str()] = newlist;
 		}
 
+		//Create GameObjects Pool
 		for (unsigned int i = 0; i < MAX_OBJECTS; ++i)
 		{
 			mGameObjectPool.push_back(new GameObject());

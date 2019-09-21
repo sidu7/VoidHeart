@@ -4,6 +4,9 @@
 
 class PrototypeSystem : public Hollow::System
 {
+	REGISTERSYSTEM(PrototypeSystem)
 public:
-private:
+	~PrototypeSystem() {}
+	void Update();
+	void AddGameObject(Hollow::GameObject* object);
 };
