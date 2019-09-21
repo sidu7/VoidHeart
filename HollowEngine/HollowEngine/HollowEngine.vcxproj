@@ -14,11 +14,16 @@
     <ClCompile Include="src\hollowpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Hollow\Components\Shape.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\ElementArrayBuffer.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Utils\GLCall.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Hollow\Core\Application.cpp" />
     <ClCompile Include="src\Hollow\Graphics\GameWindow.cpp" />
@@ -54,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\hollowpch.h" />
+    <ClInclude Include="src\Hollow\Components\Shape.h" />
     <ClInclude Include="src\Hollow\Core\Application.h" />
     <ClInclude Include="src\Hollow\Components\Component.h" />
     <ClInclude Include="src\Hollow\Components\TestComponent.h" />
@@ -64,6 +70,11 @@
     <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
     <ClInclude Include="src\Hollow\Core\GameObject.h" />
     <ClInclude Include="src\Hollow\Core\GameObjectFactory.h" />
+    <ClInclude Include="src\Hollow\Graphics\ElementArrayBuffer.h" />
+    <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
+    <ClInclude Include="src\Utils\GLCall.h" />
+    <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
+    <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
     <ClInclude Include="src\Hollow\Graphics\Camera.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />

@@ -6,5 +6,5 @@
 #include "Hollow/Core/Application.h"
 
 // --Entry Point----------------------------
-#include "Hollow/Core/EntryPoint.h"
+//#include "Hollow/Core/EntryPoint.h"
 // -----------------------------------------

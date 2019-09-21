@@ -4,7 +4,7 @@
 #define REGISTER(x) public:													\
 					std::type_index GetIndex()								\
 					{														\
-						return std::type_index(typeid(TestComponent));		\
+						return std::type_index(typeid(x));		\
 					}														\
 					private:												\
 					static x instance;										\
@@ -16,7 +16,7 @@
 
 namespace Hollow
 {
-	class Component
+	class HOLLOW_API Component
 	{
 		friend class MemoryManager;
 	public:

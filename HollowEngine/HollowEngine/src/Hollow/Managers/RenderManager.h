@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Utils/Singleton.h"
+#include "Hollow/Components/Shape.h"
+#include <GL/glew.h>
+
 namespace Hollow {
 
 	class GameWindow;
@@ -18,11 +22,10 @@ namespace Hollow {
 
 		inline Camera* GetCamera(){ return mpCamera; }
 
+	public:
+		std::vector<Shape*> mShapes;
+
 	private:
-		void MakeVAO();
-		unsigned int mVAO;
-		unsigned int mVBO;
-		unsigned int mEBO;
 		// Transformation matricies
 		glm::mat4 mProjectionMatrix;
 		glm::mat4 mViewMatrix;
