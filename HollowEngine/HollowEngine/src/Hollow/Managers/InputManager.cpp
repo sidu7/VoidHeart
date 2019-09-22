@@ -1,6 +1,10 @@
 #include <hollowpch.h>
 #include "InputManager.h"
 
+#include "Hollow/Events/ApplicationEvent.h"
+#include "Hollow/Events/MouseEvent.h"
+#include "Hollow/Events/KeyEvent.h"
+
 #include <SDL2/SDL_keyboard.h>
 #include <SDL2/SDL_mouse.h>
 
@@ -45,6 +49,11 @@ namespace Hollow {
 		return pos.second;
 	}
 
+	void InputManager::SetEventCallback(const EventCallbackFn& callback)
+	{
+		EventCallback = callback;
+	}
+
 	void InputManager::Init()
 	{
 		SDL_memset(mCurrentState, 0, 512 * sizeof(Uint8));
@@ -53,20 +62,89 @@ namespace Hollow {
 		SDL_memset(mCurrentMouseState, 0, 3 * sizeof(bool));
 	}
 
+	void InputManager::HandleWindowEvents(const SDL_Event& e)
+	{
+		if(e.type == SDL_WINDOWEVENT)
+		{
+			switch(e.window.event)
+			{
+			case SDL_WINDOWEVENT_RESIZED:
+				{
+					WindowResizeEvent wre(e.window.data1, e.window.data2);
+					EventCallback(wre);
+					break;
+				}
+			case SDL_WINDOWEVENT_CLOSE:
+				{
+					WindowCloseEvent wce;
+					EventCallback(wce);
+					break;
+				}
+			}
+		}
+	}
+
+	void InputManager::HandleKeyboardEvents(const SDL_Event& e)
+	{
+		switch (e.type)
+		{
+		case SDL_KEYDOWN:
+		{
+			KeyPressedEvent kpe(e.key.keysym.scancode, e.key.repeat);
+			EventCallback(kpe);
+			break;
+		}
+
+		case SDL_KEYUP:
+		{
+			KeyPressedEvent kpe(e.key.keysym.scancode, e.key.repeat);
+			EventCallback(kpe);
+			break;
+		}
+		}
+		
+	}
+
+	void InputManager::HandleMouseEvents(const SDL_Event & event)
+	{
+		if (event.type == SDL_MOUSEWHEEL)
+		{
+			MouseScrolledEvent mse(event.wheel.x, event.wheel.y);
+			EventCallback(mse);
+		}
+		else if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			// ... handle mouse clicks ...
+			mCurrentMouseState[event.button.button - 1] = true;
+
+			MouseButtonPressedEvent mpe(event.button.button);
+			EventCallback(mpe);
+
+		}
+		else if(event.type == SDL_MOUSEBUTTONUP)
+		{
+			mCurrentMouseState[event.button.button - 1] = false;
+			
+			MouseButtonReleasedEvent mre(event.button.button);
+			EventCallback(mre);
+		}
+	}
+
+	
+
+
 	void InputManager::Update()
 	{
 		SDL_Event e;
 		while (SDL_PollEvent(&e) != 0)
 		{
-
-			if (e.type == SDL_MOUSEBUTTONDOWN)
-			{
-				mCurrentMouseState[e.button.button - 1] = true;
+			if (e.type == SDL_QUIT) {
+				SDL_Quit();
 			}
-			if (e.type == SDL_MOUSEBUTTONUP)
-			{
-				mCurrentMouseState[e.button.button - 1] = false;
-			}
+			HandleWindowEvents(e);
+			HandleKeyboardEvents(e);
+			HandleMouseEvents(e);
+			// TODO add controller support here
 		}
 		
 		//fetch keyboard state
@@ -81,11 +159,6 @@ namespace Hollow {
 		SDL_memcpy(mPreviousState, mCurrentState, 512 * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
-
-		if(IsKeyPressed(SDL_SCANCODE_A))
-		{
-			HW_TRACE("A pressed");
-		}
 	}
 
 

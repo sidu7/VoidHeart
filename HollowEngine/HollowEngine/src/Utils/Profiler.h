@@ -18,6 +18,6 @@ struct Timer
 		duration = end - start;
 
 		float ms = duration.count() * 1000.0f;
-		std::cout << "Execution Time: " << ms << std::endl;
+		std::cout << "Execution Time: " << ms << "ms" << std::endl;
 	}
 };

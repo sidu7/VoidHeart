@@ -9,7 +9,7 @@ namespace Hollow
 
 	void TempSystem::Update()
 	{
-		HW_CORE_TRACE("Test system has {0} gameobjects", mGameObjects.size());
+		//HW_CORE_TRACE("Test system has {0} gameobjects", mGameObjects.size());
 	}
 
 	void TempSystem::AddGameObject(GameObject* object)
