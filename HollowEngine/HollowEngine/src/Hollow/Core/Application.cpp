@@ -42,6 +42,7 @@ namespace Hollow {
 
 	Application::~Application()
 	{
+		delete mpWindow;
 	}
 
 	void Application::OnEvent(Event& e)

@@ -33,4 +33,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Json data\TempObject.json" />
+  </ItemGroup>
 </Project>

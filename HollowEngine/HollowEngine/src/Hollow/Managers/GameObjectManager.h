@@ -1,5 +1,4 @@
 #pragma once
-#include "hollowpch.h"
 
 namespace Hollow{
 	class GameObject;

@@ -1,7 +1,6 @@
 #include <hollowpch.h>
 
 #include "TempSystem.h"
-#include "Hollow/Components/TestComponent.h"
 
 namespace Hollow
 {
@@ -14,6 +13,6 @@ namespace Hollow
 
 	void TempSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<TestComponent>(object);
+		/*CheckComponents<TestComponent>(object);*/
 	}
 }

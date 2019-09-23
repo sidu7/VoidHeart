@@ -36,9 +36,11 @@
     <ClCompile Include="src\Hollow\Graphics\ElementArrayBuffer.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\Utils\GLCall.cpp" />
-    <ClCompile Include="src\Hollow\Components\TestComponent.cpp" />
     <ClCompile Include="src\Hollow\Core\Layer.cpp" />
     <ClCompile Include="src\Hollow\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
+    <ClCompile Include="src\Hollow\Components\Transform.cpp" />
+    <ClCompile Include="src\Hollow\Components\Body.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -117,7 +119,6 @@
     <ClInclude Include="src\Hollow\Systems\System.h" />
     <ClInclude Include="src\Hollow\Systems\TempSystem.h" />
     <ClInclude Include="src\Hollow\Components\Component.h" />
-    <ClInclude Include="src\Hollow\Components\TestComponent.h" />
     <ClInclude Include="src\Hollow\Managers\GameObjectManager.h" />
     <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
     <ClInclude Include="src\hollowpch.h" />
@@ -152,6 +153,9 @@
     <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
     <ClInclude Include="src\Hollow\Core\Layer.h" />
     <ClInclude Include="src\Hollow\Core\LayerStack.h" />
+    <ClInclude Include="src\Hollow\Managers\ResourceManager.h" />
+    <ClInclude Include="src\Hollow\Components\Transform.h" />
+    <ClInclude Include="src\Hollow\Components\Body.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
   </ItemGroup>
 </Project>
