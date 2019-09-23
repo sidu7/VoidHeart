@@ -5,8 +5,4 @@ namespace Hollow {
 
 	Transform Transform::instance;
 
-	void Transform::Serialize()
-	{
-	}
-
 }

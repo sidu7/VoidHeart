@@ -4,7 +4,6 @@
 #include "PrototypeComponent.h"
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Managers/GameObjectManager.h"
-#include "Hollow/Components/TestComponent.h"
 #include "Hollow/Managers/MemoryManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 

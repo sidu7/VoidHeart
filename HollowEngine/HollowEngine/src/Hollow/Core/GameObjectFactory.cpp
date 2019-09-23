@@ -1,7 +1,7 @@
 #include <hollowpch.h>
 #include "Hollow/Core/GameObjectFactory.h"
 #include "Hollow/Core/GameObject.h"
-#include "Hollow/Components/TestComponent.h"
+#include "Hollow/Components/Component.h"
 #include "Hollow/Managers/MemoryManager.h"
 
 namespace Hollow {

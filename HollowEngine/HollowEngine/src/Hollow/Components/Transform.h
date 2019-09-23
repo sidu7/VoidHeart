@@ -10,7 +10,7 @@ namespace Hollow
 
 		void Init() {}
 		void Clear() {}
-		void Serialize();
+		void Serialize(rapidjson::Value::Object data){}
 		virtual ~Transform() {}
 
 		inline void SetPosition(glm::vec3 position) { mPosition = position; }
