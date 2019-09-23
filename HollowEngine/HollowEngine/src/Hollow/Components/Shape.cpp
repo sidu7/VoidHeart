@@ -4,6 +4,7 @@
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/ElementArrayBuffer.h"
+#include "Hollow/Managers/RenderManager.h"
 
 namespace Hollow
 {
@@ -18,6 +19,12 @@ namespace Hollow
 		CreateShape("Teapot");
 		// Load shape data into OpenGL constructs
 		MakeVAO();
+	}
+
+	void Shape::Serialize(rapidjson::Value::Object data)
+	{
+		//Init();
+		RenderManager::Instance().mShapes.push_back(this);
 	}
 
 	Shape::~Shape()

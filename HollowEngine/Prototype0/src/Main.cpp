@@ -6,6 +6,7 @@
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Components/TestComponent.h"
 #include "Hollow/Managers/MemoryManager.h"
+#include "Hollow/Managers/ResourceManager.h"
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
 // The game layer could draw the entire 3d scene
@@ -50,7 +51,7 @@ public:
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());
 		
-		Hollow::GameObject* obj1 = Hollow::MemoryManager::Instance().NewGameObject();
+		/*Hollow::GameObject* obj1 = Hollow::MemoryManager::Instance().NewGameObject();
 		Hollow::GameObject* obj2 = Hollow::MemoryManager::Instance().NewGameObject();
 		Hollow::TestComponent* test = static_cast<Hollow::TestComponent*>(Hollow::MemoryManager::Instance().NewComponent("TestComponent"));
 		PrototypeComponent* proto = static_cast<PrototypeComponent*>(Hollow::MemoryManager::Instance().NewComponent("PrototypeComponent"));
@@ -58,7 +59,9 @@ public:
 		obj1->AddComponent(test);
 		obj2->AddComponent(proto);
 		Hollow::GameObjectManager::Instance().AddGameObject(obj1);
-		Hollow::GameObjectManager::Instance().AddGameObject(obj2);
+		Hollow::GameObjectManager::Instance().AddGameObject(obj2);*/
+
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 	}
 	
 	~Prototype0()

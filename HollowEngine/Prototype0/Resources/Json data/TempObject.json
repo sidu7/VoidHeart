@@ -1,0 +1,10 @@
+{
+  "Components": [
+    {
+      "Type": "Shape"
+    },
+    {
+      "Type": "PrototypeComponent"
+    }
+  ]
+}

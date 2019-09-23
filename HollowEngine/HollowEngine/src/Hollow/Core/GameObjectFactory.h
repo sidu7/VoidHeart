@@ -6,8 +6,6 @@ namespace Hollow {
 	{
 		SINGLETON(GameObjectFactory)
 	public:
-		GameObject* LoadObject(const char* pFileName);
-		GameObject* LoadObject(rapidjson::Value::Object root, std::string fname);
-
+		GameObject* LoadObject(rapidjson::Value::Object root);
 	};
 }

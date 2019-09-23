@@ -17,6 +17,7 @@ namespace Hollow
 
 		virtual void Init() = 0;
 		virtual std::type_index GetIndex() = 0;
+		virtual void Serialize(rapidjson::Value::Object data) = 0;
 		virtual void Clear() = 0;
 		virtual ~Component() {}
 
