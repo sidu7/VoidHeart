@@ -24,18 +24,11 @@ namespace Hollow {
 		// Initalize managers
 		MemoryManager::Instance().Init();
 		RenderManager::Instance().Init(mpWindow);
-
-		// TESTING BELOW -----------------
-		GameObject* pGameObject = new GameObject();
-		Shape* pShape = new Shape();
-		pShape->Init();
-		pGameObject->AddComponent(pShape);
-
-		RenderManager::Instance().mShapes.push_back(pShape);
 	}
 
 	Application::~Application()
 	{
+		delete mpWindow;
 	}
 
 	void Application::OnEvent(Event& e)

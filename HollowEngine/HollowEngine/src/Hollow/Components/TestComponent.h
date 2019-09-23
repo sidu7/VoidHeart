@@ -11,6 +11,7 @@ namespace Hollow
 	public:
 		
 		void Init();
+		void Serialize(rapidjson::Value::Object data) {}
 		void Clear() {}
 		virtual ~TestComponent() {}
 		int mValue = 0;

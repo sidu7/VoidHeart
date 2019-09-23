@@ -1,7 +1,7 @@
 #include <hollowpch.h>
 
 #include "SystemManager.h"
-#include "../Systems/System.h"
+#include "Hollow/Systems/System.h"
 
 namespace Hollow
 {
