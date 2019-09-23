@@ -152,5 +152,6 @@
     <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
     <ClInclude Include="src\Hollow\Core\Layer.h" />
     <ClInclude Include="src\Hollow\Core\LayerStack.h" />
+    <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
   </ItemGroup>
 </Project>

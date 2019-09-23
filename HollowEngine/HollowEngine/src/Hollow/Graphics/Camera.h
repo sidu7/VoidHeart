@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 namespace Hollow {
+	class Event;
+	class MouseScrolledEvent;
 
 	class Camera
 	{
@@ -10,15 +12,18 @@ namespace Hollow {
 
 		glm::mat4 GetViewMatrix();
 
-		void HandleKeyboardInput(int direction, float deltaTime);
-		void HandleMouseInput(float xoffset, float yoffset);
-		void HandleMouseScroll(float yoffset);
-		void HandleMouseButtons(int button, int action);
+		void HandleKeyboardInput(float frameTime);
+		void HandleMouseInput();
+		bool HandleMouseScroll(MouseScrolledEvent& mse);
+		void HandleMouseButtons();
 
 		float GetZoom();
 		glm::vec3 GetPosition();
 
 		//void DisplayDebug();
+
+		void OnUpdate(float frameTime);
+		void OnEvent(Event& e);
 
 	private:
 		void UpdateCamera();
