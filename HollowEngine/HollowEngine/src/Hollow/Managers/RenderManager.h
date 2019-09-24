@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Utils/Singleton.h"
-#include "Hollow/Components/Shape.h"
 #include <GL/glew.h>
 
 namespace Hollow {
@@ -9,14 +8,15 @@ namespace Hollow {
 	class GameWindow;
 	class Camera;
 	class Shader;
+	class Shape;
+	class Material;
 
-	class RenderManager
+	class HOLLOW_API RenderManager
 	{
 		SINGLETON(RenderManager)
 	public:
-		~RenderManager();
-
 		void Init(GameWindow* pWindow = nullptr);
+		void CleanUp();
 
 		void Update();
 
@@ -24,6 +24,7 @@ namespace Hollow {
 
 	public:
 		std::vector<Shape*> mShapes;
+		std::vector<Material*> mMaterials;
 
 	private:
 		// Transformation matricies

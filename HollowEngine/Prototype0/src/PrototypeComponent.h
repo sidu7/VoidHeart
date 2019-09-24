@@ -9,5 +9,6 @@ public:
 	void Init();
 	virtual ~PrototypeComponent();
 	void Clear();
+	void DebugDisplay();
 
 };

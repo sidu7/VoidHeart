@@ -9,4 +9,12 @@ namespace Hollow
 	{
 
 	}
+	void TestComponent::DebugDisplay()
+	{
+		if (ImGui::TreeNode("Test"))
+		{
+			ImGui::InputInt("Value", &mValue);
+			ImGui::TreePop();
+		}
+	}
 }

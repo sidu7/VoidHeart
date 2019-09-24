@@ -46,6 +46,11 @@ namespace Hollow {
 		GLCall(glDeleteShader(shaderID));
 	}
 
+	Shader::~Shader()
+	{
+		glDeleteProgram(mProgram);
+	}
+
 	void Shader::Use()
 	{
 		GLCall(glUseProgram(mProgram));

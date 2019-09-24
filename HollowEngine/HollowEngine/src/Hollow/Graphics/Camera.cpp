@@ -18,6 +18,10 @@ namespace Hollow {
 		UpdateCamera();
 	}
 
+	Camera::~Camera()
+	{
+	}
+
 	glm::mat4 Camera::GetViewMatrix()
 	{
 		return glm::lookAt(mPosition, mPosition + mFront, mUp);

@@ -13,6 +13,7 @@ namespace Hollow
 		void Init();
 		void Clear() {}
 		virtual ~TestComponent() {}
+		void DebugDisplay();
 		int mValue = 0;
 	};
 }

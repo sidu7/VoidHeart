@@ -4,10 +4,10 @@
 #include "Hollow/Events/ApplicationEvent.h"
 
 #include "Hollow/Managers/InputManager.h"
-
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/MemoryManager.h"
+#include "Hollow/Managers/ImGuiManager.h"
 
 namespace Hollow {
 
@@ -24,18 +24,14 @@ namespace Hollow {
 		// Initalize managers
 		MemoryManager::Instance().Init();
 		RenderManager::Instance().Init(mpWindow);
-
-		// TESTING BELOW -----------------
-		GameObject* pGameObject = new GameObject();
-		Shape* pShape = new Shape();
-		pShape->Init();
-		pGameObject->AddComponent(pShape);
-
-		RenderManager::Instance().mShapes.push_back(pShape);
+		ImGuiManager::Instance().Init(mpWindow);
 	}
 
 	Application::~Application()
 	{
+		RenderManager::Instance().CleanUp();
+		ImGuiManager::Instance().CleanUp();
+		delete mpWindow;
 	}
 
 	void Application::OnEvent(Event& e)
@@ -60,7 +56,10 @@ namespace Hollow {
 		
 		while (mIsRunning)
 		{
+			// Start frame functions
+			ImGuiManager::Instance().StartFrame();
 
+			// Update functions
 			for(Layer* layer : mLayerStack)
 			{
 				layer->OnUpdate(0.016f);
@@ -70,14 +69,17 @@ namespace Hollow {
 			InputManager::Instance().Update();
 		}
 	}
+
 	void Application::PushLayer(Layer* layer)
 	{
 		mLayerStack.PushLayer(layer);
 	}
+
 	void Application::PushOverlay(Layer* layer)
 	{
 		mLayerStack.PushOverlay(layer);
 	}
+
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		mIsRunning = false;

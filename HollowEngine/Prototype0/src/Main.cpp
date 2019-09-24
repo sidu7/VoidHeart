@@ -1,11 +1,17 @@
 #include <Hollow.h>
 
-#include "Hollow/Core/EntryPoint.h"
 #include "PrototypeComponent.h"
+
+#include "Hollow/Core/EntryPoint.h"
 #include "Hollow/Core/GameObject.h"
+
 #include "Hollow/Managers/GameObjectManager.h"
-#include "Hollow/Components/TestComponent.h"
 #include "Hollow/Managers/MemoryManager.h"
+#include "Hollow/Managers/RenderManager.h"
+
+#include "Hollow/Components/TestComponent.h"
+#include "Hollow/Components/Shape.h"
+#include "Hollow/Components/Material.h"
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
 // The game layer could draw the entire 3d scene
@@ -59,6 +65,16 @@ public:
 		obj2->AddComponent(proto);
 		Hollow::GameObjectManager::Instance().AddGameObject(obj1);
 		Hollow::GameObjectManager::Instance().AddGameObject(obj2);
+
+		// TESTING ImGui Debug
+		Hollow::GameObject* obj3 = Hollow::MemoryManager::Instance().NewGameObject();
+		Hollow::Shape* shape = static_cast<Hollow::Shape*>(Hollow::MemoryManager::Instance().NewComponent("Shape"));
+		Hollow::Material* mat = static_cast<Hollow::Material*>(Hollow::MemoryManager::Instance().NewComponent("Material"));
+		obj3->AddComponent(shape);
+		obj3->AddComponent(mat);
+		Hollow::GameObjectManager::Instance().AddGameObject(obj3);
+		Hollow::RenderManager::Instance().mShapes.push_back(shape);
+		Hollow::RenderManager::Instance().mMaterials.push_back(mat);
 	}
 	
 	~Prototype0()

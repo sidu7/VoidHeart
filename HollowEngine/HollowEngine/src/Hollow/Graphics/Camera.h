@@ -3,11 +3,11 @@
 #include <glm/glm.hpp>
 namespace Hollow {
 
-	class Camera
+	class HOLLOW_API Camera
 	{
 	public:
 		Camera(const glm::vec3& position = glm::vec3(0.0f, 0.0f, 3.0f),const glm::vec3& up = glm::vec3(0.0, 1.0, 0.0), float yaw = -90.0f, float pitch = 0.0f);
-
+		~Camera();
 		glm::mat4 GetViewMatrix();
 
 		void HandleKeyboardInput(int direction, float deltaTime);

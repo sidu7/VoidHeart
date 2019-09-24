@@ -19,6 +19,8 @@ namespace Hollow {
 
 		virtual ~Shape();
 		void MakeVAO();
+		
+		void DebugDisplay();
 
 	public:
 		std::vector<Vertex> mVertices;
