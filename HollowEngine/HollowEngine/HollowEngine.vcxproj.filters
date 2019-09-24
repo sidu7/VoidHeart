@@ -43,6 +43,9 @@
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Transform.cpp" />
     <ClCompile Include="src\Hollow\Components\Body.cpp" />
+    <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
+    <ClCompile Include="src\Hollow\Components\Model.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -125,7 +128,6 @@
     <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Graphics\Camera.h" />
-    <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
     <ClInclude Include="src\Hollow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
@@ -161,5 +163,9 @@
     <ClInclude Include="src\Hollow\Components\Transform.h" />
     <ClInclude Include="src\Hollow\Components\Body.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
+    <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
+    <ClInclude Include="src\Hollow\Components\Model.h" />
+    <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@
     </ClCompile>
     <ClCompile Include="src\Hollow\Components\Body.cpp" />
     <ClCompile Include="src\Hollow\Components\Material.cpp" />
+    <ClCompile Include="src\Hollow\Components\Model.cpp" />
     <ClCompile Include="src\Hollow\Components\Shape.cpp" />
     <ClCompile Include="src\Hollow\Components\Transform.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
@@ -23,6 +24,7 @@
     <ClCompile Include="src\Hollow\Core\Layer.cpp" />
     <ClCompile Include="src\Hollow\Core\LayerStack.cpp" />
     <ClCompile Include="src\Hollow\Graphics\ElementArrayBuffer.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
@@ -30,6 +32,7 @@
     <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
+    <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Utils\GLCall.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Hollow\Core\Application.cpp" />
@@ -65,6 +68,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hollow\Components\Model.h" />
+    <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
+    <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Components\Material.h" />
@@ -86,12 +92,12 @@
     <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
     <ClInclude Include="src\Hollow\Managers\ImGuiManager.h" />
     <ClInclude Include="src\Hollow\Managers\ResourceManager.h" />
+    <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
     <ClInclude Include="src\Utils\GLCall.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
     <ClInclude Include="src\Hollow\Graphics\Camera.h" />
-    <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Hollow.h" />

@@ -3,7 +3,7 @@
 
 namespace Hollow
 {
-	class Transform : public Component
+	class HOLLOW_API Transform : public Component
 	{
 		REGISTERCOMPONENT(Transform, "Transform");
 	public:
