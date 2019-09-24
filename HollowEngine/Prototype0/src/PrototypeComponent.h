@@ -10,4 +10,6 @@ public:
 	virtual ~PrototypeComponent();
 	void Serialize(rapidjson::Value::Object data) {}
 	void Clear();
+	void DebugDisplay();
+
 };

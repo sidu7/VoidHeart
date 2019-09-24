@@ -10,6 +10,9 @@ namespace Hollow {
 
 	GameWindow::~GameWindow()
 	{
+		SDL_GL_DeleteContext(mContext);
+		SDL_DestroyWindow(mpWindow);
+		SDL_Quit();
 	}
 
 	void GameWindow::Initialize()

@@ -58,6 +58,15 @@ namespace Hollow
 		mpVAO->Unbind();
 	}
 
+	void Shape::DebugDisplay()
+	{ 
+		if (ImGui::TreeNode("Shape"))
+		{
+			ImGui::Text("%s", mShapeType.c_str());
+			ImGui::TreePop();
+		}
+	}
+
 	void Shape::CreateBuffers()
 	{
 		mpVBO = new VertexBuffer();
@@ -67,6 +76,7 @@ namespace Hollow
 
 	void Shape::CreateShape(const std::string& shapeType)
 	{
+		mShapeType = shapeType;
 		if (shapeType == "Sphere")
 		{
 			CreateSphere();

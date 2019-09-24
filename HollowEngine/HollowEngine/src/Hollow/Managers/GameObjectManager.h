@@ -9,6 +9,7 @@ namespace Hollow{
 		void AddGameObject(GameObject* GameObject);
 		void DeleteGameObject(GameObject* GameObject);
 		void DeleteAllGameObjects();
+		const std::vector<GameObject*>& GetGameObjects() { return mGameObjects; }
 
 	private:
 		std::vector<GameObject*> mGameObjects;

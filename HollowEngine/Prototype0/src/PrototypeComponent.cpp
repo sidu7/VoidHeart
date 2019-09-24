@@ -13,3 +13,7 @@ PrototypeComponent::~PrototypeComponent()
 void PrototypeComponent::Clear()
 {
 }
+
+void PrototypeComponent::DebugDisplay()
+{
+}

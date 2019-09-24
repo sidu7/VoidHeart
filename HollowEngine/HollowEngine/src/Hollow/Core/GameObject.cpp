@@ -4,7 +4,9 @@
 
 namespace Hollow {
 
-	GameObject::GameObject(): mID(0), mActive(false)
+	unsigned int GameObject::ID = 0;
+
+	GameObject::GameObject(): mID(ID++), mActive(false)
 	{
 	}
 
@@ -26,6 +28,18 @@ namespace Hollow {
 		}
 		mIndices.clear();
 		mComponents.clear();
+	}
+
+	void GameObject::DebugDisplay()
+	{
+		if (ImGui::TreeNode((void*)mID, "Object %d", mID))
+		{
+			for (std::type_index typeIndex : mIndices)
+			{
+				mComponents[typeIndex]->DebugDisplay();
+			}
+			ImGui::TreePop();
+		}
 	}
 
 }

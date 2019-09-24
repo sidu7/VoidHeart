@@ -10,6 +10,7 @@ namespace Hollow
 
 		void Init() {}
 		void Clear() {}
+		void DebugDisplay();
 		void Serialize(rapidjson::Value::Object data){}
 		virtual ~Transform() {}
 
@@ -31,7 +32,7 @@ namespace Hollow
 		inline glm::fquat GetQuaternion() { return mQuaternion; }
 
 	private:
-		glm::vec3 mPosition;					// mPosition is x,y,z
+		glm::vec3 mPosition = glm::vec3(0.0,0.0,0.0);					// mPosition is x,y,z
 		glm::vec3 mScale;						// mScale is x,y,z
 		glm::vec3 mRotation;					// mRotation is degree for x,y,z
 		glm::mat4 mTransformationMatrix;		// Transformation Matrix

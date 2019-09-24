@@ -20,6 +20,7 @@ namespace Hollow
 		virtual void Serialize(rapidjson::Value::Object data) = 0;
 		virtual void Clear() = 0;
 		virtual ~Component() {}
+		virtual void DebugDisplay() = 0;
 
 		std::string mComponentName;
 

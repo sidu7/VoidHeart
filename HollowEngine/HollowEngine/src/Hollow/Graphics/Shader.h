@@ -7,11 +7,12 @@
 #include <glm/glm.hpp>
 
 namespace Hollow {
-	class Shader
+	class HOLLOW_API Shader
 	{
 	public:
 		Shader(const GLchar* pVertexPath, const GLchar* pFragmentPath);
 		Shader(const GLchar* pComputePath);
+		~Shader();
 
 		void Use();
 		void Unbind();

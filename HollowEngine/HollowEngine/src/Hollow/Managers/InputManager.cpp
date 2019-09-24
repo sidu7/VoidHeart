@@ -138,6 +138,8 @@ namespace Hollow {
 		SDL_Event e;
 		while (SDL_PollEvent(&e) != 0)
 		{
+			ImGui_ImplSDL2_ProcessEvent(&e);
+			
 			if (e.type == SDL_QUIT) {
 				SDL_Quit();
 			}

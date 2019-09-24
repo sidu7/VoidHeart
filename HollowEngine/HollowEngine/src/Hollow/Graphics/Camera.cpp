@@ -24,6 +24,10 @@ namespace Hollow {
 		UpdateCamera();
 	}
 
+	Camera::~Camera()
+	{
+	}
+
 	glm::mat4 Camera::GetViewMatrix()
 	{
 		return glm::lookAt(mPosition, mPosition + mFront, mUp);
@@ -57,7 +61,7 @@ namespace Hollow {
 		float xoffset = mousePos.first - lastX;
 		float yoffset = lastY - mousePos.second;
 
-		if (!mCanMouse)
+		if (!mCanMouse || ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
 			lastX = mousePos.first;
 			lastY = mousePos.second;
@@ -107,6 +111,7 @@ namespace Hollow {
 
 	void Camera::HandleMouseButtons()
 	{
+
 		// Handle left clicks
 		if (InputManager::Instance().IsMouseButtonPressed(0))
 		{

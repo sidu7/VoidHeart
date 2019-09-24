@@ -8,6 +8,7 @@ namespace Hollow {
 	public:
 		void Init() {}
 		void Clear() {}
+		void DebugDisplay() {}
 		void Serialize(rapidjson::Value::Object data){}
 		virtual ~Body() {}
 
