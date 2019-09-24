@@ -30,13 +30,14 @@ namespace Hollow {
 		// Create a shader
 		mpTestShader = new Shader("Resources/Shaders/Diffuse.vert", "Resources/Shaders/Diffuse.frag");
 
-		// Initialize transform matrices
-		mProjectionMatrix = glm::perspective(mpCamera->GetZoom(), (float)mpWindow->GetWidth() / mpWindow->GetHeight(), 0.1f, 1000.0f);
-		mViewMatrix = mpCamera->GetViewMatrix();
 	}
 
 	void RenderManager::Update()
 	{
+		// Initialize transform matrices
+		mProjectionMatrix = glm::perspective(mpCamera->GetZoom(), (float)mpWindow->GetWidth() / mpWindow->GetHeight(), 0.1f, 1000.0f);
+		mViewMatrix = mpCamera->GetViewMatrix();
+		
 		glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
