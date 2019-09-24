@@ -8,6 +8,10 @@
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/MemoryManager.h"
+#include "Hollow/Managers/FrameRateController.h"
+
+
+#include "Hollow/Graphics/Camera.h"
 
 namespace Hollow {
 
@@ -32,10 +36,13 @@ namespace Hollow {
 		pGameObject->AddComponent(pShape);
 
 		RenderManager::Instance().mShapes.push_back(pShape);
+
+		FrameRateController::Instance().SetMaxFrameRate(60);
 	}
 
 	Application::~Application()
 	{
+		delete mpWindow;
 	}
 
 	void Application::OnEvent(Event& e)
@@ -44,6 +51,8 @@ namespace Hollow {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		
+		RenderManager::Instance().GetCamera()->OnEvent(e);
+
 		HW_CORE_TRACE("{0}", e);
 
 		for(auto it = mLayerStack.end(); it != mLayerStack.begin();)
@@ -60,14 +69,18 @@ namespace Hollow {
 		
 		while (mIsRunning)
 		{
+			FrameRateController::Instance().FrameStart();
 
 			for(Layer* layer : mLayerStack)
 			{
-				layer->OnUpdate(0.016f);
+				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			}
 			SystemManager::Instance().Update();
 			RenderManager::Instance().Update();
+			RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			InputManager::Instance().Update();
+
+			FrameRateController::Instance().FrameEnd();
 		}
 	}
 	void Application::PushLayer(Layer* layer)

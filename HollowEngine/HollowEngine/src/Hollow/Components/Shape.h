@@ -14,7 +14,7 @@ namespace Hollow {
 		REGISTERCOMPONENT(Shape, "Shape");
 	public:
 		void Init();
-
+		void Serialize(rapidjson::Value::Object data);
 		void Clear() {}
 
 		virtual ~Shape();

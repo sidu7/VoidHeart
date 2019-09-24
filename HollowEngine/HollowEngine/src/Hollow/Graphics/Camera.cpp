@@ -1,13 +1,19 @@
 #include <hollowpch.h>
 #include "Camera.h"
 
+#include "Hollow/Managers/InputManager.h"
+#include "Hollow/Events/MouseEvent.h"
+
 namespace Hollow {
 
 	const float Camera::YAW = -90.0f;
 	const float Camera::PITCH = 0.0f;
-	const float Camera::SPEED = 25.0f;
-	const float Camera::SENSITIVITY = 0.05f;
+	const float Camera::SPEED = 5.0f;
+	const float Camera::SENSITIVITY = 0.5f;
 	const float Camera::ZOOM = 45.0f;
+
+	float lastX = 640;
+	float lastY = 360;
 
 	Camera::Camera(const glm::vec3& position,const glm::vec3& up, float yaw, float pitch) : mFront(glm::vec3(0.0f, 0.0f, -1.0f)), mMovementSpeed(SPEED), mMouseSensitivity(SENSITIVITY), mZoom(ZOOM)
 	{
@@ -23,33 +29,44 @@ namespace Hollow {
 		return glm::lookAt(mPosition, mPosition + mFront, mUp);
 	}
 
-	void Camera::HandleKeyboardInput(int direction, float deltaTime)
+	void Camera::HandleKeyboardInput(float frameTime)
 	{
-		float velocity = mMovementSpeed * deltaTime;
-		if (direction == 0)
+		float velocity = mMovementSpeed * frameTime;
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W))
 		{
 			mPosition += mFront * velocity;
 		}
-		if (direction == 1)
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S))
 		{
 			mPosition -= mFront * velocity;
 		}
-		if (direction == 2)
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_A))
 		{
 			mPosition -= mRight * velocity;
 		}
-		if (direction == 3)
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_D))
 		{
 			mPosition += mRight * velocity;
 		}
 	}
 
-	void Camera::HandleMouseInput(float xoffset, float yoffset)
+	void Camera::HandleMouseInput()
 	{
+		std::pair<float, float> mousePos = InputManager::Instance().GetMousePosition();
+
+		float xoffset = mousePos.first - lastX;
+		float yoffset = lastY - mousePos.second;
+
 		if (!mCanMouse)
 		{
+			lastX = mousePos.first;
+			lastY = mousePos.second;
 			return;
 		}
+
+		lastX = mousePos.first;
+		lastY = mousePos.second;
+
 		xoffset *= mMouseSensitivity;
 		yoffset *= mMouseSensitivity;
 
@@ -69,11 +86,12 @@ namespace Hollow {
 		UpdateCamera();
 	}
 
-	void Camera::HandleMouseScroll(float yoffset)
+	bool Camera::HandleMouseScroll(MouseScrolledEvent& mse)
 	{
+
 		if (mZoom >= 1.0f && mZoom <= 90.0f)
 		{
-			mZoom -= yoffset;
+			mZoom -= mse.GetYOffset();
 		}
 		if (mZoom <= 1.0f)
 		{
@@ -83,16 +101,18 @@ namespace Hollow {
 		{
 			mZoom = 90.0f;
 		}
+
+		return false;
 	}
 
-	void Camera::HandleMouseButtons(int button, int action)
+	void Camera::HandleMouseButtons()
 	{
 		// Handle left clicks
-		if (button == 0 && action == 1)
+		if (InputManager::Instance().IsMouseButtonPressed(0))
 		{
 			mCanMouse = true;
-		}
-		if (button == 0 && action == 0)
+		} 
+		else
 		{
 			mCanMouse = false;
 		}
@@ -106,6 +126,19 @@ namespace Hollow {
 	glm::vec3 Camera::GetPosition()
 	{
 		return mPosition;
+	}
+
+	void Camera::OnUpdate(float frameTime)
+	{
+		HandleKeyboardInput(frameTime);
+		HandleMouseButtons();
+		HandleMouseInput();
+	}
+
+	void Camera::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<MouseScrolledEvent>(std::bind(&Camera::HandleMouseScroll, this, std::placeholders::_1));
 	}
 
 	//void Camera::DisplayDebug()
