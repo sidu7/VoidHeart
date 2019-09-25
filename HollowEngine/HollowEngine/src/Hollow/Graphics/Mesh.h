@@ -35,7 +35,7 @@ namespace Hollow
 		std::vector<unsigned int> mIndices;
 		std::vector<Texture> mTextures;
 
-		void Draw(Shader* pShader);
+		void Draw(Shader* pShader = nullptr);
 
 		VertexArray* mpVAO;
 		VertexBuffer* mpVBO;

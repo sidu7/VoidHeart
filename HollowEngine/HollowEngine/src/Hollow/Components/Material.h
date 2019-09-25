@@ -12,7 +12,7 @@ namespace Hollow {
 
 		virtual ~Material();
 
-		void Serialize(rapidjson::Value::Object data) {}
+		void Serialize(rapidjson::Value::Object data);
 
 		void DebugDisplay();
 

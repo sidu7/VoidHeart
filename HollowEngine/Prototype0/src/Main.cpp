@@ -68,7 +68,7 @@ public:
 		Hollow::GameObjectManager::Instance().AddGameObject(obj2);*/
 
 		// TESTING ImGui Debug
-		Hollow::GameObject* obj3 = Hollow::MemoryManager::Instance().NewGameObject();
+		/*Hollow::GameObject* obj3 = Hollow::MemoryManager::Instance().NewGameObject();
 		Hollow::Shape* shape = static_cast<Hollow::Shape*>(Hollow::MemoryManager::Instance().NewComponent("Shape"));
 		Hollow::Material* mat = static_cast<Hollow::Material*>(Hollow::MemoryManager::Instance().NewComponent("Material"));
 		Hollow::Transform* transform = static_cast<Hollow::Transform*>(Hollow::MemoryManager::Instance().NewComponent("Transform"));
@@ -78,9 +78,9 @@ public:
 		Hollow::GameObjectManager::Instance().AddGameObject(obj3);
 		Hollow::RenderManager::Instance().mShapes.push_back(shape);
 		Hollow::RenderManager::Instance().mMaterials.push_back(mat);
-		Hollow::RenderManager::Instance().mModels.push_back(transform);
+		Hollow::RenderManager::Instance().mModels.push_back(transform);*/
 
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 	}
 	
 	~Prototype0()

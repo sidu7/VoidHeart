@@ -15,4 +15,9 @@ namespace Hollow {
 		}
 	}
 
+	void Transform::Serialize(rapidjson::Value::Object data)
+	{
+		mTransformationMatrix = glm::mat4(1.0f);
+	}
+
 }

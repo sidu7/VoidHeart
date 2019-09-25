@@ -3,6 +3,7 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "ElementArrayBuffer.h"
+#include "Shader.h"
 
 namespace Hollow
 {
@@ -26,6 +27,7 @@ namespace Hollow
 
 	void Mesh::Draw(Shader* pShader)
 	{
+		//pShader->Use();
 	}
 
 	void Mesh::InitMesh()
@@ -41,7 +43,7 @@ namespace Hollow
 		mpVBO->AddData(&mVertices[0], mVertices.size() * sizeof(Vertex));
 
 		// Set up index buffer EBO
-		mpEBO->AddData(&mIndices[0], mIndices.size() * sizeof(unsigned int));
+		mpEBO->AddData(&mIndices[0], mIndices.size(), sizeof(unsigned int));
 
 		// Position
 		mpVAO->Push(3, GL_FLOAT, sizeof(float));

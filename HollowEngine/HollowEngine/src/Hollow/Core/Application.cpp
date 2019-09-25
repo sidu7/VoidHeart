@@ -9,6 +9,7 @@
 #include "Hollow/Managers/MemoryManager.h"
 #include "Hollow/Managers/ImGuiManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/ResourceManager.h"
 
 
 #include "Hollow/Graphics/Camera.h"
@@ -29,6 +30,7 @@ namespace Hollow {
 		MemoryManager::Instance().Init();
 		RenderManager::Instance().Init(mpWindow);
 		ImGuiManager::Instance().Init(mpWindow);
+		ResourceManager::Instance().Init();
 
 
 		FrameRateController::Instance().SetMaxFrameRate(60);

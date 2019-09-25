@@ -11,6 +11,12 @@ namespace Hollow {
 	Material::~Material()
 	{
 	}
+	void Material::Serialize(rapidjson::Value::Object data)
+	{
+		mDiffuseColor = glm::vec3(1.0, 0.0, 0.0);
+		mSpecularColor = glm::vec3(1.0, 1.0, 1.0);
+		mShininess = 10.0f;
+	}
 	void Material::DebugDisplay()
 	{
 		if (ImGui::TreeNode("Material"))

@@ -1,10 +1,13 @@
 {
   "Components": [
     {
-      "Type": "Shape"
+      "Type": "Transform"
     },
     {
-      "Type": "PrototypeComponent"
+      "Type": "Model"
+    },
+    {
+      "Type":  "Material"
     }
   ]
 }

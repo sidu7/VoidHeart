@@ -3,17 +3,16 @@
 
 namespace Hollow {
 	class VertexArray;
-	class ElementBufferArray;
+	class ElementArrayBuffer;
 	class Shader;
+	class Material;
 
-	class RenderData
+	struct RenderData
 	{
-	public:
-	private:
-		VertexArray* mVAO;
-		ElementBufferArray* mEBO;
-		glm::mat4 mModel;
-		Shader* shader;
-		//glm::vec3 mDiffuseColor;
+		VertexArray* mpVAO;
+		ElementArrayBuffer* mpEBO;
+		glm::mat4 mpModel;
+		Material* mpMaterial;
+		Shader* mpShader;
 	};
 }
