@@ -22,7 +22,7 @@ namespace Hollow {
 		inline Camera* GetCamera(){ return mpCamera; }
 
 	public:
-		std::vector<RenderData*> mRenderData;
+		std::vector<RenderData> mRenderData;
 
 	private:
 		// Transformation matricies

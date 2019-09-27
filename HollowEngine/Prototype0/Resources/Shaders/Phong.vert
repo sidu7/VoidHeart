@@ -6,9 +6,11 @@ uniform mat4 Projection;
 
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 normal;
+layout (location = 2) in vec2 texc;
 
 out vec3 fragmentPosition;
 out vec3 normalVector;
+out vec2 texCoord;
 
 void main()
 {
@@ -17,6 +19,8 @@ void main()
 	normalVector = mat3(transpose(inverse(Model))) * normal;
 	// Most likely want to do this on the CPU, send like model matrix
 	//normalVector = normal;
+
+	texCoord = texc;
 
 	gl_Position = Projection * View * vec4(fragmentPosition, 1.0);
 }

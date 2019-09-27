@@ -25,6 +25,7 @@
     <ClCompile Include="src\Hollow\Core\LayerStack.cpp" />
     <ClCompile Include="src\Hollow\Graphics\ElementArrayBuffer.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\Texture.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
@@ -66,11 +67,13 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Texture.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Components\Material.h" />
@@ -176,7 +179,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
@@ -196,13 +199,13 @@ copy /y $(ProjectName)\*.dll Prototype0</Command>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hollowpch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(ProjectDir)vendor\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(ProjectDir)vendor\Include;$(ProjectDir)src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>

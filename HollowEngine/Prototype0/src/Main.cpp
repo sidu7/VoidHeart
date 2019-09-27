@@ -25,7 +25,7 @@ class GameLayer : public Hollow::Layer
 
 	void OnEvent(Hollow::Event& e) override
 	{
-		HW_TRACE("{0}", e);
+		//HW_TRACE("{0}", e);
 	}
 };
 
@@ -45,7 +45,7 @@ class UILayer : public Hollow::Layer
 		{
 			e.Handled = true;
 		}
-		HW_TRACE("{0}", e);
+		//HW_TRACE("{0}", e);
 	}
 };
 
@@ -57,30 +57,8 @@ public:
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());
 		
-		/*Hollow::GameObject* obj1 = Hollow::MemoryManager::Instance().NewGameObject();
-		Hollow::GameObject* obj2 = Hollow::MemoryManager::Instance().NewGameObject();
-		Hollow::TestComponent* test = static_cast<Hollow::TestComponent*>(Hollow::MemoryManager::Instance().NewComponent("TestComponent"));
-		PrototypeComponent* proto = static_cast<PrototypeComponent*>(Hollow::MemoryManager::Instance().NewComponent("PrototypeComponent"));
-
-		obj1->AddComponent(test);
-		obj2->AddComponent(proto);
-		Hollow::GameObjectManager::Instance().AddGameObject(obj1);
-		Hollow::GameObjectManager::Instance().AddGameObject(obj2);*/
-
-		// TESTING ImGui Debug
-		/*Hollow::GameObject* obj3 = Hollow::MemoryManager::Instance().NewGameObject();
-		Hollow::Shape* shape = static_cast<Hollow::Shape*>(Hollow::MemoryManager::Instance().NewComponent("Shape"));
-		Hollow::Material* mat = static_cast<Hollow::Material*>(Hollow::MemoryManager::Instance().NewComponent("Material"));
-		Hollow::Transform* transform = static_cast<Hollow::Transform*>(Hollow::MemoryManager::Instance().NewComponent("Transform"));
-		obj3->AddComponent(shape);
-		obj3->AddComponent(mat);
-		obj3->AddComponent(transform);
-		Hollow::GameObjectManager::Instance().AddGameObject(obj3);
-		Hollow::RenderManager::Instance().mShapes.push_back(shape);
-		Hollow::RenderManager::Instance().mMaterials.push_back(mat);
-		Hollow::RenderManager::Instance().mModels.push_back(transform);*/
-
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		for(int i = 0; i < 100; ++i)
+			Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 	}
 	
 	~Prototype0()

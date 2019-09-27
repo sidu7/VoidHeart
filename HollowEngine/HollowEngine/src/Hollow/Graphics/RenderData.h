@@ -6,11 +6,11 @@ namespace Hollow {
 	class ElementArrayBuffer;
 	class Shader;
 	class Material;
+	class Mesh;
 
 	struct RenderData
 	{
-		VertexArray* mpVAO;
-		ElementArrayBuffer* mpEBO;
+		std::vector<Mesh*> mpMeshes;
 		glm::mat4 mpModel;
 		Material* mpMaterial;
 		Shader* mpShader;

@@ -21,21 +21,16 @@ void Hollow::RenderSystem::Update()
 {
 	for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 	{
-		RenderData* data = new RenderData();
-		data->mpModel = mGameObjects[i]->GetComponent<Transform>()->GetTranformationMatrix();
+		RenderData data;
+		data.mpModel = mGameObjects[i]->GetComponent<Transform>()->GetTranformationMatrix();
 
 		if (Material * material = mGameObjects[i]->GetComponent<Material>())
 		{
-			data->mpMaterial = material;
+			data.mpMaterial = material;
 		}
 
 		Model* pModel = mGameObjects[i]->GetComponent<Model>();
-		for (Mesh* mesh : pModel->GetMeshes())
-		{
-			//TODO: doesn't work for the loop
-			data->mpVAO = mesh->mpVAO;
-			data->mpEBO = mesh->mpEBO;
-		}
+		data.mpMeshes = pModel->GetMeshes();
 
 		RenderManager::Instance().mRenderData.push_back(data);
 	}

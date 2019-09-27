@@ -9,6 +9,7 @@
 #include "Hollow/Graphics/Vertex.h"
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/VertexBuffer.h"
+#include "Hollow/Graphics/Texture.h"
 
 void Hollow::ResourceManager::Init()
 {
@@ -41,23 +42,95 @@ Hollow::Texture* Hollow::ResourceManager::LoadTexture(std::string path)
 		return mTextureCache[path];
 	}
 	
-	//Texture* texture = new Texture(path);
-	//mTextureCache[path] = texture;
-	//return texture;
+	Texture* texture = new Texture(path);
+	mTextureCache[path] = texture;
+	return texture;
 }
 
-Hollow::Model* Hollow::ResourceManager::LoadModel(std::string path)
+std::vector<Hollow::Mesh*> Hollow::ResourceManager::LoadModel(std::string path)
 {
 	//Check in cache
 	if (mModelCache.find(path) != mModelCache.end())
 	{
 		return mModelCache[path];
 	}
+		
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
 
-	//Model* model = new Model(path);
-	//mModelCache[path] = model;
-	//return model;
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+	}
+	
+	std::vector<Mesh*> meshes;
+	ProcessMeshNode(scene->mRootNode, scene, meshes);
+
+	mModelCache[path] = meshes;
+	return meshes;
 }
+
+void Hollow::ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshlist)
+{
+	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		meshlist.push_back(ProcessMesh(mesh, scene));
+	}
+
+	for (unsigned int i = 0; i < node->mNumChildren; ++i)
+	{
+		ProcessMeshNode(node->mChildren[i], scene, meshlist);
+	}
+}
+
+Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+{
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+
+	//Processing vertices
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+	{
+		Vertex vertex;
+
+		vertex.position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+		if (mesh->mNormals)
+		{
+			vertex.normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+		}
+		else
+		{
+			vertex.normal = glm::vec3(0.0f,0.0f,0.0f);
+		}
+		
+
+		if (mesh->mTextureCoords[0])
+		{
+			vertex.tex = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+		}
+		else
+		{
+			vertex.tex = glm::vec2(0.0f, 0.0f);
+		}
+
+		vertices.push_back(vertex);
+	}
+
+	//Processing indices
+	for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (unsigned int j = 0; j < face.mNumIndices; ++j)
+		{
+			indices.push_back(face.mIndices[j]);
+		}
+	}
+
+	return CreateMesh(vertices,indices);
+}
+
+
 
 Hollow::Mesh* Hollow::ResourceManager::GetShape(Shapes shape)
 {
@@ -115,7 +188,7 @@ void Hollow::ResourceManager::InitializeShapes()
 		}
 	}
 
-	CreateMesh(vertices, indices, SPHERE);
+	mShapes[SPHERE] = CreateMesh(vertices, indices);
 
 	vertices.clear();
 	indices.clear();
@@ -372,10 +445,10 @@ void Hollow::ResourceManager::InitializeShapes()
 		}
 	}
 
-	CreateMesh(vertices, indices, TEAPOT);
+	mShapes[TEAPOT] = CreateMesh(vertices, indices);
 }
 
-void Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Shapes shape)
+Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
 	VertexArray* VAO = new VertexArray();
 	ElementArrayBuffer* EBO = new ElementArrayBuffer();
@@ -406,6 +479,5 @@ void Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vect
 	mesh->mpVAO = VAO;
 	mesh->mpEBO = EBO;
 
-	mShapes[shape] = mesh;
+	return mesh;
 }
-

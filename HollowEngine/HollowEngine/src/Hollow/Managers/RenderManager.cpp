@@ -14,6 +14,7 @@
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/ElementArrayBuffer.h"
 #include "Hollow/Graphics/Mesh.h"
+#include "Hollow/Graphics/Texture.h"
 
 namespace Hollow {
 
@@ -53,6 +54,7 @@ namespace Hollow {
 		// TESTING BELOW ----------------------------
 		// Draw some stuff
 		glEnable(GL_DEPTH_TEST);
+
 		mpTestShader->Use();
 		mpTestShader->SetVec3("viewPosition", mpCamera->GetPosition());
 
@@ -68,24 +70,28 @@ namespace Hollow {
 
 		for (unsigned int i = 0; i < mRenderData.size(); ++i)
 		{
-			RenderData* data = mRenderData[i];
+			RenderData& data = mRenderData[i];
 
-			mpTestShader->SetMat4("Model", data->mpModel);
+			mpTestShader->SetMat4("Model", data.mpModel);
 			
-			Material* pMaterial = data->mpMaterial;
+			Material* pMaterial = data.mpMaterial;
 						
 			//mpTestShader->SetMat4("Model", glm::mat4(0.1f));
 			// Send lighting information
 			mpTestShader->SetVec3("diffuseColor", pMaterial->mDiffuseColor);
+			data.mpMaterial->mpTexture->Bind(1);
+			mpTestShader->SetInt("texture_diffuse", 1);
 			mpTestShader->SetVec3("specularColor", pMaterial->mSpecularColor);
 			mpTestShader->SetFloat("shininess", pMaterial->mShininess);
 
 			// Draw object
-			data->mpVAO->Bind();
-			glDrawElements(GL_TRIANGLES, data->mpEBO->GetCount(), GL_UNSIGNED_INT, 0);
+			for (Mesh* mesh : data.mpMeshes)
+			{
+				mesh->Draw(mpTestShader);
+			}
+			data.mpMaterial->mpTexture->Unbind();
 		}
 
-		//RenderData pointers are not being freed
 		mRenderData.clear();
 
 		// Update ImGui

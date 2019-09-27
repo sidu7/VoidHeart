@@ -1,13 +1,19 @@
 {
   "Components": [
     {
-      "Type": "Transform"
+      "Type": "Transform",
+      "Position":  [0.0,0.0,0.0]
     },
     {
-      "Type": "Model"
+      "Type": "Model",
+      "Model": "Resources/Models/scene.fbx"
     },
     {
-      "Type":  "Material"
+      "Type": "Material",
+      "Diffuse": [ 1.0, 0.0, 0.0 ],
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
     }
   ]
 }

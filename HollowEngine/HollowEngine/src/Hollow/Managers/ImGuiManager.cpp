@@ -4,6 +4,7 @@
 #include "Hollow/Graphics/GameWindow.h"
 
 #include "GameObjectManager.h"
+#include "FrameRateController.h"
 #include "Hollow/Core/GameObject.h"
 
 namespace Hollow {
@@ -34,6 +35,7 @@ namespace Hollow {
 	{
 		if (ImGui::Begin("Game Objects"))
 		{
+			ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
 			for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
 			{
 				pGameObject->DebugDisplay();

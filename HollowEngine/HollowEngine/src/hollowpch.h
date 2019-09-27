@@ -29,10 +29,13 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_opengl3.h>
 #include <ImGui/imgui_impl_sdl.h>
+#include "stbi_image/stbi_image.h"
+#include "assimp/Importer.hpp"
+#include "assimp/assimp/scene.h"
+#include "assimp/assimp/postprocess.h"
 
 // Serialization library
 #include <rapidjson/document.h>
-
 
 // TODO: Add ifdef guards if more platforms
 #include <Windows.h>

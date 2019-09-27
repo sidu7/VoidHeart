@@ -51,7 +51,7 @@ namespace Hollow {
 		
 		RenderManager::Instance().GetCamera()->OnEvent(e);
 
-		HW_CORE_TRACE("{0}", e);
+		//HW_CORE_TRACE("{0}", e);
 
 		for(auto it = mLayerStack.end(); it != mLayerStack.begin();)
 		{
@@ -77,8 +77,8 @@ namespace Hollow {
 				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			}
 			SystemManager::Instance().Update();
-			RenderManager::Instance().Update();
 			RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			RenderManager::Instance().Update();
 			InputManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
