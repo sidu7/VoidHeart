@@ -31,7 +31,6 @@
     <ClCompile Include="src\Hollow\Core\Application.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
-    <ClCompile Include="src\Hollow\Components\Shape.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="src\Hollow\Graphics\ElementArrayBuffer.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
@@ -151,7 +150,6 @@
     <ClInclude Include="src\Hollow\Core\EntryPoint.h" />
     <ClInclude Include="src\Hollow\Core\GameObject.h" />
     <ClInclude Include="src\Hollow\Core\GameObjectFactory.h" />
-    <ClInclude Include="src\Hollow\Components\Shape.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\ElementArrayBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />

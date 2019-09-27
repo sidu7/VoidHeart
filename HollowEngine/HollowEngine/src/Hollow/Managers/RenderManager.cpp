@@ -3,7 +3,6 @@
 
 #include "ImGuiManager.h"
 
-#include "Hollow/Components/Shape.h"
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Transform.h"
 

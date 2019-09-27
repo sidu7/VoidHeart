@@ -16,9 +16,14 @@ namespace Hollow {
 	}
 	void Model::Serialize(rapidjson::Value::Object object)
 	{
-		//if Shape get from Resource Manager or use Mesh data from file
-		//mMeshes.push_back(ResourceManager::Instance().GetShape(Shapes::TEAPOT));
-		mMeshes = ResourceManager::Instance().LoadModel(object["Model"].GetString());
+		if (object.HasMember("Model"))
+		{
+			mMeshes = ResourceManager::Instance().LoadModel(object["Model"].GetString());
+		}
+		if (object.HasMember("Shape"))
+		{
+			mMeshes.push_back(ResourceManager::Instance().GetShape((Shapes)object["Shape"].GetUint()));
+		}
 	}
 	void Model::DebugDisplay()
 	{

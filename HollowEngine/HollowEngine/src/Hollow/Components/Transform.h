@@ -12,7 +12,6 @@ namespace Hollow
 		void Clear() {}
 		void DebugDisplay();
 		void Serialize(rapidjson::Value::Object data);
-		virtual ~Transform() {}
 
 		inline void SetPosition(glm::vec3 position) { mPosition = position; }
 		inline void SetScale(glm::vec3 scale) { mScale = scale; }

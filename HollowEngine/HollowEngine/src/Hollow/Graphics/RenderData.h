@@ -1,9 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
 
-namespace Hollow {
-	class VertexArray;
-	class ElementArrayBuffer;
+namespace Hollow {	
 	class Shader;
 	class Material;
 	class Mesh;

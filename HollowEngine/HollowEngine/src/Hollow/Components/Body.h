@@ -10,7 +10,6 @@ namespace Hollow {
 		void Clear() {}
 		void DebugDisplay() {}
 		void Serialize(rapidjson::Value::Object data){}
-		virtual ~Body() {}
 
 		//Setters
 		inline void SetMass(float mass) { mMass = mass; mInverseMass = 1 / mMass; }

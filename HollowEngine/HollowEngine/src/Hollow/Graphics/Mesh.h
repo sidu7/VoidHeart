@@ -28,19 +28,12 @@ namespace Hollow
 	{
 	public:
 		Mesh();
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<MeshTexture>& textures);
 		~Mesh();
-				
-		std::vector<Vertex> mVertices;
-		std::vector<unsigned int> mIndices;
-		std::vector<MeshTexture> mTextures;
-
+		
 		void Draw(Shader* pShader);
 
+	public:
 		VertexArray* mpVAO;
-		VertexBuffer* mpVBO;
 		ElementArrayBuffer* mpEBO;
-	private:
-		void InitMesh();
 	};
 }

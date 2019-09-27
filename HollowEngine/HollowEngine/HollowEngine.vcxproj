@@ -17,7 +17,6 @@
     <ClCompile Include="src\Hollow\Components\Body.cpp" />
     <ClCompile Include="src\Hollow\Components\Material.cpp" />
     <ClCompile Include="src\Hollow\Components\Model.cpp" />
-    <ClCompile Include="src\Hollow\Components\Shape.cpp" />
     <ClCompile Include="src\Hollow\Components\Transform.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
@@ -78,7 +77,6 @@
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Components\Material.h" />
     <ClInclude Include="src\Hollow\Components\Body.h" />
-    <ClInclude Include="src\Hollow\Components\Shape.h" />
     <ClInclude Include="src\Hollow\Components\Transform.h" />
     <ClInclude Include="src\Hollow\Core\Application.h" />
     <ClInclude Include="src\Hollow\Components\Component.h" />

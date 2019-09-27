@@ -22,6 +22,7 @@ namespace Hollow
 		~ResourceManager() {}
 
 		void Init();
+		void CleanUp();
 		void LoadGameObjectFromFile(std::string path);
 		Texture* LoadTexture(std::string path);
 		std::vector<Mesh*> LoadModel(std::string path);

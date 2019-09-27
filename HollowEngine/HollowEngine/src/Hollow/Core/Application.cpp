@@ -38,6 +38,7 @@ namespace Hollow {
 
 	Application::~Application()
 	{
+		ResourceManager::Instance().CleanUp();
 		RenderManager::Instance().CleanUp();
 		ImGuiManager::Instance().CleanUp();
 		delete mpWindow;
