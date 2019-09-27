@@ -9,7 +9,7 @@ namespace Hollow {
 	const float Camera::YAW = -90.0f;
 	const float Camera::PITCH = 0.0f;
 	const float Camera::SPEED = 5.0f;
-	const float Camera::SENSITIVITY = 0.5f;
+	const float Camera::SENSITIVITY = 0.1f;
 	const float Camera::ZOOM = 45.0f;
 
 	float lastX = 640;
@@ -61,16 +61,14 @@ namespace Hollow {
 		float xoffset = mousePos.first - lastX;
 		float yoffset = lastY - mousePos.second;
 
-		if (!mCanMouse || ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
-		{
-			lastX = mousePos.first;
-			lastY = mousePos.second;
-			return;
-		}
-
 		lastX = mousePos.first;
 		lastY = mousePos.second;
 
+		if (!mCanMouse || ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		{
+			return;
+		}
+		
 		xoffset *= mMouseSensitivity;
 		yoffset *= mMouseSensitivity;
 

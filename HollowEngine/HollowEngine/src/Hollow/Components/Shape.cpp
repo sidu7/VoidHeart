@@ -24,7 +24,7 @@ namespace Hollow
 	void Shape::Serialize(rapidjson::Value::Object data)
 	{
 		//Init();
-		RenderManager::Instance().mShapes.push_back(this);
+		//RenderManager::Instance().mShapes.push_back(this);
 	}
 
 	Shape::~Shape()
@@ -43,7 +43,7 @@ namespace Hollow
 		mpVBO->AddData(&mVertices[0], mVertices.size() * sizeof(Vertex));
 
 		// Set up index buffer EBO
-		mpEBO->AddData(&mIndices[0], mIndices.size() * sizeof(unsigned int));
+		mpEBO->AddData(&mIndices[0], mIndices.size(), sizeof(unsigned int));
 
 		// Position
 		mpVAO->Push(3, GL_FLOAT, sizeof(float));

@@ -14,10 +14,11 @@ namespace Hollow {
 		GLCall(glDeleteBuffers(1, &mRendererID));
 	}
 
-	void ElementArrayBuffer::AddData(const void* data, unsigned int size) const
+	void ElementArrayBuffer::AddData(const void* data, unsigned int count, unsigned int size)
 	{
+		mCount = count;
 		Bind();
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * count, data, GL_STATIC_DRAW);
 	}
 
 	void ElementArrayBuffer::Bind() const

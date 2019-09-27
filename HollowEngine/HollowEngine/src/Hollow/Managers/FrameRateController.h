@@ -17,7 +17,7 @@ namespace Hollow {
 		{
 			mMaxFrameRate = MaxFramerate;
 			if (mMaxFrameRate != 0)
-				mNeededTicksPerFrame = 1000 / mMaxFrameRate;
+				mNeededTicksPerFrame = 1000.0 / mMaxFrameRate;
 			else
 				mNeededTicksPerFrame = 0;
 		}
@@ -35,26 +35,25 @@ namespace Hollow {
 		}
 
 		float GetFrameTime() {
-			//HW_CORE_INFO("{0}", mFrameTime * 1.0f / 1000.0f);
 			return mFrameTime * 1.0f / 1000.0f;
 		}
 
 		void FrameStart()
 		{
-			mTickStart = SDL_GetTicks();
+			mTickStart = SDL_GetPerformanceCounter();
 		}
 
 		void FrameEnd()
 		{
-			mTickEnd = SDL_GetTicks();
-			while ((mTickEnd - mTickStart) < mNeededTicksPerFrame)
+			mTickEnd = SDL_GetPerformanceCounter();
+			while (((mTickEnd - mTickStart) * 1000.0) / SDL_GetPerformanceFrequency() < mNeededTicksPerFrame)
 			{
-				mTickEnd = SDL_GetTicks();
-			}
-			mFrameTime = mTickEnd - mTickStart;
+				mTickEnd = SDL_GetPerformanceCounter();
+			}			
+			mFrameTime = ((mTickEnd - mTickStart) * 1000.0) / SDL_GetPerformanceFrequency();
 		}
 
 	private:
-		Uint32 mTickEnd = 0, mTickStart = 0, mNeededTicksPerFrame = 0, mFrameTime = 0, mMaxFrameRate = 0;
+		double mTickEnd = 0.0, mTickStart = 0.0, mNeededTicksPerFrame = 0.0, mFrameTime = 0.0, mMaxFrameRate = 0.0;
 	};
 }

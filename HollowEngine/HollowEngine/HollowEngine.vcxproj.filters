@@ -46,6 +46,8 @@
     <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Hollow\Components\Model.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\Texture.cpp" />
+    <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -167,5 +169,6 @@
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
+    <ClInclude Include="src\Hollow\Graphics\Texture.h" />
   </ItemGroup>
 </Project>

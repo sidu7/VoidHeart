@@ -12,6 +12,9 @@
 #include "Hollow/Graphics/Shader.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/VertexArray.h"
+#include "Hollow/Graphics/ElementArrayBuffer.h"
+#include "Hollow/Graphics/Mesh.h"
+#include "Hollow/Graphics/Texture.h"
 
 namespace Hollow {
 
@@ -51,6 +54,7 @@ namespace Hollow {
 		// TESTING BELOW ----------------------------
 		// Draw some stuff
 		glEnable(GL_DEPTH_TEST);
+
 		mpTestShader->Use();
 		mpTestShader->SetVec3("viewPosition", mpCamera->GetPosition());
 
@@ -64,23 +68,31 @@ namespace Hollow {
 		mpTestShader->SetVec3("lightPosition", glm::vec3(0.0f, 10.0f, 0.0f));
 		mpTestShader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
-		for (unsigned int objectIndex = 0; objectIndex < mShapes.size(); ++objectIndex)
+		for (unsigned int i = 0; i < mRenderData.size(); ++i)
 		{
-			Shape* pShape = mShapes[objectIndex];
-			Material* pMaterial = mMaterials[objectIndex];
-			Transform* pTransform = mModels[objectIndex];
-			glm::mat4 SRT = glm::mat4(1.0f);
-			mpTestShader->SetMat4("Model", glm::translate(SRT, pTransform->GetPosition()));
+			RenderData& data = mRenderData[i];
+
+			mpTestShader->SetMat4("Model", data.mpModel);
+			
+			Material* pMaterial = data.mpMaterial;
+						
 			//mpTestShader->SetMat4("Model", glm::mat4(0.1f));
 			// Send lighting information
 			mpTestShader->SetVec3("diffuseColor", pMaterial->mDiffuseColor);
+			data.mpMaterial->mpTexture->Bind(1);
+			mpTestShader->SetInt("texture_diffuse", 1);
 			mpTestShader->SetVec3("specularColor", pMaterial->mSpecularColor);
 			mpTestShader->SetFloat("shininess", pMaterial->mShininess);
 
 			// Draw object
-			pShape->mpVAO->Bind();
-			glDrawElements(GL_TRIANGLES, pShape->mIndices.size(), GL_UNSIGNED_INT, 0);
+			for (Mesh* mesh : data.mpMeshes)
+			{
+				mesh->Draw(mpTestShader);
+			}
+			data.mpMaterial->mpTexture->Unbind();
 		}
+
+		mRenderData.clear();
 
 		// Update ImGui
 		ImGuiManager::Instance().Update();

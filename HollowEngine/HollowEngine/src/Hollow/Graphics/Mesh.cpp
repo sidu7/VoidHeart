@@ -3,6 +3,8 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "ElementArrayBuffer.h"
+#include "Shader.h"
+#include "Utils/GLCall.h"
 
 namespace Hollow
 {
@@ -10,7 +12,7 @@ namespace Hollow
 	{
 	}
 
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<Texture>& textures)
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<MeshTexture>& textures)
 		: mVertices(vertices), mIndices(indices), mTextures(textures)
 	{
 		InitMesh();
@@ -26,6 +28,9 @@ namespace Hollow
 
 	void Mesh::Draw(Shader* pShader)
 	{
+		pShader->Use();
+		mpVAO->Bind();
+		GLCall(glDrawElements(GL_TRIANGLES, mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
 	}
 
 	void Mesh::InitMesh()
@@ -41,7 +46,7 @@ namespace Hollow
 		mpVBO->AddData(&mVertices[0], mVertices.size() * sizeof(Vertex));
 
 		// Set up index buffer EBO
-		mpEBO->AddData(&mIndices[0], mIndices.size() * sizeof(unsigned int));
+		mpEBO->AddData(&mIndices[0], mIndices.size(), sizeof(unsigned int));
 
 		// Position
 		mpVAO->Push(3, GL_FLOAT, sizeof(float));

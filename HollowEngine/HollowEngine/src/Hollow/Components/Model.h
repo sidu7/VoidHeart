@@ -8,7 +8,7 @@ namespace Hollow
 
 	class HOLLOW_API Model : public Component
 	{
-		REGISTERCOMPONENT(Model,"Model")
+		REGISTERCOMPONENT(Model, "Model");
 	public:
 		void Init();
 		void Clear();
@@ -18,6 +18,6 @@ namespace Hollow
 
 	private:
 		std::vector<Mesh*> mMeshes;
-		Shader* shader;
+		Shader* mpShader;
 	};
 }

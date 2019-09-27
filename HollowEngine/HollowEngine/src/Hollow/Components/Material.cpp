@@ -1,6 +1,8 @@
 #include <hollowpch.h>
 #include "Material.h"
 
+#include "Hollow/Managers/ResourceManager.h"
+
 namespace Hollow {
 
 	Material Material::instance;
@@ -10,6 +12,16 @@ namespace Hollow {
 	}
 	Material::~Material()
 	{
+	}
+	void Material::Serialize(rapidjson::Value::Object data)
+	{
+		rapidjson::Value::Array values = data["Diffuse"].GetArray();
+		mDiffuseColor = glm::vec3(values[0].GetFloat(), values[1].GetFloat(), values[2].GetFloat());
+		values = data["Specular"].GetArray();
+		mSpecularColor = glm::vec3(values[0].GetFloat(), values[1].GetFloat(), values[2].GetFloat());
+		mShininess = data["Shininess"].GetFloat();
+		std::string path = data["Texture"].GetString();
+		mpTexture = ResourceManager::Instance().LoadTexture(path);
 	}
 	void Material::DebugDisplay()
 	{

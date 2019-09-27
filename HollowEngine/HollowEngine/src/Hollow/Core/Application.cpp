@@ -9,6 +9,7 @@
 #include "Hollow/Managers/MemoryManager.h"
 #include "Hollow/Managers/ImGuiManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/ResourceManager.h"
 
 
 #include "Hollow/Graphics/Camera.h"
@@ -29,6 +30,7 @@ namespace Hollow {
 		MemoryManager::Instance().Init();
 		RenderManager::Instance().Init(mpWindow);
 		ImGuiManager::Instance().Init(mpWindow);
+		ResourceManager::Instance().Init();
 
 
 		FrameRateController::Instance().SetMaxFrameRate(60);
@@ -49,7 +51,7 @@ namespace Hollow {
 		
 		RenderManager::Instance().GetCamera()->OnEvent(e);
 
-		HW_CORE_TRACE("{0}", e);
+		//HW_CORE_TRACE("{0}", e);
 
 		for(auto it = mLayerStack.end(); it != mLayerStack.begin();)
 		{
@@ -75,8 +77,8 @@ namespace Hollow {
 				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			}
 			SystemManager::Instance().Update();
-			RenderManager::Instance().Update();
 			RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			RenderManager::Instance().Update();
 			InputManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
