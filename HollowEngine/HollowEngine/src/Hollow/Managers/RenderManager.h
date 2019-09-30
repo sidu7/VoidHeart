@@ -23,6 +23,7 @@ namespace Hollow {
 
 	public:
 		std::vector<RenderData> mRenderData;
+		std::vector<RenderData> mDebugRenderData;
 
 	private:
 		// Transformation matricies
@@ -33,5 +34,6 @@ namespace Hollow {
 		GameWindow* mpWindow;
 		Camera* mpCamera;
 		Shader* mpTestShader;
+		Shader* mpDebugShader;
 	};
 }

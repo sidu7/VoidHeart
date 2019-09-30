@@ -146,8 +146,153 @@ void Hollow::ResourceManager::InitializeShapes()
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
-	//Cube
+	//Quad
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		Vertex v;
+		int x = i == 0 || i == 3 ? -1 : 1;
+		int y = i < 2 ? -1 : 1;
+		v.position = glm::vec3(0.5f * x, 0.5f * y, 0.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+		v.tex = glm::vec2(x == -1 ? 0.0f : 1.0f, y == -1 ? 0.0f : 1.0f);
+		vertices.push_back(v);
+	}
 
+	indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(2);
+	indices.push_back(2);
+	indices.push_back(3);
+	indices.push_back(0);
+
+	mShapes[QUAD] = CreateMesh(vertices, indices);
+
+	vertices.clear();
+	indices.clear();
+
+	//Cube
+	{
+		indices = { 0, 1, 2, 0, 2, 3, //front
+				4, 5, 6, 4, 6, 7, //right
+				8, 9, 10, 8, 10, 11, //back
+				12, 13, 14, 12, 14, 15, //left
+				16, 17, 18, 16, 18, 19, //upper
+				20, 21, 22, 20, 22, 23 }; //bottom
+
+		//front
+		Vertex v;
+		v.position = glm::vec3(-1.0f, -1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+		v.tex = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, -1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+		v.tex = glm::vec2(1.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, 1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+		v.tex = glm::vec2(1.0f, 1.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, 1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+		v.tex = glm::vec2(0.0f, 1.0f);
+		vertices.push_back(v);
+
+		//right
+		v.position = glm::vec3(1.0f, 1.0f, 1.0f);
+		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, 1.0f, -1.0f);
+		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 1.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, -1.0f, -1.0f);
+		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, -1.0f, 1.0f);
+		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 1.0f);
+		vertices.push_back(v);
+
+		//back
+		v.position = glm::vec3(-1.0f, -1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+		v.tex = glm::vec2(1.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, -1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+		v.tex = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, 1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+		v.tex = glm::vec2(0.0f, 1.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, 1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
+		v.tex = glm::vec2(1.0f, 1.0f);
+		vertices.push_back(v);
+
+		//left
+		v.position = glm::vec3(-1.0f, -1.0f, -1.0f);
+		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, -1.0f, 1.0f);
+		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, 1.0f, 1.0f);
+		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 1.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, 1.0f, -1.0f);
+		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 1.0f);
+		vertices.push_back(v);
+
+		//upper
+		v.position = glm::vec3(1.0f, 1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, 1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, 1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 1.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, 1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 1.0f);
+		vertices.push_back(v);
+
+		//bottom
+		v.position = glm::vec3(-1.0f, -1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, -1.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 0.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(1.0f, -1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 1.0f);
+		vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, -1.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 1.0f);
+		vertices.push_back(v);
+
+		mShapes[CUBE] = CreateMesh(vertices, indices);
+
+		vertices.clear();
+		indices.clear();
+	}
 	//Sphere
 	const float PI = 3.141592f;
 	int n = 32;

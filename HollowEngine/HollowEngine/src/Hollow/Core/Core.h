@@ -27,6 +27,6 @@
 					}
 
 
-#define REGISTERSYSTEM(x)	private:								\
+#define REGISTERSYSTEM(x,y)	private:								\
 							static x instance;						\
-							x() : System(this) { }
+							x() : System(this,y) { }

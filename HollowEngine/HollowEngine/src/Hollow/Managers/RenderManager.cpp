@@ -33,7 +33,7 @@ namespace Hollow {
 		// Create a shader
 		//mpTestShader = new Shader("Resources/Shaders/Diffuse.vert", "Resources/Shaders/Diffuse.frag");
 		mpTestShader = new Shader("Resources/Shaders/Phong.vert", "Resources/Shaders/Phong.frag");
-
+		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
 	}
 
 	void RenderManager::CleanUp()
@@ -93,6 +93,25 @@ namespace Hollow {
 		}
 
 		mRenderData.clear();
+
+		mpDebugShader->Use();
+		mpDebugShader->SetMat4("View", mViewMatrix);
+		mpDebugShader->SetMat4("Projection", mProjectionMatrix);
+
+		for (unsigned int i = 0; i < mDebugRenderData.size(); ++i)
+		{
+			RenderData& data = mDebugRenderData[i];
+
+			mpDebugShader->SetMat4("Model", data.mpModel);
+			
+			for (Mesh* mesh : data.mpMeshes)
+			{
+				mesh->mpVAO->Bind();
+				glDrawElements(GL_LINE_LOOP, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0);
+			}
+		}
+
+		mDebugRenderData.clear();
 
 		// Update ImGui
 		ImGuiManager::Instance().Update();

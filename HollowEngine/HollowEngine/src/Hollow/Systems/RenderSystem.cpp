@@ -2,6 +2,7 @@
 #include "RenderSystem.h"
 
 #include "Hollow/Managers/RenderManager.h"
+#include "Hollow/Managers/DebugDrawManager.h"
 
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Model.h"
@@ -22,7 +23,10 @@ void Hollow::RenderSystem::Update()
 	for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 	{
 		RenderData data;
-		data.mpModel = mGameObjects[i]->GetComponent<Transform>()->GetTranformationMatrix();
+		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
+		data.mpModel = trans->GetTranformationMatrix();
+
+		DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), 5.0f);
 
 		if (Material * material = mGameObjects[i]->GetComponent<Material>())
 		{

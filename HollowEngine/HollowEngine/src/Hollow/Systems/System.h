@@ -9,8 +9,9 @@ namespace Hollow
 	class HOLLOW_API System
 	{
 	public:
-		System(System* instance) {
+		System(System* instance,int tier) {
 			SystemManager::Instance().RegisterSystem(instance);
+			this->mTier = tier;
 		}
 		virtual ~System() {}
 		virtual void Update() = 0;
@@ -43,6 +44,9 @@ namespace Hollow
 				CheckComponents<Second, Rest...>(pGameObject);
 			}
 		}
+
+	public:
+		int mTier;
 
 	protected:
 		std::vector<GameObject*> mGameObjects;

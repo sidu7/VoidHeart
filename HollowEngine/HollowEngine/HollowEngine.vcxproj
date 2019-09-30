@@ -28,6 +28,7 @@
     <ClCompile Include="src\Hollow\Graphics\Texture.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="src\Hollow\Managers\DebugDrawManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Texture.h" />
+    <ClInclude Include="src\Hollow\Managers\DebugDrawManager.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Components\Material.h" />

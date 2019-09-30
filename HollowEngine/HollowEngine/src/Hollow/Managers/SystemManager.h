@@ -17,6 +17,7 @@ namespace Hollow
 			mSystems.push_back(system);
 		}
 
+		void Init();
 		void Update();
 		void AddObjectToSystems(GameObject* GameObject);
 		void DeleteGameObejectInSystems(GameObject* GameObject);
