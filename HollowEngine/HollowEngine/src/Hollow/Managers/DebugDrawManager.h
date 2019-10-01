@@ -11,8 +11,9 @@ namespace Hollow
 
 		void DebugLine();
 		void DebugCircle();
+		void DebugQuad(glm::vec3 position = glm::vec3(1.0f), glm::vec2 scale = glm::vec2(1.0f));
 		void DebugAxes();
-		void DebugSphere(glm::vec3 position, float scale);
-		void DebugCube();
+		void DebugSphere(glm::vec3 position = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f));
+		void DebugCube(glm::vec3 position = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f));
 	};
 }

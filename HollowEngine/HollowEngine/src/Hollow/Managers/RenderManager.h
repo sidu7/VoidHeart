@@ -24,7 +24,7 @@ namespace Hollow {
 
 	public:
 		std::vector<RenderData> mRenderData;
-
+		std::vector<DebugRenderData> mDebugRenderData;
 	private:
 		// Initialization Functions
 		void InitializeGBuffer();
@@ -36,6 +36,8 @@ namespace Hollow {
 
 		void DrawAllRenderData(Shader* pShader);
 		void DrawFSQ();
+
+		void DrawDebugDrawings();
 
 		// ImGui Debug functions
 		void DebugDisplay();
@@ -52,6 +54,9 @@ namespace Hollow {
 
 		// Lighting
 		Shader* mpDeferredShader;
+
+		// Debug drawing Shader
+		Shader* mpDebugShader;
 
 		// G-Buffer
 		Shader* mpGBufferShader;

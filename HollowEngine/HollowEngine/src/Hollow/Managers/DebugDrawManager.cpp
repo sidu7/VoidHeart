@@ -25,22 +25,43 @@ namespace Hollow
 	{
 	}
 
+	void DebugDrawManager::DebugQuad(glm::vec3 position, glm::vec2 scale)
+	{
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, position);
+		model = glm::scale(model, glm::vec3(scale.x,scale.y,1.0f));
+		DebugRenderData data;
+		data.mpMeshes.push_back(ResourceManager::Instance().GetShape(Shapes::QUAD));
+		data.mpModel = model;
+		data.mDrawCommand = GL_LINE_LOOP;
+		RenderManager::Instance().mDebugRenderData.push_back(data);
+	}
+
 	void DebugDrawManager::DebugAxes()
 	{
 	}
 
-	void DebugDrawManager::DebugSphere(glm::vec3 position, float scale)
+	void DebugDrawManager::DebugSphere(glm::vec3 position, glm::vec3 scale)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, position);
 		model = glm::scale(model, glm::vec3(scale));
-		RenderData data;
-		data.mpMeshes.push_back(ResourceManager::Instance().GetShape(Shapes::QUAD));
+		DebugRenderData data;
+		data.mpMeshes.push_back(ResourceManager::Instance().GetShape(Shapes::SPHERE));
 		data.mpModel = model;
+		data.mDrawCommand = GL_LINES;
 		RenderManager::Instance().mDebugRenderData.push_back(data);
 	}
 
-	void DebugDrawManager::DebugCube()
+	void DebugDrawManager::DebugCube(glm::vec3 position, glm::vec3 scale)
 	{
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, position);
+		model = glm::scale(model, scale);
+		DebugRenderData data;
+		data.mpMeshes.push_back(ResourceManager::Instance().GetShape(Shapes::CUBE));
+		data.mpModel = model;
+		data.mDrawCommand = GL_LINE_LOOP;
+		RenderManager::Instance().mDebugRenderData.push_back(data);
 	}
 }

@@ -104,11 +104,6 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
     <ClInclude Include="src\PrototypeComponent.h" />
     <ClInclude Include="src\PrototypeSystem.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Json data\TempObject.json" />
-    <None Include="Resources\Shaders\Debug.frag" />
-    <None Include="Resources\Shaders\Debug.vert" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

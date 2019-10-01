@@ -15,4 +15,11 @@ namespace Hollow {
 		Material* mpMaterial;
 		Shader* mpShader;
 	};
+
+	struct DebugRenderData
+	{
+		std::vector<Mesh*> mpMeshes;
+		glm::mat4 mpModel;
+		GLenum mDrawCommand;
+	};
 }

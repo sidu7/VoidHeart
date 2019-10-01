@@ -16,6 +16,13 @@ void Hollow::ResourceManager::Init()
 	InitializeShapes();
 }
 
+void Hollow::ResourceManager::CleanUp()
+{
+	std::for_each(mTextureCache.begin(), mTextureCache.end(), [](std::pair<std::string, Texture*> value) { delete value.second; });
+	std::for_each(mModelCache.begin(), mModelCache.end(), [](std::pair<std::string, std::vector<Mesh*>> value) { for (Mesh* mesh : value.second) delete mesh; });
+	std::for_each(mShapes.begin(), mShapes.end(), [](std::pair<Shapes, Mesh*> value) { delete value.second; });
+}
+
 void Hollow::ResourceManager::LoadGameObjectFromFile(std::string path)
 {
 	std::ifstream file(path);

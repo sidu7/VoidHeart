@@ -17,6 +17,8 @@
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/FrameBuffer.h"
 
+#include "Utils/GLCall.h"
+
 namespace Hollow {
 
 	void RenderManager::Init(GameWindow* pWindow)
@@ -32,6 +34,9 @@ namespace Hollow {
 
 		// Initialize G-Buffer
 		InitializeGBuffer();
+
+		// Init Debug Shader
+		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
 	}
 
 	void RenderManager::CleanUp()
@@ -61,6 +66,9 @@ namespace Hollow {
 		GlobalLightingPass();
 
 		mRenderData.clear();
+
+		//Draw debug drawings
+		DrawDebugDrawings();
 
 		// Update ImGui
 		DebugDisplay();
@@ -190,6 +198,27 @@ namespace Hollow {
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glBindVertexArray(0);
 	}
+
+	void RenderManager::DrawDebugDrawings()
+	{
+		mpDebugShader->Use();
+		mpDebugShader->SetMat4("View", mViewMatrix);
+		mpDebugShader->SetMat4("Projection", mProjectionMatrix);
+
+		for (unsigned int i = 0; i < mDebugRenderData.size(); ++i)
+		{
+			DebugRenderData& data = mDebugRenderData[i];
+			mpDebugShader->SetMat4("Model", data.mpModel);			
+			for (Mesh* mesh : data.mpMeshes)
+			{
+				mesh->mpVAO->Bind();
+				GLCall(glDrawElements(data.mDrawCommand, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+			}
+		}
+
+		mDebugRenderData.clear();
+	}
+
 	void RenderManager::DebugDisplay()
 	{
 		if(ImGui::Begin("Renderer"))

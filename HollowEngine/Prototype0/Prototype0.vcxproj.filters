@@ -33,9 +33,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Json data\TempObject.json" />
-    <None Include="Resources\Shaders\Debug.vert" />
-    <None Include="Resources\Shaders\Debug.frag" />
-  </ItemGroup>
 </Project>
