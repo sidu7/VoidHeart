@@ -140,9 +140,6 @@ namespace Hollow {
 		{
 			ImGui_ImplSDL2_ProcessEvent(&e);
 			
-			if (e.type == SDL_QUIT) {
-				SDL_Quit();
-			}
 			HandleWindowEvents(e);
 			HandleKeyboardEvents(e);
 			HandleMouseEvents(e);

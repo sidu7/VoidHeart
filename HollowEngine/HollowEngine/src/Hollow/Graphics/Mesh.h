@@ -29,10 +29,9 @@ namespace Hollow
 	public:
 		Mesh();
 		~Mesh();
-		
+
 		void Draw(Shader* pShader);
 
-	public:
 		VertexArray* mpVAO;
 		ElementArrayBuffer* mpEBO;
 	};

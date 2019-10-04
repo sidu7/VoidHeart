@@ -6,7 +6,7 @@ namespace Hollow
 {
 	class TempSystem : public System
 	{
-		REGISTERSYSTEM(TempSystem)
+		REGISTERSYSTEM(TempSystem,0)
 	public:		
 		
 		void Update();

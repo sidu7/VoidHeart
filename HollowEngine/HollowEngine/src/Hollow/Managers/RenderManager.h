@@ -9,6 +9,7 @@ namespace Hollow {
 	class GameWindow;
 	class Camera;
 	class Shader;
+	class FrameBuffer;
 
 	class HOLLOW_API RenderManager
 	{
@@ -23,6 +24,24 @@ namespace Hollow {
 
 	public:
 		std::vector<RenderData> mRenderData;
+		std::vector<DebugRenderData> mDebugRenderData;
+	private:
+		// Initialization Functions
+		void InitializeGBuffer();
+
+		void CreateDeferredShader();
+
+		void GBufferPass();
+		void GlobalLightingPass();
+
+		void DrawAllRenderData(Shader* pShader);
+		void DrawFSQ();
+
+		void DrawDebugDrawings();
+
+		// ImGui Debug functions
+		void DebugDisplay();
+		void DebugDisplayGBuffer();
 
 	private:
 		// Transformation matricies
@@ -32,6 +51,16 @@ namespace Hollow {
 	private:
 		GameWindow* mpWindow;
 		Camera* mpCamera;
-		Shader* mpTestShader;
+
+		// Lighting
+		Shader* mpDeferredShader;
+
+		// Debug drawing Shader
+		Shader* mpDebugShader;
+
+		// G-Buffer
+		Shader* mpGBufferShader;
+		FrameBuffer* mpGBuffer;
+		int mGBufferDisplayMode;
 	};
 }

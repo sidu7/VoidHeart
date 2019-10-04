@@ -14,7 +14,6 @@
 
 #define REGISTERCOMPONENT(x,y) public:										\
 					x() : Component(y, this) {}								\
-					~x() {}													\
 					x(std::string name) : Component(name) {}				\
 					std::type_index GetIndex()								\
 					{														\
@@ -28,8 +27,6 @@
 					}
 
 
-#define REGISTERSYSTEM(x)	private:								\
+#define REGISTERSYSTEM(x,y)	private:								\
 							static x instance;						\
-							x() : System(this) { }
-
-#define stringify(x) #x
+							x() : System(this,y) { }

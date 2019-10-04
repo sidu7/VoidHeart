@@ -9,8 +9,11 @@ namespace Hollow {
 	{
 		if (ImGui::TreeNode("Transform"))
 		{
-			//ImGui::SliderFloat3("Position", &mPosition[0], -5.0f, 5.0f);
 			ImGui::InputFloat3("Position", &mPosition[0]);
+			// TODO: Find a better way to update transform matrix
+			glm::mat4 mat(1.0f);
+			mat = glm::translate(mat, mPosition);
+			SetTranformationMatrix(mat);
 			ImGui::TreePop();
 		}
 	}

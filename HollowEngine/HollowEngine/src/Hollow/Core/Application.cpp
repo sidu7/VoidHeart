@@ -29,6 +29,7 @@ namespace Hollow {
 		// Initalize managers
 		MemoryManager::Instance().Init();
 		RenderManager::Instance().Init(mpWindow);
+		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
 		ResourceManager::Instance().Init();
 

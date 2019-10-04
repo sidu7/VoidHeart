@@ -4,7 +4,7 @@
 
 class PrototypeSystem : public Hollow::System
 {
-	REGISTERSYSTEM(PrototypeSystem)
+	REGISTERSYSTEM(PrototypeSystem,2)
 public:
 	~PrototypeSystem() {}
 	void Update();
