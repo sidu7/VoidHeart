@@ -26,8 +26,8 @@ void Hollow::RenderSystem::Update()
 		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
 		data.mpModel = trans->GetTranformationMatrix();
 
-		DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
-		DebugDrawManager::Instance().DebugCube(trans->GetPosition() + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
+		//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
+		//DebugDrawManager::Instance().DebugCube(trans->GetPosition() + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
 
 		if (Material * material = mGameObjects[i]->GetComponent<Material>())
 		{

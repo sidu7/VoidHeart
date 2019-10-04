@@ -9,22 +9,28 @@ namespace Hollow {
 
 	void Material::Init()
 	{
-
+		mpTexture = nullptr;
 	}
 
 	void Material::Serialize(rapidjson::Value::Object data)
-	{
+	{		
 		if (data.HasMember("Texture"))
 		{
 			std::string path = data["Texture"].GetString();
 			mpTexture = ResourceManager::Instance().LoadTexture(path);
 		}
-		else
+		if (data.HasMember("Diffuse"))
 		{
 			rapidjson::Value::Array values = data["Diffuse"].GetArray();
 			mDiffuseColor = glm::vec3(values[0].GetFloat(), values[1].GetFloat(), values[2].GetFloat());
-			values = data["Specular"].GetArray();
+		}
+		if (data.HasMember("Specular"))
+		{
+			rapidjson::Value::Array values = data["Specular"].GetArray();
 			mSpecularColor = glm::vec3(values[0].GetFloat(), values[1].GetFloat(), values[2].GetFloat());
+		}
+		if (data.HasMember("Shininess"))
+		{
 			mShininess = data["Shininess"].GetFloat();
 		}
 	}

@@ -15,6 +15,9 @@ uniform sampler2D gSpecular;
 uniform vec3 viewPosition;
 uniform vec3 lightPosition;
 
+uniform sampler2D shadowMap;
+uniform mat4 shadowMatrix;
+
 uniform int displayMode;
 
 void main()
@@ -49,8 +52,28 @@ void main()
 	// Result
 	vec3 result = diffuse + ambient + specular;
 
-	color = vec4(result, 1.0);
+	vec4 shadowCoord = shadowMatrix * vec4(fragmentPosition.xyz,1.0);
 	
+	if(shadowCoord.w > 0.0)	
+	{	
+		vec2 shadowIndex = shadowCoord.xy/shadowCoord.w;
+		if(shadowIndex.x >= 0.0 && shadowIndex.y >= 0.0 && shadowIndex.x <= 1.0 && shadowIndex.y <= 1.0)
+		{
+			float lightDepth = texture(shadowMap,shadowIndex).w;
+			float pixelDepth = shadowCoord.w;
+			if(pixelDepth > lightDepth + 0.009)
+				color = vec4(ambient, 1.0);
+			else
+			{
+				color = vec4(result, 1.0);
+			}
+		}
+		else
+			color = vec4(ambient, 1.0);
+	}
+	else
+		color = vec4(ambient, 1.0);
+
 	if(displayMode == 1)
 	{
 		color = vec4(fragmentPosition.xyz, 1.0);

@@ -34,6 +34,10 @@ namespace Hollow {
 		// Initialize G-Buffer
 		InitializeGBuffer();
 
+		// Init ShadowMap and shader
+		mpShadowMapShader = new Shader("Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag");
+		mpShadowMap = new FrameBuffer(1024, 1024,1,true);
+
 		// Init Debug Shader
 		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
 	}
@@ -60,6 +64,9 @@ namespace Hollow {
 
 		// Deferred G-Buffer Pass
 		GBufferPass();
+
+		// ShadowMap Pass
+		CreateShadowMap();
 
 		// Apply global lighting
 		GlobalLightingPass();
@@ -99,6 +106,30 @@ namespace Hollow {
 		mpDeferredShader->SetInt("gSpecular", 3);
 	}
 
+	void RenderManager::CreateShadowMap()
+	{
+		mpShadowMap->Bind();
+		mpShadowMapShader->Use();
+
+		glm::mat4 LightLookAt, LightProj;
+		LightLookAt = glm::lookAt(glm::vec3(0.0f, 40.0f, 20.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		LightProj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 2000.0f);
+
+		mpShadowMapShader->SetMat4("Projection", LightProj);
+		mpShadowMapShader->SetMat4("View", LightLookAt);
+
+		mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
+
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_FRONT);
+
+		DrawAllRenderData(mpShadowMapShader);
+
+		//glDisable(GL_CULL_FACE);
+
+		mpShadowMap->Unbind();
+	}
+
 	void RenderManager::GBufferPass()
 	{
 		glEnable(GL_DEPTH_TEST);
@@ -133,7 +164,12 @@ namespace Hollow {
 		// Send light and view position
 		mpDeferredShader->SetVec3("viewPosition", mpCamera->GetPosition());
 		//mpDeferredShader->SetVec3("lightPosition", light->position);
-		mpDeferredShader->SetVec3("lightPosition", glm::vec3(0.0f, 0.0f, 0.0f));
+		mpDeferredShader->SetVec3("lightPosition", glm::vec3(0.0f, 40.0f, 20.0f));
+
+		// Send ShadowMap texture and shadow matrix
+		mpShadowMap->TexBind(0, 4);
+		mpDeferredShader->SetInt("shadowMap", 4);
+		mpDeferredShader->SetMat4("shadowMatrix", mShadowMatrix);
 
 		// Send debug information
 		mpDeferredShader->SetInt("displayMode", mGBufferDisplayMode);
@@ -154,8 +190,11 @@ namespace Hollow {
 			pShader->SetVec3("diffuseColor", pMaterial->mDiffuseColor);
 
 			// Send diffuse texture information
-			pMaterial->mpTexture->Bind(1);
-			pShader->SetInt("diffuseTexture", 1);
+			if (pMaterial->mpTexture)
+			{
+				pMaterial->mpTexture->Bind(1);
+				pShader->SetInt("diffuseTexture", 1);
+			}
 
 			pShader->SetVec3("specularColor", pMaterial->mSpecularColor);
 			pShader->SetFloat("shininess", pMaterial->mShininess);
@@ -166,7 +205,10 @@ namespace Hollow {
 				mesh->Draw(pShader);
 			}
 
-			pMaterial->mpTexture->Unbind();
+			if (pMaterial->mpTexture)
+			{
+				pMaterial->mpTexture->Unbind();
+			}
 		}
 	}
 	void RenderManager::DrawFSQ()

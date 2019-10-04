@@ -31,6 +31,8 @@ namespace Hollow {
 
 		void CreateDeferredShader();
 
+		void CreateShadowMap();
+
 		void GBufferPass();
 		void GlobalLightingPass();
 
@@ -62,5 +64,10 @@ namespace Hollow {
 		Shader* mpGBufferShader;
 		FrameBuffer* mpGBuffer;
 		int mGBufferDisplayMode;
+
+		// Shadows
+		Shader* mpShadowMapShader;
+		FrameBuffer* mpShadowMap;
+		glm::mat4 mShadowMatrix;
 	};
 }
