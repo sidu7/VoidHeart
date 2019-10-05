@@ -20,12 +20,16 @@ namespace Hollow
 		if (data.HasMember("CastShadow"))
 		{
 			mCastShadow = data["CastShadow"].GetBool();
+			if (mCastShadow)
+			{
+				if (data.HasMember("ShadowMapSize"))
+				{
+					glm::vec2 size = JSONHelper::GetVec2F(data["ShadowMapSize"].GetArray());
+					mpShadowMap = new FrameBuffer(size.x, size.y, 1, true);
+				}
+			}
 		}
-		if (data.HasMember("ShadowMapSize"))
-		{
-			glm::vec2 size = JSONHelper::GetVec2F(data["ShadowMapSize"].GetArray());
-			mpShadowMap = new FrameBuffer(size.x, size.y, 1, true);
-		}
+		
 	}
 
 	void Light::Clear()
