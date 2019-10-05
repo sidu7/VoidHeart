@@ -21,13 +21,11 @@ namespace Hollow {
 		}
 		if (data.HasMember("Diffuse"))
 		{
-			rapidjson::Value::Array values = data["Diffuse"].GetArray();
-			mDiffuseColor = glm::vec3(values[0].GetFloat(), values[1].GetFloat(), values[2].GetFloat());
+			mDiffuseColor = JSONHelper::GetVec3F(data["Diffuse"].GetArray());
 		}
 		if (data.HasMember("Specular"))
 		{
-			rapidjson::Value::Array values = data["Specular"].GetArray();
-			mSpecularColor = glm::vec3(values[0].GetFloat(), values[1].GetFloat(), values[2].GetFloat());
+			mSpecularColor = JSONHelper::GetVec3F(data["Specular"].GetArray());
 		}
 		if (data.HasMember("Shininess"))
 		{

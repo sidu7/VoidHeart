@@ -4,7 +4,7 @@
 namespace Hollow {
 	class Body : public Component
 	{
-		REGISTERCOMPONENT(Body, "Body");
+		REGISTERCOMPONENT(Body);
 	public:
 		void Init() {}
 		void Clear() {}

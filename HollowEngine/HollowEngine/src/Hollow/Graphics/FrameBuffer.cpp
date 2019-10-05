@@ -83,9 +83,10 @@ namespace Hollow {
 		glBindTexture(GL_TEXTURE_2D, mpTextureID[index]);
 	}
 
-	void FrameBuffer::TexUnbind(unsigned int index)
+	void FrameBuffer::TexUnbind(unsigned int slot)
 	{
-
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void FrameBuffer::Clear() const

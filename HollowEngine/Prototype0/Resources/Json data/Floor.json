@@ -7,7 +7,8 @@
     },
     {
       "Type": "Model",
-      "Shape": 3
+      "Shape": 3,
+      "CastShadow": true
     },
     {
       "Type": "Material",

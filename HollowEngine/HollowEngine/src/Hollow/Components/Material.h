@@ -6,7 +6,7 @@ namespace Hollow {
 
 	class HOLLOW_API Material : public Component
 	{
-		REGISTERCOMPONENT(Material, "Material");
+		REGISTERCOMPONENT(Material);
 	public:
 		void Init();
 

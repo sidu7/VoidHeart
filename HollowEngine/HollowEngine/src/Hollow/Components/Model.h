@@ -8,16 +8,15 @@ namespace Hollow
 
 	class HOLLOW_API Model : public Component
 	{
-		REGISTERCOMPONENT(Model, "Model");
+		REGISTERCOMPONENT(Model);
 	public:
 		void Init();
 		void Clear();
 		void Serialize(rapidjson::Value::Object object);
 		void DebugDisplay();
-		inline std::vector<Mesh*>& GetMeshes() { return mMeshes; }
 
-	private:
 		std::vector<Mesh*> mMeshes;
 		Shader* mpShader;
+		bool mCastShadow;
 	};
 }

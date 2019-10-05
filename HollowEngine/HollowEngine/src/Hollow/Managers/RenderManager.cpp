@@ -34,9 +34,8 @@ namespace Hollow {
 		// Initialize G-Buffer
 		InitializeGBuffer();
 
-		// Init ShadowMap and shader
+		// Init ShadowMap shader
 		mpShadowMapShader = new Shader("Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag");
-		mpShadowMap = new FrameBuffer(1024, 1024,1,true);
 
 		// Init Debug Shader
 		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
@@ -65,12 +64,15 @@ namespace Hollow {
 		// Deferred G-Buffer Pass
 		GBufferPass();
 
-		// ShadowMap Pass
-		CreateShadowMap();
+		for (unsigned int i = 0; i < mLightData.size(); ++i)
+		{
+			// ShadowMap Pass
+			CreateShadowMap(mLightData[i]);
 
-		// Apply global lighting
-		GlobalLightingPass();
-
+			// Apply global lighting
+			GlobalLightingPass(mLightData[i]);
+		}
+		mLightData.clear();
 		mRenderData.clear();
 
 		//Draw debug drawings
@@ -106,28 +108,33 @@ namespace Hollow {
 		mpDeferredShader->SetInt("gSpecular", 3);
 	}
 
-	void RenderManager::CreateShadowMap()
+	void RenderManager::CreateShadowMap(LightData& light)
 	{
-		mpShadowMap->Bind();
+		if (!light.mCastShadow)
+		{
+			return;
+		}
+
+		light.mpShadowMap->Bind();
 		mpShadowMapShader->Use();
 
 		glm::mat4 LightLookAt, LightProj;
-		LightLookAt = glm::lookAt(glm::vec3(0.0f, 40.0f, 20.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		LightLookAt = glm::lookAt(light.mPosition, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		LightProj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 2000.0f);
 
 		mpShadowMapShader->SetMat4("Projection", LightProj);
 		mpShadowMapShader->SetMat4("View", LightLookAt);
 
-		mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
+		light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
 
-		//glEnable(GL_CULL_FACE);
-		//glCullFace(GL_FRONT);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
 
-		DrawAllRenderData(mpShadowMapShader);
+		DrawShadowCastingObjects(mpShadowMapShader);
 
-		//glDisable(GL_CULL_FACE);
+		glDisable(GL_CULL_FACE);
 
-		mpShadowMap->Unbind();
+		light.mpShadowMap->Unbind();
 	}
 
 	void RenderManager::GBufferPass()
@@ -147,7 +154,7 @@ namespace Hollow {
 		mpGBuffer->Unbind();
 	}
 
-	void RenderManager::GlobalLightingPass()
+	void RenderManager::GlobalLightingPass(LightData& light)
 	{
 		// Clear opengl
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -163,19 +170,20 @@ namespace Hollow {
 
 		// Send light and view position
 		mpDeferredShader->SetVec3("viewPosition", mpCamera->GetPosition());
-		//mpDeferredShader->SetVec3("lightPosition", light->position);
-		mpDeferredShader->SetVec3("lightPosition", glm::vec3(0.0f, 40.0f, 20.0f));
+		mpDeferredShader->SetVec3("lightPosition", light.mPosition);
 
 		// Send ShadowMap texture and shadow matrix
-		mpShadowMap->TexBind(0, 4);
+		light.mpShadowMap->TexBind(0, 4);
 		mpDeferredShader->SetInt("shadowMap", 4);
-		mpDeferredShader->SetMat4("shadowMatrix", mShadowMatrix);
+		mpDeferredShader->SetMat4("shadowMatrix", light.mShadowMatrix);
 
 		// Send debug information
 		mpDeferredShader->SetInt("displayMode", mGBufferDisplayMode);
 
 		// Render FSQ
 		DrawFSQ();
+
+		light.mpShadowMap->TexUnbind(4);
 	}
 
 	void RenderManager::DrawAllRenderData(Shader* pShader)
@@ -211,6 +219,26 @@ namespace Hollow {
 			}
 		}
 	}
+
+	void RenderManager::DrawShadowCastingObjects(Shader* pShader)
+	{
+		for (RenderData& data : mRenderData)
+		{
+			if (!data.mCastShadow)
+			{
+				continue;
+			}
+
+			pShader->SetMat4("Model", data.mpModel);
+
+			// Draw object
+			for (Mesh* mesh : data.mpMeshes)
+			{
+				mesh->Draw(pShader);
+			}
+		}
+	}
+
 	void RenderManager::DrawFSQ()
 	{
 		static unsigned int quadVAO = 0;

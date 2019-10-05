@@ -9,10 +9,11 @@ namespace Hollow {
 
 	void Model::Init()
 	{
-
+		mCastShadow = false;
 	}
 	void Model::Clear()
 	{
+		mCastShadow = false;
 	}
 	void Model::Serialize(rapidjson::Value::Object object)
 	{
@@ -23,6 +24,10 @@ namespace Hollow {
 		if (object.HasMember("Shape"))
 		{
 			mMeshes.push_back(ResourceManager::Instance().GetShape((Shapes)object["Shape"].GetUint()));
+		}
+		if (object.HasMember("CastShadow"))
+		{
+			mCastShadow = object["CastShadow"].GetBool();
 		}
 	}
 	void Model::DebugDisplay()

@@ -12,8 +12,8 @@
 
 #define BIT(x) (1<<x)
 
-#define REGISTERCOMPONENT(x,y) public:										\
-					x() : Component(y, this) {}								\
+#define REGISTERCOMPONENT(x) public:										\
+					x() : Component(#x, this) {}								\
 					x(std::string name) : Component(name) {}				\
 					std::type_index GetIndex()								\
 					{														\

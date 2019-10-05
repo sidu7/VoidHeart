@@ -5,7 +5,7 @@ namespace Hollow
 {
 	class HOLLOW_API Transform : public Component
 	{
-		REGISTERCOMPONENT(Transform, "Transform");
+		REGISTERCOMPONENT(Transform);
 	public:
 
 		void Init();

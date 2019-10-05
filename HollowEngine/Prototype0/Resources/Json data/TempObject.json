@@ -6,7 +6,8 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/scene.fbx"
+      "Model": "Resources/Models/scene.fbx",
+      "CastShadow":  true
     },
     {
       "Type": "Material",

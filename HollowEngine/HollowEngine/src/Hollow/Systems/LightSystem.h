@@ -1,14 +1,13 @@
 #pragma once
-
 #include "System.h"
 
 namespace Hollow
 {
-	class RenderSystem : public System
+	class LightSystem : public System
 	{
-		REGISTERSYSTEM(RenderSystem,3)
+		REGISTERSYSTEM(LightSystem,3)
 	public:
-		virtual ~RenderSystem() {}
+		virtual ~LightSystem() {}
 		void Update(GameObject* gameobject);
 		void AddGameObject(GameObject* object);
 	};

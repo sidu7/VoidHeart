@@ -32,18 +32,15 @@ namespace Hollow {
 	{
 		if (data.HasMember("Position"))
 		{
-			rapidjson::Value::Array arr = data["Position"].GetArray();
-			mPosition = glm::vec3(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat());
+			mPosition = JSONHelper::GetVec3F(data["Position"].GetArray());
 		}
 		if (data.HasMember("Scale"))
 		{
-			rapidjson::Value::Array arr = data["Scale"].GetArray();
-			mScale = glm::vec3(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat());
+			mScale = JSONHelper::GetVec3F(data["Scale"].GetArray());
 		}
 		if (data.HasMember("Rotation"))
 		{
-			rapidjson::Value::Array arr = data["Rotation"].GetArray();
-			mRotation = glm::vec3(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat());
+			mRotation = JSONHelper::GetVec3F(data["Rotation"].GetArray());
 		}
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, mPosition);

@@ -4,7 +4,7 @@
 
 class PrototypeComponent : public Hollow::Component
 {
-	REGISTERCOMPONENT(PrototypeComponent,"PrototypeComponent");
+	REGISTERCOMPONENT(PrototypeComponent);
 public:
 	void Init();
 	void Serialize(rapidjson::Value::Object data) {}
