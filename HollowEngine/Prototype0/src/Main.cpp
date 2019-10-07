@@ -10,7 +10,6 @@
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 
-#include "Hollow/Components/Shape.h"
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Transform.h"
 
@@ -57,12 +56,15 @@ public:
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());
 		
-		for(int i = 0; i < 100; ++i)
-			Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		//for(int i = 0; i < 100; ++i)
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 	}
 	
 	~Prototype0()
 	{
+		HW_TRACE("Prototype Closing");
 	}
 };
 

@@ -6,6 +6,7 @@ namespace Hollow {
 	{
 	private:
 		unsigned int mRendererID;
+		unsigned int mPrevWidth, mPrevHeight;
 
 	public:
 		unsigned int *mpTextureID;
@@ -16,10 +17,10 @@ namespace Hollow {
 		FrameBuffer() { }
 		~FrameBuffer();
 
-		void Bind() const;
+		void Bind();
 		void Unbind() const;
 		void TexBind(unsigned int index = 0, unsigned int slot = 0);
-		void TexUnbind(unsigned int index = 0);
+		void TexUnbind(unsigned int slot = 0);
 		void Clear() const;
 		void Delete() const;
 		void ChangeSize(unsigned int width, unsigned int height);
