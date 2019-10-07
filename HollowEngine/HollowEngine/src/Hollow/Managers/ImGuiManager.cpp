@@ -18,7 +18,7 @@ namespace Hollow {
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		ImGui::StyleColorsDark();
-		
+
 		// Set up renderer bindings
 		ImGui_ImplSDL2_InitForOpenGL(mpWindow->GetWindow(), mpWindow->GetContext());
 		ImGui_ImplOpenGL3_Init("#version 430");
@@ -33,13 +33,16 @@ namespace Hollow {
 
 	void ImGuiManager::Update()
 	{
-		if (ImGui::Begin("Game Objects"))
+		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
-			ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
-			for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
-			{
-				pGameObject->DebugDisplay();
-			}
+			ImGui::Begin("Game Objects", NULL, ImGuiWindowFlags_NoScrollWithMouse);
+		}
+		else
+			ImGui::Begin("Game Objects");
+		ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
+		for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
+		{
+			pGameObject->DebugDisplay();
 		}
 		ImGui::End();
 
