@@ -23,7 +23,7 @@ namespace Hollow {
 			// TODO: Find a better way to update transform matrix
 			glm::mat4 mat(1.0f);
 			mat = glm::translate(mat, mPosition);
-			SetTranformationMatrix(mat);
+			mTransformationMatrix = mat;
 			ImGui::TreePop();
 		}
 	}

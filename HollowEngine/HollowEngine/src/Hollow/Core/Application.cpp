@@ -78,10 +78,11 @@ namespace Hollow {
 			{
 				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			}
+			InputManager::Instance().Update();
 			SystemManager::Instance().Update();
+			// TODO make camera controller
 			RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			RenderManager::Instance().Update();
-			InputManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
 		}

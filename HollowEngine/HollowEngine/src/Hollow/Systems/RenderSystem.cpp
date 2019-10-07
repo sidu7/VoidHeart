@@ -22,7 +22,7 @@ void Hollow::RenderSystem::Update(GameObject* gameobject)
 {	
 	RenderData data;
 	Transform* trans = gameobject->GetComponent<Transform>();
-	data.mpModel = trans->GetTranformationMatrix();
+	data.mpModel = trans->mTransformationMatrix;
 
 	//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
 	//DebugDrawManager::Instance().DebugCube(trans->GetPosition() + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));

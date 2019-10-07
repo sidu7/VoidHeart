@@ -26,7 +26,7 @@ namespace Hollow
 		light.mCastShadow = clight->mCastShadow;
 		light.mpShadowMap = clight->mpShadowMap;
 
-		light.mPosition = gameobject->GetComponent<Transform>()->GetPosition();
+		light.mPosition = gameobject->GetComponent<Transform>()->mPosition;
 
 		RenderManager::Instance().mLightData.push_back(light);
 	}
