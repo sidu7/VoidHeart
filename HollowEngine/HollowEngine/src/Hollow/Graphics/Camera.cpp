@@ -38,11 +38,25 @@ namespace Hollow {
 		float velocity = mMovementSpeed * frameTime;
 		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W))
 		{
-			mPosition += mFront * velocity;
+			if (InputManager::Instance().IsMouseButtonPressed(2))
+			{
+				mPosition += mUp * velocity;
+			}
+			else
+			{
+				mPosition += mFront * velocity;
+			}
 		}
 		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S))
 		{
-			mPosition -= mFront * velocity;
+			if (InputManager::Instance().IsMouseButtonPressed(2))
+			{
+				mPosition -= mUp * velocity;
+			}
+			else
+			{
+				mPosition -= mFront * velocity;
+			}
 		}
 		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_A))
 		{

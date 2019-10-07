@@ -17,24 +17,22 @@ namespace Hollow {
 	public:
 		void Init(GameWindow* pWindow = nullptr);
 		void CleanUp();
-
 		void Update();
-
 		inline Camera* GetCamera(){ return mpCamera; }
 
-	public:
-		std::vector<RenderData> mRenderData;
-		std::vector<DebugRenderData> mDebugRenderData;
 	private:
 		// Initialization Functions
 		void InitializeGBuffer();
 
 		void CreateDeferredShader();
 
+		void CreateShadowMap(LightData& light);
+
 		void GBufferPass();
-		void GlobalLightingPass();
+		void GlobalLightingPass(LightData& light);
 
 		void DrawAllRenderData(Shader* pShader);
+		void DrawShadowCastingObjects(Shader* pShader);
 		void DrawFSQ();
 
 		void DrawDebugDrawings();
@@ -43,12 +41,16 @@ namespace Hollow {
 		void DebugDisplay();
 		void DebugDisplayGBuffer();
 
+	public:
+		std::vector<RenderData> mRenderData;
+		std::vector<DebugRenderData> mDebugRenderData;
+		std::vector<LightData> mLightData;
+
 	private:
 		// Transformation matricies
 		glm::mat4 mProjectionMatrix;
 		glm::mat4 mViewMatrix;
 
-	private:
 		GameWindow* mpWindow;
 		Camera* mpCamera;
 
@@ -62,5 +64,8 @@ namespace Hollow {
 		Shader* mpGBufferShader;
 		FrameBuffer* mpGBuffer;
 		int mGBufferDisplayMode;
+
+		// Shadows
+		Shader* mpShadowMapShader;
 	};
 }

@@ -154,23 +154,44 @@ void Hollow::ResourceManager::InitializeShapes()
 	std::vector<unsigned int> indices;
 
 	//Quad
-	for (unsigned int i = 0; i < 4; ++i)
-	{
-		Vertex v;
-		int x = i == 0 || i == 3 ? -1 : 1;
-		int y = i < 2 ? -1 : 1;
-		v.position = glm::vec3(0.5f * x, 0.5f * y, 0.0f);
-		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
-		v.tex = glm::vec2(x == -1 ? 0.0f : 1.0f, y == -1 ? 0.0f : 1.0f);
-		vertices.push_back(v);
-	}
+	Vertex v;
+	v.position = glm::vec3(-1.0f, 0.0f, 1.0f);
+	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+	v.tex = glm::vec2(0.0f, 0.0f);
+	vertices.push_back(v);
+
+	v.position = glm::vec3(1.0f, 0.0f, 1.0f);
+	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+	v.tex = glm::vec2(1.0f, 0.0f);
+	vertices.push_back(v);
+
+	v.position = glm::vec3(-1.0f, 0.0f, -1.0f);
+	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+	v.tex = glm::vec2(0.0f, 1.0f);
+	vertices.push_back(v);
+
+	v.position = glm::vec3(1.0f, 0.0f, -1.0f);
+	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+	v.tex = glm::vec2(1.0f, 1.0f);
+	vertices.push_back(v);
+
+	//for (unsigned int i = 0; i < 4; ++i)
+	//{
+	//	Vertex v;
+	//	int x = i == 0 || i == 3 ? -1 : 1;
+	//	int y = i < 2 ? -1 : 1;
+	//	v.position = glm::vec3(0.5f * x, 0.5f * y, 0.0f);
+	//	v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+	//	v.tex = glm::vec2(x == -1 ? 0.0f : 1.0f, y == -1 ? 0.0f : 1.0f);
+	//	vertices.push_back(v);
+	//}
 
 	indices.push_back(0);
+	indices.push_back(2);
+	indices.push_back(1);
 	indices.push_back(1);
 	indices.push_back(2);
-	indices.push_back(2);
 	indices.push_back(3);
-	indices.push_back(0);
 
 	mShapes[QUAD] = CreateMesh(vertices, indices);
 

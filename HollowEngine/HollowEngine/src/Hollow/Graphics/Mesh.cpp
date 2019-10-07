@@ -8,7 +8,7 @@
 
 namespace Hollow
 {
-	Mesh::Mesh()
+	Mesh::Mesh() : mpVAO(nullptr), mpEBO(nullptr)
 	{
 	}
 
@@ -17,7 +17,6 @@ namespace Hollow
 		delete mpVAO;
 		delete mpEBO;
 	}
-
 
 	void Mesh::Draw(Shader* pShader)
 	{
