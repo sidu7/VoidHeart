@@ -164,7 +164,7 @@ namespace Hollow {
 		std::map<std::pair<int, int>, int> edgeMap;
 	};
 
-	class Collider : public Component
+	class HOLLOW_API Collider : public Component
 	{
 		REGISTERCOMPONENT(Collider);
 	public:
@@ -174,8 +174,6 @@ namespace Hollow {
 
 		void Serialize(rapidjson::Value::Object);
 
-		void UpdateShape();
-		void Update();
 		void SetMeshData();
 	public:
 		Shape* mpShape;

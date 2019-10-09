@@ -1,19 +1,26 @@
 {
-  "Components": [
-    {
-      "Type": "Transform",
-      "Position": [ 0.0, 0.0, 0.0 ]
-    },
-    {
-      "Type": "Model",
-      "Model": "Resources/Models/scene.fbx",
-      "CastShadow":  true
-    },
-    {
-      "Type": "Material",
-      "Specular": [ 1.0, 1.0, 1.0 ],
-      "Shininess": 10.0,
-      "Texture": "Resources/Textures/cracks.png"
-    }
-  ]
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.0, 10.0, 0.0 ]
+        },
+        {
+            "Type": "Body",
+            "Mass": 1.0
+        },
+        {
+            "Type": "Collider"
+        },
+        {
+            "Type": "Model",
+            "Model": "Resources/Models/scene.fbx",
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Specular": [ 1.0, 1.0, 1.0 ],
+            "Shininess": 10.0,
+            "Texture": "Resources/Textures/cracks.png"
+        }
+    ]
 }

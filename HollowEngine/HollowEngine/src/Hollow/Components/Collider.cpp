@@ -1,10 +1,10 @@
-#include "hollowpch.h"
+#include <hollowpch.h>
 #include "Collider.h"
 #include "Shape.h"
-#include "Transform.h"
 
 namespace Hollow
 {
+	Collider Collider::instance;
 
 	void Collider::Init()
 	{
@@ -18,10 +18,24 @@ namespace Hollow
 		coeffDynamicFriction = 0.75f; // while sliding
 	}
 
-	
-	void Collider::Update() {
-		UpdateShape();
+	void Collider::Clear()
+	{
 	}
+
+	void Collider::DebugDisplay()
+	{
+		if (ImGui::TreeNode("Collider"))
+		{
+			ImGui::InputFloat3("Shape Extents", &mpShape->GetHalfExtents()[0]);
+			ImGui::TreePop();
+		}
+	}
+
+	void Collider::Serialize(rapidjson::Value::Object data)
+	{
+		
+	}
+
 
 	void Collider::SetMeshData()
 	{
@@ -76,17 +90,4 @@ namespace Hollow
 		meshData.AddFace(faceVerts);
 	}
 
-	void Collider::UpdateShape() {
-		glm::vec3 extents = static_cast<ShapeAABB*>(mpLocalShape)->GetHalfExtents();
-		glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
-		glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
-		glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-		glm::vec3 rotatedExtents = abs(glm::mat3(mpTr->mTransformationMatrix) * x) +
-			abs(glm::mat3(mpTr->mTransformationMatrix) * y) +
-			abs(glm::mat3(mpTr->mTransformationMatrix) * z);
-
-		// based on normalized body vertices
-		static_cast<ShapeAABB*>(mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + mpTr->mPosition;
-		static_cast<ShapeAABB*>(mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + mpTr->mPosition;
-	}
 }

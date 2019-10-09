@@ -37,6 +37,7 @@
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
+    <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
@@ -103,6 +104,10 @@
     <ClInclude Include="src\Hollow\Managers\ResourceManager.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Broadphase.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\ContactManifold.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
+    <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
     <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
@@ -180,7 +185,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hollowpch.h</PrecompiledHeaderFile>

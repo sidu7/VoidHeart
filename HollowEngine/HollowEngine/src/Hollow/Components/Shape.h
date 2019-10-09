@@ -90,13 +90,13 @@ namespace Hollow {
 
 		// set the bounds of this AABB to encompass the argument AABBs
 		void Merge(ShapeAABB& first, ShapeAABB& second) {
-			mMin.x = min(first.mMin.x, second.mMin.x);
-			mMin.y = min(first.mMin.y, second.mMin.y);
-			mMin.z = min(first.mMin.z, second.mMin.z);
+			mMin.x = std::min(first.mMin.x, second.mMin.x);
+			mMin.y = std::min(first.mMin.y, second.mMin.y);
+			mMin.z = std::min(first.mMin.z, second.mMin.z);
 
-			mMax.x = max(first.mMax.x, second.mMax.x);
-			mMax.y = max(first.mMax.y, second.mMax.y);
-			mMax.z = max(first.mMax.z, second.mMax.z);
+			mMax.x = std::max(first.mMax.x, second.mMax.x);
+			mMax.y = std::max(first.mMax.y, second.mMax.y);
+			mMax.z = std::max(first.mMax.z, second.mMax.z);
 		}
 
 		bool Contains(ShapeAABB& other) {

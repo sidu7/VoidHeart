@@ -17,17 +17,20 @@ namespace Hollow
 		CheckComponents<Transform, Light>(object);
 	}
 
-	void LightSystem::Update(GameObject* gameobject)
+	void LightSystem::Update()
 	{
-		LightData light;
+		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
+		{
+			LightData light;
 
-		Light* clight = gameobject->GetComponent<Light>();
-		light.mColor = clight->mColor;
-		light.mCastShadow = clight->mCastShadow;
-		light.mpShadowMap = clight->mpShadowMap;
+			Light* clight = mGameObjects[i]->GetComponent<Light>();
+			light.mColor = clight->mColor;
+			light.mCastShadow = clight->mCastShadow;
+			light.mpShadowMap = clight->mpShadowMap;
 
-		light.mPosition = gameobject->GetComponent<Transform>()->mPosition;
+			light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;
 
-		RenderManager::Instance().mLightData.push_back(light);
+			RenderManager::Instance().mLightData.push_back(light);
+		}
 	}
 }

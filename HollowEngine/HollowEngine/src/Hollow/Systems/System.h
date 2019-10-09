@@ -14,16 +14,8 @@ namespace Hollow
 			this->mTier = tier;
 		}
 		virtual ~System() {}
-		virtual void Update(GameObject* gameobject) = 0;
+		virtual void Update() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
-
-		void DoUpdate()
-		{
-			for (unsigned int i = 0; i < mGameObjects.size(); ++i)
-			{
-				Update(mGameObjects[i]);
-			}
-		}
 
 		void DeleteGameObject(GameObject* pGameObject)
 		{

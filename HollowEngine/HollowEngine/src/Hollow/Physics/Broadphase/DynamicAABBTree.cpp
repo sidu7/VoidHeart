@@ -105,7 +105,7 @@ namespace Hollow {
 			Node* l = parent->left;
 			Node* r = parent->right;
 
-			p->height = 1 + max(l->height, r->height);
+			p->height = 1 + std::max(l->height, r->height);
 			p->aabb->Merge(*l->aabb, *r->aabb);
 
 			p = p->parent;
