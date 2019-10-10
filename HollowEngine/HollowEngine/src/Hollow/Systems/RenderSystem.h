@@ -9,7 +9,7 @@ namespace Hollow
 		REGISTERSYSTEM(RenderSystem,3)
 	public:
 		virtual ~RenderSystem() {}
-		void Update(GameObject* gameobject);
+		void Update();
 		void AddGameObject(GameObject* object);
 	};
 }

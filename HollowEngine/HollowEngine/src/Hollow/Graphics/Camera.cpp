@@ -104,20 +104,21 @@ namespace Hollow {
 
 	bool Camera::HandleMouseScroll(MouseScrolledEvent& mse)
 	{
-
-		if (mZoom >= 1.0f && mZoom <= 90.0f)
+		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
-			mZoom -= mse.GetYOffset();
+			if (mZoom >= 1.0f && mZoom <= 90.0f)
+			{
+				mZoom -= mse.GetYOffset();
+			}
+			if (mZoom <= 1.0f)
+			{
+				mZoom = 1.0f;
+			}
+			if (mZoom > 90.0f)
+			{
+				mZoom = 90.0f;
+			}
 		}
-		if (mZoom <= 1.0f)
-		{
-			mZoom = 1.0f;
-		}
-		if (mZoom > 90.0f)
-		{
-			mZoom = 90.0f;
-		}
-
 		return false;
 	}
 

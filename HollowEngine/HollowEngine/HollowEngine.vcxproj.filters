@@ -49,6 +49,10 @@
     <ClCompile Include="src\Hollow\Graphics\FrameBuffer.cpp" />
     <ClCompile Include="src\Hollow\Components\Light.cpp" />
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
+    <ClCompile Include="src\Hollow\Components\Collider.cpp" />
+    <ClCompile Include="src\Hollow\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
+    <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
     <ClCompile Include="src\Hollow\Components\ParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -71,9 +75,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vendor\Include\ImGui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\Systems\TempSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Hollow\Managers\SystemManager.cpp">
@@ -143,7 +144,6 @@
     <ClInclude Include="vendor\Include\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\Hollow\Managers\SystemManager.h" />
     <ClInclude Include="src\Hollow\Systems\System.h" />
-    <ClInclude Include="src\Hollow\Systems\TempSystem.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Core\Application.h" />
@@ -174,6 +174,16 @@
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
     <ClInclude Include="src\Utils\JSONHelper.h" />
+    <ClInclude Include="src\Hollow\Components\Shape.h" />
+    <ClInclude Include="src\Hollow\Components\Collider.h" />
+    <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
+    <ClInclude Include="src\Hollow\Physics\Broadphase\Broadphase.h" />
+    <ClInclude Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\ContactManifold.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
+    <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
   </ItemGroup>
 </Project>

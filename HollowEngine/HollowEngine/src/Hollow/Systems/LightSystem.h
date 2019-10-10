@@ -8,7 +8,7 @@ namespace Hollow
 		REGISTERSYSTEM(LightSystem,3)
 	public:
 		virtual ~LightSystem() {}
-		void Update(GameObject* gameobject);
+		void Update();
 		void AddGameObject(GameObject* object);
 	};
 }
