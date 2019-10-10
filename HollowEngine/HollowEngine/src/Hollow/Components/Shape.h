@@ -1,5 +1,6 @@
 #pragma once
-#include <hollowpch.h>
+
+#include "Hollow/Physics/NarrowPhase/MeshData.h"
 
 namespace Hollow {
 	class Collider;
@@ -57,6 +58,8 @@ namespace Hollow {
 		{
 			mMin = min;
 			mMax = max;
+
+			SetMeshData();
 		}
 		bool TestPoint(float PointX, float PointY)
 		{
@@ -118,8 +121,62 @@ namespace Hollow {
 			return 8.0f * (extents.x * extents.y + extents.y * extents.z + extents.z * extents.x);
 		}
 
+		void SetMeshData()
+		{
+			// generate vertices
+			mMeshData.AddVertex(glm::vec3(-0.5f, -0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, -0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, 0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(-0.5f, 0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(-0.5f, -0.5f, -0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, -0.5f, -0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, 0.5f, -0.5f));
+			mMeshData.AddVertex(glm::vec3(-0.5f, 0.5f, -0.5f));
+
+			// generate (quadrilateral) faces
+			std::vector<int> faceVerts;
+			faceVerts.clear();
+			faceVerts.push_back(0);
+			faceVerts.push_back(1);
+			faceVerts.push_back(2);
+			faceVerts.push_back(3);
+			mMeshData.AddFace(faceVerts);
+
+			faceVerts.clear();
+			faceVerts.push_back(7);
+			faceVerts.push_back(6);
+			faceVerts.push_back(5);
+			faceVerts.push_back(4);
+			mMeshData.AddFace(faceVerts);
+			faceVerts.clear();
+			faceVerts.push_back(1);
+			faceVerts.push_back(0);
+			faceVerts.push_back(4);
+			faceVerts.push_back(5);
+			mMeshData.AddFace(faceVerts);
+			faceVerts.clear();
+			faceVerts.push_back(2);
+			faceVerts.push_back(1);
+			faceVerts.push_back(5);
+			faceVerts.push_back(6);
+			mMeshData.AddFace(faceVerts);
+			faceVerts.clear();
+			faceVerts.push_back(3);
+			faceVerts.push_back(2);
+			faceVerts.push_back(6);
+			faceVerts.push_back(7);
+			mMeshData.AddFace(faceVerts);
+			faceVerts.clear();
+			faceVerts.push_back(0);
+			faceVerts.push_back(3);
+			faceVerts.push_back(7);
+			faceVerts.push_back(4);
+			mMeshData.AddFace(faceVerts);
+		}
+
 		glm::vec3 mMin, mMax;
 		glm::mat4 mDebugMatrix;
+		MeshData mMeshData;
 	};
 
 }

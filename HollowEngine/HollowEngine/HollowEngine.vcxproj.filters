@@ -182,5 +182,6 @@
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
     <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
   </ItemGroup>
 </Project>

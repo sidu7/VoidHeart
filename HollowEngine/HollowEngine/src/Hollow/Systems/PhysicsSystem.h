@@ -8,17 +8,19 @@ namespace Hollow {
 	{
 		REGISTERSYSTEM(PhysicsSystem, 2)
 	public:
-		void Step(float);
 		void Update();
 		void AddGameObject(GameObject* object);
+
+	private:
+		void Step(float);
 		void InterpolateState(float);
+		
 		// Data
 		DynamicAABBTree mTree;
 
 		// SAT
 		SAT mSAT;
 
-	private:
 		bool isPaused;
 		bool nextStep;
 		bool isApplyFriction = true;

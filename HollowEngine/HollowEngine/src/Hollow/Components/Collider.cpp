@@ -37,57 +37,6 @@ namespace Hollow
 	}
 
 
-	void Collider::SetMeshData()
-	{
-		// generate vertices
-		meshData.AddVertex(glm::vec3(-0.5f, -0.5f, 0.5f));
-		meshData.AddVertex(glm::vec3(0.5f, -0.5f, 0.5f));
-		meshData.AddVertex(glm::vec3(0.5f, 0.5f, 0.5f));
-		meshData.AddVertex(glm::vec3(-0.5f, 0.5f, 0.5f));
-		meshData.AddVertex(glm::vec3(-0.5f, -0.5f, -0.5f));
-		meshData.AddVertex(glm::vec3(0.5f, -0.5f, -0.5f));
-		meshData.AddVertex(glm::vec3(0.5f, 0.5f, -0.5f));
-		meshData.AddVertex(glm::vec3(-0.5f, 0.5f, -0.5f));
-
-		// generate (quadrilateral) faces
-		std::vector<int> faceVerts;
-		faceVerts.clear();
-		faceVerts.push_back(0);
-		faceVerts.push_back(1);
-		faceVerts.push_back(2);
-		faceVerts.push_back(3);
-		meshData.AddFace(faceVerts);
-
-		faceVerts.clear();
-		faceVerts.push_back(7);
-		faceVerts.push_back(6);
-		faceVerts.push_back(5);
-		faceVerts.push_back(4);
-		meshData.AddFace(faceVerts);
-		faceVerts.clear();
-		faceVerts.push_back(1);
-		faceVerts.push_back(0);
-		faceVerts.push_back(4);
-		faceVerts.push_back(5);
-		meshData.AddFace(faceVerts);
-		faceVerts.clear();
-		faceVerts.push_back(2);
-		faceVerts.push_back(1);
-		faceVerts.push_back(5);
-		faceVerts.push_back(6);
-		meshData.AddFace(faceVerts);
-		faceVerts.clear();
-		faceVerts.push_back(3);
-		faceVerts.push_back(2);
-		faceVerts.push_back(6);
-		faceVerts.push_back(7);
-		meshData.AddFace(faceVerts);
-		faceVerts.clear();
-		faceVerts.push_back(0);
-		faceVerts.push_back(3);
-		faceVerts.push_back(7);
-		faceVerts.push_back(4);
-		meshData.AddFace(faceVerts);
-	}
+	
 
 }

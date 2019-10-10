@@ -2,8 +2,11 @@
 
 #include "SAT.h"
 #include "ContactManifold.h"
-#include "Hollow/Components/Collider.h"
 #include "Contact.h"
+#include "MeshData.h"
+
+#include "Hollow/Components/Collider.h"
+#include "Hollow/Components/Shape.h"
 
 #define epsilon 0.0001f
 namespace Hollow {
@@ -86,16 +89,16 @@ namespace Hollow {
 			glm::vec3 ver2 = polygon[i];
 			float dist2 = glm::dot(normal, ver2 - pointOnPlane);
 
-			if (dist1 <= 0.0f and dist2 <= 0.0f) {
+			if (dist1 <= 0.0f && dist2 <= 0.0f) {
 				clipped.push_back(ver2);
 			}
-			else if (dist1 <= 0.0f and dist2 > 0.0f) {
+			else if (dist1 <= 0.0f && dist2 > 0.0f) {
 				float frac = dist1 / (dist1 - dist2);
 				glm::vec3 intersectionPoint = ver1 + frac * (ver2 - ver1);
 
 				clipped.push_back(intersectionPoint);
 			}
-			else if (dist2 <= 0.0f and dist1 > 0.0f) {
+			else if (dist2 <= 0.0f && dist1 > 0.0f) {
 				float frac = dist1 / (dist1 - dist2);
 				glm::vec3 intersectionPoint = ver1 + frac * (ver2 - ver1);
 
@@ -149,10 +152,10 @@ namespace Hollow {
 		// if Minimum Axis of Penetration is Face Normal
 		if (refFaceOnA || refFaceOnB) {
 			glm::vec3 refFaceNormal = glm::vec3(0.0f);
-			MeshData& incidentMeshData = inciCollider->meshData;
-			MeshData& referenceMeshData = refCollider->meshData;
+			MeshData& incidentMeshData = static_cast<ShapeAABB*>(inciCollider->mpShape)->mMeshData;
+			MeshData& referenceMeshData = static_cast<ShapeAABB*>(refCollider->mpShape)->mMeshData;
 
-			refFaceNormal = refCollider->mpBody->mRotationMatrix * refCollider->meshData.faces[refIndex].normal;
+			refFaceNormal = refCollider->mpBody->mRotationMatrix * referenceMeshData.faces[refIndex].normal;
 
 			// Find incident face
 			int incidentIndex = -1;
@@ -332,15 +335,18 @@ namespace Hollow {
 			mContacts->push_back(manifold);
 		}
 		else if (edgeQuery.edgeA != -1) {
+			MeshData& md1 = static_cast<ShapeAABB*>(col1->mpShape)->mMeshData;
+			MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
+			
 			// edge case
-			glm::vec3 pA1 = col1->meshData.vertices[col1->meshData.edges[col1->meshData.edges[edgeQuery.edgeA].prev].toVertex].point;
-			glm::vec3 pA2 = col1->meshData.vertices[col1->meshData.edges[edgeQuery.edgeA].toVertex].point;
+			glm::vec3 pA1 = md1.vertices[md1.edges[md1.edges[edgeQuery.edgeA].prev].toVertex].point;
+			glm::vec3 pA2 = md1.vertices[md1.edges[edgeQuery.edgeA].toVertex].point;
 
 			pA1 = col1->mpBody->mRotationMatrix * pA1 + col1->mpBody->mPosition;
 			pA2 = col1->mpBody->mRotationMatrix * pA2 + col1->mpBody->mPosition;
 
-			glm::vec3 pB1 = col2->meshData.vertices[col2->meshData.edges[col2->meshData.edges[edgeQuery.edgeB].prev].toVertex].point;
-			glm::vec3 pB2 = col2->meshData.vertices[col2->meshData.edges[edgeQuery.edgeB].toVertex].point;
+			glm::vec3 pB1 = md2.vertices[md2.edges[md2.edges[edgeQuery.edgeB].prev].toVertex].point;
+			glm::vec3 pB2 = md2.vertices[md2.edges[edgeQuery.edgeB].toVertex].point;
 
 			pB1 = col2->mpBody->mRotationMatrix * pB1 + col2->mpBody->mPosition;
 			pB2 = col2->mpBody->mRotationMatrix * pB2 + col2->mpBody->mPosition;
@@ -416,12 +422,15 @@ namespace Hollow {
 		fq.faceIndex = -1;
 		fq.separation = -std::numeric_limits<float>::infinity();
 
-		for (int i = 0; i < col1->meshData.faces.size(); ++i) {
-			glm::vec3 normalInBSpace = C * col1->meshData.faces[i].normal;
+		MeshData& md1 = static_cast<ShapeAABB*>(col1->mpShape)->mMeshData;
+		MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
 
-			glm::vec3 facePointinBSpace = C * (col1->meshData.GetPointOnFace(i)) + glm::transpose(Rb) * (col1->mpBody->mPosition - col2->mpBody->mPosition);
+		for (int i = 0; i < md1.faces.size(); ++i) {
+			glm::vec3 normalInBSpace = C * md1.faces[i].normal;
 
-			glm::vec3 supportPoint = col2->meshData.GetSupport(-normalInBSpace);
+			glm::vec3 facePointinBSpace = C * (md1.GetPointOnFace(i)) + glm::transpose(Rb) * (col1->mpBody->mPosition - col2->mpBody->mPosition);
+
+			glm::vec3 supportPoint = md2.GetSupport(-normalInBSpace);
 
 			float s = glm::dot(normalInBSpace, supportPoint - facePointinBSpace);
 			if (s > fq.separation) {
@@ -476,21 +485,24 @@ namespace Hollow {
 		eq.edgeB = -1;
 		eq.separation = -std::numeric_limits<float>::infinity();
 
-		for (int i = 0; i < col1->meshData.edges.size(); i += 2) {
-			glm::vec3 edge1Dir = C * col1->meshData.GetEdgeDirection(i);
-			glm::vec3 p1 = C * col1->meshData.vertices[col1->meshData.edges[col1->meshData.edges[i].prev].toVertex].point + centerA;
+		MeshData& md1 = static_cast<ShapeAABB*>(col1->mpShape)->mMeshData;
+		MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
 
-			glm::vec3 u1 = C * col1->meshData.faces[col1->meshData.edges[i].face].normal;
-			glm::vec3 v1 = C * col1->meshData.faces[col1->meshData.edges[i + 1].face].normal;
+		for (int i = 0; i < md1.edges.size(); i += 2) {
+			glm::vec3 edge1Dir = C * md1.GetEdgeDirection(i);
+			glm::vec3 p1 = C * md1.vertices[md1.edges[md1.edges[i].prev].toVertex].point + centerA;
 
-			assert(i + 1 == col1->meshData.edges[i].twin);
+			glm::vec3 u1 = C * md1.faces[md1.edges[i].face].normal;
+			glm::vec3 v1 = C * md1.faces[md1.edges[i + 1].face].normal;
 
-			for (int j = 0; j < col2->meshData.edges.size(); j += 2) {
-				glm::vec3 edge2Dir = col2->meshData.GetEdgeDirection(j);
-				glm::vec3 p2 = col2->meshData.vertices[col2->meshData.edges[col2->meshData.edges[j].prev].toVertex].point;
+			assert(i + 1 == md1.edges[i].twin);
 
-				glm::vec3 u2 = col2->meshData.faces[col2->meshData.edges[j].face].normal;
-				glm::vec3 v2 = col2->meshData.faces[col2->meshData.edges[j + 1].face].normal;
+			for (int j = 0; j < md2.edges.size(); j += 2) {
+				glm::vec3 edge2Dir = md2.GetEdgeDirection(j);
+				glm::vec3 p2 = md2.vertices[md2.edges[md2.edges[j].prev].toVertex].point;
+
+				glm::vec3 u2 = md2.faces[md2.edges[j].face].normal;
+				glm::vec3 v2 = md2.faces[md2.edges[j + 1].face].normal;
 
 				// check arcs intersection on gauss map to cull edge checks
 				if (isMinkowskiFace(u1, v1, -edge1Dir, -u2, -v2, -edge2Dir)) {

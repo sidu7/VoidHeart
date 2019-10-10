@@ -34,8 +34,6 @@ namespace Hollow
 			
 			pCol->mpBody->mPosition = pCol->mpTr->mPosition;
 			pCol->mpTr->mQuaternion = pCol->mpTr->mQuaternion;
-			
-			pCol->SetMeshData();
 
 			// update local shape
 			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = glm::vec3(-0.5f, -0.5f, -0.5f) * (pCol->mpTr->mScale) + pCol->mpTr->mPosition;
@@ -77,7 +75,7 @@ namespace Hollow
 			mSAT.TestIntersection3D(pair.first, pair.second);
 		}
 
-		HW_TRACE("{0}", mSAT.mContacts->size());
+		//HW_TRACE("{0}", mSAT.mContacts->size());
 
 		for (auto go : mGameObjects)
 		{

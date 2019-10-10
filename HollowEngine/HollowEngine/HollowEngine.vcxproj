@@ -106,6 +106,7 @@
     <ClInclude Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\ContactManifold.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
     <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
@@ -184,7 +185,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PreprocessorDefinitions>NOMINMAX;HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
