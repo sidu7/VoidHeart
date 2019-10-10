@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 
 namespace Hollow {	
+
 	class Shader;
 	class Material;
 	class Mesh;
@@ -31,5 +32,10 @@ namespace Hollow {
 		bool mCastShadow;
 		FrameBuffer* mpShadowMap;
 		glm::mat4 mShadowMatrix;
+	};
+
+	struct ParticleData
+	{
+		std::vector<glm::mat4> mInstancedModels;
 	};
 }

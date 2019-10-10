@@ -18,6 +18,7 @@
     <ClCompile Include="src\Hollow\Components\Light.cpp" />
     <ClCompile Include="src\Hollow\Components\Material.cpp" />
     <ClCompile Include="src\Hollow\Components\Model.cpp" />
+    <ClCompile Include="src\Hollow\Components\ParticleEmitter.cpp" />
     <ClCompile Include="src\Hollow\Components\Transform.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
@@ -71,6 +72,7 @@
   <ItemGroup>
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Components\Model.h" />
+    <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
