@@ -173,17 +173,18 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hollowpch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(ProjectDir)vendor\Include;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(ProjectDir)vendor\Include;$(ProjectDir)vendor\Include\lua;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua53.lib;opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
