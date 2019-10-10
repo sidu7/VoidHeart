@@ -17,7 +17,7 @@ namespace Hollow {
 		for (unsigned int i = 0; i < mTexCount; i++)
 		{
 			GLCall(glBindTexture(GL_TEXTURE_2D, mpTextureID[i]));
-			GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, mWidth, mHeight, 0, GL_RGBA, GL_FLOAT, 0));
+			GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, mWidth, mHeight, 0, GL_RGBA, GL_FLOAT, 0));
 		
 			GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 			GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
@@ -59,9 +59,13 @@ namespace Hollow {
 		Delete();
 	}
 
-	void FrameBuffer::Bind() const
+	void FrameBuffer::Bind()
 	{
-		glViewport(0, 0,mWidth, mHeight);
+		GLint* data = new GLint[4];
+		GLCall(glGetIntegerv(GL_VIEWPORT, data));
+		mPrevWidth = data[2];
+		mPrevHeight = data[3];
+		GLCall(glViewport(0, 0,mWidth, mHeight));
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mRendererID));
 		Clear();
 	}
@@ -69,6 +73,7 @@ namespace Hollow {
 	void FrameBuffer::Unbind() const
 	{
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+		GLCall(glViewport(0, 0, mPrevWidth, mPrevHeight));
 		Clear();
 	}
 
@@ -78,9 +83,10 @@ namespace Hollow {
 		glBindTexture(GL_TEXTURE_2D, mpTextureID[index]);
 	}
 
-	void FrameBuffer::TexUnbind(unsigned int index)
+	void FrameBuffer::TexUnbind(unsigned int slot)
 	{
-
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void FrameBuffer::Clear() const

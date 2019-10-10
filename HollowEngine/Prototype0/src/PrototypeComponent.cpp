@@ -6,10 +6,6 @@ void PrototypeComponent::Init()
 {
 }
 
-PrototypeComponent::~PrototypeComponent()
-{
-}
-
 void PrototypeComponent::Clear()
 {
 }

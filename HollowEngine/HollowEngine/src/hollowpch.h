@@ -23,7 +23,11 @@
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_mouse.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/norm.hpp>
 #include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <ImGui/imgui.h>
@@ -44,6 +48,7 @@
 #include "Utils/Log.h"
 #include "Utils/Singleton.h"
 #include "Utils/Profiler.h"
+#include "Utils/JSONHelper.h"
 
 // GetObject() is defined by Windows and conflicts with GetObject() of rapidjson
 #ifdef _MSC_VER   

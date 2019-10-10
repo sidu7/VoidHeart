@@ -11,13 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Hollow\Components\Collider.cpp" />
     <ClCompile Include="src\hollowpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Hollow\Components\Body.cpp" />
+    <ClCompile Include="src\Hollow\Components\Light.cpp" />
     <ClCompile Include="src\Hollow\Components\Material.cpp" />
     <ClCompile Include="src\Hollow\Components\Model.cpp" />
-    <ClCompile Include="src\Hollow\Components\Shape.cpp" />
     <ClCompile Include="src\Hollow\Components\Transform.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
@@ -35,6 +36,10 @@
     <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
+    <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
+    <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
+    <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Utils\GLCall.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
@@ -65,13 +70,12 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Hollow\Systems\TempSystem.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hollow\Components\Collider.h" />
+    <ClInclude Include="src\Hollow\Components\Shape.h" />
+    <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
@@ -82,7 +86,6 @@
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Components\Material.h" />
     <ClInclude Include="src\Hollow\Components\Body.h" />
-    <ClInclude Include="src\Hollow\Components\Shape.h" />
     <ClInclude Include="src\Hollow\Components\Transform.h" />
     <ClInclude Include="src\Hollow\Core\Application.h" />
     <ClInclude Include="src\Hollow\Components\Component.h" />
@@ -99,6 +102,14 @@
     <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
     <ClInclude Include="src\Hollow\Managers\ImGuiManager.h" />
     <ClInclude Include="src\Hollow\Managers\ResourceManager.h" />
+    <ClInclude Include="src\Hollow\Physics\Broadphase\Broadphase.h" />
+    <ClInclude Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\ContactManifold.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
+    <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
+    <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
     <ClInclude Include="src\Utils\GLCall.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
@@ -106,6 +117,7 @@
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
     <ClInclude Include="src\Hollow\Graphics\Camera.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
+    <ClInclude Include="src\Utils\JSONHelper.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Hollow.h" />
     <ClInclude Include="src\Hollow\Core\EntryPoint.h" />
@@ -126,7 +138,6 @@
     <ClInclude Include="vendor\Include\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\Hollow\Managers\SystemManager.h" />
     <ClInclude Include="src\Hollow\Systems\System.h" />
-    <ClInclude Include="src\Hollow\Systems\TempSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -173,8 +184,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>false</ConformanceMode>
-      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>NOMINMAX;HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hollowpch.h</PrecompiledHeaderFile>

@@ -28,21 +28,27 @@ namespace Hollow
 		}
 	protected:
 		template<typename First> // 1 template parameter
-		void CheckComponents(GameObject* pGameObject)
+		bool CheckComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
 				mGameObjects.push_back(pGameObject);
+				return true;
 			}
+
+			return false;
 		}
 
 		template<typename First, typename Second, typename ... Rest> // >=2 template parameters
-		void CheckComponents(GameObject* pGameObject)
+		bool CheckComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
 				CheckComponents<Second, Rest...>(pGameObject);
+				return true;
 			}
+
+			return false;
 		}
 
 	public:

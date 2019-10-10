@@ -6,14 +6,12 @@ namespace Hollow {
 
 	class HOLLOW_API Material : public Component
 	{
-		REGISTERCOMPONENT(Material, "Material");
+		REGISTERCOMPONENT(Material);
 	public:
 		void Init();
 
 		void Clear() {}
-
-		virtual ~Material();
-
+		
 		void Serialize(rapidjson::Value::Object data);
 
 		void DebugDisplay();

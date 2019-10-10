@@ -1,0 +1,14 @@
+{
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 40.0, 20.0 ]
+    },
+    {
+      "Type": "Light",
+      "Color": [ 1.0, 1.0, 1.0 ],
+      "CastShadow": true,
+      "ShadowMapSize" :  [1024,1024]
+    }
+  ]
+}
