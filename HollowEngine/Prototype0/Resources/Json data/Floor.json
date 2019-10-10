@@ -1,20 +1,27 @@
 {
-  "Components": [
-    {
-      "Type": "Transform",
-      "Position": [ 0.0, 0.0, 0.0 ],
-      "Scale": [ 200.0, 1.0, 200.0 ]
-    },
-    {
-      "Type": "Model",
-      "Shape": 3,
-      "CastShadow": true
-    },
-    {
-      "Type": "Material",
-      "Diffuse": [ 1.0, 0.0, 0.0 ],
-      "Specular": [ 0.5, 0.5, 0.5 ],
-      "Shininess":  1.0
-    }
-  ]
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.0, 0.0, 0.0 ],
+            "Scale": [ 200.0, 1.0, 200.0 ]
+        },
+        {
+            "Type": "Body",
+            "Mass":  1e39
+        },
+        {
+            "Type": "Collider"
+        },
+        {
+            "Type": "Model",
+            "Shape": 3,
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Diffuse": [ 1.0, 0.0, 0.0 ],
+            "Specular": [ 0.5, 0.5, 0.5 ],
+            "Shininess": 1.0
+        }
+    ]
 }

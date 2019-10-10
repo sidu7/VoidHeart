@@ -14,16 +14,8 @@ namespace Hollow
 			this->mTier = tier;
 		}
 		virtual ~System() {}
-		virtual void Update(GameObject* gameobject) = 0;
+		virtual void Update() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
-
-		void DoUpdate()
-		{
-			for (unsigned int i = 0; i < mGameObjects.size(); ++i)
-			{
-				Update(mGameObjects[i]);
-			}
-		}
 
 		void DeleteGameObject(GameObject* pGameObject)
 		{
@@ -36,21 +28,27 @@ namespace Hollow
 		}
 	protected:
 		template<typename First> // 1 template parameter
-		void CheckComponents(GameObject* pGameObject)
+		bool CheckComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
 				mGameObjects.push_back(pGameObject);
+				return true;
 			}
+
+			return false;
 		}
 
 		template<typename First, typename Second, typename ... Rest> // >=2 template parameters
-		void CheckComponents(GameObject* pGameObject)
+		bool CheckComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
 				CheckComponents<Second, Rest...>(pGameObject);
+				return true;
 			}
+
+			return false;
 		}
 
 	public:

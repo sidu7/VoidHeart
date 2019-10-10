@@ -19,7 +19,7 @@ namespace Hollow
 	{
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
 		{
-			mSystems[i]->DoUpdate();
+			mSystems[i]->Update();
 		}
 	}
 

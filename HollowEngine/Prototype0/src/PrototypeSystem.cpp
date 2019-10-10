@@ -3,7 +3,7 @@
 
 PrototypeSystem PrototypeSystem::instance;
 
-void PrototypeSystem::Update(Hollow::GameObject* gameobject)
+void PrototypeSystem::Update()
 {
 	//HW_TRACE("Prototype system has {0} gameobjects", mGameObjects.size());
 }

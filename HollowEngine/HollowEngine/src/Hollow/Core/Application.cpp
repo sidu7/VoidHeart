@@ -11,6 +11,9 @@
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/ResourceManager.h"
 
+#define SOL_ALL_SAFETIES_ON 1
+#include <sol/sol.hpp> // or #include "sol.hpp", whichever suits your needs
+
 
 #include "Hollow/Graphics/Camera.h"
 
@@ -67,6 +70,12 @@ namespace Hollow {
 	void Application::Run()
 	{
 		
+		sol::state lua;
+		lua.open_libraries(sol::lib::base);
+
+		lua.script("print('bark bark bark!')");
+
+
 		while (mIsRunning)
 		{
 			FrameRateController::Instance().FrameStart();
@@ -78,10 +87,11 @@ namespace Hollow {
 			{
 				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			}
+			InputManager::Instance().Update();
 			SystemManager::Instance().Update();
+			// TODO make camera controller
 			RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			RenderManager::Instance().Update();
-			InputManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
 		}
