@@ -31,6 +31,7 @@
     <ClCompile Include="src\Hollow\Graphics\Texture.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\DebugDrawManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Texture.h" />
+    <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Managers\DebugDrawManager.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
     <ClInclude Include="src\hollowpch.h" />
@@ -200,7 +202,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lua53.lib;opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua53.lib;opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
@@ -216,7 +218,7 @@ copy /y $(ProjectName)\*.dll Prototype0</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hollowpch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -226,7 +228,7 @@ copy /y $(ProjectName)\*.dll Prototype0</Command>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mt.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>

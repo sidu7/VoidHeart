@@ -53,6 +53,7 @@
     <ClCompile Include="vendor\Include\ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -183,5 +184,6 @@
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
     <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
+    <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
   </ItemGroup>
 </Project>

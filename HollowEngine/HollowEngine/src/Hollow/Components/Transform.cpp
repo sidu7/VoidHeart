@@ -23,17 +23,15 @@ namespace Hollow {
             ImGui::InputFloat3("Rotation", &mRotation[0]);
 			ImGui::InputFloat3("Scale", &mScale[0]);
 			
-			// TODO: Find a better way to update transform matrix
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, mPosition);
-            model = glm::rotate(model, glm::radians(mRotation.x),
-                                glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(mRotation.y),
-                                glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(mRotation.z),
-                                glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, mScale);
-            mTransformationMatrix = model;
+			// TODO: Remove this
+			glm::mat4 rotate = glm::mat4(1.0f);
+                        rotate = glm::rotate(rotate, glm::radians(mRotation.x),
+                                             glm::vec3(1.0f, 0.0f, 0.0f));
+                        rotate = glm::rotate(rotate, glm::radians(mRotation.y),
+                                             glm::vec3(0.0f, 1.0f, 0.0f));
+                        rotate = glm::rotate(rotate, glm::radians(mRotation.z),
+                                             glm::vec3(0.0f, 0.0f, 1.0f));
+                        mQuaternion = glm::toQuat(rotate);
 
 			ImGui::TreePop();
 		}

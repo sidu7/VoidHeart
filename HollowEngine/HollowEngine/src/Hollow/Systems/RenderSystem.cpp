@@ -26,8 +26,9 @@ void Hollow::RenderSystem::Update()
 
 		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
 		trans->mTransformationMatrix = glm::translate(glm::mat4(1.0f), trans->mPosition);
+		// Update quaternion
 		trans->mTransformationMatrix *= glm::toMat4(trans->mQuaternion);
-		trans->mTransformationMatrix = glm::scale(trans->mTransformationMatrix, trans->mScale);
+		trans->mTransformationMatrix *= glm::scale(trans->mTransformationMatrix, trans->mScale);
 
 		data.mpModel = trans->mTransformationMatrix;
 
