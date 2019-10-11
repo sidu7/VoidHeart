@@ -75,6 +75,7 @@ namespace Hollow {
 		}
 		mLightData.clear();
 		mRenderData.clear();
+		mCameraData.clear();
 
 		//Draw debug drawings
 		DrawDebugDrawings();

@@ -32,4 +32,12 @@ namespace Hollow {
 		FrameBuffer* mpShadowMap;
 		glm::mat4 mShadowMatrix;
 	};
+
+	struct CameraData
+	{
+		glm::mat4 mViewMatrix;
+		float mZoom;
+		float mNear;
+		float mFar;
+	};
 }

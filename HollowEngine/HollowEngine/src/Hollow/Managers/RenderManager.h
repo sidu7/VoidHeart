@@ -45,6 +45,7 @@ namespace Hollow {
 		std::vector<RenderData> mRenderData;
 		std::vector<DebugRenderData> mDebugRenderData;
 		std::vector<LightData> mLightData;
+		std::vector<CameraData> mCameraData;
 
 	private:
 		// Transformation matricies
