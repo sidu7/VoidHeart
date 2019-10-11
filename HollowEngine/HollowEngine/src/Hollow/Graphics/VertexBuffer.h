@@ -17,6 +17,8 @@ namespace Hollow {
 		~VertexBuffer();
 
 		void AddData(const void* data,unsigned int size) const;
+		void AddStreamingData(unsigned int size) const;
+		void AddSubData(const void* data, unsigned int parentsize, unsigned int datasize) const;
 		void Bind() const;
 		void Unbind() const;
 	};

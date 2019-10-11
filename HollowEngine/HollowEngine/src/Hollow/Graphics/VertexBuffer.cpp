@@ -26,6 +26,19 @@ namespace Hollow {
 		GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 	}
 
+	void VertexBuffer::AddStreamingData(unsigned int size) const
+	{
+		Bind();
+		GLCall(glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_STREAM_DRAW));
+	}
+
+	void VertexBuffer::AddSubData(const void* data, unsigned int parentsize, unsigned int datasize) const
+	{
+		Bind();
+		GLCall(glBufferData(GL_ARRAY_BUFFER, parentsize, NULL, GL_STREAM_DRAW));
+		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, datasize, data));
+	}
+
 	void VertexBuffer::Bind() const
 	{
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, mRendererID));

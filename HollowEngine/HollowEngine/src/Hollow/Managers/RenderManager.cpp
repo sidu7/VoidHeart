@@ -58,13 +58,12 @@ namespace Hollow {
 		// Initialize transform matrices
 		mProjectionMatrix = glm::perspective(mpCamera->GetZoom(), (float)mpWindow->GetWidth() / mpWindow->GetHeight(), 0.1f, 1000.0f);
 		mViewMatrix = mpCamera->GetViewMatrix();
-		
+
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
 		// Deferred G-Buffer Pass
 		GBufferPass();
-
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
 		{
 			// ShadowMap Pass

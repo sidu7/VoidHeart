@@ -8,7 +8,7 @@
 
 namespace Hollow
 {
-	Mesh::Mesh() : mpVAO(nullptr), mpEBO(nullptr)
+	Mesh::Mesh() : mpVAO(nullptr), mpEBO(nullptr), mpVBO(nullptr)
 	{
 	}
 

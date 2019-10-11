@@ -36,6 +36,7 @@ namespace Hollow {
 
 	struct ParticleData
 	{
-		std::vector<glm::mat4> mInstancedModels;
+		std::vector<Mesh*> mParticleModel;
+		unsigned int mParticlesCount;
 	};
 }

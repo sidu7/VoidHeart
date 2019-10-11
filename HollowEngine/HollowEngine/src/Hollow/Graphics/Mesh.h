@@ -34,5 +34,6 @@ namespace Hollow
 
 		VertexArray* mpVAO;
 		ElementArrayBuffer* mpEBO;
+		VertexBuffer* mpVBO;
 	};
 }
