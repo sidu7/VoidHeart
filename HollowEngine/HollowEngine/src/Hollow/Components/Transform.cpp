@@ -20,10 +20,21 @@ namespace Hollow {
 		if (ImGui::TreeNode("Transform"))
 		{
 			ImGui::InputFloat3("Position", &mPosition[0]);
+            ImGui::InputFloat3("Rotation", &mRotation[0]);
+			ImGui::InputFloat3("Scale", &mScale[0]);
+			
 			// TODO: Find a better way to update transform matrix
-			glm::mat4 mat(1.0f);
-			mat = glm::translate(mat, mPosition);
-			SetTranformationMatrix(mat);
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, mPosition);
+            model = glm::rotate(model, glm::radians(mRotation.x),
+                                glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(mRotation.y),
+                                glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(mRotation.z),
+                                glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, mScale);
+            mTransformationMatrix = model;
+
 			ImGui::TreePop();
 		}
 	}
