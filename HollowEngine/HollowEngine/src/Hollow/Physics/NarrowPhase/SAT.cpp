@@ -6,6 +6,7 @@
 #include "MeshData.h"
 
 #include "Hollow/Components/Collider.h"
+#include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Shape.h"
 
 #define epsilon 0.0001f
@@ -21,16 +22,16 @@ namespace Hollow {
 	{
 		for (auto c : *mContacts)
 			delete c;
-		
+
 		mContacts->clear();
 
 		for (auto c : *mPrevContacts)
 			delete c;
 
 		mPrevContacts->clear();
-		
+
 	}
-	
+
 	// from http://paulbourke.net/geometry/pointlineplane/
 	float LineLineIntersect(
 		glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec3 p4, glm::vec3* poA, glm::vec3* poB)
@@ -175,7 +176,7 @@ namespace Hollow {
 			// Get Incident Face Vertices
 			std::vector<glm::vec3> incidentPoly = incidentMeshData.GetFacePolygon(incidentIndex);
 			for (auto& v : incidentPoly) {
-				v = inciCollider->mpBody->mRotationMatrix * v + inciCollider->mpBody->mPosition;
+				v = inciCollider->mpTr->mTransformationMatrix * glm::vec4(v, 1.0f);
 			}
 
 			std::vector<glm::vec3>& clippedPoly = incidentPoly;
@@ -188,7 +189,7 @@ namespace Hollow {
 				glm::vec3 pointOnFace = referenceMeshData.GetPointOnFace(referenceMeshData.edges[twin].face);
 				glm::vec3 faceNormal = referenceMeshData.faces[referenceMeshData.edges[twin].face].normal;
 
-				pointOnFace = refCollider->mpBody->mRotationMatrix * pointOnFace + refCollider->mpBody->mPosition;
+				pointOnFace = refCollider->mpTr->mTransformationMatrix * glm::vec4(referenceMeshData.GetPointOnFace(refIndex), 1.0f);
 				faceNormal = refCollider->mpBody->mRotationMatrix * faceNormal;
 
 				if (!clippedPoly.empty())
@@ -198,8 +199,7 @@ namespace Hollow {
 			}
 
 			// clip against reference face
-			glm::vec3 pointOnRef = refCollider->mpBody->mRotationMatrix * referenceMeshData.GetPointOnFace(refIndex)
-				+ refCollider->mpBody->mPosition;
+			glm::vec3 pointOnRef = refCollider->mpTr->mTransformationMatrix * glm::vec4(referenceMeshData.GetPointOnFace(refIndex), 1.0f);
 
 			if (!clippedPoly.empty())
 				clippedPoly = ClipPolygon(clippedPoly, refFaceNormal, pointOnRef);
@@ -337,19 +337,19 @@ namespace Hollow {
 		else if (edgeQuery.edgeA != -1) {
 			MeshData& md1 = static_cast<ShapeAABB*>(col1->mpShape)->mMeshData;
 			MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
-			
+
 			// edge case
 			glm::vec3 pA1 = md1.vertices[md1.edges[md1.edges[edgeQuery.edgeA].prev].toVertex].point;
 			glm::vec3 pA2 = md1.vertices[md1.edges[edgeQuery.edgeA].toVertex].point;
 
-			pA1 = col1->mpBody->mRotationMatrix * pA1 + col1->mpBody->mPosition;
-			pA2 = col1->mpBody->mRotationMatrix * pA2 + col1->mpBody->mPosition;
+			pA1 = col1->mpTr->mTransformationMatrix * glm::vec4(pA1, 1.0f);
+			pA2 = col1->mpTr->mTransformationMatrix * glm::vec4(pA2, 1.0f);
 
 			glm::vec3 pB1 = md2.vertices[md2.edges[md2.edges[edgeQuery.edgeB].prev].toVertex].point;
 			glm::vec3 pB2 = md2.vertices[md2.edges[edgeQuery.edgeB].toVertex].point;
 
-			pB1 = col2->mpBody->mRotationMatrix * pB1 + col2->mpBody->mPosition;
-			pB2 = col2->mpBody->mRotationMatrix * pB2 + col2->mpBody->mPosition;
+			pB1 = col2->mpTr->mTransformationMatrix * glm::vec4(pB1, 1.0f);
+			pB2 = col2->mpTr->mTransformationMatrix * glm::vec4(pB2, 1.0f);
 
 			// find the point betweem the edges
 			glm::vec3 pointOnA, pointOnB;
@@ -394,7 +394,7 @@ namespace Hollow {
 
 	void SAT::ResetContacts()
 	{
-		
+
 	}
 
 	void SAT::CopyContacts()
@@ -405,18 +405,18 @@ namespace Hollow {
 		mPrevContacts->clear();
 
 		mPrevContacts = mContacts;
-		
+
 		mContacts = new std::list<ContactManifold*>();
 	}
 
 
 	FaceQuery SAT::FaceIntersectionQuery(Collider* col1, Collider* col2) {
-		glm::mat3 Ra = col1->mpBody->mRotationMatrix;
-		glm::mat3 Rb = col2->mpBody->mRotationMatrix;
+		glm::mat3 Ra = col1->mpTr->mTransformationMatrix;
+		glm::mat3 Rb = col2->mpTr->mTransformationMatrix;
 
 		// rotation matrix to convert from A's local to B's local
 		//glm::mat3 C = Rb * glm::transpose(Ra);
-		glm::mat3 C = glm::transpose(Rb) * Ra;
+		glm::mat3 C = glm::inverse(Rb) * Ra;
 
 		FaceQuery fq;
 		fq.faceIndex = -1;
@@ -426,9 +426,9 @@ namespace Hollow {
 		MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
 
 		for (int i = 0; i < md1.faces.size(); ++i) {
-			glm::vec3 normalInBSpace = C * md1.faces[i].normal;
+			glm::vec3 normalInBSpace = glm::transpose(col2->mpBody->mRotationMatrix) * col1->mpBody->mRotationMatrix * md1.faces[i].normal;
 
-			glm::vec3 facePointinBSpace = C * (md1.GetPointOnFace(i)) + glm::transpose(Rb) * (col1->mpBody->mPosition - col2->mpBody->mPosition);
+			glm::vec3 facePointinBSpace = C * (md1.GetPointOnFace(i));// +glm::transpose(col2->mpBody->mRotationMatrix) * (col1->mpBody->mPosition - col2->mpBody->mPosition);
 
 			glm::vec3 supportPoint = md2.GetSupport(-normalInBSpace);
 
@@ -472,8 +472,8 @@ namespace Hollow {
 	}
 
 	EdgeQuery SAT::EdgeIntersectionQuery(Collider* col1, Collider* col2) {
-		glm::mat3 Ra = col1->mpBody->mRotationMatrix;
-		glm::mat3 Rb = col2->mpBody->mRotationMatrix;
+		glm::mat3 Ra = col1->mpBody->mRotationMatrix * glm::mat3(glm::scale(col1->mpTr->mScale));
+		glm::mat3 Rb = col2->mpBody->mRotationMatrix * glm::mat3(glm::scale(col2->mpTr->mScale));
 
 		// rotation matrix to convert from A's local to B's local
 		glm::mat3 C = glm::transpose(Rb) * Ra;
