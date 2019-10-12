@@ -56,7 +56,7 @@ namespace Hollow
 		emitter->mParticlePositions.clear();
 		emitter->mModelMatrices.clear();
 
-		int amount = 2000;		
+		int amount = 200;		
 		float radius = 4.0;
 		float offset = 2.0f;
 		for (unsigned int i = 0; i < amount; i++)

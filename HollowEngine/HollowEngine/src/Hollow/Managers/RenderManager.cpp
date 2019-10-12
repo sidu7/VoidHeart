@@ -131,15 +131,6 @@ namespace Hollow {
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
 	}
 
-	void RenderManager::DoUpdate()
-	{
-		if (doit)
-		{
-			render = std::thread(std::bind(&RenderManager::Update,this));
-			doit = false;
-		}
-	}
-
 	void RenderManager::InitializeGBuffer()
 	{
 		// Compile G-Buffer shader and deferred shader
