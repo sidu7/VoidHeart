@@ -625,12 +625,12 @@ Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, 
 {
 	VertexArray* VAO = new VertexArray();
 	ElementArrayBuffer* EBO = new ElementArrayBuffer();
-	VertexBuffer VBO;
+	VertexBuffer* VBO = new VertexBuffer();
 
 	VAO->Bind();
 
 	// Send vertex information to VBO
-	VBO.AddData(&vertices[0], vertices.size() * sizeof(Vertex));
+	VBO->AddData(&vertices[0], vertices.size() * sizeof(Vertex));
 
 	// Set up index buffer EBO
 	EBO->AddData(&indices[0], indices.size(), sizeof(unsigned int));
@@ -651,6 +651,7 @@ Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, 
 
 	mesh->mpVAO = VAO;
 	mesh->mpEBO = EBO;
+	mesh->mpVBO = VBO;
 
 	return mesh;
 }

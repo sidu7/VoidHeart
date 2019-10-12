@@ -6,6 +6,8 @@ namespace Hollow
 	struct ParticleData;
 	class Mesh;
 	class VertexBuffer;
+	class VertexArray;
+	class Texture;
 
 	struct Particle
 	{
@@ -31,10 +33,19 @@ namespace Hollow
 
 	public:
 		unsigned long mCount;
+		std::vector<Particle> mParticlesList;
+
+		// For Point particles
+		std::vector<glm::vec4> mParticlePositions;
+		VertexBuffer* mpParticlePositionVBO;
+		VertexArray* mpParticlePositionVAO;
+		Texture* mTexture;
+
+		// For Mesh particles
 		std::vector<Mesh*> mpParticle;
 		std::vector<glm::mat4> mModelMatrices;
-		std::vector<Particle> mParticlesList;
-		VertexBuffer* mpModelMatricesVBO;
+		VertexBuffer* mpParticleModelVBO;
+
 		float mMinSpeed;
 		float mMaxSpeed;
 		glm::vec3 mCenterOffset;

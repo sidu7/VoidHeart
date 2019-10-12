@@ -45,6 +45,7 @@ namespace Hollow {
 		std::vector<RenderData> mRenderData;
 		std::vector<DebugRenderData> mDebugRenderData;
 		std::vector<LightData> mLightData;
+		std::vector<ParticleData> mParticleData;
 
 	private:
 		// Transformation matricies
@@ -67,5 +68,8 @@ namespace Hollow {
 
 		// Shadows
 		Shader* mpShadowMapShader;
+
+		// ParticleSystem
+		Shader* mpParticleShader;
 	};
 }

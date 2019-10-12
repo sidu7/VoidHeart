@@ -21,6 +21,12 @@
             "Specular": [ 1.0, 1.0, 1.0 ],
             "Shininess": 10.0,
             "Texture": "Resources/Textures/cracks.png"
+        },
+        {
+            "Type": "ParticleEmitter",
+            "Model": "Resources/Models/scene.fbx",
+            "Count": 2000.0,
+            "Area": [ 50.0, 50.0, 50.0 ]
         }
     ]
 }

@@ -45,19 +45,17 @@ namespace Hollow {
 	void VertexArray::PushMatrix(unsigned int count, unsigned int type, unsigned int size, unsigned int vecsize)
 	{
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, mStride + size, (const void*)mOffset));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)0));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, mStride + size, (const void*)(mOffset + vecsize)));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(vecsize)));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, mStride + size, (const void*)(mOffset + 2 * vecsize)));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(2 * vecsize)));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, mStride + size, (const void*)(mOffset + 3 * vecsize)));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(3 * vecsize)));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
-		mStride += size;
-		mOffset += 3 * vecsize;
 	}
 
 	void VertexArray::AddBuffer(const VertexBuffer& vb) const

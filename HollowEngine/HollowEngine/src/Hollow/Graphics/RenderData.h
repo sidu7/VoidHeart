@@ -7,6 +7,9 @@ namespace Hollow {
 	class Material;
 	class Mesh;
 	class FrameBuffer;
+	class VertexBuffer;
+	class VertexArray;
+	class Texture;
 
 	struct RenderData
 	{
@@ -37,6 +40,10 @@ namespace Hollow {
 	struct ParticleData
 	{
 		std::vector<Mesh*> mParticleModel;
+		VertexArray* mpParticleVAO;
+		VertexBuffer* mpParticleVBO;
 		unsigned int mParticlesCount;
+		glm::mat4 mModel;
+		Texture* mTex;
 	};
 }

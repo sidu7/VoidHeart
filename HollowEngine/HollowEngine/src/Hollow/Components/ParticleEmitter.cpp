@@ -6,6 +6,7 @@
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/VertexBuffer.h"
+#include "Hollow/Graphics/Texture.h"
 
 namespace Hollow
 {
@@ -27,7 +28,10 @@ namespace Hollow
 		mMaxSpeed = 0.0f;
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
-		delete mpModelMatricesVBO;
+		delete mpParticlePositionVBO;
+		delete mTexture;
+		delete mpParticlePositionVAO;
+		delete mpParticleModelVBO;
 	}
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)
@@ -36,6 +40,10 @@ namespace Hollow
 		if (data.HasMember("Shape"))
 		{
 			mpParticle.push_back(ResourceManager::Instance().GetShape((Shapes)data["Shape"].GetUint()));
+			if (data.HasMember("Texture"))
+			{
+				mTexture = new Texture(data["Texture"].GetString());
+			}
 		}
 		else if (data.HasMember("Model"))
 		{
@@ -52,16 +60,30 @@ namespace Hollow
 	void ParticleEmitter::UpdateAttributes()
 	{
 		mParticlesList.reserve(mCount);
-		mModelMatrices.reserve(mCount);
+		mParticlePositions.reserve(mCount);
+		
+		mpParticlePositionVBO = new VertexBuffer();
 
-		mpModelMatricesVBO = new VertexBuffer();
-		mpModelMatricesVBO->AddStreamingData(mCount * sizeof(glm::mat4));
+		mpParticlePositionVAO = new VertexArray();
+		mpParticlePositionVAO->AddBuffer(*mpParticlePositionVBO);
+
+		mpParticlePositionVBO->AddStreamingData(mCount * sizeof(glm::vec4));
+
+		mpParticlePositionVAO->Push(4, GL_FLOAT, sizeof(float));
+		mpParticlePositionVAO->AddLayout();
+
+		mpParticlePositionVAO->Unbind();
+
+		mpParticleModelVBO = new VertexBuffer();
+
+		mpParticleModelVBO->AddStreamingData(mCount * sizeof(glm::mat4));
 
 		for (unsigned int i = 0; i < mpParticle.size(); ++i)
 		{
 			VertexArray* vao = mpParticle[i]->mpVAO;
 			vao->Bind();
 			vao->PushMatrix(4, GL_FLOAT, sizeof(glm::mat4), sizeof(glm::vec4));
+			vao->Unbind();
 		}
 	}
 }

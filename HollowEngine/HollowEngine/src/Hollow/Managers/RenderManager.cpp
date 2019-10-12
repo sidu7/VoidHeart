@@ -40,6 +40,11 @@ namespace Hollow {
 
 		// Init Debug Shader
 		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
+
+		// Init Particle Shader
+		mpParticleShader = new Shader("Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag");
+
+		srand(time(NULL));
 	}
 
 	void RenderManager::CleanUp()
@@ -59,8 +64,8 @@ namespace Hollow {
 		mProjectionMatrix = glm::perspective(mpCamera->GetZoom(), (float)mpWindow->GetWidth() / mpWindow->GetHeight(), 0.1f, 1000.0f);
 		mViewMatrix = mpCamera->GetViewMatrix();
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));	
 
 		// Deferred G-Buffer Pass
 		GBufferPass();
@@ -75,6 +80,47 @@ namespace Hollow {
 		mLightData.clear();
 		mRenderData.clear();
 
+		// Draw Particles 
+		mpParticleShader->Use();
+		mpParticleShader->SetMat4("View", mViewMatrix);
+		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		for (unsigned int i = 0; i < mParticleData.size(); ++i)
+		{
+			if (mParticleData[i].mParticleModel.size() == 0)
+			{
+				glPointSize(1.0f);
+				mpParticleShader->SetMat4("Model", mParticleData[i].mModel);
+				mParticleData[i].mTex->Bind(4);
+				mpParticleShader->SetInt("Texx", 4);
+				mParticleData[i].mpParticleVAO->Bind();
+				mParticleData[i].mpParticleVBO->Bind();
+				glDrawArrays(GL_POINTS, 0, mParticleData[i].mParticlesCount);
+				mParticleData[i].mpParticleVBO->Unbind();
+				mParticleData[i].mpParticleVAO->Unbind();
+			}
+			else
+			{
+				for (Mesh* mesh : mParticleData[i].mParticleModel)
+				{
+					mesh->mpVAO->Bind();
+					mesh->mpVBO->Bind();
+					mesh->mpEBO->Bind();
+					mParticleData[i].mpParticleVBO->Bind();
+					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, mParticleData[i].mParticlesCount);
+					mParticleData[i].mpParticleVBO->Unbind();
+					mesh->mpEBO->Unbind();
+					mesh->mpVBO->Unbind();
+					mesh->mpVAO->Unbind();
+				}
+			}
+		}
+		glDisable(GL_BLEND);
+		mParticleData.clear();
+
 		//Draw debug drawings
 		DrawDebugDrawings();
 
@@ -83,6 +129,15 @@ namespace Hollow {
 		ImGuiManager::Instance().Update();
 
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
+	}
+
+	void RenderManager::DoUpdate()
+	{
+		if (doit)
+		{
+			render = std::thread(std::bind(&RenderManager::Update,this));
+			doit = false;
+		}
 	}
 
 	void RenderManager::InitializeGBuffer()
@@ -139,7 +194,7 @@ namespace Hollow {
 
 	void RenderManager::GBufferPass()
 	{
-		glEnable(GL_DEPTH_TEST);
+		GLCall(glEnable(GL_DEPTH_TEST));
 		mpGBuffer->Bind();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		mpGBufferShader->Use();

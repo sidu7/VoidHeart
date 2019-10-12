@@ -16,12 +16,18 @@ namespace Hollow
 	{
 		delete mpVAO;
 		delete mpEBO;
+		delete mpVBO;
 	}
 
 	void Mesh::Draw(Shader* pShader)
 	{
 		pShader->Use();
 		mpVAO->Bind();
+		mpEBO->Bind();
+		mpVBO->Bind();
 		GLCall(glDrawElements(GL_TRIANGLES, mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+		mpEBO->Unbind();
+		mpVBO->Unbind();
+		mpVAO->Unbind();
 	}
 }

@@ -3,6 +3,8 @@
 
 namespace Hollow
 {
+	class ParticleEmitter;
+
 	class HOLLOW_API ParticleSystem : public System
 	{
 		REGISTERSYSTEM(ParticleSystem,3)
@@ -10,5 +12,8 @@ namespace Hollow
 		virtual ~ParticleSystem() {}
 		void Update();
 		void AddGameObject(GameObject* object);
+
+	private:
+		void CalculateParticleMatrices(ParticleEmitter* emitter);
 	};
 }
