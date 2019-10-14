@@ -20,5 +20,8 @@ namespace Hollow
 		glm::mat4 mDebugTransformationMatrix;	// Debug Transformation Matrix
 		glm::mat4 mPreviousTransformationMatrix;// For PostProcessing effects
 		glm::fquat mQuaternion;					// mQuaternion Do not mess if you don't know this
+		
+		bool dirtyBit;
+
 	};
 }

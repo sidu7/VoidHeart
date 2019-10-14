@@ -233,7 +233,9 @@ namespace Hollow
 
 			// integrate the position
 			pBody->mPosition += pBody->mVelocity * fixedDeltaTime;
-			
+
+			pBody->mPreviousQuaternion = pBody->mQuaternion;
+
 			// integrate the orientation
 			glm::fquat newQuat = 0.5f * (pBody->mAngularVelocity) * pBody->mQuaternion * fixedDeltaTime;
 			pBody->mQuaternion *= newQuat;
@@ -247,11 +249,16 @@ namespace Hollow
 			Body* pBody = static_cast<Body*>(go->GetComponent<Body>());
 			Transform* pTr = static_cast<Transform*>(go->GetComponent<Transform>());
 
-			pTr->mPosition.x = pBody->mPosition.x * blendingFactor + pBody->mPreviousPosition.x * (1 - blendingFactor);
-			pTr->mPosition.y = pBody->mPosition.y * blendingFactor + pBody->mPreviousPosition.y * (1 - blendingFactor);
-			pTr->mPosition.z = pBody->mPosition.z * blendingFactor + pBody->mPreviousPosition.z * (1 - blendingFactor);
+			pTr->mPosition.x = glm::mix(pBody->mPreviousPosition.x, pBody->mPosition.x, blendingFactor);
+			pTr->mPosition.y = glm::mix(pBody->mPreviousPosition.y, pBody->mPosition.y, blendingFactor);
+			pTr->mPosition.z = glm::mix(pBody->mPreviousPosition.z, pBody->mPosition.z, blendingFactor);
 
-			//TODO setup slerp for quaternion interpolation while rendering
+			pTr->mQuaternion = glm::slerp(pBody->mPreviousQuaternion, pBody->mQuaternion, blendingFactor);
+
+			// if there is a significant change in position or orientation only then update transformation matrix
+			if (glm::length2(pBody->mVelocity) > 0.0001f || glm::length2(pBody->mAngularVelocity) > 0.0001f) {
+				pTr->dirtyBit = true;
+			}
 
 			pBody->mQuaternion = glm::normalize(pBody->mQuaternion);
 			pBody->mRotationMatrix = glm::toMat3(pBody->mQuaternion);
@@ -259,7 +266,6 @@ namespace Hollow
 				pBody->mRotationMatrix *
 				pBody->mLocalInertiaInverse *
 				glm::transpose(pBody->mRotationMatrix);
-
 			//pTr->mRotation = pBody->mRotationMatrix;
 		}
 	}
