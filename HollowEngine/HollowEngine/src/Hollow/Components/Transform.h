@@ -12,6 +12,7 @@ namespace Hollow
 		void Clear() {}
 		void DebugDisplay();
 		void Serialize(rapidjson::Value::Object data);
+		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
 
 		glm::vec3 mPosition;					// mPosition is x,y,z
 		glm::vec3 mScale;						// mScale is x,y,z

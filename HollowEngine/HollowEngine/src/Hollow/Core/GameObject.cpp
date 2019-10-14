@@ -42,4 +42,16 @@ namespace Hollow {
 		}
 	}
 
+	void GameObject::Deserialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		//writer.StartObject();
+		writer.Key("Components");
+		writer.StartArray();
+		for (unsigned int i = 0; i < mIndices.size(); ++i)
+		{
+			mComponents[mIndices[i]]->DeSerialize(writer);
+		}
+		writer.EndArray();
+		//writer.EndObject();
+	}
 }

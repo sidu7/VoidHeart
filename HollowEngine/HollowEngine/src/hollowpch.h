@@ -42,6 +42,9 @@
 
 // Serialization library
 #include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/ostreamwrapper.h>
 
 // TODO: Add ifdef guards if more platforms
 #include <Windows.h>
