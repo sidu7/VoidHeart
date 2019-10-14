@@ -15,5 +15,6 @@ namespace Hollow
 
 	private:
 		void CalculateParticleMatrices(ParticleEmitter* emitter);
+		void CalculateParticlePositions(ParticleEmitter* emitter);
 	};
 }

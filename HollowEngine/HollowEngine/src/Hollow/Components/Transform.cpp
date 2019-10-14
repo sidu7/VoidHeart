@@ -58,16 +58,9 @@ namespace Hollow {
 
 	void Transform::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
-		writer.StartObject();
-		writer.Key("Type");
-		writer.String("Transform");
-		writer.Key("Position");
-		writer.StartArray();
-		writer.Double(mPosition.x);
-		writer.Double(mPosition.y);
-		writer.Double(mPosition.z);
-		writer.EndArray();
-		writer.EndObject();
+		JSONHelper::Write<glm::vec3>("Position", mPosition, writer);
+		JSONHelper::Write<glm::vec3>("Rotation", mRotation, writer);
+		JSONHelper::Write<glm::vec3>("Scale", mScale, writer);
 	}
 
 }

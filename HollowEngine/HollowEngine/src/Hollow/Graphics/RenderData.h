@@ -10,6 +10,7 @@ namespace Hollow {
 	class VertexBuffer;
 	class VertexArray;
 	class Texture;
+	enum ParticleType;
 
 	struct RenderData
 	{
@@ -36,7 +37,13 @@ namespace Hollow {
 		FrameBuffer* mpShadowMap;
 		glm::mat4 mShadowMatrix;
 	};
-
+	
+	enum ParticleType
+	{
+		POINT,
+		MODEL
+	};
+	
 	struct ParticleData
 	{
 		std::vector<Mesh*> mParticleModel;
@@ -45,5 +52,6 @@ namespace Hollow {
 		unsigned int mParticlesCount;
 		glm::mat4 mModel;
 		Texture* mTex;
+		ParticleType mType;
 	};
 }

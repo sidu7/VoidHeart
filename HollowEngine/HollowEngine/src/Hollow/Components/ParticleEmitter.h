@@ -8,6 +8,7 @@ namespace Hollow
 	class VertexBuffer;
 	class VertexArray;
 	class Texture;
+	enum ParticleType;
 
 	struct Particle
 	{
@@ -46,8 +47,11 @@ namespace Hollow
 		std::vector<glm::mat4> mModelMatrices;
 		VertexBuffer* mpParticleModelVBO;
 
+		ParticleType mType;
 		float mMinSpeed;
 		float mMaxSpeed;
+		float mMinLife;
+		float mMaxLife;
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
 		//TODO: direction data and scales

@@ -7,6 +7,7 @@
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/Texture.h"
+#include "Hollow/Graphics/RenderData.h"
 
 namespace Hollow
 {
@@ -39,16 +40,18 @@ namespace Hollow
 		mCount = data["Count"].GetFloat();
 		if (data.HasMember("Shape"))
 		{
-			mpParticle.push_back(ResourceManager::Instance().GetShape((Shapes)data["Shape"].GetUint()));
-			if (data.HasMember("Texture"))
+			//mpParticle.push_back(ResourceManager::Instance().GetShape((Shapes)data["Shape"].GetUint()));
+			mType = (ParticleType)data["Shape"].GetUint();
+			if (mType == POINT)
 			{
 				mTexture = new Texture(data["Texture"].GetString());
 			}
+			else if (mType == MODEL)
+			{
+				mpParticle = ResourceManager::Instance().LoadModel(data["Model"].GetString());
+			}
 		}
-		else if (data.HasMember("Model"))
-		{
-			mpParticle = ResourceManager::Instance().LoadModel(data["Model"].GetString());
-		}
+		
 		UpdateAttributes();
 		mAreaOfEffect = JSONHelper::GetVec3F(data["Area"].GetArray());
 	}

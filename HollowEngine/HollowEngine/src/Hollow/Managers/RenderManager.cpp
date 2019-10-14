@@ -43,8 +43,8 @@ namespace Hollow {
 
 		// Init Particle Shader
 		mpParticleShader = new Shader("Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag");
-
 		srand(time(NULL));
+		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 	}
 
 	void RenderManager::CleanUp()
@@ -80,46 +80,7 @@ namespace Hollow {
 		mLightData.clear();
 		mRenderData.clear();
 
-		// Draw Particles 
-		mpParticleShader->Use();
-		mpParticleShader->SetMat4("View", mViewMatrix);
-		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		for (unsigned int i = 0; i < mParticleData.size(); ++i)
-		{
-			if (mParticleData[i].mParticleModel.size() == 0)
-			{
-				glPointSize(1.0f);
-				mpParticleShader->SetMat4("Model", mParticleData[i].mModel);
-				mParticleData[i].mTex->Bind(4);
-				mpParticleShader->SetInt("Texx", 4);
-				mParticleData[i].mpParticleVAO->Bind();
-				mParticleData[i].mpParticleVBO->Bind();
-				glDrawArrays(GL_POINTS, 0, mParticleData[i].mParticlesCount);
-				mParticleData[i].mpParticleVBO->Unbind();
-				mParticleData[i].mpParticleVAO->Unbind();
-			}
-			else
-			{
-				for (Mesh* mesh : mParticleData[i].mParticleModel)
-				{
-					mesh->mpVAO->Bind();
-					mesh->mpVBO->Bind();
-					mesh->mpEBO->Bind();
-					mParticleData[i].mpParticleVBO->Bind();
-					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, mParticleData[i].mParticlesCount);
-					mParticleData[i].mpParticleVBO->Unbind();
-					mesh->mpEBO->Unbind();
-					mesh->mpVBO->Unbind();
-					mesh->mpVAO->Unbind();
-				}
-			}
-		}
-		glDisable(GL_BLEND);
-		mParticleData.clear();
+		DrawParticles();
 
 		//Draw debug drawings
 		DrawDebugDrawings();
@@ -312,6 +273,52 @@ namespace Hollow {
 		glBindVertexArray(quadVAO);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glBindVertexArray(0);
+	}
+
+	void RenderManager::DrawParticles()
+	{
+		// Draw Particles 
+		mpParticleShader->Use();
+		mpParticleShader->SetMat4("View", mViewMatrix);
+		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
+		mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
+		mpParticleShader->SetFloat("SpriteSize", 0.1f);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		for (unsigned int i = 0; i < mParticleData.size(); ++i)
+		{
+			mpParticleShader->SetInt("Type", mParticleData[i].mType);
+			if (mParticleData[i].mType == POINT)
+			{
+				mpParticleShader->SetMat4("Model", mParticleData[i].mModel);
+				mParticleData[i].mTex->Bind(4);
+				mpParticleShader->SetInt("Texx", 4);
+				mParticleData[i].mpParticleVAO->Bind();
+				mParticleData[i].mpParticleVBO->Bind();
+				glDrawArrays(GL_POINTS, 0, mParticleData[i].mParticlesCount);
+				mParticleData[i].mpParticleVBO->Unbind();
+				mParticleData[i].mpParticleVAO->Unbind();
+			}
+			else if(mParticleData[i].mType == MODEL)
+			{
+				for (Mesh* mesh : mParticleData[i].mParticleModel)
+				{
+					mesh->mpVAO->Bind();
+					mesh->mpVBO->Bind();
+					mesh->mpEBO->Bind();
+					mParticleData[i].mpParticleVBO->Bind();
+					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, mParticleData[i].mParticlesCount);
+					mParticleData[i].mpParticleVBO->Unbind();
+					mesh->mpEBO->Unbind();
+					mesh->mpVBO->Unbind();
+					mesh->mpVAO->Unbind();
+				}
+			}
+		}
+		glDisable(GL_BLEND);
+		mParticleData.clear();
 	}
 
 	void RenderManager::DrawDebugDrawings()

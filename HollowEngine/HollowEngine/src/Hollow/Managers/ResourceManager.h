@@ -23,6 +23,7 @@ namespace Hollow
 
 		void Init();
 		void CleanUp();
+		void LoadLevelFromFile(std::string path);
 		void LoadGameObjectFromFile(std::string path);
 		Texture* LoadTexture(std::string path);
 		std::vector<Mesh*> LoadModel(std::string path);

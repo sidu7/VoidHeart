@@ -35,6 +35,8 @@ namespace Hollow {
 		void DrawShadowCastingObjects(Shader* pShader);
 		void DrawFSQ();
 
+		void DrawParticles();
+
 		void DrawDebugDrawings();
 
 		// ImGui Debug functions

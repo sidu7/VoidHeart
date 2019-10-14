@@ -23,6 +23,29 @@ void Hollow::ResourceManager::CleanUp()
 	std::for_each(mShapes.begin(), mShapes.end(), [](std::pair<Shapes, Mesh*> value) { delete value.second; });
 }
 
+void Hollow::ResourceManager::LoadLevelFromFile(std::string path)
+{
+	std::ifstream file(path);
+	std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+	rapidjson::Document root;
+	root.Parse(contents.c_str());
+
+	if (root.IsObject())
+	{
+		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
+		for (unsigned int i = 0; i < gameobjects.Size(); ++i)
+		{
+			GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(gameobjects[i].GetObject());
+
+			if (pNewGameObject)
+			{
+				GameObjectManager::Instance().AddGameObject(pNewGameObject);
+			}
+		}
+	}
+}
+
 void Hollow::ResourceManager::LoadGameObjectFromFile(std::string path)
 {
 	std::ifstream file(path);
