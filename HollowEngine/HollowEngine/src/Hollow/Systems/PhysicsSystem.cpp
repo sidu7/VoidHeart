@@ -33,8 +33,10 @@ namespace Hollow
 			
 			
 			pCol->mpBody->mPosition = pCol->mpTr->mPosition;
-			pCol->mpTr->mQuaternion = pCol->mpTr->mQuaternion;
-
+			pCol->mpBody->mPreviousPosition = pCol->mpTr->mPosition;
+			pCol->mpBody->mQuaternion = pCol->mpTr->mQuaternion;
+			pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
+			
 			// update local shape
 			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = glm::vec3(-0.5f, -0.5f, -0.5f) * (pCol->mpTr->mScale) + pCol->mpTr->mPosition;
 			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = glm::vec3(0.5f, 0.5f, 0.5f) * (pCol->mpTr->mScale) + pCol->mpTr->mPosition;
@@ -53,9 +55,9 @@ namespace Hollow
 			glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
 			glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
 			glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-			glm::vec3 rotatedExtents = abs(glm::mat3(pCol->mpTr->mTransformationMatrix) * x) +
-				abs(glm::mat3(pCol->mpTr->mTransformationMatrix) * y) +
-				abs(glm::mat3(pCol->mpTr->mTransformationMatrix) * z);
+			glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
+				abs((pCol->mpBody->mRotationMatrix) * y) +
+				abs((pCol->mpBody->mRotationMatrix) * z);
 
 			// based on normalized body vertices
 			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpTr->mPosition;
