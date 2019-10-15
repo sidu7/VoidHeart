@@ -55,6 +55,7 @@
     <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
     <ClCompile Include="src\Hollow\Components\ParticleEmitter.cpp" />
     <ClCompile Include="src\Hollow\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="src\Hollow\Components\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -187,5 +188,6 @@
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Systems\ParticleSystem.h" />
+    <ClInclude Include="src\Hollow\Components\StateMachine.h" />
   </ItemGroup>
 </Project>
