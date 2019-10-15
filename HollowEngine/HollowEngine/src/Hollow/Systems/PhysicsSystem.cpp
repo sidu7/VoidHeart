@@ -46,6 +46,22 @@ namespace Hollow
 		}
 	}
 
+	void PhysicsSystem::DebugContacts()
+	{
+		ImGui::Begin("Contacts");
+		{
+			for (auto points : *mSAT.mContacts)
+			{
+				for (int i = 0; i < points->contactPoints.size(); i++)
+				{
+					ImGui::Text("Point location- %f , %f , %f ", points->contactPoints[i].point.x, points->contactPoints[i].point.y, points->contactPoints[i].point.z);
+					ImGui::Text("Penetration depth - %f", points->contactPoints[i].penetrationDepth);
+				}
+			}
+		}
+		ImGui::End();
+	}
+
 	void PhysicsSystem::Step(float fixedDeltaTime)
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
@@ -143,6 +159,8 @@ namespace Hollow
 			}
 		}
 
+		DebugContacts();
+		
 		for (int i = 0; i < impulseIterations; ++i) {
 			for (auto c : *mSAT.mContacts) {
 
@@ -253,7 +271,6 @@ namespace Hollow
 			pTr->mPosition.y = glm::mix(pBody->mPreviousPosition.y, pBody->mPosition.y, blendingFactor);
 			pTr->mPosition.z = glm::mix(pBody->mPreviousPosition.z, pBody->mPosition.z, blendingFactor);
 
-			pTr->mQuaternion = glm::slerp(pBody->mPreviousQuaternion, pBody->mQuaternion, blendingFactor);
 
 			// if there is a significant change in position or orientation only then update transformation matrix
 			if (glm::length2(pBody->mVelocity) > 0.0001f || glm::length2(pBody->mAngularVelocity) > 0.0001f) {
@@ -261,6 +278,8 @@ namespace Hollow
 			}
 
 			pBody->mQuaternion = glm::normalize(pBody->mQuaternion);
+			pTr->mQuaternion = glm::slerp(pBody->mPreviousQuaternion, pBody->mQuaternion, blendingFactor);
+			
 			pBody->mRotationMatrix = glm::toMat3(pBody->mQuaternion);
 			pBody->mWorldInertiaInverse =
 				pBody->mRotationMatrix *
