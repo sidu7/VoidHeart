@@ -18,24 +18,32 @@ void Hollow::RenderSystem::AddGameObject(GameObject* object)
 	CheckComponents<Transform,Model>(object);
 }
 
-void Hollow::RenderSystem::Update(GameObject* gameobject)
-{	
-	RenderData data;
-	Transform* trans = gameobject->GetComponent<Transform>();
-	data.mpModel = trans->GetTranformationMatrix();
-
-	//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
-	//DebugDrawManager::Instance().DebugCube(trans->GetPosition() + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
-
-	if (Material * material = gameobject->GetComponent<Material>())
+void Hollow::RenderSystem::Update()
+{
+	for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 	{
-		data.mpMaterial = material;
+		RenderData data;
+
+		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
+		trans->mTransformationMatrix = glm::translate(glm::mat4(1.0f), trans->mPosition);
+		trans->mTransformationMatrix *= glm::toMat4(trans->mQuaternion);
+		trans->mTransformationMatrix = glm::scale(trans->mTransformationMatrix, trans->mScale);
+
+		data.mpModel = trans->mTransformationMatrix;
+
+		//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
+		//DebugDrawManager::Instance().DebugCube(trans->GetPosition() + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
+
+		if (Material * material = mGameObjects[i]->GetComponent<Material>())
+		{
+			data.mpMaterial = material;
+		}
+
+		Model* pModel = mGameObjects[i]->GetComponent<Model>();
+		data.mpMeshes = pModel->mMeshes;
+
+		data.mCastShadow = pModel->mCastShadow;
+
+		RenderManager::Instance().mRenderData.push_back(data);
 	}
-
-	Model* pModel = gameobject->GetComponent<Model>();
-	data.mpMeshes = pModel->mMeshes;
-
-	data.mCastShadow = pModel->mCastShadow;
-
-	RenderManager::Instance().mRenderData.push_back(data);	
 }

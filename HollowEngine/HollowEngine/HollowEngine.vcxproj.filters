@@ -50,6 +50,10 @@
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\CameraSystem.cpp" />
     <ClCompile Include="src\Hollow\Components\Camera.cpp" />
+    <ClCompile Include="src\Hollow\Components\Collider.cpp" />
+    <ClCompile Include="src\Hollow\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
+    <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -169,6 +173,16 @@
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
     <ClInclude Include="src\Utils\JSONHelper.h" />
+    <ClInclude Include="src\Hollow\Components\Shape.h" />
+    <ClInclude Include="src\Hollow\Components\Collider.h" />
+    <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
+    <ClInclude Include="src\Hollow\Physics\Broadphase\Broadphase.h" />
+    <ClInclude Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\ContactManifold.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
+    <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
+    <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
   </ItemGroup>

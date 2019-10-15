@@ -24,7 +24,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_mouse.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/norm.hpp>
 #include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <ImGui/imgui.h>
