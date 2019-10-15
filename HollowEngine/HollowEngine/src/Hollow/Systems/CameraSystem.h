@@ -11,7 +11,7 @@ namespace Hollow
 		REGISTERSYSTEM(CameraSystem, 1)
 	public:
 		virtual ~CameraSystem() {}
-		void Update(GameObject* gameobject);
+		void Update();
 		void AddGameObject(GameObject* object);
 
 		glm::mat4 GetViewMatrix(Camera* pCamera);

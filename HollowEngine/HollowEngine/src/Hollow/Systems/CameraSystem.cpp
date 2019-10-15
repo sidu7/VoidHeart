@@ -14,7 +14,8 @@ namespace Hollow {
 	CameraSystem CameraSystem::instance;
 	void CameraSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<Camera>(object);
+		if (CheckComponents<Camera>(object))
+			UpdateCamera(object->GetComponent<Camera>());
 	}
 	void Update(GameObject* gameobject)
 	{
@@ -96,7 +97,7 @@ namespace Hollow {
 		UpdateCamera(pCamera);
 	}
 
-	bool CameraSystem::HandleMouseScroll(MouseScrolledEvent& mse,Camera* pCamera)
+	bool CameraSystem::HandleMouseScroll(MouseScrolledEvent& mse, Camera* pCamera)
 	{
 		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
@@ -140,25 +141,26 @@ namespace Hollow {
 		return pCamera->mPosition;
 	}
 
-	void CameraSystem::Update(GameObject* gameobject)
+	void CameraSystem::Update()
 	{
+		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
+		{
+			Camera* pCamera = mGameObjects[i]->GetComponent<Camera>();
 
-		Camera* pCamera = gameobject->GetComponent<Camera>();
-		UpdateCamera(pCamera);
+			HandleKeyboardInput(pCamera);
+			HandleMouseButtons(pCamera);
+			HandleMouseInput(pCamera);
 
-		HandleKeyboardInput(pCamera);
-		HandleMouseButtons(pCamera);
-		HandleMouseInput(pCamera);
+			CameraData cameraData;
+			cameraData.mPosition = pCamera->mPosition;
+			cameraData.mZoom = GetZoom(pCamera);
+			cameraData.mNear = pCamera->mNear;
+			cameraData.mFar = pCamera->mFar;
+			cameraData.mViewMatrix = GetViewMatrix(pCamera);
 
-		CameraData cameraData;
-		cameraData.mPosition = pCamera->mPosition;
-		cameraData.mZoom = GetZoom(pCamera);
-		cameraData.mNear = pCamera->mNear;
-		cameraData.mFar = pCamera->mFar;
-		cameraData.mViewMatrix = GetViewMatrix(pCamera);
+			RenderManager::Instance().mCameraData.push_back(cameraData);
+		}
 
-		RenderManager::Instance().mCameraData.push_back(cameraData);
-		
 	}
 
 	/*void CameraSystem::OnEvent(Event& e)

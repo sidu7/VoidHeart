@@ -100,5 +100,14 @@ namespace Hollow {
 	}
 	void Camera::DebugDisplay()
 	{
+		if (ImGui::TreeNode("Camera"))
+		{
+			ImGui::InputFloat3("Position", &mPosition[0]);
+			ImGui::InputFloat("Zoom", &mZoom);
+			ImGui::InputFloat("Yaw", &mYaw);
+			ImGui::InputFloat("Pitch", &mPitch);
+			ImGui::InputFloat("Mouse Sensitivity", &mMouseSensitivity);
+			ImGui::TreePop();
+		}
 	}
 }
