@@ -15,7 +15,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Hollow\Components\Body.cpp" />
-    <ClCompile Include="src\Hollow\Components\CameraController.cpp" />
+    <ClCompile Include="src\Hollow\Components\Camera.cpp" />
     <ClCompile Include="src\Hollow\Components\Light.cpp" />
     <ClCompile Include="src\Hollow\Components\Material.cpp" />
     <ClCompile Include="src\Hollow\Components\Model.cpp" />
@@ -33,7 +33,6 @@
     <ClCompile Include="src\Hollow\Managers\DebugDrawManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
-    <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Hollow\Systems\CameraSystem.cpp" />
@@ -71,7 +70,7 @@
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Hollow\Components\CameraController.h" />
+    <ClInclude Include="src\Hollow\Components\Camera.h" />
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
@@ -106,7 +105,6 @@
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
-    <ClInclude Include="src\Hollow\Graphics\Camera.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
     <ClInclude Include="src\Utils\JSONHelper.h" />
     <ClInclude Include="src\Utils\Log.h" />

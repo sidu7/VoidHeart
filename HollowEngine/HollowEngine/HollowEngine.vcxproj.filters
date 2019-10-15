@@ -22,7 +22,6 @@
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\GameObjectManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\MemoryManager.cpp" />
-    <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Hollow\Graphics\GameWindow.cpp" />
@@ -49,8 +48,8 @@
     <ClCompile Include="src\Hollow\Graphics\FrameBuffer.cpp" />
     <ClCompile Include="src\Hollow\Components\Light.cpp" />
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
-    <ClCompile Include="src\Hollow\Components\CameraController.cpp" />
     <ClCompile Include="src\Hollow\Systems\CameraSystem.cpp" />
+    <ClCompile Include="src\Hollow\Components\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -72,9 +71,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vendor\Include\ImGui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hollow\Systems\TempSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Hollow\Managers\SystemManager.cpp">
@@ -130,7 +126,6 @@
     <ClInclude Include="src\Hollow\Managers\GameObjectManager.h" />
     <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
     <ClInclude Include="src\hollowpch.h" />
-    <ClInclude Include="src\Hollow\Graphics\Camera.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
     <ClInclude Include="src\Hollow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
@@ -144,7 +139,6 @@
     <ClInclude Include="vendor\Include\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\Hollow\Managers\SystemManager.h" />
     <ClInclude Include="src\Hollow\Systems\System.h" />
-    <ClInclude Include="src\Hollow\Systems\TempSystem.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Core\Application.h" />
@@ -175,7 +169,7 @@
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
     <ClInclude Include="src\Utils\JSONHelper.h" />
-    <ClInclude Include="src\Hollow\Components\CameraController.h" />
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
+    <ClInclude Include="src\Hollow\Components\Camera.h" />
   </ItemGroup>
 </Project>

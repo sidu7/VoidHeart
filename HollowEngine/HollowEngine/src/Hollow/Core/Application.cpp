@@ -12,7 +12,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 
 
-#include "Hollow/Graphics/Camera.h"
+//#include "Hollow/Graphics/Camera.h"
 
 namespace Hollow {
 
@@ -51,7 +51,7 @@ namespace Hollow {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		
-		RenderManager::Instance().GetCamera()->OnEvent(e);
+		//RenderManager::Instance().GetCamera()->OnEvent(e);
 
 		//HW_CORE_TRACE("{0}", e);
 
@@ -79,7 +79,7 @@ namespace Hollow {
 				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			}
 			SystemManager::Instance().Update();
-			RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			//RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			RenderManager::Instance().Update();
 			InputManager::Instance().Update();
 

@@ -5,7 +5,7 @@ namespace Hollow
 {
 	class Event;
 	class MouseScrolledEvent;
-	class CameraController;
+	class Camera;
 	class CameraSystem : public System
 	{
 		REGISTERSYSTEM(CameraSystem, 1)
@@ -14,24 +14,23 @@ namespace Hollow
 		void Update(GameObject* gameobject);
 		void AddGameObject(GameObject* object);
 
-		glm::mat4 GetViewMatrix(CameraController* pCameraController);
+		glm::mat4 GetViewMatrix(Camera* pCamera);
 
-		void HandleKeyboardInput(CameraController* pCameraController);
-		void HandleMouseInput(CameraController* pCameraController);
-		bool HandleMouseScroll(MouseScrolledEvent& mse,CameraController* pCameraController);
-		void HandleMouseButtons(CameraController* pCameraController);
+		void HandleKeyboardInput(Camera* pCamera);
+		void HandleMouseInput(Camera* pCamera);
+		bool HandleMouseScroll(MouseScrolledEvent& mse,Camera* pCamera);
+		void HandleMouseButtons(Camera* pCamera);
 
-		float GetZoom(CameraController* pCameraController);
-		glm::vec3 GetPosition(CameraController* pCameraController);
+		float GetZoom(Camera* pCamera);
+		glm::vec3 GetPosition(Camera* pCamera);
 
 		//void DisplayDebug();
 
-		void OnUpdate(float frameTime);
-		void OnEvent(Event& e);
+		//void OnEvent(Event& e);
 
 	private:
-		void UpdateCamera(CameraController* pCameraController);
-		void Reset(CameraController* pCameraController);
+		void UpdateCamera(Camera* pCamera);
+		void Reset(Camera* pCamera);
 
 	private:
 		float mLastX;
