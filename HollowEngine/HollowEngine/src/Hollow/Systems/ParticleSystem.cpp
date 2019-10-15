@@ -7,6 +7,7 @@
 #include "Hollow/Graphics/VertexBuffer.h"
 
 #include "Hollow/Managers/RenderManager.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 namespace Hollow
 {
@@ -26,7 +27,7 @@ namespace Hollow
 			ParticleData particle;
 			if (emitter->mType == POINT)
 			{
-				CalculateParticlePositions(emitter);
+				CalculateParticlePositions(emitter, mGameObjects[i]->GetComponent<Transform>()->mPosition);
 
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model, mGameObjects[i]->GetComponent<Transform>()->mPosition);
@@ -96,20 +97,53 @@ namespace Hollow
 			emitter->mModelMatrices.push_back(model);
 		}
 	}
-	void ParticleSystem::CalculateParticlePositions(ParticleEmitter* emitter)
+	void ParticleSystem::CalculateParticlePositions(ParticleEmitter* emitter, glm::vec3 center)
 	{ 
 		emitter->mParticlePositions.clear();
 
-		int amount = 2000;
+		float deltaTime = FrameRateController::Instance().GetFrameTime();
+
+		//UpdateCurrentParticles
+		for (unsigned int i = 0; i < emitter->mParticlesList.size(); ++i)
+		{
+			Particle& particle = emitter->mParticlesList[i];
+
+			particle.mLife -= deltaTime;
+			if (particle.mLife > 0.0f)
+			{
+				particle.mPosition += particle.mSpeed * deltaTime * particle.mDirection;
+				emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition,1.0f));
+			}
+			else
+			{
+				emitter->mParticlesList.erase(emitter->mParticlesList.begin() + i);
+			}
+		}
+		
+		//SpawnNewParticles
+
+		int amount = 200;
 		for (unsigned int i = 0; i < amount; i++)
 		{
+			if (emitter->mParticlesList.size() >= emitter->mCount)
+			{
+				break;
+			}
 			float x, y, z;
 
 			x = (rand() % (2 * amount + 1) - amount) / ((float)amount);
 			y = (rand() % (2 * amount + 1) - amount) / ((float)amount);
 			z = (rand() % (2 * amount + 1) - amount) / ((float)amount);
 
-			emitter->mParticlePositions.push_back(glm::vec4(x, y, z, 1.0f));
+			Particle particle;
+
+			particle.mPosition = glm::vec3(x, y, z);
+			particle.mSpeed = 0.5f;
+			particle.mDirection = glm::normalize(particle.mPosition - center);
+			particle.mLife = 0.5f;
+
+			emitter->mParticlesList.push_back(particle);
+			emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition, 1.0f));
 		}
 	}
 }
