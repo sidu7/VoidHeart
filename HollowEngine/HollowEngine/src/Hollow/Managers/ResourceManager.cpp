@@ -298,6 +298,32 @@ void Hollow::ResourceManager::InitializeShapes()
 		mShapes[AXES] = mesh;
 	}
 
+	//Line
+	{
+		std::vector<glm::vec3> verts;
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		unsigned int ind[] = {
+			0, 1
+		};
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 2, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 2, sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[LINE] = mesh;
+	}
+
 	//Directional line
 	{
 		std::vector<glm::vec3> verts;
@@ -329,7 +355,96 @@ void Hollow::ResourceManager::InitializeShapes()
 		mShapes[DIRECTION_LINE] = mesh;
 
 	}
+
+	//WireCube
+	{
+		std::vector<glm::vec3> verts;
+
+		verts.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		verts.push_back(glm::vec3(0.5f, 0.5f, -0.5f));
+		verts.push_back(glm::vec3(-0.5f, 0.5f, 0.5f));
+		verts.push_back(glm::vec3(-0.5f, 0.5f, -0.5f));
+		verts.push_back(glm::vec3(0.5f, -0.5f, 0.5f));
+		verts.push_back(glm::vec3(0.5f, -0.5f, -0.5f));
+		verts.push_back(glm::vec3(-0.5f, -0.5f, 0.5f));
+		verts.push_back(glm::vec3(-0.5f, -0.5f, -0.5f));
+
+		unsigned int ind[] = {
+			0, 1, 0, 2, 1, 3, 2, 3, 4, 5, 4, 6, 5, 7, 6, 7, 0, 4, 1, 5, 2, 6, 3, 7
+		};
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 24, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 8, sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[WIRECUBE] = mesh;
+	}
 	
+	//Circle
+	{
+		std::vector<glm::vec3> verts;
+
+		verts.push_back(glm::vec3(0, 1, 0));
+		verts.push_back(glm::vec3(0.19509,0.980785,0));
+		verts.push_back(glm::vec3(0.382683,0.92388,0));
+		verts.push_back(glm::vec3(0.55557,0.83147,0));
+		verts.push_back(glm::vec3(0.707107,0.707107,0));
+		verts.push_back(glm::vec3(0.831469,0.55557,0));
+		verts.push_back(glm::vec3(0.923879,0.382684,0));
+		verts.push_back(glm::vec3(0.980785,0.195091,0));
+		verts.push_back(glm::vec3(1,3.13916e-07,0));
+		verts.push_back(glm::vec3(0.980785,-0.19509,0));
+		verts.push_back(glm::vec3(0.92388,-0.382683,0));
+		verts.push_back(glm::vec3(0.83147,-0.55557,0));
+		verts.push_back(glm::vec3(0.707107,-0.707106,0));
+		verts.push_back(glm::vec3(0.555571,-0.831469,0));
+		verts.push_back(glm::vec3(0.382684,-0.923879,0));
+		verts.push_back(glm::vec3(0.195091,-0.980785,0));
+		verts.push_back(glm::vec3(6.27833e-07,-1,0));
+		verts.push_back(glm::vec3(-0.19509,-0.980785,0));
+		verts.push_back(glm::vec3(-0.382683,-0.92388,0));
+		verts.push_back(glm::vec3(-0.55557,-0.83147,0));
+		verts.push_back(glm::vec3(-0.707106,-0.707107,0));
+		verts.push_back(glm::vec3(-0.831469,-0.555571,0));
+		verts.push_back(glm::vec3(-0.923879,-0.382684,0));
+		verts.push_back(glm::vec3(-0.980785,-0.195091,0));
+		verts.push_back(glm::vec3(-1,-9.41749e-07,0	   ));
+		verts.push_back(glm::vec3(-0.980785,0.195089,0 ));
+		verts.push_back(glm::vec3(-0.92388,0.382683,0  ));
+		verts.push_back(glm::vec3(-0.83147,0.555569,0  ));
+		verts.push_back(glm::vec3(-0.707108,0.707106,0 ));
+		verts.push_back(glm::vec3(-0.555571,0.831469,0 ));
+		verts.push_back(glm::vec3(-0.382685,0.923879,0 ));
+		verts.push_back(glm::vec3(-0.195092,0.980785,0 ));
+
+		unsigned int ind[32];
+		for (int i = 0; i < 32; ++i) ind[i] = i;
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 32, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 32, sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[CIRCLE] = mesh;
+	}
+
 	//Quad
 	{
 		Vertex v;

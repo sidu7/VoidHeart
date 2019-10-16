@@ -5,7 +5,6 @@
 #include "ImGuiManager.h"
 
 #include "Hollow/Components/Material.h"
-#include "Hollow/Components/Transform.h"
 
 #include "Hollow/Graphics/GameWindow.h"
 #include "Hollow/Graphics/Camera.h"

@@ -15,6 +15,8 @@ namespace Hollow
 		QUAD,
 		CIRCLE,
 		AXES,
+		WIRECUBE,
+		LINE,
 		DIRECTION_LINE
 	};
 

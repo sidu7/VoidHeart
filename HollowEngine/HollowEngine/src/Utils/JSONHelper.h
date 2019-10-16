@@ -1,8 +1,9 @@
 #pragma once
+#include "Hollow/Core/Core.h"
 #include "rapidjson/document.h"
 #include "glm/glm.hpp"
 
-class JSONHelper
+class HOLLOW_API JSONHelper
 {
 public:
 	inline static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)
