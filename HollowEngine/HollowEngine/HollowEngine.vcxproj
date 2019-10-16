@@ -82,6 +82,7 @@
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
+    <ClInclude Include="src\Hollow\Graphics\Color.h" />
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />

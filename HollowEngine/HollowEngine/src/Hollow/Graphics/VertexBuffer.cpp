@@ -20,10 +20,11 @@ namespace Hollow {
 		GLCall(glDeleteBuffers(1, &mRendererID));
 	}
 
-	void VertexBuffer::AddData(const void* data, unsigned int size) const
+	void VertexBuffer::AddData(const void* data, unsigned int count, unsigned int size)
 	{
 		Bind();
-		GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+		mCount = count;
+		GLCall(glBufferData(GL_ARRAY_BUFFER, count * size, data, GL_STATIC_DRAW));
 	}
 
 	void VertexBuffer::AddStreamingData(unsigned int size) const
@@ -32,11 +33,11 @@ namespace Hollow {
 		GLCall(glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_STREAM_DRAW));
 	}
 
-	void VertexBuffer::AddSubData(const void* data, unsigned int parentsize, unsigned int datasize) const
+	void VertexBuffer::AddSubData(const void* data, unsigned int count, unsigned int size)
 	{
 		Bind();
-		GLCall(glBufferData(GL_ARRAY_BUFFER, parentsize, NULL, GL_STREAM_DRAW));
-		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, datasize, data));
+		mCount = count;
+		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, count * size, data));
 	}
 
 	void VertexBuffer::Bind() const

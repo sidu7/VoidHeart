@@ -34,8 +34,7 @@ namespace Hollow
 				model = glm::scale(model, glm::vec3(10.0f));
 				emitter->mpParticlePositionVBO->AddSubData(
 					&emitter->mParticlePositions[0], // data
-					emitter->mCount * sizeof(glm::vec4),  // size of the parent VBO
-					emitter->mParticlePositions.size() * sizeof(glm::vec4)); // size of data to be sent
+					emitter->mParticlePositions.size() , sizeof(glm::vec4)); // size of data to be sent
 
 				// Create ParticleData
 				particle.mType = POINT;
@@ -50,8 +49,7 @@ namespace Hollow
 				CalculateParticleMatrices(emitter);
 				emitter->mpParticleModelVBO->AddSubData(
 					&emitter->mModelMatrices[0], //data
-					emitter->mCount * sizeof(glm::mat4), //size of parent VBO
-					emitter->mModelMatrices.size() * sizeof(glm::mat4)); //size of data to be sent
+					emitter->mModelMatrices.size() , sizeof(glm::mat4)); //size of data to be sent
 
 				// Create ParticleData
 				particle.mType = MODEL;

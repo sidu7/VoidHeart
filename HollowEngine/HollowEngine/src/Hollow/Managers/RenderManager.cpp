@@ -297,7 +297,7 @@ namespace Hollow {
 				mpParticleShader->SetInt("Texx", 4);
 				mParticleData[i].mpParticleVAO->Bind();
 				mParticleData[i].mpParticleVBO->Bind();
-				glDrawArrays(GL_POINTS, 0, mParticleData[i].mParticlesCount);
+				glDrawArrays(GL_POINTS, 0, mParticleData[i].mpParticleVBO->GetVerticesCount());
 				mParticleData[i].mpParticleVBO->Unbind();
 				mParticleData[i].mpParticleVAO->Unbind();
 			}
@@ -330,11 +330,28 @@ namespace Hollow {
 		for (unsigned int i = 0; i < mDebugRenderData.size(); ++i)
 		{
 			DebugRenderData& data = mDebugRenderData[i];
-			mpDebugShader->SetMat4("Model", data.mpModel);			
+			mpDebugShader->SetMat4("Model", data.mpModel);
+			mpDebugShader->SetVec3("Color", data.mColor);
 			for (Mesh* mesh : data.mpMeshes)
 			{
 				mesh->mpVAO->Bind();
-				GLCall(glDrawElements(data.mDrawCommand, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+				mesh->mpVBO->Bind();
+				if (mesh->mpEBO)
+				{
+					mesh->mpEBO->Bind();
+					GLCall(glDrawElements(data.mDrawCommand, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+					mesh->mpEBO->Unbind();
+				}
+				else
+				{
+					GLCall(glDrawArrays(data.mDrawCommand, 0, mesh->mpVBO->GetVerticesCount()));
+				}
+				mesh->mpVAO->Unbind();
+				mesh->mpVBO->Unbind();
+			}
+			if (data.mType == DebugShape::DEBUGLINE)
+			{
+				delete data.mpMeshes[0];
 			}
 		}
 

@@ -54,6 +54,7 @@
 #include "Utils/Singleton.h"
 #include "Utils/Profiler.h"
 #include "Utils/JSONHelper.h"
+#include "Hollow/Graphics/Color.h"
 
 // GetObject() is defined by Windows and conflicts with GetObject() of rapidjson
 #ifdef _MSC_VER   

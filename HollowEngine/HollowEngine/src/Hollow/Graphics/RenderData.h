@@ -11,6 +11,7 @@ namespace Hollow {
 	class VertexArray;
 	class Texture;
 	enum ParticleType;
+	enum DebugShape;
 
 	struct RenderData
 	{
@@ -21,11 +22,23 @@ namespace Hollow {
 		Shader* mpShader;
 	};
 
+	enum DebugShape
+	{
+		DEBUGLINE,
+		DEBUGQUAD,
+		DEBUGAXES,
+		DEBUGCIRCLE,
+		DEBUGCUBE,
+		DEBUGSPHERE
+	};
+
 	struct DebugRenderData
 	{
 		std::vector<Mesh*> mpMeshes;
 		glm::mat4 mpModel;
 		GLenum mDrawCommand;
+		DebugShape mType;
+		glm::vec3 mColor;
 	};
 
 	struct LightData
