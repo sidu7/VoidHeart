@@ -13,7 +13,9 @@ namespace Hollow
 		CUBE,
 		TEAPOT,
 		QUAD,
-		AXES
+		CIRCLE,
+		AXES,
+		DIRECTION_LINE
 	};
 
 	class HOLLOW_API ResourceManager

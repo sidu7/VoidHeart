@@ -179,26 +179,144 @@ void Hollow::ResourceManager::InitializeShapes()
 	//Axes
 	{
 		std::vector<glm::vec3> verts;
+		//X axis
 		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-		//verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 
 		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-		//verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-
 		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-		//verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, 0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, -0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, 0.05f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, -0.05f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		//Y axis
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
 
 		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-		//verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-
 		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-		//verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.05f, 0.8f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(-0.05f, 0.8f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.05f, 0.8f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(-0.05f, 0.8f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+		//Z axis
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 
 		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-		//verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(0.05f, 0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(-0.05f, 0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(0.05f, -0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(-0.05f, -0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		unsigned int ind[] = {
+			0, 1, 1, 2, 1, 3, 1, 4, 1, 5, 2, 3, 2, 4, 4, 5, 5, 3,			// X-axis
+			6, 7, 7, 8, 7, 9, 7, 10, 7, 11,	8, 9, 8, 10, 10, 11, 11, 9,		// Y-axis
+			12, 13, 13, 14, 13, 15, 13, 16, 13, 17, 14, 15, 14, 16, 16, 17, 17, 15	//Z-axis
+		};
 
 		VertexBuffer* vbo = new VertexBuffer();
 		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 54, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 18, 4 * sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[AXES] = mesh;
+	}
+
+	//Directional line
+	{
+		std::vector<glm::vec3> verts;
+
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.8f, 0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.8f, -0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.8f, 0.05f, -0.05f));
+		verts.push_back(glm::vec3(0.8f, -0.05f, -0.05f));
+
+		unsigned int ind[] = {
+			0, 1, 1, 2, 1, 3, 1, 4, 1, 5, 2, 3, 2, 4, 4, 5, 5, 3
+		};
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 18, sizeof(unsigned int));
 		vao->AddBuffer(*vbo);
 		vbo->AddData(&verts[0], 6, sizeof(glm::vec3));
 		vao->Push(3, GL_FLOAT, sizeof(float));
@@ -207,9 +325,11 @@ void Hollow::ResourceManager::InitializeShapes()
 		Mesh* mesh = new Mesh();
 		mesh->mpVAO = vao;
 		mesh->mpVBO = vbo;
-		mShapes[AXES] = mesh;
-	}
+		mesh->mpEBO = ebo;
+		mShapes[DIRECTION_LINE] = mesh;
 
+	}
+	
 	//Quad
 	{
 		Vertex v;

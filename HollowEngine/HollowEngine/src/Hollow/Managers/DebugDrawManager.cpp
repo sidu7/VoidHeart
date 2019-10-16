@@ -20,10 +20,10 @@ namespace Hollow
 	{
 
 	}
-
+	
 	void DebugDrawManager::DebugLine(glm::vec3 startPos, glm::vec3 endPos, glm::vec3 color)
 	{
-		std::vector<glm::vec3> vertices;
+		/*std::vector<glm::vec3> vertices;
 		vertices.push_back(startPos);
 		vertices.push_back(endPos);
 		Mesh* mesh = new Mesh();
@@ -40,7 +40,20 @@ namespace Hollow
 		data.mpMeshes.push_back(mesh);
 		data.mpModel = glm::mat4(1.0f);
 		data.mColor = color;
+		RenderManager::Instance().mDebugRenderData.push_back(data);*/
+		glm::vec3 dirvec = endPos - startPos;
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, startPos);
+		model *= glm::lookAt(startPos, endPos, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(length(dirvec)));
+		DebugRenderData data;
+		data.mpMeshes.push_back(ResourceManager::Instance().GetShape(Shapes::DIRECTION_LINE));
+		data.mpModel = model;
+		data.mDrawCommand = GL_LINES;
+		data.mType = DebugShape::DEBUGLINE;
+		data.mColor = color;
 		RenderManager::Instance().mDebugRenderData.push_back(data);
+
 	}
 
 	void DebugDrawManager::DebugCircle()

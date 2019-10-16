@@ -33,7 +33,7 @@ void Hollow::RenderSystem::Update()
 
 		//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
 		//DebugDrawManager::Instance().DebugCube(trans->GetPosition() + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
-		DebugDrawManager::Instance().DebugLine(trans->mPosition, trans->mPosition + glm::vec3(30.0f, 30.0f, 0.0f), COLOR_ORANGE);
+		DebugDrawManager::Instance().DebugLine(trans->mPosition, trans->mPosition + glm::vec3(30.0f, 0.0f, 0.0f), COLOR_ORANGE);
 		DebugDrawManager::Instance().DebugAxes(trans->mPosition, glm::vec3(2.0f));
 		
 
