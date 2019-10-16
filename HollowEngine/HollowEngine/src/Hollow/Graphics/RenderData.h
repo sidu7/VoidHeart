@@ -59,5 +59,14 @@ namespace Hollow {
 		glm::mat4 mModel;
 		Texture* mTex;
 		ParticleType mType;
+  };
+
+	struct CameraData
+	{
+		glm::mat4 mViewMatrix;
+		glm::vec3 mPosition;
+		float mZoom;
+		float mNear;
+		float mFar;
 	};
 }

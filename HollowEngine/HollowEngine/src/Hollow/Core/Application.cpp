@@ -14,8 +14,7 @@
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp> // or #include "sol.hpp", whichever suits your needs
 
-
-#include "Hollow/Graphics/Camera.h"
+//#include "Hollow/Graphics/Camera.h"
 
 namespace Hollow {
 
@@ -54,7 +53,7 @@ namespace Hollow {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		
-		RenderManager::Instance().GetCamera()->OnEvent(e);
+		//RenderManager::Instance().GetCamera()->OnEvent(e);
 
 		//HW_CORE_TRACE("{0}", e);
 
@@ -89,8 +88,7 @@ namespace Hollow {
 			}
 			InputManager::Instance().Update();
 			SystemManager::Instance().Update();
-			// TODO make camera controller
-			RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			//RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			RenderManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
