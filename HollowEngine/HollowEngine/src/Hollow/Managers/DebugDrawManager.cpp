@@ -23,28 +23,20 @@ namespace Hollow
 	
 	void DebugDrawManager::DebugLine(glm::vec3 startPos, glm::vec3 endPos, glm::vec3 color)
 	{
-		/*std::vector<glm::vec3> vertices;
-		vertices.push_back(startPos);
-		vertices.push_back(endPos);
-		Mesh* mesh = new Mesh();
-		mesh->mpVBO = new VertexBuffer();
-		mesh->mpVBO->AddData(&vertices[0], 2 , sizeof(glm::vec3));
-		mesh->mpVAO = new VertexArray();
-		mesh->mpVAO->Bind();
-		mesh->mpVAO->Push(3, GL_FLOAT, sizeof(float));
-		mesh->mpVAO->AddLayout();
-		mesh->mpVAO->Unbind();
-		DebugRenderData data;
-		data.mType = DebugShape::DEBUGLINE;
-		data.mDrawCommand = GL_LINES;
-		data.mpMeshes.push_back(mesh);
-		data.mpModel = glm::mat4(1.0f);
-		data.mColor = color;
-		RenderManager::Instance().mDebugRenderData.push_back(data);*/
 		glm::vec3 dirvec = endPos - startPos;
+		glm::vec3 nordir = glm::normalize(dirvec);
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, startPos);
-		model *= glm::lookAt(startPos, endPos, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		float angle = std::atan2(nordir.y, nordir.x);
+		glm::mat4 glmrotXY = glm::rotate(angle, glm::vec3(0.0f, 0.0f, 1.0f));
+		// Find the angle with the xy with plane (0, 0, 1); the - there is because we want to 
+		// 'compensate' for that angle (a 'counter-angle')
+		float angleZ = -std::asin(nordir.z);
+		// Make the matrix for that, assuming that Y is your 'side' vector; makes the model 'pitch'
+		glm::mat4 glmrotZ = glm::rotate(angleZ, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		model *= glmrotXY * glmrotZ;
 		model = glm::scale(model, glm::vec3(length(dirvec)));
 		DebugRenderData data;
 		data.mpMeshes.push_back(ResourceManager::Instance().GetShape(Shapes::DIRECTION_LINE));

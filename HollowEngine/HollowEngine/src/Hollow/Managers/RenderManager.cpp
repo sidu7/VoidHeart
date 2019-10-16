@@ -349,10 +349,6 @@ namespace Hollow {
 				mesh->mpVAO->Unbind();
 				mesh->mpVBO->Unbind();
 			}
-			/*if (data.mType == DebugShape::DEBUGLINE)
-			{
-				delete data.mpMeshes[0];
-			}*/
 		}
 
 		mDebugRenderData.clear();
