@@ -27,6 +27,7 @@ namespace Hollow
 		Texture* LoadTexture(std::string path);
 		std::vector<Mesh*> LoadModel(std::string path);
 		Mesh* GetShape(Shapes shape);
+		FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
 
 	private:
 		void InitializeShapes();
@@ -39,5 +40,8 @@ namespace Hollow
 		std::unordered_map<std::string, Texture*> mTextureCache;
 		std::unordered_map<std::string, std::vector<Mesh*>> mModelCache;
 		std::unordered_map<Shapes, Mesh*> mShapes;
+
+		// Sounds cache, maybe split into SFX and Songs
+		std::unordered_map<std::string, FMOD::Sound*> mSoundCache;
 	};
 }
