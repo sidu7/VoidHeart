@@ -41,6 +41,10 @@
 #include "assimp/assimp/postprocess.h"
 #include "assimp/assimp/cimport.h"
 
+// FMOD Audio library
+#include <FMOD/fmod.hpp>
+#include <FMOD/fmod_studio.hpp>
+
 // Serialization library
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>

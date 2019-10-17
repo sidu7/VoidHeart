@@ -3,12 +3,6 @@
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp" />
     <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
-    <ClCompile Include="vendor\Include\ImGui\imgui.cpp" />
-    <ClCompile Include="vendor\Include\ImGui\imgui_demo.cpp" />
-    <ClCompile Include="vendor\Include\ImGui\imgui_draw.cpp" />
-    <ClCompile Include="vendor\Include\ImGui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="vendor\Include\ImGui\imgui_impl_sdl.cpp" />
-    <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Hollow\Managers\SystemManager.cpp" />
     <ClCompile Include="src\hollowpch.cpp" />
     <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
@@ -57,6 +51,13 @@
     <ClCompile Include="src\Hollow\Components\ParticleEmitter.cpp" />
     <ClCompile Include="src\Hollow\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Hollow\Components\StateMachine.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -190,6 +191,7 @@
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
     <ClInclude Include="src\Hollow\Graphics\Color.h" />
     <ClInclude Include="src\Utils\GraphicsMath.h" />
+    <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
   </ItemGroup>

@@ -3,7 +3,7 @@
 #ifdef HW_PLATFORM_WINDOWS 
 
 extern Hollow::Application* Hollow::CreateApplication();
-
+#undef main
 int main(int argc, char** argv)
 {
 	//This has to be moved out of the main as well later.
