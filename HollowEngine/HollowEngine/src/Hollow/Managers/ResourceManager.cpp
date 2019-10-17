@@ -86,66 +86,37 @@ std::vector<Hollow::Mesh*> Hollow::ResourceManager::LoadModel(std::string path)
 		return mModelCache[path];
 	}
 
-	const aiScene* scene = nullptr;
-	if (mModelSceneCache.find(path) == mModelSceneCache.end())
-	{
-		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
+	Assimp::Importer importer;
+	const RootNode* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
 
-		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-		{
-			std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
-		}
-
-		mModelSceneCache[path] = scene;
-	}
-	else
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		scene = mModelSceneCache[path];
+		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
 	}
+
 	std::vector<Mesh*> meshes;
 	ProcessMeshNode(scene->mRootNode, scene, meshes);
-
 	mModelCache[path] = meshes;
+	
+	mMaterialCache[path] = ProcessMaterials(scene, path);
 	return meshes;
 }
 
-std::vector<Hollow::MaterialData> Hollow::ResourceManager::LoadMaterial(std::string path)
+std::vector<Hollow::MaterialData*> Hollow::ResourceManager::LoadMaterials(std::string path)
 {
 	//Check in cache
-	if (mMaterialCache.find(path) != mMaterialCache.end())
+	if (mMaterialCache.find(path) == mMaterialCache.end())
 	{
-		return mMaterialCache[path];
+		LoadModel(path);
 	}
-
-	const aiScene* scene = nullptr;
-	if (mModelSceneCache.find(path) == mModelSceneCache.end())
-	{
-		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
-
-		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-		{
-			std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
-		}
-
-		mModelSceneCache[path] = scene;
-	}
-	else
-	{
-		scene = mModelSceneCache[path];
-	}
-
-	std::vector<MaterialData> materials = ProcessMaterials(scene);
-	mMaterialCache[path] = materials;
-	return materials;
+	return mMaterialCache[path];
 }
 
-void Hollow::ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshlist)
+void Hollow::ResourceManager::ProcessMeshNode(Node* node, const RootNode* scene, std::vector<Mesh*>& meshlist)
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 	{
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		ModelMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshlist.push_back(ProcessMesh(mesh, scene));
 	}
 
@@ -155,7 +126,7 @@ void Hollow::ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene
 	}
 }
 
-Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(ModelMesh* mesh, const RootNode* scene)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -208,11 +179,51 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* 
 	return CreateMesh(vertices,indices,materialIndex);
 }
 
-std::vector<Hollow::MaterialData> Hollow::ResourceManager::ProcessMaterials(const aiScene* scene)
+std::vector<Hollow::MaterialData*> Hollow::ResourceManager::ProcessMaterials(const RootNode* scene, std::string path)
 {
-	return std::vector<MaterialData>();
+	std::vector<MaterialData*> materials;
+	path = path.substr(0, path.find_last_of('/'));
+	if (scene->HasMaterials())
+	{
+		for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
+		{
+			MaterialData* materialdata  = new MaterialData();
+			// Note: Assuming Material has only 1 texture of each type, rarely is otherwise
+			aiMaterial* material = scene->mMaterials[i];
+			materialdata->mpDiffuse = LoadMaterialTexture(material, aiTextureType_DIFFUSE, scene,path);
+			materialdata->mpSpecular = LoadMaterialTexture(material, aiTextureType_SPECULAR, scene,path);
+			materialdata->mpNormal = LoadMaterialTexture(material, aiTextureType_NORMALS, scene,path);
+			materialdata->mpHeight = LoadMaterialTexture(material, aiTextureType_HEIGHT, scene,path);
+
+			materials.push_back(materialdata);
+		}		
+	}
+	return materials;
 }
 
+Hollow::Texture* Hollow::ResourceManager::LoadMaterialTexture(ModelMaterial* material, unsigned int textureType, const RootNode* scene, std::string directory)
+{
+	aiString str;
+	unsigned int count = material->GetTextureCount((aiTextureType)textureType);
+	if (count == 0)
+	{
+		return nullptr;
+	}
+	material->GetTexture((aiTextureType)textureType, 0, &str); // only reading 1 texture of each type at 0 index
+	const aiTexture* tex = scene->GetEmbeddedTexture(str.C_Str());
+	Texture* texture = nullptr;
+	if (tex && tex->mHeight == 0)
+	{
+		texture = new Texture(tex->pcData, tex->mWidth);
+	}
+	else
+	{
+		std::string fileName = str.C_Str();
+		fileName = fileName.substr(fileName.find_last_of('\\') + 1, fileName.size());
+		texture = new Texture(directory + '/' + fileName);
+	}
+	return texture;
+}
 
 
 Hollow::Mesh* Hollow::ResourceManager::GetShape(Shapes shape)

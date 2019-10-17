@@ -78,7 +78,10 @@ namespace Hollow {
 		mRenderData.clear();
 		mCameraData.clear();
 
-		DrawParticles();
+		if (ShowParticles)
+		{
+			DrawParticles();
+		}
 
 		//Draw debug drawings
 		DrawDebugDrawings();
@@ -215,7 +218,57 @@ namespace Hollow {
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
 			{
-				mesh->Draw(pShader);
+				if (mesh->mMaterialIndex != -1)
+				{
+					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
+					if (materialdata->mpDiffuse)
+					{
+						materialdata->mpDiffuse->Bind(1);
+						pShader->SetInt("diffuseTexture", 1);
+					}
+					if (materialdata->mpSpecular)
+					{
+						materialdata->mpSpecular->Bind(2);
+						pShader->SetInt("specularTexture", 2);
+					}
+					if (materialdata->mpNormal)
+					{
+						materialdata->mpNormal->Bind(3);
+						pShader->SetInt("normalTexture", 3);
+					}
+					if (materialdata->mpHeight)
+					{
+						materialdata->mpHeight->Bind(4);
+						pShader->SetInt("heightTexture", 4);
+					}
+				}
+				mesh->mpVAO->Bind();
+				mesh->mpEBO->Bind();
+				mesh->mpVBO->Bind();
+				GLCall(glDrawElements(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+				mesh->mpEBO->Unbind();
+				mesh->mpVBO->Unbind();
+				mesh->mpVAO->Unbind();
+				if (mesh->mMaterialIndex != -1)
+				{
+					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
+					if (materialdata->mpDiffuse)
+					{
+						materialdata->mpDiffuse->Unbind();
+					}
+					if (materialdata->mpSpecular)
+					{
+						materialdata->mpSpecular->Unbind();
+					}
+					if (materialdata->mpNormal)
+					{
+						materialdata->mpNormal->Unbind();
+					}
+					if (materialdata->mpHeight)
+					{
+						materialdata->mpHeight->Unbind();
+					}
+				}
 			}
 
 			if (pMaterial->mpTexture)
@@ -239,7 +292,13 @@ namespace Hollow {
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
 			{
-				mesh->Draw(pShader);
+				mesh->mpVAO->Bind();
+				mesh->mpEBO->Bind();
+				mesh->mpVBO->Bind();
+				GLCall(glDrawElements(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+				mesh->mpEBO->Unbind();
+				mesh->mpVBO->Unbind();
+				mesh->mpVAO->Unbind();
 			}
 		}
 	}
@@ -357,6 +416,7 @@ namespace Hollow {
 		if(ImGui::Begin("Renderer"))
 		{
 			DebugDisplayGBuffer();
+			ImGui::Checkbox("Particle System",&ShowParticles);
 		}
 		ImGui::End();
 	}

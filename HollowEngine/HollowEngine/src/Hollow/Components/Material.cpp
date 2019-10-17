@@ -3,6 +3,8 @@
 
 #include "Hollow/Managers/ResourceManager.h"
 
+#include "Hollow/Graphics/RenderData.h"
+
 namespace Hollow {
 
 	Material Material::instance;
@@ -10,6 +12,18 @@ namespace Hollow {
 	void Material::Init()
 	{
 		mpTexture = nullptr;
+		mDiffuseColor = COLOR_BLACK;
+		mSpecularColor = COLOR_BLACK;
+		mShininess = 0.0f;
+	}
+
+	void Material::Clear()
+	{
+		delete mpTexture;
+		mMaterials.clear();
+		mDiffuseColor = COLOR_BLACK;
+		mSpecularColor = COLOR_BLACK;
+		mShininess = 0.0f;
 	}
 
 	void Material::Serialize(rapidjson::Value::Object data)
@@ -30,6 +44,11 @@ namespace Hollow {
 		if (data.HasMember("Shininess"))
 		{
 			mShininess = data["Shininess"].GetFloat();
+		}
+		if (data.HasMember("MaterialData"))
+		{
+			std::string path = data["MaterialData"].GetString();
+			mMaterials = ResourceManager::Instance().LoadMaterials(path);
 		}
 	}
 	void Material::DebugDisplay()

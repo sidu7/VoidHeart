@@ -68,8 +68,8 @@ namespace Hollow {
 		float mZoom;
 		float mNear;
 		float mFar;
-	};
-
+	}; 
+	
 	struct MaterialData
 	{
 		Texture* mpDiffuse;

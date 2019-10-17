@@ -74,5 +74,6 @@ namespace Hollow {
 
 		// ParticleSystem
 		Shader* mpParticleShader;
+		bool ShowParticles;
 	};
 }
