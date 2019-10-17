@@ -24,12 +24,23 @@ namespace Hollow
 			{
 				if (data.HasMember("ShadowMapSize"))
 				{
-					glm::vec2 size = JSONHelper::GetVec2F(data["ShadowMapSize"].GetArray());
-					mpShadowMap = new FrameBuffer(size.x, size.y, 1, true);
+					mShadowMapSize = JSONHelper::GetVec2F(data["ShadowMapSize"].GetArray());
+					mpShadowMap = new FrameBuffer(mShadowMapSize.x, mShadowMapSize.y, 1, true);
 				}
 			}
 		}
 		
+	}
+
+	void Light::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write<glm::vec3>("Color", mColor, writer);
+		JSONHelper::Write<bool>("CastShadow", mCastShadow, writer);
+		if (mCastShadow)
+		{
+			JSONHelper::Write<glm::vec2>("ShadowMapSize", mShadowMapSize, writer);
+		}
+		JSONHelper::Write<float>("Radius", mRadius, writer);
 	}
 
 	void Light::Clear()

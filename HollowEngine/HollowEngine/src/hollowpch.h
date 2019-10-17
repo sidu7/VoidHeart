@@ -7,7 +7,9 @@
 #include <algorithm>
 #include <functional>
 #include <fstream>
+#include <time.h>
 #include <filesystem>
+#include <random>
 
 // Data structures
 #include <string>
@@ -37,6 +39,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/assimp/scene.h"
 #include "assimp/assimp/postprocess.h"
+#include "assimp/assimp/cimport.h"
 
 // FMOD Audio library
 #include <FMOD/fmod.hpp>
@@ -44,6 +47,9 @@
 
 // Serialization library
 #include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/ostreamwrapper.h>
 
 // TODO: Add ifdef guards if more platforms
 #include <Windows.h>
@@ -53,6 +59,8 @@
 #include "Utils/Singleton.h"
 #include "Utils/Profiler.h"
 #include "Utils/JSONHelper.h"
+#include "Utils/GraphicsMath.h"
+#include "Hollow/Graphics/Color.h"
 
 // GetObject() is defined by Windows and conflicts with GetObject() of rapidjson
 #ifdef _MSC_VER   

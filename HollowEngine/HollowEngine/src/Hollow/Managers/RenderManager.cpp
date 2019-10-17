@@ -5,7 +5,6 @@
 #include "ImGuiManager.h"
 
 #include "Hollow/Components/Material.h"
-#include "Hollow/Components/Transform.h"
 
 #include "Hollow/Graphics/GameWindow.h"
 #include "Hollow/Graphics/Shader.h"
@@ -39,6 +38,11 @@ namespace Hollow {
 
 		// Init Debug Shader
 		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
+
+		// Init Particle Shader
+		mpParticleShader = new Shader("Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag");
+		srand(time(NULL));
+		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 	}
 
 	void RenderManager::CleanUp()
@@ -54,15 +58,14 @@ namespace Hollow {
 	void RenderManager::Update()
 	{
 		// Initialize transform matrices
-		mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
+    mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
 		mViewMatrix = mCameraData[0].mViewMatrix;
-		
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+
+		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));	
 
 		// Deferred G-Buffer Pass
 		GBufferPass();
-
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
 		{
 			// ShadowMap Pass
@@ -74,6 +77,11 @@ namespace Hollow {
 		mLightData.clear();
 		mRenderData.clear();
 		mCameraData.clear();
+
+		if (ShowParticles)
+		{
+			DrawParticles();
+		}
 
 		//Draw debug drawings
 		DrawDebugDrawings();
@@ -139,7 +147,7 @@ namespace Hollow {
 
 	void RenderManager::GBufferPass()
 	{
-		glEnable(GL_DEPTH_TEST);
+		GLCall(glEnable(GL_DEPTH_TEST));
 		mpGBuffer->Bind();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		mpGBufferShader->Use();
@@ -210,7 +218,57 @@ namespace Hollow {
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
 			{
-				mesh->Draw(pShader);
+				if (mesh->mMaterialIndex != -1)
+				{
+					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
+					if (materialdata->mpDiffuse)
+					{
+						materialdata->mpDiffuse->Bind(1);
+						pShader->SetInt("diffuseTexture", 1);
+					}
+					if (materialdata->mpSpecular)
+					{
+						materialdata->mpSpecular->Bind(2);
+						pShader->SetInt("specularTexture", 2);
+					}
+					if (materialdata->mpNormal)
+					{
+						materialdata->mpNormal->Bind(3);
+						pShader->SetInt("normalTexture", 3);
+					}
+					if (materialdata->mpHeight)
+					{
+						materialdata->mpHeight->Bind(4);
+						pShader->SetInt("heightTexture", 4);
+					}
+				}
+				mesh->mpVAO->Bind();
+				mesh->mpEBO->Bind();
+				mesh->mpVBO->Bind();
+				GLCall(glDrawElements(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+				mesh->mpEBO->Unbind();
+				mesh->mpVBO->Unbind();
+				mesh->mpVAO->Unbind();
+				if (mesh->mMaterialIndex != -1)
+				{
+					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
+					if (materialdata->mpDiffuse)
+					{
+						materialdata->mpDiffuse->Unbind();
+					}
+					if (materialdata->mpSpecular)
+					{
+						materialdata->mpSpecular->Unbind();
+					}
+					if (materialdata->mpNormal)
+					{
+						materialdata->mpNormal->Unbind();
+					}
+					if (materialdata->mpHeight)
+					{
+						materialdata->mpHeight->Unbind();
+					}
+				}
 			}
 
 			if (pMaterial->mpTexture)
@@ -234,7 +292,13 @@ namespace Hollow {
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
 			{
-				mesh->Draw(pShader);
+				mesh->mpVAO->Bind();
+				mesh->mpEBO->Bind();
+				mesh->mpVBO->Bind();
+				GLCall(glDrawElements(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+				mesh->mpEBO->Unbind();
+				mesh->mpVBO->Unbind();
+				mesh->mpVAO->Unbind();
 			}
 		}
 	}
@@ -268,6 +332,52 @@ namespace Hollow {
 		glBindVertexArray(0);
 	}
 
+	void RenderManager::DrawParticles()
+	{
+		// Draw Particles 
+		mpParticleShader->Use();
+		mpParticleShader->SetMat4("View", mViewMatrix);
+		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
+		mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
+		mpParticleShader->SetFloat("SpriteSize", 0.1f);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		for (unsigned int i = 0; i < mParticleData.size(); ++i)
+		{
+			mpParticleShader->SetInt("Type", mParticleData[i].mType);
+			if (mParticleData[i].mType == POINT)
+			{
+				mpParticleShader->SetMat4("Model", mParticleData[i].mModel);
+				mParticleData[i].mTex->Bind(4);
+				mpParticleShader->SetInt("Texx", 4);
+				mParticleData[i].mpParticleVAO->Bind();
+				mParticleData[i].mpParticleVBO->Bind();
+				glDrawArrays(GL_POINTS, 0, mParticleData[i].mpParticleVBO->GetVerticesCount());
+				mParticleData[i].mpParticleVBO->Unbind();
+				mParticleData[i].mpParticleVAO->Unbind();
+			}
+			else if(mParticleData[i].mType == MODEL)
+			{
+				for (Mesh* mesh : mParticleData[i].mParticleModel)
+				{
+					mesh->mpVAO->Bind();
+					mesh->mpVBO->Bind();
+					mesh->mpEBO->Bind();
+					mParticleData[i].mpParticleVBO->Bind();
+					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, mParticleData[i].mParticlesCount);
+					mParticleData[i].mpParticleVBO->Unbind();
+					mesh->mpEBO->Unbind();
+					mesh->mpVBO->Unbind();
+					mesh->mpVAO->Unbind();
+				}
+			}
+		}
+		glDisable(GL_BLEND);
+		mParticleData.clear();
+	}
+
 	void RenderManager::DrawDebugDrawings()
 	{
 		mpDebugShader->Use();
@@ -277,11 +387,24 @@ namespace Hollow {
 		for (unsigned int i = 0; i < mDebugRenderData.size(); ++i)
 		{
 			DebugRenderData& data = mDebugRenderData[i];
-			mpDebugShader->SetMat4("Model", data.mpModel);			
+			mpDebugShader->SetMat4("Model", data.mpModel);
+			mpDebugShader->SetVec3("Color", data.mColor);
 			for (Mesh* mesh : data.mpMeshes)
 			{
 				mesh->mpVAO->Bind();
-				GLCall(glDrawElements(data.mDrawCommand, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+				mesh->mpVBO->Bind();
+				if (mesh->mpEBO)
+				{
+					mesh->mpEBO->Bind();
+					GLCall(glDrawElements(data.mDrawCommand, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+					mesh->mpEBO->Unbind();
+				}
+				else
+				{
+					GLCall(glDrawArrays(data.mDrawCommand, 0, mesh->mpVBO->GetVerticesCount()));
+				}
+				mesh->mpVAO->Unbind();
+				mesh->mpVBO->Unbind();
 			}
 		}
 
@@ -293,6 +416,7 @@ namespace Hollow {
 		if(ImGui::Begin("Renderer"))
 		{
 			DebugDisplayGBuffer();
+			ImGui::Checkbox("Particle System",&ShowParticles);
 		}
 		ImGui::End();
 	}

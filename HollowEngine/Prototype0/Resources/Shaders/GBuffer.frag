@@ -12,6 +12,7 @@ in float cameraDepth;
 
 uniform vec3 diffuseColor;
 uniform sampler2D diffuseTexture;
+uniform sampler2D specularTexture;
 uniform vec3 specularColor;
 uniform float shininess;
 
@@ -28,5 +29,5 @@ void main()
 	gDiffuse = diffuseColor + texture(diffuseTexture, texCoords).rgb;
 
 	// Store specular color in the G-Buffer
-	gSpecular = vec4(specularColor, shininess);
+	gSpecular = vec4(specularColor + texture(specularTexture, texCoords).rgb, shininess);
 }

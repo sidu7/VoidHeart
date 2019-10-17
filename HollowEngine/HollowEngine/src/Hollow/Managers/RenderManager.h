@@ -35,6 +35,8 @@ namespace Hollow {
 		void DrawShadowCastingObjects(Shader* pShader);
 		void DrawFSQ();
 
+		void DrawParticles();
+
 		void DrawDebugDrawings();
 
 		// ImGui Debug functions
@@ -45,6 +47,7 @@ namespace Hollow {
 		std::vector<RenderData> mRenderData;
 		std::vector<DebugRenderData> mDebugRenderData;
 		std::vector<LightData> mLightData;
+		std::vector<ParticleData> mParticleData;
 		std::vector<CameraData> mCameraData;
 
 	private:
@@ -68,5 +71,9 @@ namespace Hollow {
 
 		// Shadows
 		Shader* mpShadowMapShader;
+
+		// ParticleSystem
+		Shader* mpParticleShader;
+		bool ShowParticles;
 	};
 }

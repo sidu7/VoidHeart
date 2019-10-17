@@ -12,10 +12,14 @@ namespace Hollow
 	public:
 		std::string mFilePath;
 		Texture(const std::string& FilePath);
+		Texture(void* buffer, int size);
 		~Texture();
 
 		void Bind(unsigned int slot = 0) const;
 		void Unbind() const;
 		void EnableTiling() const;
+
+	private:
+		void ReadBufferToTexture();
 	};
 }

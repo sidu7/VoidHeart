@@ -18,9 +18,15 @@
         },
         {
             "Type": "Material",
-            "Specular": [ 1.0, 1.0, 1.0 ],
-            "Shininess": 10.0,
-            "Texture": "Resources/Textures/cracks.png"
+            "Shininess": 1.0,
+            "MaterialData": "Resources/Models/scene.fbx"
+        },
+        {
+            "Type": "ParticleEmitter",
+            "Shape":  0,
+            "Texture": "Resources/Textures/star.png",
+            "Count": 100000.0,
+            "Area": [ 50.0, 50.0, 50.0 ]
         }
     ]
 }

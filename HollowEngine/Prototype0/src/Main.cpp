@@ -61,7 +61,22 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
-
+	
+		//TODO: Remove test json deserialize
+		/*std::ofstream file("Resources/Json data/test.json");
+		rapidjson::StringBuffer s;
+		rapidjson::Writer<rapidjson::StringBuffer> writer(s);
+		writer.StartObject();
+		writer.Key("GameObjects");
+		writer.StartArray();
+		std::vector<Hollow::GameObject*> gos = Hollow::GameObjectManager::Instance().GetGameObjects();
+		for (Hollow::GameObject* g : gos)
+		{
+			g->Deserialize(writer);
+		}
+		writer.EndArray();
+		writer.EndObject();
+		file.write(s.GetString(), s.GetSize());*/
 		// TESTING SOUNDS
 		Hollow::ResourceManager::Instance().LoadSound("Resources/Audio/Songs/test.wav", FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL);
 	}

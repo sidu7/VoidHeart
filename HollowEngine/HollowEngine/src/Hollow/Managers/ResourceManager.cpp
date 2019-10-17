@@ -11,6 +11,7 @@
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/Texture.h"
+#include "Hollow/Graphics/RenderData.h"
 
 void Hollow::ResourceManager::Init()
 {
@@ -23,6 +24,29 @@ void Hollow::ResourceManager::CleanUp()
 	std::for_each(mModelCache.begin(), mModelCache.end(), [](std::pair<std::string, std::vector<Mesh*>> value) { for (Mesh* mesh : value.second) delete mesh; });
 	std::for_each(mShapes.begin(), mShapes.end(), [](std::pair<Shapes, Mesh*> value) { delete value.second; });
 	std::for_each(mSoundCache.begin(), mSoundCache.end(), [](std::pair<std::string, FMOD::Sound*> value) {value.second->release(); });
+}
+
+void Hollow::ResourceManager::LoadLevelFromFile(std::string path)
+{
+	std::ifstream file(path);
+	std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+	rapidjson::Document root;
+	root.Parse(contents.c_str());
+
+	if (root.IsObject())
+	{
+		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
+		for (unsigned int i = 0; i < gameobjects.Size(); ++i)
+		{
+			GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(gameobjects[i].GetObject());
+
+			if (pNewGameObject)
+			{
+				GameObjectManager::Instance().AddGameObject(pNewGameObject);
+			}
+		}
+	}
 }
 
 void Hollow::ResourceManager::LoadGameObjectFromFile(std::string path)
@@ -63,27 +87,46 @@ std::vector<Hollow::Mesh*> Hollow::ResourceManager::LoadModel(std::string path)
 	{
 		return mModelCache[path];
 	}
-		
-	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
+	   	
+	aiPropertyStore* props = aiCreatePropertyStore(); 
+	aiSetImportPropertyInteger(props, AI_CONFIG_PP_PTV_NORMALIZE, 1);
+	const aiScene* scene = (aiScene*)aiImportFileExWithProperties(path.c_str(), 
+		aiProcess_RemoveRedundantMaterials | 
+		aiProcess_Triangulate | aiProcess_FlipUVs | 
+		aiProcess_OptimizeMeshes | aiProcess_GenSmoothNormals | 
+		aiProcess_JoinIdenticalVertices | aiProcess_LimitBoneWeights | 
+		aiProcess_PreTransformVertices, 
+		NULL, props);
+	aiReleasePropertyStore(props);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+		HW_CORE_ERROR("Model {0} could not be loaded", path);
 	}
-	
+
 	std::vector<Mesh*> meshes;
 	ProcessMeshNode(scene->mRootNode, scene, meshes);
-
 	mModelCache[path] = meshes;
+	
+	mMaterialCache[path] = ProcessMaterials(scene, path);
 	return meshes;
 }
 
-void Hollow::ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshlist)
+std::vector<Hollow::MaterialData*> Hollow::ResourceManager::LoadMaterials(std::string path)
+{
+	//Check in cache
+	if (mMaterialCache.find(path) == mMaterialCache.end())
+	{
+		LoadModel(path);
+	}
+	return mMaterialCache[path];
+}
+
+void Hollow::ResourceManager::ProcessMeshNode(Node* node, const RootNode* scene, std::vector<Mesh*>& meshlist)
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 	{
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		ModelMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshlist.push_back(ProcessMesh(mesh, scene));
 	}
 
@@ -93,10 +136,11 @@ void Hollow::ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene
 	}
 }
 
-Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(ModelMesh* mesh, const RootNode* scene)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
+	unsigned int materialIndex = -1;
 
 	//Processing vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
@@ -136,9 +180,60 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* 
 		}
 	}
 
-	return CreateMesh(vertices,indices);
+	//Processing textures
+	if (mesh->mMaterialIndex >= 0)
+	{
+		materialIndex = mesh->mMaterialIndex;
+	}
+
+	return CreateMesh(vertices,indices,materialIndex);
 }
 
+std::vector<Hollow::MaterialData*> Hollow::ResourceManager::ProcessMaterials(const RootNode* scene, std::string path)
+{
+	std::vector<MaterialData*> materials;
+	path = path.substr(0, path.find_last_of('/'));
+	if (scene->HasMaterials())
+	{
+		for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
+		{
+			MaterialData* materialdata  = new MaterialData();
+			// Note: Assuming Material has only 1 texture of each type, rarely is otherwise
+			aiMaterial* material = scene->mMaterials[i];
+			materialdata->mpDiffuse = LoadMaterialTexture(material, aiTextureType_DIFFUSE, scene,path);
+			materialdata->mpSpecular = LoadMaterialTexture(material, aiTextureType_SPECULAR, scene,path);
+			materialdata->mpNormal = LoadMaterialTexture(material, aiTextureType_NORMALS, scene,path);
+			materialdata->mpHeight = LoadMaterialTexture(material, aiTextureType_HEIGHT, scene,path);
+
+			materials.push_back(materialdata);
+		}		
+	}
+	return materials;
+}
+
+Hollow::Texture* Hollow::ResourceManager::LoadMaterialTexture(ModelMaterial* material, unsigned int textureType, const RootNode* scene, std::string directory)
+{
+	aiString str;
+	unsigned int count = material->GetTextureCount((aiTextureType)textureType);
+	if (count == 0)
+	{
+		return nullptr;
+	}
+	material->GetTexture((aiTextureType)textureType, 0, &str); // only reading 1 texture of each type at 0 index
+	const aiTexture* tex = scene->GetEmbeddedTexture(str.C_Str());
+	Texture* texture = nullptr;
+	if (tex && tex->mHeight == 0)
+	{
+		texture = new Texture(tex->pcData, tex->mWidth);
+	}
+	else
+	{
+		std::string fileName = str.C_Str();
+		fileName = fileName.substr(fileName.find_last_of('\\') + 1, fileName.size());
+		texture = new Texture(directory + '/' + fileName);
+	}
+	return texture;
+}
 
 
 Hollow::Mesh* Hollow::ResourceManager::GetShape(Shapes shape)
@@ -174,50 +269,321 @@ void Hollow::ResourceManager::InitializeShapes()
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
+	//Axes
+	{
+		std::vector<glm::vec3> verts;
+		//X axis
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, 0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, -0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, 0.05f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.8f, -0.05f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		//Y axis
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.05f, 0.8f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(-0.05f, 0.8f, 0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(0.05f, 0.8f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+		verts.push_back(glm::vec3(-0.05f, 0.8f, -0.05f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+		//Z axis
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(0.05f, 0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(-0.05f, 0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(0.05f, -0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		verts.push_back(glm::vec3(-0.05f, -0.05f, 0.8f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		unsigned int ind[] = {
+			0, 1, 1, 2, 1, 3, 1, 4, 1, 5, 2, 3, 2, 4, 4, 5, 5, 3,			// X-axis
+			6, 7, 7, 8, 7, 9, 7, 10, 7, 11,	8, 9, 8, 10, 10, 11, 11, 9,		// Y-axis
+			12, 13, 13, 14, 13, 15, 13, 16, 13, 17, 14, 15, 14, 16, 16, 17, 17, 15	//Z-axis
+		};
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 54, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 18, 4 * sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[AXES] = mesh;
+	}
+
+	//Line
+	{
+		std::vector<glm::vec3> verts;
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		unsigned int ind[] = {
+			0, 1
+		};
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 2, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 2, sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[LINE] = mesh;
+	}
+
+	//Directional line
+	{
+		std::vector<glm::vec3> verts;
+
+		verts.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		verts.push_back(glm::vec3(0.8f, 0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.8f, -0.05f, 0.05f));
+		verts.push_back(glm::vec3(0.8f, 0.05f, -0.05f));
+		verts.push_back(glm::vec3(0.8f, -0.05f, -0.05f));
+
+		unsigned int ind[] = {
+			0, 1, 1, 2, 1, 3, 1, 4, 1, 5, 2, 3, 2, 4, 4, 5, 5, 3
+		};
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 18, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 6, sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[DIRECTION_LINE] = mesh;
+
+	}
+
+	//WireCube
+	{
+		std::vector<glm::vec3> verts;
+
+		verts.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+		verts.push_back(glm::vec3(0.5f, 0.5f, -0.5f));
+		verts.push_back(glm::vec3(-0.5f, 0.5f, 0.5f));
+		verts.push_back(glm::vec3(-0.5f, 0.5f, -0.5f));
+		verts.push_back(glm::vec3(0.5f, -0.5f, 0.5f));
+		verts.push_back(glm::vec3(0.5f, -0.5f, -0.5f));
+		verts.push_back(glm::vec3(-0.5f, -0.5f, 0.5f));
+		verts.push_back(glm::vec3(-0.5f, -0.5f, -0.5f));
+
+		unsigned int ind[] = {
+			0, 1, 0, 2, 1, 3, 2, 3, 4, 5, 4, 6, 5, 7, 6, 7, 0, 4, 1, 5, 2, 6, 3, 7
+		};
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 24, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 8, sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[WIRECUBE] = mesh;
+	}
+	
+	//Circle
+	{
+		std::vector<glm::vec3> verts;
+
+		verts.push_back(glm::vec3(0, 1, 0));
+		verts.push_back(glm::vec3(0.19509,0.980785,0));
+		verts.push_back(glm::vec3(0.382683,0.92388,0));
+		verts.push_back(glm::vec3(0.55557,0.83147,0));
+		verts.push_back(glm::vec3(0.707107,0.707107,0));
+		verts.push_back(glm::vec3(0.831469,0.55557,0));
+		verts.push_back(glm::vec3(0.923879,0.382684,0));
+		verts.push_back(glm::vec3(0.980785,0.195091,0));
+		verts.push_back(glm::vec3(1,3.13916e-07,0));
+		verts.push_back(glm::vec3(0.980785,-0.19509,0));
+		verts.push_back(glm::vec3(0.92388,-0.382683,0));
+		verts.push_back(glm::vec3(0.83147,-0.55557,0));
+		verts.push_back(glm::vec3(0.707107,-0.707106,0));
+		verts.push_back(glm::vec3(0.555571,-0.831469,0));
+		verts.push_back(glm::vec3(0.382684,-0.923879,0));
+		verts.push_back(glm::vec3(0.195091,-0.980785,0));
+		verts.push_back(glm::vec3(6.27833e-07,-1,0));
+		verts.push_back(glm::vec3(-0.19509,-0.980785,0));
+		verts.push_back(glm::vec3(-0.382683,-0.92388,0));
+		verts.push_back(glm::vec3(-0.55557,-0.83147,0));
+		verts.push_back(glm::vec3(-0.707106,-0.707107,0));
+		verts.push_back(glm::vec3(-0.831469,-0.555571,0));
+		verts.push_back(glm::vec3(-0.923879,-0.382684,0));
+		verts.push_back(glm::vec3(-0.980785,-0.195091,0));
+		verts.push_back(glm::vec3(-1,-9.41749e-07,0	   ));
+		verts.push_back(glm::vec3(-0.980785,0.195089,0 ));
+		verts.push_back(glm::vec3(-0.92388,0.382683,0  ));
+		verts.push_back(glm::vec3(-0.83147,0.555569,0  ));
+		verts.push_back(glm::vec3(-0.707108,0.707106,0 ));
+		verts.push_back(glm::vec3(-0.555571,0.831469,0 ));
+		verts.push_back(glm::vec3(-0.382685,0.923879,0 ));
+		verts.push_back(glm::vec3(-0.195092,0.980785,0 ));
+
+		unsigned int ind[32];
+		for (int i = 0; i < 32; ++i) ind[i] = i;
+
+		VertexBuffer* vbo = new VertexBuffer();
+		VertexArray* vao = new VertexArray();
+		ElementArrayBuffer* ebo = new ElementArrayBuffer();
+		ebo->AddData(&ind[0], 32, sizeof(unsigned int));
+		vao->AddBuffer(*vbo);
+		vbo->AddData(&verts[0], 32, sizeof(glm::vec3));
+		vao->Push(3, GL_FLOAT, sizeof(float));
+		vao->AddLayout();
+		vao->Unbind();
+		Mesh* mesh = new Mesh();
+		mesh->mpVAO = vao;
+		mesh->mpVBO = vbo;
+		mesh->mpEBO = ebo;
+		mShapes[CIRCLE] = mesh;
+	}
+
 	//Quad
-	Vertex v;
-	v.position = glm::vec3(-1.0f, 0.0f, 1.0f);
-	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	v.tex = glm::vec2(0.0f, 0.0f);
-	vertices.push_back(v);
+	{
+		Vertex v;
+		v.position = glm::vec3(-1.0f, 0.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(v);
 
-	v.position = glm::vec3(1.0f, 0.0f, 1.0f);
-	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	v.tex = glm::vec2(1.0f, 0.0f);
-	vertices.push_back(v);
+		v.position = glm::vec3(1.0f, 0.0f, 1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 0.0f);
+		vertices.push_back(v);
 
-	v.position = glm::vec3(-1.0f, 0.0f, -1.0f);
-	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	v.tex = glm::vec2(0.0f, 1.0f);
-	vertices.push_back(v);
+		v.position = glm::vec3(-1.0f, 0.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(0.0f, 1.0f);
+		vertices.push_back(v);
 
-	v.position = glm::vec3(1.0f, 0.0f, -1.0f);
-	v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	v.tex = glm::vec2(1.0f, 1.0f);
-	vertices.push_back(v);
+		v.position = glm::vec3(1.0f, 0.0f, -1.0f);
+		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		v.tex = glm::vec2(1.0f, 1.0f);
+		vertices.push_back(v);
 
-	//for (unsigned int i = 0; i < 4; ++i)
-	//{
-	//	Vertex v;
-	//	int x = i == 0 || i == 3 ? -1 : 1;
-	//	int y = i < 2 ? -1 : 1;
-	//	v.position = glm::vec3(0.5f * x, 0.5f * y, 0.0f);
-	//	v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
-	//	v.tex = glm::vec2(x == -1 ? 0.0f : 1.0f, y == -1 ? 0.0f : 1.0f);
-	//	vertices.push_back(v);
-	//}
+		//for (unsigned int i = 0; i < 4; ++i)
+		//{
+		//	Vertex v;
+		//	int x = i == 0 || i == 3 ? -1 : 1;
+		//	int y = i < 2 ? -1 : 1;
+		//	v.position = glm::vec3(0.5f * x, 0.5f * y, 0.0f);
+		//	v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+		//	v.tex = glm::vec2(x == -1 ? 0.0f : 1.0f, y == -1 ? 0.0f : 1.0f);
+		//	vertices.push_back(v);
+		//}
 
-	indices.push_back(0);
-	indices.push_back(2);
-	indices.push_back(1);
-	indices.push_back(1);
-	indices.push_back(2);
-	indices.push_back(3);
+		indices.push_back(0);
+		indices.push_back(2);
+		indices.push_back(1);
+		indices.push_back(1);
+		indices.push_back(2);
+		indices.push_back(3);
 
-	mShapes[QUAD] = CreateMesh(vertices, indices);
+		mShapes[QUAD] = CreateMesh(vertices, indices);
 
-	vertices.clear();
-	indices.clear();
+		vertices.clear();
+		indices.clear();
+	}
 
 	//Cube
 	{
@@ -642,16 +1008,16 @@ void Hollow::ResourceManager::InitializeShapes()
 	mShapes[TEAPOT] = CreateMesh(vertices, indices);
 }
 
-Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialIndex)
 {
 	VertexArray* VAO = new VertexArray();
 	ElementArrayBuffer* EBO = new ElementArrayBuffer();
-	VertexBuffer VBO;
+	VertexBuffer* VBO = new VertexBuffer();
 
 	VAO->Bind();
 
 	// Send vertex information to VBO
-	VBO.AddData(&vertices[0], vertices.size() * sizeof(Vertex));
+	VBO->AddData(&vertices[0], vertices.size() , sizeof(Vertex));
 
 	// Set up index buffer EBO
 	EBO->AddData(&indices[0], indices.size(), sizeof(unsigned int));
@@ -672,6 +1038,8 @@ Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, 
 
 	mesh->mpVAO = VAO;
 	mesh->mpEBO = EBO;
+	mesh->mpVBO = VBO;
+	mesh->mMaterialIndex = materialIndex;
 
 	return mesh;
 }

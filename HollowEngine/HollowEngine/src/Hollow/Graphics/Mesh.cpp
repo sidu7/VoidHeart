@@ -8,7 +8,7 @@
 
 namespace Hollow
 {
-	Mesh::Mesh() : mpVAO(nullptr), mpEBO(nullptr)
+	Mesh::Mesh() : mpVAO(nullptr), mpEBO(nullptr), mpVBO(nullptr), mMaterialIndex(-1)
 	{
 	}
 
@@ -16,12 +16,6 @@ namespace Hollow
 	{
 		delete mpVAO;
 		delete mpEBO;
-	}
-
-	void Mesh::Draw(Shader* pShader)
-	{
-		pShader->Use();
-		mpVAO->Bind();
-		GLCall(glDrawElements(GL_TRIANGLES, mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+		delete mpVBO;
 	}
 }
