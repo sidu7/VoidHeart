@@ -3,7 +3,7 @@
 
 namespace Hollow {
 	class Texture;
-
+		
 	class HOLLOW_API Material : public Component
 	{
 		REGISTERCOMPONENT(Material);
@@ -21,5 +21,6 @@ namespace Hollow {
 		glm::vec3 mSpecularColor;
 		float mShininess;
 		Texture* mpTexture;		
+		std::vector<MaterialData>
 	};
 }

@@ -60,4 +60,12 @@ namespace Hollow {
 		Texture* mTex;
 		ParticleType mType;
 	};
+
+	struct MaterialData
+	{
+		Texture* mpDiffuse;
+		Texture* mpSpecular;
+		Texture* mpNormal;
+		Texture* mpHeight;
+	};
 }

@@ -10,6 +10,7 @@
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/Texture.h"
+#include "Hollow/Graphics/RenderData.h"
 
 void Hollow::ResourceManager::Init()
 {
@@ -84,20 +85,60 @@ std::vector<Hollow::Mesh*> Hollow::ResourceManager::LoadModel(std::string path)
 	{
 		return mModelCache[path];
 	}
-		
-	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
 
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	const aiScene* scene = nullptr;
+	if (mModelSceneCache.find(path) == mModelSceneCache.end())
 	{
-		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
+
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+		}
+
+		mModelSceneCache[path] = scene;
 	}
-	
+	else
+	{
+		scene = mModelSceneCache[path];
+	}
 	std::vector<Mesh*> meshes;
 	ProcessMeshNode(scene->mRootNode, scene, meshes);
 
 	mModelCache[path] = meshes;
 	return meshes;
+}
+
+std::vector<Hollow::MaterialData> Hollow::ResourceManager::LoadMaterial(std::string path)
+{
+	//Check in cache
+	if (mMaterialCache.find(path) != mMaterialCache.end())
+	{
+		return mMaterialCache[path];
+	}
+
+	const aiScene* scene = nullptr;
+	if (mModelSceneCache.find(path) == mModelSceneCache.end())
+	{
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
+
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+		}
+
+		mModelSceneCache[path] = scene;
+	}
+	else
+	{
+		scene = mModelSceneCache[path];
+	}
+
+	std::vector<MaterialData> materials = ProcessMaterials(scene);
+	mMaterialCache[path] = materials;
+	return materials;
 }
 
 void Hollow::ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene, std::vector<Mesh*>& meshlist)
@@ -118,6 +159,7 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* 
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
+	unsigned int materialIndex = -1;
 
 	//Processing vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
@@ -157,7 +199,18 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* 
 		}
 	}
 
-	return CreateMesh(vertices,indices);
+	//Processing textures
+	if (mesh->mMaterialIndex >= 0)
+	{
+		materialIndex = mesh->mMaterialIndex;
+	}
+
+	return CreateMesh(vertices,indices,materialIndex);
+}
+
+std::vector<Hollow::MaterialData> Hollow::ResourceManager::ProcessMaterials(const aiScene* scene)
+{
+	return std::vector<MaterialData>();
 }
 
 
@@ -915,7 +968,7 @@ void Hollow::ResourceManager::InitializeShapes()
 	mShapes[TEAPOT] = CreateMesh(vertices, indices);
 }
 
-Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialIndex)
 {
 	VertexArray* VAO = new VertexArray();
 	ElementArrayBuffer* EBO = new ElementArrayBuffer();
@@ -946,6 +999,7 @@ Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, 
 	mesh->mpVAO = VAO;
 	mesh->mpEBO = EBO;
 	mesh->mpVBO = VBO;
+	mesh->mMaterialIndex = materialIndex;
 
 	return mesh;
 }
