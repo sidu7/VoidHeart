@@ -8,7 +8,6 @@
 #include "Hollow/Components/Transform.h"
 
 #include "Hollow/Graphics/GameWindow.h"
-#include "Hollow/Graphics/Camera.h"
 #include "Hollow/Graphics/Shader.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/VertexArray.h"
@@ -30,7 +29,7 @@ namespace Hollow {
 		}
 
 		mpWindow = pWindow;
-		mpCamera = new Camera();
+
 
 		// Initialize G-Buffer
 		InitializeGBuffer();
@@ -44,7 +43,6 @@ namespace Hollow {
 
 	void RenderManager::CleanUp()
 	{
-		delete mpCamera;
 
 		delete mpDeferredShader;
 
@@ -56,8 +54,8 @@ namespace Hollow {
 	void RenderManager::Update()
 	{
 		// Initialize transform matrices
-		mProjectionMatrix = glm::perspective(mpCamera->GetZoom(), (float)mpWindow->GetWidth() / mpWindow->GetHeight(), 0.1f, 1000.0f);
-		mViewMatrix = mpCamera->GetViewMatrix();
+		mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
+		mViewMatrix = mCameraData[0].mViewMatrix;
 		
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
@@ -75,6 +73,7 @@ namespace Hollow {
 		}
 		mLightData.clear();
 		mRenderData.clear();
+		mCameraData.clear();
 
 		//Draw debug drawings
 		DrawDebugDrawings();
@@ -170,7 +169,7 @@ namespace Hollow {
 		mpDeferredShader->Use();
 
 		// Send light and view position
-		mpDeferredShader->SetVec3("viewPosition", mpCamera->GetPosition());
+		mpDeferredShader->SetVec3("viewPosition", mCameraData[0].mPosition);
 		mpDeferredShader->SetVec3("lightPosition", light.mPosition);
 
 		// Send ShadowMap texture and shadow matrix
