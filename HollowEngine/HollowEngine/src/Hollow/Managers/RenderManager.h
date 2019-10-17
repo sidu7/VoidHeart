@@ -7,7 +7,7 @@
 namespace Hollow {
 
 	class GameWindow;
-	class Camera;
+	//class Camera;
 	class Shader;
 	class FrameBuffer;
 
@@ -18,7 +18,7 @@ namespace Hollow {
 		void Init(GameWindow* pWindow = nullptr);
 		void CleanUp();
 		void Update();
-		inline Camera* GetCamera(){ return mpCamera; }
+		//inline Camera* GetCamera(){ return mpCamera; }
 
 	private:
 		// Initialization Functions
@@ -48,6 +48,7 @@ namespace Hollow {
 		std::vector<DebugRenderData> mDebugRenderData;
 		std::vector<LightData> mLightData;
 		std::vector<ParticleData> mParticleData;
+		std::vector<CameraData> mCameraData;
 
 	private:
 		// Transformation matricies
@@ -55,7 +56,7 @@ namespace Hollow {
 		glm::mat4 mViewMatrix;
 
 		GameWindow* mpWindow;
-		Camera* mpCamera;
+		//Camera* mpCamera;
 
 		// Lighting
 		Shader* mpDeferredShader;
