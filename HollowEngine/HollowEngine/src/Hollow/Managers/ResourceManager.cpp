@@ -152,13 +152,14 @@ Hollow::Mesh* Hollow::ResourceManager::GetShape(Shapes shape)
 
 FMOD::Sound* Hollow::ResourceManager::LoadSound(const std::string& path, FMOD_MODE type)
 {
-	FMOD::Sound* pSound = mSoundCache[path];
-	if (pSound)
+	//Check in cache
+	if (mSoundCache.find(path) != mSoundCache.end())
 	{
-		return pSound;
+		return mSoundCache[path];
 	}
 
 	// Create sound
+	FMOD::Sound* pSound;
 	AudioManager::Instance().mpSystem->createSound(path.c_str(), type, 0, &pSound);
 	if (pSound)
 	{
