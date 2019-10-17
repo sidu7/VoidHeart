@@ -61,9 +61,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
-
-		//Hollow::ResourceManager::Instance().LoadLevelFromFile("Resources/Json data/test.json");
-
+	
 		//TODO: Remove test json deserialize
 		/*std::ofstream file("Resources/Json data/test.json");
 		rapidjson::StringBuffer s;
@@ -79,6 +77,8 @@ public:
 		writer.EndArray();
 		writer.EndObject();
 		file.write(s.GetString(), s.GetSize());*/
+		// TESTING SOUNDS
+		Hollow::ResourceManager::Instance().LoadSound("Resources/Audio/Songs/test.wav", FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL);
 	}
 	
 	~Prototype0()
