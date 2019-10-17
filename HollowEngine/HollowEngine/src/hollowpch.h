@@ -38,6 +38,10 @@
 #include "assimp/assimp/scene.h"
 #include "assimp/assimp/postprocess.h"
 
+// FMOD Audio library
+#include <FMOD/fmod.hpp>
+#include <FMOD/fmod_studio.hpp>
+
 // Serialization library
 #include <rapidjson/document.h>
 

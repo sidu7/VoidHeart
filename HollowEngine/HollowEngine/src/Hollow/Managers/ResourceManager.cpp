@@ -1,6 +1,7 @@
 #include <hollowpch.h>
 #include "ResourceManager.h"
 #include "GameObjectManager.h"
+#include "AudioManager.h"
 
 #include "Hollow/Core/GameObjectFactory.h"
 
@@ -21,6 +22,7 @@ void Hollow::ResourceManager::CleanUp()
 	std::for_each(mTextureCache.begin(), mTextureCache.end(), [](std::pair<std::string, Texture*> value) { delete value.second; });
 	std::for_each(mModelCache.begin(), mModelCache.end(), [](std::pair<std::string, std::vector<Mesh*>> value) { for (Mesh* mesh : value.second) delete mesh; });
 	std::for_each(mShapes.begin(), mShapes.end(), [](std::pair<Shapes, Mesh*> value) { delete value.second; });
+	std::for_each(mSoundCache.begin(), mSoundCache.end(), [](std::pair<std::string, FMOD::Sound*> value) {value.second->release(); });
 }
 
 void Hollow::ResourceManager::LoadGameObjectFromFile(std::string path)
@@ -146,6 +148,25 @@ Hollow::Mesh* Hollow::ResourceManager::GetShape(Shapes shape)
 		HW_CORE_ERROR("Shape {0} not found", shape);
 	}*/
 	return mShapes[shape];
+}
+
+FMOD::Sound* Hollow::ResourceManager::LoadSound(const std::string& path, FMOD_MODE type)
+{
+	//Check in cache
+	if (mSoundCache.find(path) != mSoundCache.end())
+	{
+		return mSoundCache[path];
+	}
+
+	// Create sound
+	FMOD::Sound* pSound;
+	AudioManager::Instance().mpSystem->createSound(path.c_str(), type, 0, &pSound);
+	if (pSound)
+	{
+		mSoundCache[path] = pSound;
+	}
+
+	return pSound;
 }
 
 void Hollow::ResourceManager::InitializeShapes()
