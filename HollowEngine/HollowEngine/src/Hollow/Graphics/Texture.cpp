@@ -18,8 +18,6 @@ namespace Hollow
 
 	Texture::Texture(void* buffer, int size)
 	{
-		//stbi_set_flip_vertically_on_load(1);
-		stbi_set_unpremultiply_on_load(1);
 		mLocalBuffer = stbi_load_from_memory(reinterpret_cast<unsigned char*>(buffer), size, &mWidth, &mHeight, &mBPP, 0);
 
 		ReadBufferToTexture();

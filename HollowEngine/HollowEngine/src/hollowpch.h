@@ -39,6 +39,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/assimp/scene.h"
 #include "assimp/assimp/postprocess.h"
+#include "assimp/assimp/cimport.h"
 
 // Serialization library
 #include <rapidjson/document.h>

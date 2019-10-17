@@ -85,13 +85,21 @@ std::vector<Hollow::Mesh*> Hollow::ResourceManager::LoadModel(std::string path)
 	{
 		return mModelCache[path];
 	}
-
-	Assimp::Importer importer;
-	const RootNode* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes);
+	   	
+	aiPropertyStore* props = aiCreatePropertyStore(); 
+	aiSetImportPropertyInteger(props, AI_CONFIG_PP_PTV_NORMALIZE, 1);
+	const aiScene* scene = (aiScene*)aiImportFileExWithProperties(path.c_str(), 
+		aiProcess_RemoveRedundantMaterials | 
+		aiProcess_Triangulate | aiProcess_FlipUVs | 
+		aiProcess_OptimizeMeshes | aiProcess_GenSmoothNormals | 
+		aiProcess_JoinIdenticalVertices | aiProcess_LimitBoneWeights | 
+		aiProcess_PreTransformVertices, 
+		NULL, props);
+	aiReleasePropertyStore(props);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+		HW_CORE_ERROR("Model {0} could not be loaded", path);
 	}
 
 	std::vector<Mesh*> meshes;
