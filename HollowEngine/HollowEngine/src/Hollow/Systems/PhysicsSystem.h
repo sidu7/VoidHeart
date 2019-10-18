@@ -10,7 +10,7 @@ namespace Hollow {
 	public:
 		void Update();
 		void AddGameObject(GameObject* object);
-
+		void DebugContacts();
 	private:
 		void Step(float);
 		void InterpolateState(float);
