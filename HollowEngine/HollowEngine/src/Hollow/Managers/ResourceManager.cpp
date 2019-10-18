@@ -11,7 +11,9 @@
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/Texture.h"
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/RenderData.h"
+#include "Hollow/Graphics/Data/Bone.h"
+#include "Hollow/Graphics/Data/MaterialData.h"
 
 void Hollow::ResourceManager::Init()
 {
@@ -24,6 +26,8 @@ void Hollow::ResourceManager::CleanUp()
 	std::for_each(mModelCache.begin(), mModelCache.end(), [](std::pair<std::string, std::vector<Mesh*>> value) { for (Mesh* mesh : value.second) delete mesh; });
 	std::for_each(mShapes.begin(), mShapes.end(), [](std::pair<Shapes, Mesh*> value) { delete value.second; });
 	std::for_each(mSoundCache.begin(), mSoundCache.end(), [](std::pair<std::string, FMOD::Sound*> value) {value.second->release(); });
+	std::for_each(mBoneCache.begin(), mBoneCache.end(), [](std::pair<std::string, std::vector<Bone*>> value) { for (Bone* bone : value.second) delete bone; });
+	std::for_each(mMaterialCache.begin(), mMaterialCache.end(), [](std::pair<std::string, std::vector<MaterialData*>> value) { for (MaterialData* material : value.second) delete material; });
 }
 
 void Hollow::ResourceManager::LoadLevelFromFile(std::string path)
@@ -83,33 +87,20 @@ Hollow::Texture* Hollow::ResourceManager::LoadTexture(std::string path)
 std::vector<Hollow::Mesh*> Hollow::ResourceManager::LoadModel(std::string path)
 {
 	//Check in cache
-	if (mModelCache.find(path) != mModelCache.end())
+	if (mModelCache.find(path) == mModelCache.end())
 	{
-		return mModelCache[path];
-	}
-	   	
-	aiPropertyStore* props = aiCreatePropertyStore(); 
-	aiSetImportPropertyInteger(props, AI_CONFIG_PP_PTV_NORMALIZE, 1);
-	const aiScene* scene = (aiScene*)aiImportFileExWithProperties(path.c_str(), 
-		aiProcess_RemoveRedundantMaterials | 
-		aiProcess_Triangulate | aiProcess_FlipUVs | 
-		aiProcess_OptimizeMeshes | aiProcess_GenSmoothNormals | 
-		aiProcess_JoinIdenticalVertices | aiProcess_LimitBoneWeights | 
-		aiProcess_PreTransformVertices, 
-		NULL, props);
-	aiReleasePropertyStore(props);
+		const RootNode* scene = GetModelRootNodeFromFile(path);
+		std::vector<Mesh*> meshes;
+		std::vector<Bone*> bones;
+		ProcessMeshNode(scene->mRootNode, scene, nullptr, meshes, bones);
 
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-	{
-		HW_CORE_ERROR("Model {0} could not be loaded", path);
-	}
+		ProcessAnimationData(scene, bones);
 
-	std::vector<Mesh*> meshes;
-	ProcessMeshNode(scene->mRootNode, scene, meshes);
-	mModelCache[path] = meshes;
+		mModelCache[path] = meshes;
+		mBoneCache[path] = bones;		
+	}
 	
-	mMaterialCache[path] = ProcessMaterials(scene, path);
-	return meshes;
+	return mModelCache[path];
 }
 
 std::vector<Hollow::MaterialData*> Hollow::ResourceManager::LoadMaterials(std::string path)
@@ -117,30 +108,63 @@ std::vector<Hollow::MaterialData*> Hollow::ResourceManager::LoadMaterials(std::s
 	//Check in cache
 	if (mMaterialCache.find(path) == mMaterialCache.end())
 	{
-		LoadModel(path);
+		const RootNode* scene = GetModelRootNodeFromFile(path);
+		mMaterialCache[path] = ProcessMaterials(scene, path);
 	}
 	return mMaterialCache[path];
 }
 
-void Hollow::ResourceManager::ProcessMeshNode(Node* node, const RootNode* scene, std::vector<Mesh*>& meshlist)
+std::vector<Hollow::Bone*> Hollow::ResourceManager::LoadBoneData(std::string path)
+{
+	if (mBoneCache.find(path) == mBoneCache.end())
+	{
+		LoadModel(path);
+	}
+	return mBoneCache[path];
+}
+
+void Hollow::ResourceManager::AddAnimationData(std::string path, std::vector<Bone*>& boneList)
+{
+	const RootNode* scene = GetModelRootNodeFromFile(path);
+	ProcessAnimationData(scene, boneList);
+}
+
+void Hollow::ResourceManager::ProcessMeshNode(Node* node, const RootNode* scene, const Bone* parent, std::vector<Mesh*>& meshlist, std::vector<Bone*>& boneList)
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 	{
 		ModelMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshlist.push_back(ProcessMesh(mesh, scene));
+		meshlist.push_back(ProcessMesh(mesh, scene, boneList));
 	}
+
+	Bone* child = new Bone();
+	child->mIndex = boneList.size();
+	child->mTransformation = *(glm::mat4*)(&node->mTransformation.Transpose());
+	child->mName = node->mName.data;
+	child->isAnimated = false;
+	child->mOffset = glm::mat4(1.0f);
+	if (parent)
+	{
+		child->mParentIndex = parent->mIndex;
+	}
+	else
+	{
+		child->mParentIndex = -1;
+	}
+	boneList.push_back(child);
 
 	for (unsigned int i = 0; i < node->mNumChildren; ++i)
 	{
-		ProcessMeshNode(node->mChildren[i], scene, meshlist);
+		ProcessMeshNode(node->mChildren[i], scene, child, meshlist, boneList);
 	}
 }
 
-Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(ModelMesh* mesh, const RootNode* scene)
+Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(ModelMesh* mesh, const RootNode* scene, std::vector<Bone*>& boneList)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	unsigned int materialIndex = -1;
+	std::vector<BoneData> bonedata;
 
 	//Processing vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
@@ -168,6 +192,7 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(ModelMesh* mesh, const RootNo
 		}
 
 		vertices.push_back(vertex);
+		bonedata.push_back(BoneData(0,0.0f));
 	}
 
 	//Processing indices
@@ -185,8 +210,24 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(ModelMesh* mesh, const RootNo
 	{
 		materialIndex = mesh->mMaterialIndex;
 	}
+	
+	//Process Bones index and weights
+	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
+	{
+		aiBone* bone = mesh->mBones[i];
+		unsigned int boneIndex = GetBoneIndex(bone->mName.data,boneList);
+		for (unsigned int j = 0; j < bone->mNumWeights; ++j)
+		{
+			unsigned int index = bone->mWeights[j].mVertexId;
+			bonedata[index].AddBone(boneIndex, bone->mWeights[j].mWeight);
+		}
+		boneList[boneIndex]->mOffset = *(glm::mat4*)(&bone->mOffsetMatrix.Transpose());
+	}
 
-	return CreateMesh(vertices,indices,materialIndex);
+	VertexBuffer boneVBO;
+	boneVBO.AddData(&bonedata[0], bonedata.size(), sizeof(BoneData));
+
+	return CreateMesh(vertices,indices,materialIndex,&boneVBO);
 }
 
 std::vector<Hollow::MaterialData*> Hollow::ResourceManager::ProcessMaterials(const RootNode* scene, std::string path)
@@ -197,7 +238,7 @@ std::vector<Hollow::MaterialData*> Hollow::ResourceManager::ProcessMaterials(con
 	{
 		for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
 		{
-			MaterialData* materialdata  = new MaterialData();
+			MaterialData* materialdata = new MaterialData();
 			// Note: Assuming Material has only 1 texture of each type, rarely is otherwise
 			aiMaterial* material = scene->mMaterials[i];
 			materialdata->mpDiffuse = LoadMaterialTexture(material, aiTextureType_DIFFUSE, scene,path);
@@ -233,6 +274,82 @@ Hollow::Texture* Hollow::ResourceManager::LoadMaterialTexture(ModelMaterial* mat
 		texture = new Texture(directory + '/' + fileName);
 	}
 	return texture;
+}
+
+unsigned int Hollow::ResourceManager::GetBoneIndex(std::string name, std::vector<Bone*>& boneList)
+{
+	for (unsigned int i = 0; i < boneList.size(); ++i)
+	{
+		if (boneList[i]->mName == name)
+		{
+			return boneList[i]->mIndex;
+		}
+	}
+	return -1;
+	HW_CORE_ERROR("Bone index not found");
+}
+
+const Hollow::RootNode* Hollow::ResourceManager::GetModelRootNodeFromFile(std::string path)
+{
+	if (mModelRootsCache.find(path) == mModelRootsCache.end())
+	{
+		aiPropertyStore* props = aiCreatePropertyStore();
+		aiSetImportPropertyInteger(props, AI_CONFIG_PP_PTV_NORMALIZE, 1);
+		const aiScene* scene = (aiScene*)aiImportFileExWithProperties(path.c_str(),
+			aiProcess_RemoveRedundantMaterials |
+			aiProcess_Triangulate | aiProcess_FlipUVs |
+			aiProcess_OptimizeMeshes | aiProcess_GenSmoothNormals |
+			aiProcess_JoinIdenticalVertices | aiProcess_LimitBoneWeights |
+			aiProcess_PreTransformVertices,
+			NULL, props);
+		aiReleasePropertyStore(props);
+
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			HW_CORE_ERROR("Model file {0} could not be loaded", path);
+		}
+
+		mModelRootsCache[path] = scene;
+	}
+	return mModelRootsCache[path];
+}
+
+void Hollow::ResourceManager::ProcessAnimationData(const RootNode* scene, std::vector<Bone*>& boneList)
+{
+	for (unsigned int i = 0; i < scene->mNumAnimations; ++i)
+	{
+		aiAnimation* animation = scene->mAnimations[i];
+		std::string name = animation->mName.data; // TODO: not sure of unique name, find a better way to name animations
+		for (unsigned int j = 0; j < animation->mNumChannels; ++j)
+		{
+			unsigned int index = GetBoneIndex(animation->mChannels[j]->mNodeName.data,boneList);
+			AnimationData animData;
+			animData.mDuration = animation->mDuration;
+			animData.mTicksPerSec = animation->mTicksPerSecond;
+			//Key Positions
+			for (unsigned int k = 0; k < animation->mChannels[j]->mNumPositionKeys; ++k)
+			{
+				animData.mKeyPositions.push_back(std::make_pair(animation->mChannels[j]->mPositionKeys[k].mTime, *(glm::vec3*)&(animation->mChannels[j]->mPositionKeys[k].mValue)));
+			}
+
+			//Key Rotations
+			for (unsigned int k = 0; k < animation->mChannels[j]->mNumRotationKeys; ++k)
+			{
+				aiQuaternion aiquat = animation->mChannels[j]->mRotationKeys[k].mValue;
+				glm::quat quat(aiquat.w, aiquat.x, aiquat.y, aiquat.z);
+				animData.mKeyRotations.push_back(std::make_pair(animation->mChannels[j]->mRotationKeys[k].mTime, quat));
+			}
+
+			//Key Scalings
+			for (unsigned int k = 0; k < animation->mChannels[j]->mNumScalingKeys; ++k)
+			{
+				animData.mKeyScalings.push_back(std::make_pair(animation->mChannels[j]->mScalingKeys[k].mTime, *(glm::vec3*)&(animation->mChannels[j]->mScalingKeys[k].mValue)));
+			}
+
+			boneList[index]->mAnimations[name] = animData;
+			boneList[index]->isAnimated = true;
+		}
+	}
 }
 
 
@@ -1008,7 +1125,7 @@ void Hollow::ResourceManager::InitializeShapes()
 	mShapes[TEAPOT] = CreateMesh(vertices, indices);
 }
 
-Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialIndex)
+Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int materialIndex, VertexBuffer* vbo)
 {
 	VertexArray* VAO = new VertexArray();
 	ElementArrayBuffer* EBO = new ElementArrayBuffer();
@@ -1031,6 +1148,15 @@ Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, 
 	// Tangent
 	//mVAO.Push(3, GL_FLOAT, sizeof(float));
 	VAO->AddLayout();
+
+	if (vbo)
+	{
+		vbo->Bind();
+		VAO->Push(4, GL_INT, sizeof(int));
+		VAO->Push(4, GL_FLOAT, sizeof(float));
+		VAO->AddLayout();
+	}
+
 	// Unbind VAO
 	VAO->Unbind();
 

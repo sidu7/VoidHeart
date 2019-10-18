@@ -58,6 +58,8 @@
     <ClCompile Include="vendor\Include\ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
+    <ClCompile Include="src\Hollow\Components\Animator.cpp" />
+    <ClCompile Include="src\Hollow\Systems\AnimationSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -117,7 +119,6 @@
     <ClInclude Include="src\Hollow.h" />
     <ClInclude Include="src\Utils\Profiler.h" />
     <ClInclude Include="src\Utils\Singleton.h" />
-    <ClInclude Include="src\Utils\Test.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />
@@ -168,7 +169,6 @@
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
     <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
     <ClInclude Include="src\Hollow\Components\Model.h" />
-    <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\Texture.h" />
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
@@ -189,10 +189,20 @@
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Systems\ParticleSystem.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
-    <ClInclude Include="src\Hollow\Graphics\Color.h" />
     <ClInclude Include="src\Utils\GraphicsMath.h" />
     <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\Color.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\RenderData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\DebugRenderData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\LightData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\ParticleData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\CameraData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\MaterialData.h" />
+    <ClInclude Include="src\Hollow\Components\Animator.h" />
+    <ClInclude Include="src\Hollow\Systems\AnimationSystem.h" />
   </ItemGroup>
 </Project>

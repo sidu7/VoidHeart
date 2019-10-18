@@ -29,7 +29,14 @@ namespace Hollow {
 		for (auto c : mElements)
 		{
 			GLCall(glEnableVertexAttribArray(mIndex));
-			GLCall(glVertexAttribPointer(mIndex, c.mCount, c.mType, GL_FALSE, mStride, (const void*)mOffset));
+			if (c.mType == GL_INT)
+			{
+				GLCall(glVertexAttribIPointer(mIndex, c.mCount, c.mType, mStride, (const void*)mOffset));
+			}
+			else
+			{
+				GLCall(glVertexAttribPointer(mIndex, c.mCount, c.mType, GL_FALSE, mStride, (const void*)mOffset));
+			}
 			mOffset += c.mSize * c.mCount;
 			mIndex++;
 		}

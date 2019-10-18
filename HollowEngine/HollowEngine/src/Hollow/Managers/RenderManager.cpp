@@ -200,6 +200,15 @@ namespace Hollow {
 		{
 			pShader->SetMat4("Model", data.mpModel);
 
+			pShader->SetInt("isAnimated", data.mIsAnimated);
+			if (data.mIsAnimated)
+			{
+				for (unsigned int i = 0; i < data.mBoneTransforms.size(); ++i)
+				{
+					pShader->SetMat4("BoneTransforms[" + std::to_string(i) + "]", data.mBoneTransforms[i]);
+				}
+			}
+
 			Material* pMaterial = data.mpMaterial;
 
 			// Send lighting information

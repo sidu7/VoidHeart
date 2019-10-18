@@ -6,9 +6,10 @@
 
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Model.h"
+#include "Hollow/Components/Animator.h"
 #include "Hollow/Components/Material.h"
 
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/RenderData.h"
 #include "Hollow/Graphics/Mesh.h"
 
 Hollow::RenderSystem Hollow::RenderSystem::instance;
@@ -28,7 +29,7 @@ void Hollow::RenderSystem::Update()
 		trans->mTransformationMatrix = glm::translate(glm::mat4(1.0f), trans->mPosition);
 		// Update quaternion
 		trans->mTransformationMatrix *= glm::toMat4(trans->mQuaternion);
-		trans->mTransformationMatrix *= glm::scale(trans->mTransformationMatrix, trans->mScale);
+		trans->mTransformationMatrix = glm::scale(trans->mTransformationMatrix, trans->mScale);
 
 		data.mpModel = trans->mTransformationMatrix;
 
@@ -42,6 +43,16 @@ void Hollow::RenderSystem::Update()
 		if (Material * material = mGameObjects[i]->GetComponent<Material>())
 		{
 			data.mpMaterial = material;
+		}
+
+		if (Animator* animator = mGameObjects[i]->GetComponent<Animator>())
+		{
+			data.mBoneTransforms = animator->mBoneTransformations;
+			data.mIsAnimated = true;
+		}
+		else
+		{
+			data.mIsAnimated = false;
 		}
 
 		Model* pModel = mGameObjects[i]->GetComponent<Model>();

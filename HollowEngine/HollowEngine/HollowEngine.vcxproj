@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Hollow\Components\Animator.cpp" />
     <ClCompile Include="src\Hollow\Components\Collider.cpp" />
     <ClCompile Include="src\hollowpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -42,6 +43,7 @@
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
     <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
+    <ClCompile Include="src\Hollow\Systems\AnimationSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\CameraSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\ParticleSystem.cpp" />
@@ -82,6 +84,7 @@
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hollow\Components\Animator.h" />
     <ClInclude Include="src\Hollow\Components\Collider.h" />
     <ClInclude Include="src\Hollow\Components\Shape.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
@@ -89,10 +92,17 @@
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
-    <ClInclude Include="src\Hollow\Graphics\Color.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\CameraData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\Color.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\DebugRenderData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\LightData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\MaterialData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\ParticleData.h" />
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
-    <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Texture.h" />
     <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Managers\DebugDrawManager.h" />
@@ -123,6 +133,7 @@
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
     <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
+    <ClInclude Include="src\Hollow\Systems\AnimationSystem.h" />
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
     <ClInclude Include="src\Hollow\Systems\ParticleSystem.h" />
