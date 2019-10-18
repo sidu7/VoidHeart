@@ -199,6 +199,7 @@ namespace Hollow {
 		for (RenderData& data : mRenderData)
 		{
 			pShader->SetMat4("Model", data.mpModel);
+			pShader->SetMat4("NormalTr", glm::inverse(data.mpModel));
 
 			pShader->SetInt("isAnimated", data.mIsAnimated);
 			if (data.mIsAnimated)
@@ -289,6 +290,8 @@ namespace Hollow {
 
 	void RenderManager::DrawShadowCastingObjects(Shader* pShader)
 	{
+		GLCall(glEnable(GL_CULL_FACE));
+		GLCall(glCullFace(GL_FRONT));
 		for (RenderData& data : mRenderData)
 		{
 			if (!data.mCastShadow)
@@ -297,6 +300,15 @@ namespace Hollow {
 			}
 
 			pShader->SetMat4("Model", data.mpModel);
+
+			pShader->SetInt("isAnimated", data.mIsAnimated);
+			if (data.mIsAnimated)
+			{
+				for (unsigned int i = 0; i < data.mBoneTransforms.size(); ++i)
+				{
+					pShader->SetMat4("BoneTransforms[" + std::to_string(i) + "]", data.mBoneTransforms[i]);
+				}
+			}
 
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
@@ -310,6 +322,7 @@ namespace Hollow {
 				mesh->mpVAO->Unbind();
 			}
 		}
+		GLCall(glDisable(GL_CULL_FACE));
 	}
 
 	void RenderManager::DrawFSQ()

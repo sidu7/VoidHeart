@@ -40,6 +40,9 @@ namespace Hollow {
 			mOffset += c.mSize * c.mCount;
 			mIndex++;
 		}
+		mElements.clear();
+		mStride = 0;
+		mOffset = 0;
 	}
 
 	void VertexArray::Push(unsigned int count, unsigned int type, unsigned int size)

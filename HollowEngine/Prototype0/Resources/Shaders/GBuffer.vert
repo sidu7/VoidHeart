@@ -8,6 +8,7 @@ layout (location = 4) in vec4 boneWeights;
 const int MAX_BONES = 100;
 
 uniform mat4 Model;
+uniform mat4 NormalTr;
 uniform mat4 View;
 uniform mat4 Projection;
 uniform mat4 BoneTransforms[MAX_BONES];
@@ -31,7 +32,8 @@ void main()
 
 	fragmentPosition = Model * BoneTr * vec4(position, 1.0);
 	// May need to take the inverse transpose of the model matrix
-	normalVector = transpose(inverse(mat3(Model))) * normal;
+	vec4 normalL = BoneTr * vec4(normal,0.0);
+	normalVector = (normalL * NormalTr).xyz;
 	// Most likely want to do this on the CPU, send like model matrix
 	//normalVector = normal;
 

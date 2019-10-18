@@ -20,19 +20,19 @@ namespace Hollow
 	{
 		mRunTime += FrameRateController::Instance().GetFrameTime();
 
-		for (unsigned int i = 0; mGameObjects.size(); ++i)
+		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			GameObject* gameobject = mGameObjects[i];
 			Animator* animator = gameobject->GetComponent<Animator>();
 			animator->mBoneTransformations.clear();
-			for (unsigned int j = 0; animator->mBones.size(); ++j)
+			for (unsigned int j = 0; j < animator->mBones.size(); ++j)
 			{
-				Bone* bone = animator->mBones[i];
+				Bone* bone = animator->mBones[j];
 				glm::mat4 trans = glm::mat4(1.0f);
 				if (bone->isAnimated)
 				{
 					//interpolate for timeframe
-					AnimationData& anim = bone->mAnimations[animator->mAnimations[0]];
+					AnimationData& anim = bone->mAnimations["mixamo.com"];
 					double TimeinTicks = mRunTime * anim.mTicksPerSec;
 					double timeFrame = fmod(TimeinTicks, anim.mDuration);
 					unsigned int posIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyPositions);
