@@ -6,6 +6,7 @@
 #include "MeshData.h"
 
 #include "Hollow/Components/Collider.h"
+#include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Shape.h"
 
 #define epsilon 0.0001f
@@ -175,7 +176,7 @@ namespace Hollow {
 			// Get Incident Face Vertices
 			std::vector<glm::vec3> incidentPoly = incidentMeshData.GetFacePolygon(incidentIndex);
 			for (auto& v : incidentPoly) {
-				v = (inciCollider->mpBody->mRotationMatrix * v) * inciCollider->mpShape->GetHalfExtents() * 2.0f
+				v = (inciCollider->mpBody->mRotationMatrix * v) * inciCollider->mpTr->mScale
 					+ inciCollider->mpBody->mPosition;
 			}
 
@@ -189,7 +190,7 @@ namespace Hollow {
 				glm::vec3 pointOnFace = referenceMeshData.GetPointOnFace(referenceMeshData.edges[twin].face);
 				glm::vec3 faceNormal = referenceMeshData.faces[referenceMeshData.edges[twin].face].normal;
 
-				pointOnFace = (refCollider->mpBody->mRotationMatrix * pointOnFace) * refCollider->mpShape->GetHalfExtents() * 2.0f
+				pointOnFace = (refCollider->mpBody->mRotationMatrix * pointOnFace) * refCollider->mpTr->mScale
 					+ refCollider->mpBody->mPosition;
 				faceNormal = refCollider->mpBody->mRotationMatrix * faceNormal;
 
@@ -201,7 +202,7 @@ namespace Hollow {
 
 			// clip against reference face
 			glm::vec3 pointOnRef = (refCollider->mpBody->mRotationMatrix * referenceMeshData.GetPointOnFace(refIndex))
-				* refCollider->mpShape->GetHalfExtents() * 2.0f
+				* refCollider->mpTr->mScale
 				+ refCollider->mpBody->mPosition;
 			
 			if (!clippedPoly.empty())
@@ -344,8 +345,8 @@ namespace Hollow {
 			glm::mat3& Ra = col1->mpBody->mRotationMatrix;
 			glm::mat3& Rb = col2->mpBody->mRotationMatrix;
 
-			glm::vec3 Ea = 2.0f * col1->mpShape->GetHalfExtents();
-			glm::vec3 Eb = 2.0f * col2->mpShape->GetHalfExtents();
+			glm::vec3 Ea = col1->mpTr->mScale;
+			glm::vec3 Eb = col2->mpTr->mScale;
 			
 			// edge case
 			glm::vec3 pA1 = md1.vertices[md1.edges[md1.edges[edgeQuery.edgeA].prev].toVertex].point;
@@ -423,8 +424,8 @@ namespace Hollow {
 		glm::mat3& Ra = col1->mpBody->mRotationMatrix;
 		glm::mat3& Rb = col2->mpBody->mRotationMatrix;
 
-		glm::vec3 Ea = 2.0f * col1->mpShape->GetHalfExtents();
-		glm::vec3 Eb = 2.0f * col2->mpShape->GetHalfExtents();
+		glm::vec3 Ea = col1->mpTr->mScale;
+		glm::vec3 Eb = col2->mpTr->mScale;
 		
 		// rotation matrix to convert from A's local to B's local
 		//glm::mat3 C = Rb * glm::transpose(Ra);
@@ -487,8 +488,8 @@ namespace Hollow {
 		glm::mat3& Ra = col1->mpBody->mRotationMatrix;
 		glm::mat3& Rb = col2->mpBody->mRotationMatrix;
 
-		glm::vec3 Ea = 2.0f * col1->mpShape->GetHalfExtents();
-		glm::vec3 Eb = 2.0f * col2->mpShape->GetHalfExtents();
+		glm::vec3 Ea = col1->mpTr->mScale;
+		glm::vec3 Eb = col2->mpTr->mScale;
 		
 		// rotation matrix to convert from A's local to B's local
 		glm::mat3 C = glm::transpose(Rb) * Ra;
