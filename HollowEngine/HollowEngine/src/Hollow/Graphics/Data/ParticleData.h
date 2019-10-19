@@ -22,5 +22,7 @@ namespace Hollow
 		glm::mat4 mModel;
 		Texture* mTex;
 		ParticleType mType;
+		std::vector<glm::vec4> mParticlePositionList;
+		std::vector<glm::mat4> mParticleModelMatrices;
 	};
 }
