@@ -78,15 +78,30 @@ namespace Hollow {
 		lua.open_libraries(sol::lib::base);
 
 		lua.script("print('bark bark bark!')");
-		
 
-		//std::thread::id main_thread_id = std::this_thread::get_id(); // gotcha!
+		while (mIsRunning)
+		{			
+			FrameRateController::Instance().FrameStart();
+			// Start frame functions
+			ImGuiManager::Instance().StartFrame();
 
-		//thr[0] = std::thread(std::bind(&Application::ThreadLoop, this));
+			// Update functions
+			for (Layer* layer : mLayerStack)
+			{
+				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			}
+			InputManager::Instance().Update();
 
-		//thr[0].join();
+			SystemManager::Instance().Update();
+			AudioManager::Instance().Update();
 
-		std::thread systemThread (std::bind(&Application::ThreadLoop, this)) ;
+			RenderManager::Instance().Update();
+
+			FrameRateController::Instance().FrameEnd();
+		}
+
+		// Attempt at multithreading
+		/*std::thread systemThread (std::bind(&Application::ThreadLoop, this)) ;
 
 		while (mIsRunning)
 		{
@@ -101,7 +116,7 @@ namespace Hollow {
 			shoudlMainThreadSleep = true;
 		}
 		shouldGoIn = true;
-		systemThread.join();
+		systemThread.join();*/
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -120,6 +135,7 @@ namespace Hollow {
 		return true;
 	}
 
+	// Attempt at multithreading
 	void Application::ThreadLoop() {
 
 		while (mIsRunning)

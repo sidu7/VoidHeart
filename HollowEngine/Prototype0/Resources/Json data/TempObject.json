@@ -3,7 +3,7 @@
         {
             "Type": "Transform",
             "Position": [ 0.0, 10.0, 0.0 ],
-            "Scale": [0.1,0.1,0.1]
+            "Scale": [1.0,1.0,1.0]
         },
         {
             "Type": "Body",
@@ -14,13 +14,13 @@
         },
         {
             "Type": "Model",
-            "Model": "Resources/Models/ArcherWalking.fbx",
+            "Model": "Resources/Models/Walking.fbx",
             "CastShadow": true
         },
         {
             "Type": "Material",
             "Shininess": 1.0,
-            "MaterialData": "Resources/Models/ArcherWalking.fbx"
+            "MaterialData": "Resources/Models/Walking.fbx"
         },
         {
             "Type": "ParticleEmitter",
@@ -31,7 +31,7 @@
         },
         {
             "Type": "Animator",
-            "AnimationData": "Resources/Models/ArcherWalking.fbx"
+            "AnimationData": "Resources/Models/Walking.fbx"
         }
     ]
 }

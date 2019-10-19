@@ -22,6 +22,7 @@ namespace Hollow
 					return i;
 				}
 			}
+			return 0;
 		}
 
 	private:

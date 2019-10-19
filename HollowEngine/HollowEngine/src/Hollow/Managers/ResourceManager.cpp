@@ -60,7 +60,7 @@ void Hollow::ResourceManager::LoadGameObjectFromFile(std::string path)
 
 	rapidjson::Document root;
 	root.Parse(contents.c_str());
-	
+
 	if (root.IsObject()) {
 		GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(root.GetObject());
 
@@ -78,7 +78,7 @@ Hollow::Texture* Hollow::ResourceManager::LoadTexture(std::string path)
 	{
 		return mTextureCache[path];
 	}
-	
+
 	Texture* texture = new Texture(path);
 	mTextureCache[path] = texture;
 	return texture;
@@ -112,9 +112,9 @@ std::vector<Hollow::Mesh*> Hollow::ResourceManager::LoadModel(std::string path)
 		ProcessAnimationData(scene, bones, maxm + minm);
 
 		mModelCache[path] = meshes;
-		mBoneCache[path] = bones;		
+		mBoneCache[path] = bones;
 	}
-	
+
 	return mModelCache[path];
 }
 
@@ -169,7 +169,11 @@ void Hollow::ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene
 
 	Bone* child = new Bone();
 	child->mIndex = boneList.size();
-	child->mTransformation = *(glm::mat4*)(&node->mTransformation.Transpose());
+	glm::mat4 tt = *(glm::mat4*)(&node->mTransformation.Transpose());
+	tt[3].x /= maxm;
+	tt[3].y /= maxm;
+	tt[3].z /= maxm;
+	child->mTransformation = tt;
 	child->mName = node->mName.data;
 	child->isAnimated = false;
 	child->mOffset = glm::mat4(1.0f);
@@ -201,16 +205,16 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, std::vector<Bon
 	{
 		Vertex vertex;
 
-		vertex.position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+		vertex.position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) / maxm;
 		if (mesh->mNormals)
 		{
 			vertex.normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
 		}
 		else
 		{
-			vertex.normal = glm::vec3(0.0f,0.0f,0.0f);
+			vertex.normal = glm::vec3(0.0f, 0.0f, 0.0f);
 		}
-		
+
 
 		if (mesh->mTextureCoords[0])
 		{
@@ -222,7 +226,7 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, std::vector<Bon
 		}
 
 		vertices.push_back(vertex);
-		bonedata.push_back(BoneData(0,0.0f));
+		bonedata.push_back(BoneData(0, 0.0f));
 	}
 
 	//Processing indices
@@ -240,24 +244,28 @@ Hollow::Mesh* Hollow::ResourceManager::ProcessMesh(aiMesh* mesh, std::vector<Bon
 	{
 		materialIndex = mesh->mMaterialIndex;
 	}
-	
+
 	//Process Bones index and weights
 	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
 	{
 		aiBone* bone = mesh->mBones[i];
-		unsigned int boneIndex = GetBoneIndex(bone->mName.data,boneList);
+		unsigned int boneIndex = GetBoneIndex(bone->mName.data, boneList);
 		for (unsigned int j = 0; j < bone->mNumWeights; ++j)
 		{
 			unsigned int index = bone->mWeights[j].mVertexId;
 			bonedata[index].AddBone(boneIndex, bone->mWeights[j].mWeight);
 		}
-		boneList[boneIndex]->mOffset = *(glm::mat4*)(&bone->mOffsetMatrix.Transpose());
+		glm::mat4 tt = *(glm::mat4*)(&bone->mOffsetMatrix.Transpose());
+		tt[3].x /= maxm;
+		tt[3].y /= maxm;
+		tt[3].z /= maxm;
+		boneList[boneIndex]->mOffset = tt;
 	}
 
 	VertexBuffer boneVBO;
 	boneVBO.AddData(&bonedata[0], bonedata.size(), sizeof(BoneData));
 
-	return CreateMesh(vertices,indices,materialIndex,&boneVBO);
+	return CreateMesh(vertices, indices, materialIndex, &boneVBO);
 }
 
 std::vector<Hollow::MaterialData*> Hollow::ResourceManager::ProcessMaterials(const aiScene* scene, std::string path)
@@ -271,13 +279,13 @@ std::vector<Hollow::MaterialData*> Hollow::ResourceManager::ProcessMaterials(con
 			MaterialData* materialdata = new MaterialData();
 			// Note: Assuming Material has only 1 texture of each type, rarely is otherwise
 			aiMaterial* material = scene->mMaterials[i];
-			materialdata->mpDiffuse = LoadMaterialTexture(material, aiTextureType_DIFFUSE, scene,path);
+			materialdata->mpDiffuse = LoadMaterialTexture(material, aiTextureType_DIFFUSE, scene, path);
 			//materialdata->mpSpecular = LoadMaterialTexture(material, aiTextureType_SPECULAR, scene,path);
 			//materialdata->mpNormal = LoadMaterialTexture(material, aiTextureType_NORMALS, scene,path);
 			//materialdata->mpHeight = LoadMaterialTexture(material, aiTextureType_HEIGHT, scene,path);
 
 			materials.push_back(materialdata);
-		}		
+		}
 	}
 	return materials;
 }
@@ -348,14 +356,14 @@ void Hollow::ResourceManager::ProcessAnimationData(const aiScene* scene, std::ve
 		std::string name = animation->mName.data; // TODO: not sure of unique name, find a better way to name animations
 		for (unsigned int j = 0; j < animation->mNumChannels; ++j)
 		{
-			unsigned int index = GetBoneIndex(animation->mChannels[j]->mNodeName.data,boneList);
+			unsigned int index = GetBoneIndex(animation->mChannels[j]->mNodeName.data, boneList);
 			AnimationData animData;
 			animData.mDuration = animation->mDuration;
 			animData.mTicksPerSec = animation->mTicksPerSecond;
 			//Key Positions
 			for (unsigned int k = 0; k < animation->mChannels[j]->mNumPositionKeys; ++k)
 			{
-				animData.mKeyPositions.push_back(std::make_pair(animation->mChannels[j]->mPositionKeys[k].mTime, *(glm::vec3*)&(animation->mChannels[j]->mPositionKeys[k].mValue)));
+				animData.mKeyPositions.push_back(std::make_pair(animation->mChannels[j]->mPositionKeys[k].mTime, *(glm::vec3*) & (animation->mChannels[j]->mPositionKeys[k].mValue / maxm)));
 			}
 
 			//Key Rotations
@@ -369,7 +377,7 @@ void Hollow::ResourceManager::ProcessAnimationData(const aiScene* scene, std::ve
 			//Key Scalings
 			for (unsigned int k = 0; k < animation->mChannels[j]->mNumScalingKeys; ++k)
 			{
-				animData.mKeyScalings.push_back(std::make_pair(animation->mChannels[j]->mScalingKeys[k].mTime, *(glm::vec3*)&(animation->mChannels[j]->mScalingKeys[k].mValue)));
+				animData.mKeyScalings.push_back(std::make_pair(animation->mChannels[j]->mScalingKeys[k].mTime, *(glm::vec3*) & (animation->mChannels[j]->mScalingKeys[k].mValue)));
 			}
 
 			boneList[index]->mAnimations[name] = animData;
@@ -624,43 +632,43 @@ void Hollow::ResourceManager::InitializeShapes()
 		mesh->mpEBO = ebo;
 		mShapes[WIRECUBE] = mesh;
 	}
-	
+
 	//Circle
 	{
 		std::vector<glm::vec3> verts;
 
 		verts.push_back(glm::vec3(0, 1, 0));
-		verts.push_back(glm::vec3(0.19509,0.980785,0));
-		verts.push_back(glm::vec3(0.382683,0.92388,0));
-		verts.push_back(glm::vec3(0.55557,0.83147,0));
-		verts.push_back(glm::vec3(0.707107,0.707107,0));
-		verts.push_back(glm::vec3(0.831469,0.55557,0));
-		verts.push_back(glm::vec3(0.923879,0.382684,0));
-		verts.push_back(glm::vec3(0.980785,0.195091,0));
-		verts.push_back(glm::vec3(1,3.13916e-07,0));
-		verts.push_back(glm::vec3(0.980785,-0.19509,0));
-		verts.push_back(glm::vec3(0.92388,-0.382683,0));
-		verts.push_back(glm::vec3(0.83147,-0.55557,0));
-		verts.push_back(glm::vec3(0.707107,-0.707106,0));
-		verts.push_back(glm::vec3(0.555571,-0.831469,0));
-		verts.push_back(glm::vec3(0.382684,-0.923879,0));
-		verts.push_back(glm::vec3(0.195091,-0.980785,0));
-		verts.push_back(glm::vec3(6.27833e-07,-1,0));
-		verts.push_back(glm::vec3(-0.19509,-0.980785,0));
-		verts.push_back(glm::vec3(-0.382683,-0.92388,0));
-		verts.push_back(glm::vec3(-0.55557,-0.83147,0));
-		verts.push_back(glm::vec3(-0.707106,-0.707107,0));
-		verts.push_back(glm::vec3(-0.831469,-0.555571,0));
-		verts.push_back(glm::vec3(-0.923879,-0.382684,0));
-		verts.push_back(glm::vec3(-0.980785,-0.195091,0));
-		verts.push_back(glm::vec3(-1,-9.41749e-07,0	   ));
-		verts.push_back(glm::vec3(-0.980785,0.195089,0 ));
-		verts.push_back(glm::vec3(-0.92388,0.382683,0  ));
-		verts.push_back(glm::vec3(-0.83147,0.555569,0  ));
-		verts.push_back(glm::vec3(-0.707108,0.707106,0 ));
-		verts.push_back(glm::vec3(-0.555571,0.831469,0 ));
-		verts.push_back(glm::vec3(-0.382685,0.923879,0 ));
-		verts.push_back(glm::vec3(-0.195092,0.980785,0 ));
+		verts.push_back(glm::vec3(0.19509, 0.980785, 0));
+		verts.push_back(glm::vec3(0.382683, 0.92388, 0));
+		verts.push_back(glm::vec3(0.55557, 0.83147, 0));
+		verts.push_back(glm::vec3(0.707107, 0.707107, 0));
+		verts.push_back(glm::vec3(0.831469, 0.55557, 0));
+		verts.push_back(glm::vec3(0.923879, 0.382684, 0));
+		verts.push_back(glm::vec3(0.980785, 0.195091, 0));
+		verts.push_back(glm::vec3(1, 3.13916e-07, 0));
+		verts.push_back(glm::vec3(0.980785, -0.19509, 0));
+		verts.push_back(glm::vec3(0.92388, -0.382683, 0));
+		verts.push_back(glm::vec3(0.83147, -0.55557, 0));
+		verts.push_back(glm::vec3(0.707107, -0.707106, 0));
+		verts.push_back(glm::vec3(0.555571, -0.831469, 0));
+		verts.push_back(glm::vec3(0.382684, -0.923879, 0));
+		verts.push_back(glm::vec3(0.195091, -0.980785, 0));
+		verts.push_back(glm::vec3(6.27833e-07, -1, 0));
+		verts.push_back(glm::vec3(-0.19509, -0.980785, 0));
+		verts.push_back(glm::vec3(-0.382683, -0.92388, 0));
+		verts.push_back(glm::vec3(-0.55557, -0.83147, 0));
+		verts.push_back(glm::vec3(-0.707106, -0.707107, 0));
+		verts.push_back(glm::vec3(-0.831469, -0.555571, 0));
+		verts.push_back(glm::vec3(-0.923879, -0.382684, 0));
+		verts.push_back(glm::vec3(-0.980785, -0.195091, 0));
+		verts.push_back(glm::vec3(-1, -9.41749e-07, 0));
+		verts.push_back(glm::vec3(-0.980785, 0.195089, 0));
+		verts.push_back(glm::vec3(-0.92388, 0.382683, 0));
+		verts.push_back(glm::vec3(-0.83147, 0.555569, 0));
+		verts.push_back(glm::vec3(-0.707108, 0.707106, 0));
+		verts.push_back(glm::vec3(-0.555571, 0.831469, 0));
+		verts.push_back(glm::vec3(-0.382685, 0.923879, 0));
+		verts.push_back(glm::vec3(-0.195092, 0.980785, 0));
 
 		unsigned int ind[32];
 		for (int i = 0; i < 32; ++i) ind[i] = i;
@@ -1160,7 +1168,7 @@ Hollow::Mesh* Hollow::ResourceManager::CreateMesh(std::vector<Vertex> vertices, 
 	VAO->Bind();
 
 	// Send vertex information to VBO
-	VBO->AddData(&vertices[0], vertices.size() , sizeof(Vertex));
+	VBO->AddData(&vertices[0], vertices.size(), sizeof(Vertex));
 
 	// Set up index buffer EBO
 	EBO->AddData(&indices[0], indices.size(), sizeof(unsigned int));
