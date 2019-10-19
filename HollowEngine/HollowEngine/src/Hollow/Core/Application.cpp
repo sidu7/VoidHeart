@@ -79,6 +79,7 @@ namespace Hollow {
 
 		while (mIsRunning)
 		{
+			
 			FrameRateController::Instance().FrameStart();
 			// Start frame functions
 			ImGuiManager::Instance().StartFrame();
@@ -91,7 +92,9 @@ namespace Hollow {
 			InputManager::Instance().Update();
 			SystemManager::Instance().Update();
 			//RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			
 			RenderManager::Instance().Update();
+			
             AudioManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();

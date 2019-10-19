@@ -27,8 +27,12 @@ namespace Hollow
 			light.mColor = clight->mColor;
 			light.mCastShadow = clight->mCastShadow;
 			light.mpShadowMap = clight->mpShadowMap;
+			light.mShadowMapFarPlane = clight->mShadowMapFarPlane;
+			light.mShadowMapNearPlane = clight->mShadowMapNearPlane;
+			light.mRadius = clight->mRadius;
 
-			light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;
+			light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition + glm::vec3(i, 0.5, i);
+			//light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;
 
 			RenderManager::Instance().mLightData.push_back(light);
 		}

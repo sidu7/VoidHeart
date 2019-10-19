@@ -32,9 +32,13 @@ namespace Hollow {
 
 		// Initialize G-Buffer
 		InitializeGBuffer();
+		
+		// Initialize local light shader
+		CreateLocalLightShader();
 
 		// Init ShadowMap shader
 		mpShadowMapShader = new Shader("Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag");
+		mpShadowDebugShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag");
 
 		// Init Debug Shader
 		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
@@ -58,7 +62,7 @@ namespace Hollow {
 	void RenderManager::Update()
 	{
 		// Initialize transform matrices
-    mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
+		mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
 		mViewMatrix = mCameraData[0].mViewMatrix;
 
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
@@ -66,18 +70,25 @@ namespace Hollow {
 
 		// Deferred G-Buffer Pass
 		GBufferPass();
+
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
 		{
-			// ShadowMap Pass
-			CreateShadowMap(mLightData[i]);
+			if (mLightData[i].mCastShadow)
+			{
+				// ShadowMap Pass
+				CreateShadowMap(mLightData[i]);
+				// Blur ShadowMap
+				//BlurShadowMap(mLightData[i]);
 
-			// Apply global lighting
-			GlobalLightingPass(mLightData[i]);
+				// Apply global lighting
+				GlobalLightingPass(mLightData[i]);
+			}
 		}
-		mLightData.clear();
-		mRenderData.clear();
-		mCameraData.clear();
 
+		// Local lighting pass
+		LocalLightingPass();
+
+		// Draw particles
 		if (ShowParticles)
 		{
 			DrawParticles();
@@ -86,11 +97,22 @@ namespace Hollow {
 		//Draw debug drawings
 		DrawDebugDrawings();
 
+		// Render ShadowMap as FSQ if a debug mode is set
+		if (mShadowMapDebugMode > 0)
+		{
+			DrawShadowMap();
+		}
+
 		// Update ImGui
 		DebugDisplay();
 		ImGuiManager::Instance().Update();
 
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
+
+		// Clear data
+		mLightData.clear();
+		mRenderData.clear();
+		mCameraData.clear();
 	}
 
 	void RenderManager::InitializeGBuffer()
@@ -116,6 +138,16 @@ namespace Hollow {
 		mpDeferredShader->SetInt("gSpecular", 3);
 	}
 
+	void RenderManager::CreateLocalLightShader()
+	{
+		mpLocalLightShader = new Shader("Resources/Shaders/LocalLight.vert", "Resources/Shaders/LocalLight.frag");
+		mpLocalLightShader->Use();
+		mpLocalLightShader->SetInt("gPosition", 0);
+		mpLocalLightShader->SetInt("gNormal", 1);
+		mpLocalLightShader->SetInt("gDiffuse", 2);
+		mpLocalLightShader->SetInt("gSpecular", 3);
+	}
+
 	void RenderManager::CreateShadowMap(LightData& light)
 	{
 		if (!light.mCastShadow)
@@ -128,7 +160,9 @@ namespace Hollow {
 
 		glm::mat4 LightLookAt, LightProj;
 		LightLookAt = glm::lookAt(light.mPosition, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		LightProj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 2000.0f);
+		//LightProj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 2000.0f);
+		LightProj = glm::perspective(glm::radians(45.0f), 1.0f, light.mShadowMapNearPlane, light.mShadowMapFarPlane);
+
 
 		mpShadowMapShader->SetMat4("Projection", LightProj);
 		mpShadowMapShader->SetMat4("View", LightLookAt);
@@ -194,6 +228,55 @@ namespace Hollow {
 		light.mpShadowMap->TexUnbind(4);
 	}
 
+	void RenderManager::LocalLightingPass()
+	{
+		// Bind G-Buffer textures
+		mpGBuffer->TexBind(0, 0);
+		mpGBuffer->TexBind(1, 1);
+		mpGBuffer->TexBind(2, 2);
+		mpGBuffer->TexBind(3, 3);
+
+		//if (mDisplayMode == 0 && mLocalLighting)
+		{
+			// Enable blending, disable depth testing, turn face culling on
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE);
+			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_FRONT);
+
+			mpLocalLightShader->Use();
+
+			// Send screen size to GPU
+			mpLocalLightShader->SetVec2("screenSize", glm::vec2((float) mpWindow->GetWidth(), (float)mpWindow->GetHeight()));
+
+			// Set projection and view matrix
+			mpLocalLightShader->SetMat4("Projection", mProjectionMatrix);
+			mpLocalLightShader->SetMat4("View", mViewMatrix);
+			mpLocalLightShader->SetVec3("viewPosition", mCameraData[0].mPosition);
+
+			// Draw light volume
+			for (auto& light : mLightData)
+			{
+				mpLocalLightShader->SetFloat("lightRadius", light.mRadius);
+				mpLocalLightShader->SetVec3("lightPosition", light.mPosition);
+
+				// Get the light transform
+				glm::mat4 lightTransform(1.0f);
+				lightTransform = glm::translate(lightTransform, light.mPosition);
+				lightTransform = glm::scale(lightTransform, glm::vec3(light.mRadius));
+
+				mpLocalLightShader->SetMat4("Model", lightTransform);
+				//DrawLight(light);
+				DrawSphere();
+			}
+			glDisable(GL_BLEND);
+			glDisable(GL_CULL_FACE);
+			glEnable(GL_DEPTH_TEST);
+		}
+
+	}
+
 	void RenderManager::DrawAllRenderData(Shader* pShader)
 	{
 		for (RenderData& data : mRenderData)
@@ -204,6 +287,8 @@ namespace Hollow {
 
 			// Send lighting information
 			pShader->SetVec3("diffuseColor", pMaterial->mDiffuseColor);
+			pShader->SetVec3("specularColor", pMaterial->mSpecularColor);
+			pShader->SetFloat("shininess", pMaterial->mShininess);
 
 			// Send diffuse texture information
 			if (pMaterial->mpTexture)
@@ -211,9 +296,6 @@ namespace Hollow {
 				pMaterial->mpTexture->Bind(1);
 				pShader->SetInt("diffuseTexture", 1);
 			}
-
-			pShader->SetVec3("specularColor", pMaterial->mSpecularColor);
-			pShader->SetFloat("shininess", pMaterial->mShininess);
 
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
@@ -254,19 +336,19 @@ namespace Hollow {
 					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
 					if (materialdata->mpDiffuse)
 					{
-						materialdata->mpDiffuse->Unbind();
+						materialdata->mpDiffuse->Unbind(1);
 					}
 					if (materialdata->mpSpecular)
 					{
-						materialdata->mpSpecular->Unbind();
+						materialdata->mpSpecular->Unbind(2);
 					}
 					if (materialdata->mpNormal)
 					{
-						materialdata->mpNormal->Unbind();
+						materialdata->mpNormal->Unbind(3);
 					}
 					if (materialdata->mpHeight)
 					{
-						materialdata->mpHeight->Unbind();
+						materialdata->mpHeight->Unbind(4);
 					}
 				}
 			}
@@ -305,6 +387,7 @@ namespace Hollow {
 
 	void RenderManager::DrawFSQ()
 	{
+		// TODO: Overhaul this function
 		static unsigned int quadVAO = 0;
 		static unsigned int quadVBO;
 		if (quadVAO == 0)
@@ -329,6 +412,79 @@ namespace Hollow {
 		}
 		glBindVertexArray(quadVAO);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glBindVertexArray(0);
+	}
+
+	void RenderManager::DrawSphere()
+	{
+		// TODO: Overhaul this function
+		static unsigned int sphereVAO = 0;
+		static unsigned int sphereVBO;
+		static unsigned int sphereEBO;
+		if (sphereVAO == 0)
+		{
+			// Send light vertex information to VBO
+			std::vector<float> lightVertices;
+			std::vector<unsigned int> lightIndices;
+			const float PI = 3.141592f;
+			//Number of subdivisions
+			int n = 32;
+			float d = 2.0f * PI / float(n * 2);
+			for (int i = 0; i <= n * 2; ++i)
+			{
+				float s = i * 2.0f * PI / float(n * 2);
+				for (int j = 0; j <= n; ++j)
+				{
+					float t = j * PI / float(n);
+					float x = cos(s) * sin(t);
+					float y = sin(s) * sin(t);
+					float z = cos(t);
+
+					// Create vertex
+					lightVertices.push_back(x);
+					lightVertices.push_back(y);
+					lightVertices.push_back(z);
+
+					// Add indices
+					if (i > 0 && j > 0)
+					{
+						// i, j, k
+						lightIndices.push_back((i - 1) * (n + 1) + (j - 1));
+						lightIndices.push_back((i - 1) * (n + 1) + j);
+						lightIndices.push_back((i) * (n + 1) + j);
+						// i, k, l
+						lightIndices.push_back((i - 1) * (n + 1) + (j - 1));
+						lightIndices.push_back((i) * (n + 1) + j);
+						lightIndices.push_back((i) * (n + 1) + (j - 1));
+					}
+				}
+			}
+			// Generate sphere vertex array
+			glGenVertexArrays(1, &sphereVAO);
+			glGenBuffers(1, &sphereVBO);
+			glGenBuffers(1, &sphereEBO);
+
+			// Bind VAO
+			glBindVertexArray(sphereVAO);
+
+			// Send vertex information to VBO
+			glBindBuffer(GL_ARRAY_BUFFER, sphereVBO);
+			glBufferData(GL_ARRAY_BUFFER, lightVertices.size() * sizeof(float), &lightVertices[0], GL_STATIC_DRAW);
+
+			// Set up index buffer EBO
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereEBO);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, lightIndices.size() * sizeof(unsigned int), &lightIndices[0], GL_STATIC_DRAW);
+
+			// Position attribute for VAO
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
+		}
+
+		glBindVertexArray(sphereVAO);
+		int size;
+		glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
+		glDrawElements(GL_TRIANGLES, size / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
+		// Unbind VAO
 		glBindVertexArray(0);
 	}
 
@@ -411,20 +567,41 @@ namespace Hollow {
 		mDebugRenderData.clear();
 	}
 
+	void RenderManager::DrawShadowMap()
+	{
+		// Clear OpenGL for now
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		mpShadowDebugShader->Use();
+		mLightData[mShadowMapDebugLightIndex].mpShadowMap->TexBind(0);
+
+		DrawFSQ();
+	}
+
 	void RenderManager::DebugDisplay()
 	{
 		if(ImGui::Begin("Renderer"))
 		{
 			DebugDisplayGBuffer();
+			DebugDisplayLighting();
 			ImGui::Checkbox("Particle System",&ShowParticles);
 		}
 		ImGui::End();
 	}
+
 	void RenderManager::DebugDisplayGBuffer()
 	{
 		if (ImGui::CollapsingHeader("GBuffer"))
 		{
 			ImGui::InputInt("Display Mode", &mGBufferDisplayMode);
+		}
+	}
+	void RenderManager::DebugDisplayLighting()
+	{
+		if (ImGui::CollapsingHeader("Lighting"))
+		{
+			ImGui::InputInt("Shadow Map Debug", &mShadowMapDebugMode);
+			ImGui::InputInt("Shadow Map Light", &mShadowMapDebugLightIndex);
 		}
 	}
 }

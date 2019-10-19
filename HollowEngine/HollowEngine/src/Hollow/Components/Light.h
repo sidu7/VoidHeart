@@ -5,6 +5,13 @@ namespace Hollow
 {
 	class FrameBuffer;
 
+	enum LightType
+	{
+		GLOBAL,
+		LOCAL,
+		LIGHT_NUM
+	};
+
 	class HOLLOW_API Light : public Component
 	{
 		REGISTERCOMPONENT(Light);
@@ -22,6 +29,9 @@ namespace Hollow
 		bool mCastShadow;
 		FrameBuffer* mpShadowMap;
 		glm::vec2 mShadowMapSize;
+		float mShadowMapNearPlane;
+		float mShadowMapFarPlane;
+		LightType mType;
 		//TODO: type of light
 	};
 }

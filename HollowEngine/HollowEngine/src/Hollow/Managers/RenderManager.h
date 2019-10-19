@@ -25,23 +25,29 @@ namespace Hollow {
 		void InitializeGBuffer();
 
 		void CreateDeferredShader();
+		void CreateLocalLightShader();
 
 		void CreateShadowMap(LightData& light);
 
 		void GBufferPass();
 		void GlobalLightingPass(LightData& light);
+		void LocalLightingPass();
 
 		void DrawAllRenderData(Shader* pShader);
 		void DrawShadowCastingObjects(Shader* pShader);
 		void DrawFSQ();
+		void DrawSphere();
 
 		void DrawParticles();
 
 		void DrawDebugDrawings();
 
+		void DrawShadowMap();
+
 		// ImGui Debug functions
 		void DebugDisplay();
 		void DebugDisplayGBuffer();
+		void DebugDisplayLighting();
 
 	public:
 		std::vector<RenderData> mRenderData;
@@ -60,6 +66,7 @@ namespace Hollow {
 
 		// Lighting
 		Shader* mpDeferredShader;
+		Shader* mpLocalLightShader;
 
 		// Debug drawing Shader
 		Shader* mpDebugShader;
@@ -71,6 +78,9 @@ namespace Hollow {
 
 		// Shadows
 		Shader* mpShadowMapShader;
+		Shader* mpShadowDebugShader;
+		int mShadowMapDebugMode;
+		int mShadowMapDebugLightIndex;
 
 		// ParticleSystem
 		Shader* mpParticleShader;

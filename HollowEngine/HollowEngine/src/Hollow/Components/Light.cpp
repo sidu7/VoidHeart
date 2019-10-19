@@ -27,7 +27,19 @@ namespace Hollow
 					mShadowMapSize = JSONHelper::GetVec2F(data["ShadowMapSize"].GetArray());
 					mpShadowMap = new FrameBuffer(mShadowMapSize.x, mShadowMapSize.y, 1, true);
 				}
+				if (data.HasMember("ShadowMapNearPlane"))
+				{
+					mShadowMapNearPlane = data["ShadowMapNearPlane"].GetFloat();
+				}
+				if (data.HasMember("ShadowMapFarPlane"))
+				{
+					mShadowMapFarPlane = data["ShadowMapFarPlane"].GetFloat();
+				}
 			}
+		}
+		if (data.HasMember("Radius"))
+		{
+			mRadius = data["Radius"].GetFloat();
 		}
 		
 	}
@@ -49,5 +61,14 @@ namespace Hollow
 
 	void Light::DebugDisplay()
 	{
+		if (ImGui::TreeNode("Light"))
+		{
+			ImGui::InputFloat("Radius", &mRadius);
+			ImGui::InputFloat3("Position", &mPosition[0]);
+
+			ImGui::InputFloat("Shadow Map Far Plane", &mShadowMapFarPlane);
+			ImGui::InputFloat("Shadow Map Near Plane", &mShadowMapNearPlane);
+			ImGui::TreePop();
+		}
 	}
 }

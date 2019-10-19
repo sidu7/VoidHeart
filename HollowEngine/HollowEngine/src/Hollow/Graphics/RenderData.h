@@ -12,6 +12,7 @@ namespace Hollow {
 	class Texture;
 	enum ParticleType;
 	enum Shapes;
+	enum LightType;
 
 	struct RenderData
 	{
@@ -42,6 +43,9 @@ namespace Hollow {
 		bool mCastShadow;
 		FrameBuffer* mpShadowMap;
 		glm::mat4 mShadowMatrix;
+		float mShadowMapNearPlane;
+		float mShadowMapFarPlane;
+		LightType mType;
 	};
 	
 	enum ParticleType

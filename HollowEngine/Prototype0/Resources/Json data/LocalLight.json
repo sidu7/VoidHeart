@@ -1,0 +1,14 @@
+{
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ]
+    },
+    {
+      "Type": "Light",
+      "Radius" :  1.0,
+      "Color": [ 1.0, 1.0, 1.0 ],
+      "CastShadow": false
+    }
+  ]
+}
