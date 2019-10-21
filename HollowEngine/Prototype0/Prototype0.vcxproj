@@ -104,6 +104,9 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
     <ClInclude Include="src\PrototypeComponent.h" />
     <ClInclude Include="src\PrototypeSystem.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
