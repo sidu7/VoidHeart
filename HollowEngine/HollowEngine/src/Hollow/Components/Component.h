@@ -21,6 +21,7 @@ namespace Hollow
 		virtual void Clear() = 0;
 		virtual ~Component() {}
 		virtual void DebugDisplay() = 0;
+		virtual void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) { }
 
 		std::string mComponentName;
 

@@ -11,6 +11,7 @@ namespace Hollow
 	public:
 		void Init();
 		void Serialize(rapidjson::Value::Object data);
+		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
 		void Clear();
 		void DebugDisplay();
 
@@ -20,6 +21,7 @@ namespace Hollow
 		glm::vec3 mColor;
 		bool mCastShadow;
 		FrameBuffer* mpShadowMap;
+		glm::vec2 mShadowMapSize;
 		//TODO: type of light
 	};
 }

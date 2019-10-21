@@ -13,10 +13,15 @@ namespace Hollow
 		void Init();
 		void Clear();
 		void Serialize(rapidjson::Value::Object object);
+		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
 		void DebugDisplay();
 
 		std::vector<Mesh*> mMeshes;
 		Shader* mpShader;
 		bool mCastShadow;
+
+		// variables for deserialization... can be private
+		unsigned int mShape;
+		std::string mModelPath;
 	};
 }

@@ -19,17 +19,33 @@ namespace Hollow {
 	{
 		if (object.HasMember("Model"))
 		{
-			mMeshes = ResourceManager::Instance().LoadModel(object["Model"].GetString());
+			mModelPath = object["Model"].GetString();
+			mMeshes = ResourceManager::Instance().LoadModel(mModelPath);
 		}
 		if (object.HasMember("Shape"))
 		{
-			mMeshes.push_back(ResourceManager::Instance().GetShape((Shapes)object["Shape"].GetUint()));
+			mShape = object["Shape"].GetUint();
+			mMeshes.push_back(ResourceManager::Instance().GetShape((Shapes)mShape));
 		}
 		if (object.HasMember("CastShadow"))
 		{
 			mCastShadow = object["CastShadow"].GetBool();
 		}
 	}
+
+	void Model::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		if (mMeshes.size() == 1)
+		{
+			JSONHelper::Write<unsigned int>("Shape", mShape, writer);
+		}
+		else
+		{
+			JSONHelper::Write<std::string>("Model", mModelPath, writer);
+		}
+		JSONHelper::Write<bool>("CastShadow", mCastShadow, writer);
+	}
+
 	void Model::DebugDisplay()
 	{
 	}
