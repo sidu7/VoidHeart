@@ -16,10 +16,12 @@ namespace Hollow
 		virtual ~System() {}
 		virtual void Update() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
+		virtual void OnDeleteGameObject(GameObject* pGameObject) {}
 
 		void DeleteGameObject(GameObject* pGameObject)
 		{
 			mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject));
+			OnDeleteGameObject(pGameObject);
 		}
 
 		void DeleteAllGameObjects() 

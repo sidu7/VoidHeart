@@ -40,6 +40,7 @@ namespace Hollow {
 		void AddLayout();
 		void AddBuffer(const VertexBuffer& vb) const;
 		void Push(unsigned int count, unsigned int type, unsigned int size);
+		void PushMatrix(unsigned int count, unsigned int type, unsigned int size, unsigned int vecsize);
 		void Bind() const;
 		void Unbind() const;
 		void Delete() const;

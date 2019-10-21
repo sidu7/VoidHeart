@@ -22,9 +22,19 @@ namespace Hollow {
 		if (ImGui::TreeNode("Transform"))
 		{
 			ImGui::InputFloat3("Position", &mPosition[0]);
+            ImGui::InputFloat3("Rotation", &mRotation[0]);
 			ImGui::InputFloat3("Scale", &mScale[0]);
-			ImGui::InputFloat3("Rotation", &mRotation[0]);
-		
+			
+			// TODO: Remove this
+			glm::mat4 rotate = glm::mat4(1.0f);
+                        rotate = glm::rotate(rotate, glm::radians(mRotation.x),
+                                             glm::vec3(1.0f, 0.0f, 0.0f));
+                        rotate = glm::rotate(rotate, glm::radians(mRotation.y),
+                                             glm::vec3(0.0f, 1.0f, 0.0f));
+                        rotate = glm::rotate(rotate, glm::radians(mRotation.z),
+                                             glm::vec3(0.0f, 0.0f, 1.0f));
+                        mQuaternion = glm::toQuat(rotate);
+
 			ImGui::TreePop();
 		}
 	}
@@ -56,6 +66,13 @@ namespace Hollow {
 		mTransformationMatrix = model;
 
 		
+	}
+
+	void Transform::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write<glm::vec3>("Position", mPosition, writer);
+		JSONHelper::Write<glm::vec3>("Rotation", mRotation, writer);
+		JSONHelper::Write<glm::vec3>("Scale", mScale, writer);
 	}
 
 }

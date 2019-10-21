@@ -13,12 +13,6 @@ namespace Hollow
 	};
 #endif
 
-	struct MeshTexture
-	{
-		unsigned int id;
-		std::string type;
-	};
-
 	class Shader;
 	class VertexArray;
 	class ElementArrayBuffer;
@@ -30,9 +24,9 @@ namespace Hollow
 		Mesh();
 		~Mesh();
 
-		void Draw(Shader* pShader);
-
 		VertexArray* mpVAO;
 		ElementArrayBuffer* mpEBO;
+		VertexBuffer* mpVBO;
+		unsigned int mMaterialIndex;
 	};
 }

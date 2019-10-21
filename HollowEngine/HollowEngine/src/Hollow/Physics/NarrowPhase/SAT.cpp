@@ -176,7 +176,7 @@ namespace Hollow {
 			// Get Incident Face Vertices
 			std::vector<glm::vec3> incidentPoly = incidentMeshData.GetFacePolygon(incidentIndex);
 			for (auto& v : incidentPoly) {
-				v = (inciCollider->mpBody->mRotationMatrix * v) * inciCollider->mpTr->mScale
+				v = inciCollider->mpBody->mRotationMatrix * (v * inciCollider->mpTr->mScale)
 					+ inciCollider->mpBody->mPosition;
 			}
 
@@ -190,8 +190,8 @@ namespace Hollow {
 				glm::vec3 pointOnFace = referenceMeshData.GetPointOnFace(referenceMeshData.edges[twin].face);
 				glm::vec3 faceNormal = referenceMeshData.faces[referenceMeshData.edges[twin].face].normal;
 
-				pointOnFace = (refCollider->mpBody->mRotationMatrix * pointOnFace) * refCollider->mpTr->mScale
-					+ refCollider->mpBody->mPosition;
+				pointOnFace = refCollider->mpBody->mRotationMatrix * (pointOnFace * refCollider->mpTr->mScale)
+					+ refCollider->mpTr->mPosition;
 				faceNormal = refCollider->mpBody->mRotationMatrix * faceNormal;
 
 				if (!clippedPoly.empty())
@@ -201,8 +201,8 @@ namespace Hollow {
 			}
 
 			// clip against reference face
-			glm::vec3 pointOnRef = (refCollider->mpBody->mRotationMatrix * referenceMeshData.GetPointOnFace(refIndex))
-				* refCollider->mpTr->mScale
+			glm::vec3 pointOnRef = refCollider->mpBody->mRotationMatrix * (referenceMeshData.GetPointOnFace(refIndex)
+				* refCollider->mpTr->mScale)
 				+ refCollider->mpBody->mPosition;
 			
 			if (!clippedPoly.empty())
@@ -375,7 +375,7 @@ namespace Hollow {
 			c.rA = pointOnA - col1->mpBody->mPosition;
 			c.rB = pointOnB - col2->mpBody->mPosition;
 
-			manifold->collisionNormal = glm::normalize(glm::cross(edgeA, edgeB));
+			manifold->collisionNormal = glm::cross(edgeA, edgeB);
 
 			// for consistent normal orientation
 			if (glm::dot(manifold->collisionNormal, col2->mpBody->mPosition - col1->mpBody->mPosition) < 0.0f) {
@@ -507,7 +507,7 @@ namespace Hollow {
 		MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
 
 		for (int i = 0; i < md1.edges.size(); i += 2) {
-			glm::vec3 edge1Dir = C * md1.GetEdgeDirection(i);
+			glm::vec3 edge1Dir = C * (Ea * md1.GetEdgeDirection(i));
 			glm::vec3 p1 = C * (md1.vertices[md1.edges[md1.edges[i].prev].toVertex].point * Ea) + centerA;
 
 			glm::vec3 u1 = C * md1.faces[md1.edges[i].face].normal;
@@ -516,7 +516,7 @@ namespace Hollow {
 			assert(i + 1 == md1.edges[i].twin);
 
 			for (int j = 0; j < md2.edges.size(); j += 2) {
-				glm::vec3 edge2Dir = md2.GetEdgeDirection(j);
+				glm::vec3 edge2Dir = Eb * md2.GetEdgeDirection(j);
 				glm::vec3 p2 = Eb * md2.vertices[md2.edges[md2.edges[j].prev].toVertex].point;
 
 				glm::vec3 u2 = md2.faces[md2.edges[j].face].normal;

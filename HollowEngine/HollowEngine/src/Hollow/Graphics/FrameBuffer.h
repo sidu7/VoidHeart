@@ -7,6 +7,7 @@ namespace Hollow {
 	private:
 		unsigned int mRendererID;
 		unsigned int mPrevWidth, mPrevHeight;
+		unsigned int mPrevPosX, mPrevPosY;
 
 	public:
 		unsigned int *mpTextureID;

@@ -15,6 +15,8 @@ namespace Hollow {
 		void Destroy();
 
 		void DebugDisplay();
+
+		void Deserialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
 	
 	public:
 		std::unordered_map<std::type_index, Component*> mComponents;

@@ -42,6 +42,22 @@ namespace Hollow {
 		mStride += count * size;
 	}
 
+	void VertexArray::PushMatrix(unsigned int count, unsigned int type, unsigned int size, unsigned int vecsize)
+	{
+		GLCall(glEnableVertexAttribArray(mIndex));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)0));
+		GLCall(glVertexAttribDivisor(mIndex++, 1));
+		GLCall(glEnableVertexAttribArray(mIndex));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(vecsize)));
+		GLCall(glVertexAttribDivisor(mIndex++, 1));
+		GLCall(glEnableVertexAttribArray(mIndex));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(2 * vecsize)));
+		GLCall(glVertexAttribDivisor(mIndex++, 1));
+		GLCall(glEnableVertexAttribArray(mIndex));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(3 * vecsize)));
+		GLCall(glVertexAttribDivisor(mIndex++, 1));
+	}
+
 	void VertexArray::AddBuffer(const VertexBuffer& vb) const
 	{
 		Bind();

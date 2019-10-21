@@ -14,11 +14,15 @@
     <ClCompile Include="src\Hollow\Components\Collider.cpp" />
     <ClCompile Include="src\hollowpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Hollow\Components\Body.cpp" />
+    <ClCompile Include="src\Hollow\Components\Camera.cpp" />
     <ClCompile Include="src\Hollow\Components\Light.cpp" />
     <ClCompile Include="src\Hollow\Components\Material.cpp" />
     <ClCompile Include="src\Hollow\Components\Model.cpp" />
+    <ClCompile Include="src\Hollow\Components\ParticleEmitter.cpp" />
+    <ClCompile Include="src\Hollow\Components\StateMachine.cpp" />
     <ClCompile Include="src\Hollow\Components\Transform.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObjectFactory.cpp" />
@@ -30,15 +34,17 @@
     <ClCompile Include="src\Hollow\Graphics\Texture.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\DebugDrawManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
-    <ClCompile Include="src\Hollow\Graphics\Camera.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
     <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
+    <ClCompile Include="src\Hollow\Systems\CameraSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Utils\GLCall.cpp" />
@@ -48,6 +54,7 @@
     <ClCompile Include="src\Hollow\Managers\GameObjectManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\MemoryManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\RenderManager.cpp" />
+    <ClCompile Include="src\Hollow\Managers\SystemManager.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -72,21 +79,22 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Hollow\Managers\SystemManager.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../hollowpch.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Hollow\Components\Collider.h" />
     <ClInclude Include="src\Hollow\Components\Shape.h" />
+    <ClInclude Include="src\Hollow\Components\Camera.h" />
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Components\Model.h" />
+    <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
+    <ClInclude Include="src\Hollow\Components\StateMachine.h" />
+    <ClInclude Include="src\Hollow\Graphics\Color.h" />
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Texture.h" />
+    <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Managers\DebugDrawManager.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
     <ClInclude Include="src\hollowpch.h" />
@@ -115,15 +123,17 @@
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\MeshData.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\SAT.h" />
     <ClInclude Include="src\Hollow\Physics\Resolution\Constraint.h" />
+    <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\ParticleSystem.h" />
     <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
     <ClInclude Include="src\Utils\GLCall.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
-    <ClInclude Include="src\Hollow\Graphics\Camera.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
+    <ClInclude Include="src\Utils\GraphicsMath.h" />
     <ClInclude Include="src\Utils\JSONHelper.h" />
     <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Hollow.h" />
@@ -131,8 +141,8 @@
     <ClInclude Include="src\Hollow\Managers\GameObjectManager.h" />
     <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
     <ClInclude Include="src\Utils\Profiler.h" />
+    <ClInclude Include="src\Utils\Random.h" />
     <ClInclude Include="src\Utils\Singleton.h" />
-    <ClInclude Include="src\Utils\Test.h" />
     <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
@@ -202,7 +212,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lua53.lib;opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua53.lib;opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
