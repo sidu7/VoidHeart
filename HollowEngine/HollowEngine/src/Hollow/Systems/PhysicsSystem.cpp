@@ -38,8 +38,8 @@ namespace Hollow
 			pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
 			
 			// update local shape
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = glm::vec3(-0.5f, -0.5f, -0.5f) * (pCol->mpTr->mScale) + pCol->mpTr->mPosition;
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = glm::vec3(0.5f, 0.5f, 0.5f) * (pCol->mpTr->mScale) + pCol->mpTr->mPosition;
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = glm::vec3(-0.5f, -0.5f, -0.5f) * (pCol->mpTr->mScale);
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = glm::vec3(0.5f, 0.5f, 0.5f) * (pCol->mpTr->mScale);
 
 			// Collider added to Dynamic BVH
 			mTree.AddCollider(pCol);
@@ -76,8 +76,8 @@ namespace Hollow
 				abs((pCol->mpBody->mRotationMatrix) * z);
 
 			// based on normalized body vertices
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpTr->mPosition;
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpTr->mPosition;
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
 		}
 
 		// balancing the tree
@@ -159,7 +159,7 @@ namespace Hollow
 			}
 		}
 
-		DebugContacts();
+		//DebugContacts();
 		
 		for (int i = 0; i < impulseIterations; ++i) {
 			for (auto c : *mSAT.mContacts) {
@@ -307,11 +307,13 @@ namespace Hollow
 				//}
 				accumulator -= maxPossibleDeltaTime;
 			}
+			InterpolateState(accumulator / maxPossibleDeltaTime);
 		}
 		else if (nextStep) {
+			accumulator = 0.0f;
 			Step(maxPossibleDeltaTime);
+			InterpolateState(1.0f);
 		}
-		InterpolateState(accumulator / maxPossibleDeltaTime);
 		
 	}
 }
