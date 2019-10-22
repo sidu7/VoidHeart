@@ -61,7 +61,6 @@
 #include "Utils/Profiler.h"
 #include "Utils/JSONHelper.h"
 #include "Utils/GraphicsMath.h"
-#include "Utils/StringHelper.h"
 #include "Hollow/Graphics/Data/Color.h"
 
 // GetObject() is defined by Windows and conflicts with GetObject() of rapidjson

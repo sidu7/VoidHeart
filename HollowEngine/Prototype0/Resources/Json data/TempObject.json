@@ -35,7 +35,8 @@
         },
         {
             "Type": "StateMachine",
-            "StateFile":  "Resources/State data/player.state"
+            "StateFile": "Resources/State data/playerstate.json",
+            "StartState": "idle"
         }
     ]
 }

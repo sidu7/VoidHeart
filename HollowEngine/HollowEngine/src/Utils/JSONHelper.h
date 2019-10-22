@@ -8,6 +8,7 @@ namespace Hollow
 	class HOLLOW_API JSONHelper
 	{
 	public:
+		//JSON parsing
 		inline static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec3(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat());
@@ -23,6 +24,43 @@ namespace Hollow
 			return glm::vec4(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat(), arr[3].GetFloat());
 		}
 
+		template<typename T>
+		inline static std::vector<T> GetArray(const rapidjson::Value::Array& arr)
+		{
+			std::vector<T> data;
+			data.reserve(arr.Size());
+			for (unsigned int i = 0; i < arr.Size(); ++i)
+			{
+				data.emplace_back(static_cast<T>(arr[i].GetUint()));
+			}
+			return data;
+		}
+
+		template<>
+		inline static std::vector<std::string> GetArray(const rapidjson::Value::Array& arr)
+		{
+			std::vector<std::string> data;
+			data.reserve(arr.Size());
+			for (unsigned int i = 0; i < arr.Size(); ++i)
+			{
+				data.emplace_back(arr[i].GetString());
+			}
+			return data;
+		}
+
+		template<>
+		inline static std::vector<unsigned int> GetArray(const rapidjson::Value::Array& arr)
+		{
+			std::vector<unsigned int> data;
+			data.reserve(arr.Size());
+			for (unsigned int i = 0; i < arr.Size(); ++i)
+			{
+				data.emplace_back(arr[i].GetUint());
+			}
+			return data;
+		}
+
+		//JSON deserialization
 		template<typename T>
 		inline static void Write(const char* key, const T& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{

@@ -18,7 +18,6 @@ namespace Hollow
 
 	void AnimationSystem::Update()
 	{
-		Timer time;
 		mRunTime += FrameRateController::Instance().GetFrameTime();
 
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)

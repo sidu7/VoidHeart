@@ -60,6 +60,7 @@
     <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
     <ClCompile Include="src\Hollow\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\StateMachineSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -204,7 +205,7 @@
     <ClInclude Include="src\Hollow\Graphics\Data\MaterialData.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />
     <ClInclude Include="src\Hollow\Systems\AnimationSystem.h" />
-    <ClInclude Include="src\Utils\StringHelper.h" />
-    <ClInclude Include="src\Utils\StateData.h" />
+    <ClInclude Include="src\Hollow\Core\Data\StateData.h" />
+    <ClInclude Include="src\Hollow\Systems\StateMachineSystem.h" />
   </ItemGroup>
 </Project>

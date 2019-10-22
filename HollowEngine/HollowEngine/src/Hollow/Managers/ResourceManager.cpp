@@ -15,7 +15,7 @@
 #include "Hollow/Graphics/Data/Bone.h"
 #include "Hollow/Graphics/Data/MaterialData.h"
 
-#include "Utils/StateData.h"
+#include "Hollow/Core/Data/StateData.h"
 
 namespace Hollow
 { 
@@ -433,17 +433,6 @@ namespace Hollow
 			{
 				std::vector<State*> states;
 
-				auto FindState = [states](std::string name)
-				{
-					for (unsigned int i = 0; i < states.size(); ++i)
-					{
-						if (states[i]->mName == name)
-						{
-							return i;
-						}
-					}
-				};
-
 				rapidjson::Value::Array stateList = root["States"].GetArray();
 
 				for (unsigned int i = 0; i < stateList.Size(); ++i)
@@ -451,6 +440,7 @@ namespace Hollow
 					State* newState = new State();
 					newState->mName = stateList[i].GetString();
 					newState->mIndex = i;
+					states.emplace_back(newState);
 				}
 
 				rapidjson::Value::Array conditions = root["Conditions"].GetArray();
@@ -459,7 +449,24 @@ namespace Hollow
 				{
 					rapidjson::Value::Object statecondition = conditions[i].GetObject();
 
-					State* state = states[FindState(statecondition["State"].GetString())];
+					State* state = states[State::FindState(states,statecondition["State"].GetString())];
+
+					state->mEvents = JSONHelper::GetArray<std::string>(statecondition["Events"].GetArray());
+					rapidjson::Value::Array eventState = statecondition["EventStates"].GetArray();
+					state->mEventStates.reserve(eventState.Size());
+					for (unsigned int i = 0; i < eventState.Size(); ++i)
+					{
+						state->mEventStates.emplace_back(State::FindState(states,eventState[i].GetString()));
+					}
+
+					state->mInputs = JSONHelper::GetArray<unsigned int>(statecondition["Inputs"].GetArray());
+					rapidjson::Value::Array inputState = statecondition["InputStates"].GetArray();
+					state->mInputStates.reserve(inputState.Size());
+					for (unsigned int i = 0; i < inputState.Size(); ++i)
+					{
+						state->mInputStates.emplace_back(State::FindState(states,inputState[i].GetString()));
+					}
+					state->mInputConditions = JSONHelper::GetArray<State::StateInputCondition>(statecondition["InputCondition"].GetArray());
 				}
 				
 				mStateFileCache[path] = states;
