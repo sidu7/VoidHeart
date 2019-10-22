@@ -79,8 +79,8 @@ namespace Hollow {
 		// Shadows
 		Shader* mpShadowMapShader;
 		Shader* mpShadowDebugShader;
-		int mShadowMapDebugMode;
-		int mShadowMapDebugLightIndex;
+		bool mShadowMapDebugMode;
+		unsigned int mShadowMapDebugLightIndex;
 
 		// ParticleSystem
 		Shader* mpParticleShader;

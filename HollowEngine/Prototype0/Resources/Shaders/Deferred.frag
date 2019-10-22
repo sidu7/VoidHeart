@@ -52,27 +52,44 @@ void main()
 	// Result
 	vec3 result = diffuse + ambient + specular;
 
-	vec4 shadowCoord = shadowMatrix * vec4(fragmentPosition.xyz,1.0);
-	
-	if(shadowCoord.w > 0.0)	
-	{	
-		vec2 shadowIndex = shadowCoord.xy/shadowCoord.w;
-		if(shadowIndex.x >= 0.0 && shadowIndex.y >= 0.0 && shadowIndex.x <= 1.0 && shadowIndex.y <= 1.0)
+	//vec4 shadowCoord = shadowMatrix * vec4(fragmentPosition.xyz,1.0);
+	vec4 shadowCoord = shadowMatrix * fragmentPosition;
+
+	// Put into NDC
+	shadowCoord /= shadowCoord.w;
+
+	// Get texture coordinate 0 .. 1, apply bias
+	//vec2 uv = shadowCoord.xy*vec2(0.5) + vec2(0.5);
+
+	// Use texture coordinate to get shadow depth
+	//float shadowDepth = texture(shadowMap, uv).r;
+	shadowCoord = shadowCoord*0.5 + 0.5;
+	float pointDepth = shadowCoord.z;
+
+	// PCF
+	float bias = max(0.05 * (1.0 - dot(N, L)), 0.005);
+	float pcfShadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+	for(int x = -1; x <= 1; ++x)
+	{
+		for(int y = -1; y <= 1; ++y)
 		{
-			float lightDepth = texture(shadowMap,shadowIndex).w;
-			float pixelDepth = shadowCoord.w;
-			if(pixelDepth > lightDepth + 0.009)
-				color = vec4(ambient, 1.0);
-			else
-			{
-				color = vec4(result, 1.0);
-			}
+			float pcfDepth = texture(shadowMap, shadowCoord.xy + vec2(x, y) * texelSize).r;
+			pcfShadow += pointDepth - bias > pcfDepth ? 1.0 : 0.0;
 		}
-		else
-			color = vec4(ambient, 1.0);
 	}
-	else
-		color = vec4(ambient, 1.0);
+	pcfShadow /= 9.0;
+
+	float shadow = 0.0;
+	float epsilon = 0.00005;
+	//if(shadowDepth < (pointDepth - epsilon) && (shadowCoord.w > 0))
+	{
+		shadow = 1.0;
+	}
+
+	//result = (1.0 - shadow)*result + ambient;
+	result = (1.0 - pcfShadow)*result + ambient;
+	color = vec4(result, 1.0);
 
 	if(displayMode == 1)
 	{

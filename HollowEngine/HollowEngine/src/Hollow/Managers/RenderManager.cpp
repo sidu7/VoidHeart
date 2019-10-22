@@ -159,15 +159,16 @@ namespace Hollow {
 		mpShadowMapShader->Use();
 
 		glm::mat4 LightLookAt, LightProj;
+		// Calculate light up vector
+		//t0 = glm::normalize(glm::vec3(c->collisionNormal.y, -c->collisionNormal.x, 0.0f));
 		LightLookAt = glm::lookAt(light.mPosition, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//LightProj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 2000.0f);
-		LightProj = glm::perspective(glm::radians(45.0f), 1.0f, light.mShadowMapNearPlane, light.mShadowMapFarPlane);
-
+		LightProj = glm::perspective(glm::radians(45.0f), (float) mpWindow->GetWidth() / (float)mpWindow->GetHeight(), light.mShadowMapNearPlane, light.mShadowMapFarPlane);
 
 		mpShadowMapShader->SetMat4("Projection", LightProj);
 		mpShadowMapShader->SetMat4("View", LightLookAt);
 
-		light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
+		//light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
+		light.mShadowMatrix = LightProj * LightLookAt;
 
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT);
@@ -225,7 +226,7 @@ namespace Hollow {
 		// Render FSQ
 		DrawFSQ();
 
-		light.mpShadowMap->TexUnbind(4);
+		//light.mpShadowMap->TexUnbind(4);
 	}
 
 	void RenderManager::LocalLightingPass()
@@ -475,9 +476,9 @@ namespace Hollow {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereEBO);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, lightIndices.size() * sizeof(unsigned int), &lightIndices[0], GL_STATIC_DRAW);
 
-			// Position attribute for VAO
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(0);
+// Position attribute for VAO
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);
 		}
 
 		glBindVertexArray(sphereVAO);
@@ -514,7 +515,7 @@ namespace Hollow {
 				mParticleData[i].mpParticleVBO->Unbind();
 				mParticleData[i].mpParticleVAO->Unbind();
 			}
-			else if(mParticleData[i].mType == MODEL)
+			else if (mParticleData[i].mType == MODEL)
 			{
 				for (Mesh* mesh : mParticleData[i].mParticleModel)
 				{
@@ -569,13 +570,20 @@ namespace Hollow {
 
 	void RenderManager::DrawShadowMap()
 	{
-		// Clear OpenGL for now
-		glClear(GL_COLOR_BUFFER_BIT);
+		if (mLightData[mShadowMapDebugLightIndex].mpShadowMap)
+		{
+			// Clear OpenGL for now
+			glClear(GL_COLOR_BUFFER_BIT);
 
-		mpShadowDebugShader->Use();
-		mLightData[mShadowMapDebugLightIndex].mpShadowMap->TexBind(0);
+			mpShadowDebugShader->Use();
+			mpShadowDebugShader->SetInt("shadowMap", 0);
+			mpShadowDebugShader->SetMat4("shadowMatrix", mLightData[mShadowMapDebugLightIndex].mShadowMatrix);
+			mpShadowDebugShader->SetFloat("nearPlane", mLightData[mShadowMapDebugLightIndex].mShadowMapNearPlane);
+			mpShadowDebugShader->SetFloat("farPlane", mLightData[mShadowMapDebugLightIndex].mShadowMapFarPlane);
+			mLightData[mShadowMapDebugLightIndex].mpShadowMap->TexBind(0, 0);
 
-		DrawFSQ();
+			DrawFSQ();
+		}
 	}
 
 	void RenderManager::DebugDisplay()
@@ -600,8 +608,9 @@ namespace Hollow {
 	{
 		if (ImGui::CollapsingHeader("Lighting"))
 		{
-			ImGui::InputInt("Shadow Map Debug", &mShadowMapDebugMode);
-			ImGui::InputInt("Shadow Map Light", &mShadowMapDebugLightIndex);
+			//ImGui::InputInt("Shadow Map Debug", &mShadowMapDebugMode);
+			ImGui::Checkbox("Shadow Map Debug", &mShadowMapDebugMode);
+			ImGui::InputScalar("Shadow Map Light", ImGuiDataType_U32, &mShadowMapDebugLightIndex);
 		}
 	}
 }

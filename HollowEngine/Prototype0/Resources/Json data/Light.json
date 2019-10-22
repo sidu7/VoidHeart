@@ -8,7 +8,7 @@
       "Type": "Light",
       "Color": [ 1.0, 1.0, 1.0 ],
       "CastShadow": true,
-      "ShadowMapSize": [ 1024, 1024 ],
+      "ShadowMapSize": [ 2048, 2048 ],
       "ShadowMapNearPlane": 0.1,
       "ShadowMapFarPlane" :  2000.0
     }
