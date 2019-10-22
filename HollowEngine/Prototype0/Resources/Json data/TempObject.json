@@ -32,6 +32,10 @@
         {
             "Type": "Animator",
             "AnimationData": "Resources/Models/Walking.fbx"
+        },
+        {
+            "Type": "StateMachine",
+            "StateFile":  "Resources/State data/player.state"
         }
     ]
 }

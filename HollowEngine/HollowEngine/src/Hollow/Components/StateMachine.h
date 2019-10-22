@@ -3,12 +3,7 @@
 
 namespace Hollow
 {
-	struct State
-	{
-		std::string mName;
-		unsigned int mIndex;
-		std::vector<unsigned int> mNextStates;
-	};
+	struct State;
 
 	class HOLLOW_API StateMachine : public Component
 	{
@@ -20,8 +15,8 @@ namespace Hollow
 		void DebugDisplay();
 
 	public:
-		std::vector<State> mStates;
-		// mCurrentState
-		// mPrevState
+		std::vector<State*> mStates;
+		State* mCurrentState;
+		State* mPreviousState;
 	};
 }

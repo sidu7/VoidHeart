@@ -9,6 +9,7 @@ namespace Hollow
 	struct MaterialData;
 	class VertexBuffer;
 	struct Bone;
+	struct State;
 
 	enum Shapes
 	{
@@ -40,6 +41,7 @@ namespace Hollow
 		void AddAnimationData(std::string path, std::vector<Bone*>& boneList);
 		Mesh* GetShape(Shapes shape);
 		FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
+		std::vector<State*> ReadStateMachineFile(std::string path);
 
 	private:
 		void InitializeShapes();
@@ -60,6 +62,7 @@ namespace Hollow
 		std::unordered_map<std::string, std::vector<Bone*>> mBoneCache;
 		std::unordered_map<Shapes, Mesh*> mShapes;
 		std::unordered_map<std::string, const aiScene*> mModelRootsCache;
+		std::unordered_map<std::string, std::vector<State*>> mStateFileCache;
 
 		// Sounds cache, maybe split into SFX and Songs
 		std::unordered_map<std::string, FMOD::Sound*> mSoundCache;

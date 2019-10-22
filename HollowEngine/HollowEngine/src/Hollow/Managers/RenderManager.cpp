@@ -198,7 +198,7 @@ namespace Hollow {
 		for (RenderData& data : mRenderData)
 		{
 			pShader->SetMat4("Model", data.mpModel);
-			pShader->SetMat4("NormalTr", glm::inverse(data.mpModel));
+			pShader->SetMat4("NormalTr", glm::transpose(glm::inverse(data.mpModel)));
 
 			pShader->SetInt("isAnimated", data.mIsAnimated);
 			if (data.mIsAnimated)
