@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hollow/Physics/NarrowPhase/MeshData.h"
+#include "Utils/RayCast.h"
 
 namespace Hollow {
 	class Collider;
@@ -61,7 +62,7 @@ namespace Hollow {
 
 			SetMeshData();
 		}
-		bool TestPoint(float PointX, float PointY)
+		bool TestRay(float PointX, float PointY)
 		{
 			return false;
 		}

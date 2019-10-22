@@ -142,6 +142,7 @@
     <ClInclude Include="src\Hollow\Managers\MemoryManager.h" />
     <ClInclude Include="src\Utils\Profiler.h" />
     <ClInclude Include="src\Utils\Random.h" />
+    <ClInclude Include="src\Utils\RayCast.h" />
     <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />

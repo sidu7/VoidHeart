@@ -194,5 +194,6 @@
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
     <ClInclude Include="src\Utils\Random.h" />
+    <ClInclude Include="src\Utils\RayCast.h" />
   </ItemGroup>
 </Project>
