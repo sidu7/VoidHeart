@@ -28,6 +28,8 @@ namespace Hollow {
 		void CreateLocalLightShader();
 
 		void CreateShadowMap(LightData& light);
+		void BlurShadowMap(LightData& light);
+		std::vector<float> CreateBlurKernel(unsigned int distance);
 
 		void GBufferPass();
 		void GlobalLightingPass(LightData& light);
@@ -81,6 +83,10 @@ namespace Hollow {
 		Shader* mpShadowDebugShader;
 		bool mShadowMapDebugMode;
 		unsigned int mShadowMapDebugLightIndex;
+
+		// Blur
+		Shader* mpHorizontalBlurShader;
+		Shader* mpVerticalBlurShader;
 
 		// ParticleSystem
 		Shader* mpParticleShader;

@@ -39,6 +39,10 @@ namespace Hollow {
 		// Init ShadowMap shader
 		mpShadowMapShader = new Shader("Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag");
 		mpShadowDebugShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag");
+		
+		// Init blur shader
+		mpHorizontalBlurShader = new Shader("Resources/Shaders/HorizontalBlur.comp");
+		mpVerticalBlurShader = new Shader("Resources/Shaders/VerticalBlur.comp");
 
 		// Init Debug Shader
 		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
@@ -77,8 +81,9 @@ namespace Hollow {
 			{
 				// ShadowMap Pass
 				CreateShadowMap(mLightData[i]);
+
 				// Blur ShadowMap
-				//BlurShadowMap(mLightData[i]);
+				BlurShadowMap(mLightData[i]);
 
 				// Apply global lighting
 				GlobalLightingPass(mLightData[i]);
@@ -170,14 +175,126 @@ namespace Hollow {
 		//light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
 		light.mShadowMatrix = LightProj * LightLookAt;
 
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_FRONT);
 
 		DrawShadowCastingObjects(mpShadowMapShader);
 
-		glDisable(GL_CULL_FACE);
+		//glDisable(GL_CULL_FACE);
 
 		light.mpShadowMap->Unbind();
+	}
+
+	void RenderManager::BlurShadowMap(LightData& light)
+	{
+		// Create blur kernel
+		std::vector<float> weights = CreateBlurKernel(light.mBlurDistance);
+
+		// Apply horizontal blur
+		// Make horizontal blur shader current
+		mpHorizontalBlurShader->Use();
+
+		// Send block of weights to shader as uniform block
+		GLuint hBlockID;
+		GLuint hBindpoint = 0;
+		// TODO: Refactor in to function
+		glGenBuffers(1, &hBlockID);
+		GLint loc = glGetUniformBlockIndex(mpHorizontalBlurShader->mProgram, "blurKernel");
+		glUniformBlockBinding(mpHorizontalBlurShader->mProgram, loc, hBindpoint);
+		glBindBufferBase(GL_UNIFORM_BUFFER, hBindpoint, hBlockID);
+		glBufferData(GL_UNIFORM_BUFFER, weights.size() * sizeof(float), &weights[0], GL_STATIC_DRAW);
+
+		// Send blur distance to shader
+		mpHorizontalBlurShader->SetUInt("blurDistance", light.mBlurDistance);
+
+		// Send texture to shader
+		GLuint hImageUnit = 0;
+		glBindImageTexture(hImageUnit, light.mpShadowMap->mpTextureID[0], 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+		mpHorizontalBlurShader->SetInt("src", hImageUnit++);
+		//Texture intermediate();
+		static GLuint intermediate = 0;
+		if (intermediate == 0)
+		{
+			glGenTextures(1, &intermediate);
+			glBindTexture(GL_TEXTURE_2D, intermediate);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 2048, 2048, 0, GL_RGBA, GL_FLOAT, 0);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+		}
+
+		glBindImageTexture(hImageUnit, intermediate, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+		mpHorizontalBlurShader->SetInt("dst", hImageUnit++);
+
+		// Uniforms and image variables
+		int W = 2048;
+		int H = 2048;
+		glDispatchCompute(W / 128, H, 1);
+		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+
+		glUseProgram(0);
+
+		// Apply vertical blur
+		// Make vertical blur shader current
+		mpVerticalBlurShader->Use();
+
+		// Send block of weights to shader as uniform block
+		GLuint blockID;
+		GLuint bindpoint = 0;
+		glGenBuffers(1, &blockID);
+		loc = glGetUniformBlockIndex(mpVerticalBlurShader->mProgram, "blurKernel");
+		glUniformBlockBinding(mpVerticalBlurShader->mProgram, loc, bindpoint);
+		glBindBufferBase(GL_UNIFORM_BUFFER, bindpoint, blockID);
+		glBufferData(GL_UNIFORM_BUFFER, weights.size() * sizeof(float), &weights[0], GL_STATIC_DRAW);
+
+		// Send blur distance to shader
+		mpVerticalBlurShader->SetUInt("blurDistance", light.mBlurDistance);
+
+		// Send texture to shader
+		GLuint imageUnit = 0;
+		glBindImageTexture(imageUnit, intermediate, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+		mpVerticalBlurShader->SetInt("src", imageUnit++);
+		glBindImageTexture(imageUnit, light.mpShadowMap->mpTextureID[0], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+		mpVerticalBlurShader->SetInt("dst", imageUnit++);
+
+		// Uniforms and image variables
+		glDispatchCompute(W, H / 128, 1);
+		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+
+		glUseProgram(0);
+	}
+
+	std::vector<float> RenderManager::CreateBlurKernel(unsigned int distance)
+	{
+		// Set up resources it will need
+		int w = distance;
+		if (distance > 50)
+		{
+			w = 50;
+		}
+		float s = (float)w / 2.0f;
+		std::vector<float> weights;
+		float totalWeight = 0.0f;
+
+		// Calculate weights
+		for (int i = -w; i <= w; ++i)
+		{
+			float exponent = (-0.5f * i * i) / (s * s);
+			float weight = std::expf(exponent);
+			weights.push_back(weight);
+			totalWeight += weight;
+		}
+
+		// Normalize weights
+		for (auto& weight : weights)
+		{
+			weight /= totalWeight;
+		}
+
+		return weights;
 	}
 
 	void RenderManager::GBufferPass()
@@ -219,6 +336,8 @@ namespace Hollow {
 		light.mpShadowMap->TexBind(0, 4);
 		mpDeferredShader->SetInt("shadowMap", 4);
 		mpDeferredShader->SetMat4("shadowMatrix", light.mShadowMatrix);
+		mpDeferredShader->SetFloat("alpha", light.mAlpha);
+		mpDeferredShader->SetFloat("md", light.mMD);
 
 		// Send debug information
 		mpDeferredShader->SetInt("displayMode", mGBufferDisplayMode);
@@ -226,7 +345,7 @@ namespace Hollow {
 		// Render FSQ
 		DrawFSQ();
 
-		//light.mpShadowMap->TexUnbind(4);
+		light.mpShadowMap->TexUnbind(4);
 	}
 
 	void RenderManager::LocalLightingPass()
@@ -577,9 +696,6 @@ glEnableVertexAttribArray(0);
 
 			mpShadowDebugShader->Use();
 			mpShadowDebugShader->SetInt("shadowMap", 0);
-			mpShadowDebugShader->SetMat4("shadowMatrix", mLightData[mShadowMapDebugLightIndex].mShadowMatrix);
-			mpShadowDebugShader->SetFloat("nearPlane", mLightData[mShadowMapDebugLightIndex].mShadowMapNearPlane);
-			mpShadowDebugShader->SetFloat("farPlane", mLightData[mShadowMapDebugLightIndex].mShadowMapFarPlane);
 			mLightData[mShadowMapDebugLightIndex].mpShadowMap->TexBind(0, 0);
 
 			DrawFSQ();

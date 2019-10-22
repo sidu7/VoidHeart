@@ -17,8 +17,29 @@ uniform vec3 lightPosition;
 
 uniform sampler2D shadowMap;
 uniform mat4 shadowMatrix;
+uniform float alpha;
+uniform float md;
 
 uniform int displayMode;
+
+// Solves Ax = b for MSM
+vec3 MSMDecomposition(vec4 A, vec3 b)
+{
+	float X = A.x; float Y = A.y; float Z = A.z; float W = A.w;
+	float d = b.y; float d2 = b.z;
+	
+	// Variable soup, from lower triangular matrix L in Cholesky decomposition
+	float L11 = sqrt(Y - X*X);
+	float L21 = (Z - Y*X)/L11;
+	float L22 = sqrt(W - (Y*Y + L21*L21));
+
+	float c2 = (((d2 - Y - (L21)*((d - X)/L11))) / L22) / L22;
+
+	float c1 = (((d - X)/L11) - (L21*c2))/L11;
+
+	float c0 = 1.0 - X*c1 - Y*c2;
+	return vec3(c0, c1, c2);
+}
 
 void main()
 {
@@ -52,43 +73,72 @@ void main()
 	// Result
 	vec3 result = diffuse + ambient + specular;
 
-	//vec4 shadowCoord = shadowMatrix * vec4(fragmentPosition.xyz,1.0);
+	// Calculate position in light space
 	vec4 shadowCoord = shadowMatrix * fragmentPosition;
 
 	// Put into NDC
 	shadowCoord /= shadowCoord.w;
 
 	// Get texture coordinate 0 .. 1, apply bias
-	//vec2 uv = shadowCoord.xy*vec2(0.5) + vec2(0.5);
+	vec2 uv = shadowCoord.xy*vec2(0.5) + vec2(0.5);
 
 	// Use texture coordinate to get shadow depth
-	//float shadowDepth = texture(shadowMap, uv).r;
-	shadowCoord = shadowCoord*0.5 + 0.5;
+	float shadowDepth = texture(shadowMap, uv).r;
 	float pointDepth = shadowCoord.z;
-
-	// PCF
-	float bias = max(0.05 * (1.0 - dot(N, L)), 0.005);
-	float pcfShadow = 0.0;
-	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
-	for(int x = -1; x <= 1; ++x)
-	{
-		for(int y = -1; y <= 1; ++y)
-		{
-			float pcfDepth = texture(shadowMap, shadowCoord.xy + vec2(x, y) * texelSize).r;
-			pcfShadow += pointDepth - bias > pcfDepth ? 1.0 : 0.0;
-		}
-	}
-	pcfShadow /= 9.0;
 
 	float shadow = 0.0;
 	float epsilon = 0.00005;
-	//if(shadowDepth < (pointDepth - epsilon) && (shadowCoord.w > 0))
+	if(shadowDepth < (pointDepth - epsilon) && (shadowCoord.w > 0) )
 	{
 		shadow = 1.0;
 	}
 
-	//result = (1.0 - shadow)*result + ambient;
-	result = (1.0 - pcfShadow)*result + ambient;
+	float zf = pointDepth;
+	vec4 b = texture(shadowMap, uv);
+	vec4 bP = (1.0 - alpha)*b + alpha*vec4(md, md, md, md);
+	vec3 Z = vec3(1.0, zf, zf*zf);
+
+	vec3 c = MSMDecomposition(bP, Z);
+
+	float c1 = c.x;
+	float c2 = c.y;
+	float c3 = c.z;
+
+	float dis = c2*c2-4.0*c3*c1;
+	if(dis < 0.0)
+	{
+		dis = 0.0;
+	}
+
+	float z2 = (-c2 - sqrt(dis))/(2.0*c3);
+	float z3 = (-c2 + sqrt(dis))/(2.0*c3);
+
+	if(z2 > z3)
+	{
+		float t = z3;
+		z3 = z2;
+		z2 = t;
+	}
+
+	float G = 0.0;
+	//zf = 0.0f;
+
+	if(zf <= z2)
+	{
+		G = 0.0;
+	}
+	else if(zf <= z3)
+	{
+		G = (zf*z3 - bP.x*(zf+z3)+bP.y)/((z3-z2)*(zf-z2));
+	}
+	else
+	{
+		G = 1.0 - ((z2*z3 - bP.x*(z2+z3)+bP.y)/((zf-z2)*(zf-z3)));
+	}
+
+	//G = shadow;
+
+	result = (1.0 - G)*result;
 	color = vec4(result, 1.0);
 
 	if(displayMode == 1)

@@ -35,6 +35,18 @@ namespace Hollow
 				{
 					mShadowMapFarPlane = data["ShadowMapFarPlane"].GetFloat();
 				}
+				if (data.HasMember("BlurDistance"))
+				{
+					mBlurDistance = data["BlurDistance"].GetUint();
+				}
+				if (data.HasMember("Alpha"))
+				{
+					mAlpha = data["Alpha"].GetFloat();
+				}
+				if (data.HasMember("MD"))
+				{
+					mMD = data["MD"].GetFloat();
+				}
 			}
 		}
 		if (data.HasMember("Radius"))
@@ -66,8 +78,15 @@ namespace Hollow
 			ImGui::InputFloat("Radius", &mRadius);
 			ImGui::InputFloat3("Position", &mPosition[0]);
 
-			ImGui::InputFloat("Shadow Map Far Plane", &mShadowMapFarPlane);
-			ImGui::InputFloat("Shadow Map Near Plane", &mShadowMapNearPlane);
+			if (mCastShadow)
+			{
+				ImGui::InputFloat("Shadow Map Far Plane", &mShadowMapFarPlane);
+				ImGui::InputFloat("Shadow Map Near Plane", &mShadowMapNearPlane);
+				ImGui::InputScalar("Blur Distance", ImGuiDataType_U32 ,&mBlurDistance);
+				ImGui::InputFloat("Alpha", &mAlpha);
+				ImGui::InputFloat("MD", &mMD);
+			}
+
 			ImGui::TreePop();
 		}
 	}
