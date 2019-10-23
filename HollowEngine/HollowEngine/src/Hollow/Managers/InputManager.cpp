@@ -25,11 +25,6 @@ namespace Hollow {
 		return mCurrentState[keycode] && !mPreviousState[keycode];
 	}
 
-	bool InputManager::IsKeyReleased(unsigned keycode)
-	{
-		return !mCurrentState[keycode] && mPreviousState[keycode];
-	}
-
 	bool InputManager::IsMouseButtonPressed(unsigned int button)
 	{
 		return mCurrentMouseState[button];
