@@ -17,9 +17,19 @@ namespace Hollow
 
 	void Animator::Serialize(rapidjson::Value::Object data)
 	{
-		if (data.HasMember("AnimationData"))
+		if (data.HasMember("BoneData"))
 		{
-			mBones = ResourceManager::Instance().LoadBoneData(data["AnimationData"].GetString());
+			std::pair<float, std::vector<Bone*>> value = ResourceManager::Instance().LoadBoneData(data["BoneData"].GetString());
+			mBones = value.second;
+			mScaleFactor = value.first;
+		}
+		if (data.HasMember("Animations"))
+		{
+			rapidjson::Value::Array arr = data["Animations"].GetArray();
+			for (unsigned int i = 0; i < arr.Size(); ++i)
+			{
+				ResourceManager::Instance().AddAnimationData(arr[i].GetString(),mBones,mScaleFactor);
+			}			
 		}
 	}
 

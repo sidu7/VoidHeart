@@ -1,29 +1,29 @@
 {
-  "States": [ "walking", "running", "idle", "dead" ],
+  "States": [ "Walking", "Running", "Idle", "dead" ],
   "Conditions": [
     {
-      "State": "walking",
+      "State": "Walking",
       "Events": [ "WallHit" ],
       "Inputs": [ 82, 81 ],
-      "InputCondition": [1,2],
+      "InputCondition": [ 1, 2 ],
       "EventStates": [ "dead" ],
-      "InputStates": [ "running", "idle" ]
+      "InputStates": [ "Running", "Idle" ]
     },
     {
-      "State": "running",
+      "State": "Running",
       "Events": [ "WallHit" ],
       "Inputs": [ 82 ],
       "InputCondition": [ 0 ],
       "EventStates": [ "dead" ],
-      "InputStates": [ "walking" ]
+      "InputStates": [ "Walking" ]
     },
     {
-      "State": "idle",
+      "State": "Idle",
       "Events": [],
       "Inputs": [ 82 ],
       "InputCondition": [ 2 ],
       "EventStates": [],
-      "InputStates": [ "walking" ]
+      "InputStates": [ "Walking" ]
     }
   ]
 }
