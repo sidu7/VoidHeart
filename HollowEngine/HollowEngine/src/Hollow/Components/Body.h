@@ -20,6 +20,7 @@ namespace Hollow {
 		glm::vec3 mTotalTorque;
 
 		glm::fquat mQuaternion;
+		glm::fquat mPreviousQuaternion;
 		
 		glm::mat3 mRotationMatrix; // TODO dont need to store this... being used in a hack in SAT in place of Transformation matrix
 		glm::mat3 mLocalInertiaInverse;

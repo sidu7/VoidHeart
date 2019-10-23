@@ -33,15 +33,33 @@ namespace Hollow
 			
 			
 			pCol->mpBody->mPosition = pCol->mpTr->mPosition;
-			pCol->mpTr->mQuaternion = pCol->mpTr->mQuaternion;
-
-			// update local shape
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = glm::vec3(-0.5f, -0.5f, -0.5f) * (pCol->mpTr->mScale) + pCol->mpTr->mPosition;
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = glm::vec3(0.5f, 0.5f, 0.5f) * (pCol->mpTr->mScale) + pCol->mpTr->mPosition;
+			pCol->mpBody->mPreviousPosition = pCol->mpTr->mPosition;
+			pCol->mpBody->mQuaternion = pCol->mpTr->mQuaternion;
+			pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
+			
+			// update local shape (0.5f because we are updating half extents)
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f *(pCol->mpTr->mScale);
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
 
 			// Collider added to Dynamic BVH
 			mTree.AddCollider(pCol);
 		}
+	}
+
+	void PhysicsSystem::DebugContacts()
+	{
+		ImGui::Begin("Contacts");
+		{
+			for (auto points : *mSAT.mContacts)
+			{
+				for (int i = 0; i < points->contactPoints.size(); i++)
+				{
+					ImGui::Text("Point location- %f , %f , %f ", points->contactPoints[i].point.x, points->contactPoints[i].point.y, points->contactPoints[i].point.z);
+					ImGui::Text("Penetration depth - %f", points->contactPoints[i].penetrationDepth);
+				}
+			}
+		}
+		ImGui::End();
 	}
 
 	void PhysicsSystem::Step(float fixedDeltaTime)
@@ -53,13 +71,13 @@ namespace Hollow
 			glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
 			glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
 			glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-			glm::vec3 rotatedExtents = abs(glm::mat3(pCol->mpTr->mTransformationMatrix) * x) +
-				abs(glm::mat3(pCol->mpTr->mTransformationMatrix) * y) +
-				abs(glm::mat3(pCol->mpTr->mTransformationMatrix) * z);
+			glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
+				abs((pCol->mpBody->mRotationMatrix) * y) +
+				abs((pCol->mpBody->mRotationMatrix) * z);
 
 			// based on normalized body vertices
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpTr->mPosition;
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpTr->mPosition;
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
 		}
 
 		// balancing the tree
@@ -141,6 +159,8 @@ namespace Hollow
 			}
 		}
 
+		//DebugContacts();
+		
 		for (int i = 0; i < impulseIterations; ++i) {
 			for (auto c : *mSAT.mContacts) {
 
@@ -231,7 +251,9 @@ namespace Hollow
 
 			// integrate the position
 			pBody->mPosition += pBody->mVelocity * fixedDeltaTime;
-			
+
+			pBody->mPreviousQuaternion = pBody->mQuaternion;
+
 			// integrate the orientation
 			glm::fquat newQuat = 0.5f * (pBody->mAngularVelocity) * pBody->mQuaternion * fixedDeltaTime;
 			pBody->mQuaternion *= newQuat;
@@ -245,19 +267,24 @@ namespace Hollow
 			Body* pBody = static_cast<Body*>(go->GetComponent<Body>());
 			Transform* pTr = static_cast<Transform*>(go->GetComponent<Transform>());
 
-			pTr->mPosition.x = pBody->mPosition.x * blendingFactor + pBody->mPreviousPosition.x * (1 - blendingFactor);
-			pTr->mPosition.y = pBody->mPosition.y * blendingFactor + pBody->mPreviousPosition.y * (1 - blendingFactor);
-			pTr->mPosition.z = pBody->mPosition.z * blendingFactor + pBody->mPreviousPosition.z * (1 - blendingFactor);
+			pTr->mPosition.x = glm::mix(pBody->mPreviousPosition.x, pBody->mPosition.x, blendingFactor);
+			pTr->mPosition.y = glm::mix(pBody->mPreviousPosition.y, pBody->mPosition.y, blendingFactor);
+			pTr->mPosition.z = glm::mix(pBody->mPreviousPosition.z, pBody->mPosition.z, blendingFactor);
 
-			//TODO setup slerp for quaternion interpolation while rendering
+
+			// if there is a significant change in position or orientation only then update transformation matrix
+			if (glm::length2(pBody->mVelocity) > 0.0001f || glm::length2(pBody->mAngularVelocity) > 0.0001f) {
+				pTr->dirtyBit = true;
+			}
 
 			pBody->mQuaternion = glm::normalize(pBody->mQuaternion);
+			pTr->mQuaternion = glm::slerp(pBody->mPreviousQuaternion, pBody->mQuaternion, blendingFactor);
+			
 			pBody->mRotationMatrix = glm::toMat3(pBody->mQuaternion);
 			pBody->mWorldInertiaInverse =
 				pBody->mRotationMatrix *
 				pBody->mLocalInertiaInverse *
 				glm::transpose(pBody->mRotationMatrix);
-
 			//pTr->mRotation = pBody->mRotationMatrix;
 		}
 	}
@@ -280,11 +307,13 @@ namespace Hollow
 				//}
 				accumulator -= maxPossibleDeltaTime;
 			}
+			InterpolateState(accumulator / maxPossibleDeltaTime);
 		}
 		else if (nextStep) {
+			accumulator = 0.0f;
 			Step(maxPossibleDeltaTime);
+			InterpolateState(1.0f);
 		}
-		InterpolateState(accumulator / maxPossibleDeltaTime);
 		
 	}
 }

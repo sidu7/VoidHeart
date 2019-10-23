@@ -10,7 +10,7 @@ namespace Hollow {
 	public:
 		void Update();
 		void AddGameObject(GameObject* object);
-
+		void DebugContacts();
 	private:
 		void Step(float);
 		void InterpolateState(float);
@@ -32,7 +32,7 @@ namespace Hollow {
 		const float mu = 0.2f;
 		const float baumgarte = 0.1f;
 		const float bias = 1.0f;
-		const float proximityEpsilon = 0.001f;
+		const float proximityEpsilon = 0.00001f;
 		
 		glm::vec3 gravity = glm::vec3(0.0f, -9.81f, 0.0f);
 	};

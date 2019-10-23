@@ -596,109 +596,109 @@ void Hollow::ResourceManager::InitializeShapes()
 
 		//front
 		Vertex v;
-		v.position = glm::vec3(-1.0f, -1.0f, 1.0f);
+		v.position = glm::vec3(-0.5f, -0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, -1.0f, 1.0f);
+		v.position = glm::vec3(0.5f, -0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, 1.0f, 1.0f);
+		v.position = glm::vec3(0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		v.tex = glm::vec2(1.0f, 1.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, 1.0f, 1.0f);
+		v.position = glm::vec3(-0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		v.tex = glm::vec2(0.0f, 1.0f);
 		vertices.push_back(v);
 
 		//right
-		v.position = glm::vec3(1.0f, 1.0f, 1.0f);
+		v.position = glm::vec3(0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, 1.0f, -1.0f);
+		v.position = glm::vec3(0.5f, 0.5f, -0.5f);
 		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 1.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, -1.0f, -1.0f);
+		v.position = glm::vec3(0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, -1.0f, 1.0f);
+		v.position = glm::vec3(0.5f, -0.5f, 0.5f);
 		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 1.0f);
 		vertices.push_back(v);
 
 		//back
-		v.position = glm::vec3(-1.0f, -1.0f, -1.0f);
+		v.position = glm::vec3(-0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, -1.0f, -1.0f);
+		v.position = glm::vec3(0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, 1.0f, -1.0f);
+		v.position = glm::vec3(0.5f, 0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
 		v.tex = glm::vec2(0.0f, 1.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, 1.0f, -1.0f);
+		v.position = glm::vec3(-0.5f, 0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
 		v.tex = glm::vec2(1.0f, 1.0f);
 		vertices.push_back(v);
 
 		//left
-		v.position = glm::vec3(-1.0f, -1.0f, -1.0f);
+		v.position = glm::vec3(-0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, -1.0f, 1.0f);
+		v.position = glm::vec3(-0.5f, -0.5f, 0.5f);
 		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, 1.0f, 1.0f);
+		v.position = glm::vec3(-0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 1.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, 1.0f, -1.0f);
+		v.position = glm::vec3(-0.5f, 0.5f, -0.5f);
 		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 1.0f);
 		vertices.push_back(v);
 
 		//upper
-		v.position = glm::vec3(1.0f, 1.0f, 1.0f);
+		v.position = glm::vec3(0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, 1.0f, 1.0f);
+		v.position = glm::vec3(-0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, 1.0f, -1.0f);
+		v.position = glm::vec3(-0.5f, 0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 1.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, 1.0f, -1.0f);
+		v.position = glm::vec3(0.5f, 0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 1.0f);
 		vertices.push_back(v);
 
 		//bottom
-		v.position = glm::vec3(-1.0f, -1.0f, -1.0f);
+		v.position = glm::vec3(-0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, -1.0f, -1.0f);
+		v.position = glm::vec3(0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(1.0f, -1.0f, 1.0f);
+		v.position = glm::vec3(0.5f, -0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 1.0f);
 		vertices.push_back(v);
-		v.position = glm::vec3(-1.0f, -1.0f, 1.0f);
+		v.position = glm::vec3(-0.5f, -0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 1.0f);
 		vertices.push_back(v);

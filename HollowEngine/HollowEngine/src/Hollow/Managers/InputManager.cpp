@@ -20,6 +20,11 @@ namespace Hollow {
 		return mCurrentState[keycode] && !mPreviousState[keycode];
 	}
 
+	bool InputManager::IsKeyReleased(unsigned keycode)
+	{
+		return !mCurrentState[keycode] && mPreviousState[keycode];
+	}
+
 	bool InputManager::IsMouseButtonPressed(unsigned int button)
 	{
 		return mCurrentMouseState[button];
@@ -155,7 +160,7 @@ namespace Hollow {
 			numberOfFetchedKeys = 512;
 		}
 		
-		SDL_memcpy(mPreviousState, mCurrentState, 512 * sizeof(Uint8));
+		SDL_memcpy(mPreviousState, mCurrentState, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
 	}

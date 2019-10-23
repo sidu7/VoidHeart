@@ -75,8 +75,7 @@ namespace Hollow {
 		lua.open_libraries(sol::lib::base);
 
 		lua.script("print('bark bark bark!')");
-
-
+		
 		while (mIsRunning)
 		{
 			FrameRateController::Instance().FrameStart();
