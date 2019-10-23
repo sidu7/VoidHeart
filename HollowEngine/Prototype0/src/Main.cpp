@@ -9,6 +9,7 @@
 #include "Hollow/Managers/MemoryManager.h"
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/EventManager.h"
 
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Transform.h"
@@ -43,6 +44,12 @@ class UILayer : public Hollow::Layer
 		if(e.GetEventType() == Hollow::EventType::MouseButtonPressed)
 		{
 			e.Handled = true;
+			
+			//Test Event
+			Hollow::CollisionEvent test;
+			Hollow::EventManager::Instance().AddEvent(test);
+			//Test Event
+
 		}
 		//HW_TRACE("{0}", e);
 	}
@@ -55,7 +62,7 @@ public:
 	{
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());
-		
+	
 		//for(int i = 0; i < 100; ++i)
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");

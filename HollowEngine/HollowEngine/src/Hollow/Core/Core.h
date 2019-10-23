@@ -26,6 +26,10 @@
 						return new x(mComponentName);						\
 					}
 
+#define REGISTEREVENT(x) public:										\
+					x() : GameEvent(#x) {}							\
+					x(std::string name) : GameEvent(name) {}																		
+
 
 #define REGISTERSYSTEM(x,y)	private:								\
 							static x instance;						\

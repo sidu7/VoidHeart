@@ -2,6 +2,7 @@
 
 #include "SystemManager.h"
 #include "Hollow/Systems/System.h"
+#include "Hollow/Events/EventData.h"
 
 namespace Hollow
 {
@@ -28,6 +29,14 @@ namespace Hollow
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
 		{
 			mSystems[i]->AddGameObject(GameObject);
+		}
+	}
+
+	void SystemManager::AddEventsToSystems(GameEvent event)
+	{
+		for (unsigned int i = 0; i < mSystems.size(); ++i)
+		{
+			mSystems[i]->HandleEvent(event);
 		}
 	}
 

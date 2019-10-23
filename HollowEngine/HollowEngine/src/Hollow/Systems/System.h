@@ -2,6 +2,7 @@
 #include <vector>
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Core/GameObject.h"
+#include "Hollow/Events/EventData.h"
 
 
 namespace Hollow
@@ -16,6 +17,7 @@ namespace Hollow
 		virtual ~System() {}
 		virtual void Update() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
+		virtual void HandleEvent(GameEvent event) {}
 		virtual void OnDeleteGameObject(GameObject* pGameObject) {}
 
 		void DeleteGameObject(GameObject* pGameObject)

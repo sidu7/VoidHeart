@@ -11,6 +11,7 @@
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/AudioManager.h"
+#include "Hollow/Managers/EventManager.h"
 
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp> // or #include "sol.hpp", whichever suits your needs
@@ -90,6 +91,7 @@ namespace Hollow {
 			}
 			InputManager::Instance().Update();
 			SystemManager::Instance().Update();
+			EventManager::Instance().HandleEvents();
 			//RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			RenderManager::Instance().Update();
             AudioManager::Instance().Update();
