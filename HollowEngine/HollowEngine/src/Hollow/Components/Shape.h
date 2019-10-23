@@ -24,7 +24,6 @@ namespace Hollow {
 		virtual ~Shape() {}
 		virtual glm::vec3 GetHalfExtents() = 0;
 		virtual glm::mat4& DebugModelMatrix() { glm::mat4 mat = glm::mat4(1.0f); return mat; }
-		virtual bool TestPoint(float PointX, float PointY) = 0;
 
 		Collider* mpOwnerCollider;
 
