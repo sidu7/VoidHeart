@@ -15,6 +15,8 @@ namespace Hollow {
 		mAngularVelocity = glm::vec3(0);
 		mTotalForce = glm::vec3(0);
 		mTotalTorque = glm::vec3(0);
+		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
+		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	void Body::Clear()
