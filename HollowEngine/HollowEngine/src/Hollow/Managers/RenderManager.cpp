@@ -86,7 +86,9 @@ namespace Hollow {
 				BlurShadowMap(mLightData[i]);
 
 				// Apply global lighting
+				glEnable(GL_BLEND);
 				GlobalLightingPass(mLightData[i]);
+				glDisable(GL_BLEND);
 			}
 		}
 
@@ -110,6 +112,7 @@ namespace Hollow {
 
 		// Update ImGui
 		DebugDisplay();
+		ImGui::ShowDemoWindow();
 		ImGuiManager::Instance().Update();
 
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
@@ -177,6 +180,7 @@ namespace Hollow {
 
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_FRONT);
+		glEnable(GL_DEPTH_TEST);
 
 		DrawShadowCastingObjects(mpShadowMapShader);
 
@@ -271,6 +275,10 @@ namespace Hollow {
 	{
 		// Set up resources it will need
 		int w = distance;
+		if (distance == 0)
+		{
+			w = 1;
+		}
 		if (distance > 50)
 		{
 			w = 50;
@@ -316,9 +324,6 @@ namespace Hollow {
 
 	void RenderManager::GlobalLightingPass(LightData& light)
 	{
-		// Clear opengl
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		// Bind G-Buffer textures
 		mpGBuffer->TexBind(0, 0);
 		mpGBuffer->TexBind(1, 1);

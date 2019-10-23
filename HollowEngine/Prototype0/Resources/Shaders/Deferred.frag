@@ -33,7 +33,7 @@ vec3 MSMDecomposition(vec4 A, vec3 b)
 	float L21 = (Z - Y*X)/L11;
 	float L22 = sqrt(W - (Y*Y + L21*L21));
 
-	float c2 = (((d2 - Y - (L21)*((d - X)/L11))) / L22) / L22;
+	float c2 = ((d2 - Y - (L21)*((d - X)/L11))) / (L22 * L22);
 
 	float c1 = (((d - X)/L11) - (L21*c2))/L11;
 

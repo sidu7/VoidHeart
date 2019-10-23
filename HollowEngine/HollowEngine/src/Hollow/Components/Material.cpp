@@ -5,6 +5,8 @@
 
 #include "Hollow/Graphics/RenderData.h"
 
+#include "Hollow/Graphics/Texture.h"
+
 namespace Hollow {
 
 	Material Material::instance;
@@ -65,6 +67,28 @@ namespace Hollow {
 			ImGui::InputFloat("Shininess", &mShininess);
 
 			// Show the texture ID value
+			//ImGui::texture
+			 // Show a small version of the currently selected texture
+			for (MaterialData* material : mMaterials)
+			{
+				if (material->mpDiffuse)
+				{
+					ImGui::Image((void*)material->mpDiffuse->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+				}
+				if (material->mpSpecular)
+				{
+					ImGui::Image((void*)material->mpSpecular->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+				}
+				if (material->mpNormal)
+				{
+					ImGui::Image((void*)material->mpNormal->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+				}
+				if (material->mpHeight)
+				{
+					ImGui::Image((void*)material->mpHeight->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+				}
+			}
+			
 			//ImGui::InputScalar("Texture", ImGuiDataType_U32, &mTexture);
 
 			ImGui::TreePop();

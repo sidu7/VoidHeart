@@ -34,7 +34,7 @@ namespace Hollow
 			light.mAlpha = clight->mAlpha;
 			light.mMD = clight->mMD;
 
-			light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition + glm::vec3(i, 0.5, i);
+			light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;// +glm::vec3(i, 0.5, i);
 			//light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;
 
 			RenderManager::Instance().mLightData.push_back(light);

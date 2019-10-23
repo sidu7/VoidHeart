@@ -61,6 +61,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 	
 
 		for (int i = 0; i < 100; ++i)
