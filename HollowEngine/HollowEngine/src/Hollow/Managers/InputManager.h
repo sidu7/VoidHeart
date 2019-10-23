@@ -10,6 +10,7 @@ namespace Hollow {
 		bool IsKeyPressed(unsigned int keycode);
 		bool IsKeyReleased(unsigned int keycode);
 		bool IsKeyTriggered(unsigned int keycode);
+		bool IsKeyReleased(unsigned int keycode);
 		bool IsMouseButtonPressed(unsigned int button);
 		std::pair<float, float> GetMousePosition();
 		float GetMouseX();
