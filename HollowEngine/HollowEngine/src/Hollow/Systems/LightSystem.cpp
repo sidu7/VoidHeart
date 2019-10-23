@@ -6,7 +6,7 @@
 
 #include "Hollow/Managers/RenderManager.h"
 
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/LightData.h"
 
 namespace Hollow
 {

@@ -28,8 +28,7 @@ namespace Hollow {
 		}
 
 		mpWindow = pWindow;
-
-
+		
 		// Initialize G-Buffer
 		InitializeGBuffer();
 
@@ -58,7 +57,7 @@ namespace Hollow {
 	void RenderManager::Update()
 	{
 		// Initialize transform matrices
-    mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
+		mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
 		mViewMatrix = mCameraData[0].mViewMatrix;
 
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
@@ -199,6 +198,16 @@ namespace Hollow {
 		for (RenderData& data : mRenderData)
 		{
 			pShader->SetMat4("Model", data.mpModel);
+			pShader->SetMat4("NormalTr", glm::transpose(glm::inverse(data.mpModel)));
+
+			pShader->SetInt("isAnimated", data.mIsAnimated);
+			if (data.mIsAnimated)
+			{
+				for (unsigned int i = 0; i < data.mBoneTransforms.size(); ++i)
+				{
+					pShader->SetMat4("BoneTransforms[" + std::to_string(i) + "]", data.mBoneTransforms[i]);
+				}
+			}
 
 			Material* pMaterial = data.mpMaterial;
 
@@ -280,6 +289,8 @@ namespace Hollow {
 
 	void RenderManager::DrawShadowCastingObjects(Shader* pShader)
 	{
+		GLCall(glEnable(GL_CULL_FACE));
+		GLCall(glCullFace(GL_FRONT));
 		for (RenderData& data : mRenderData)
 		{
 			if (!data.mCastShadow)
@@ -288,6 +299,15 @@ namespace Hollow {
 			}
 
 			pShader->SetMat4("Model", data.mpModel);
+
+			pShader->SetInt("isAnimated", data.mIsAnimated);
+			if (data.mIsAnimated)
+			{
+				for (unsigned int i = 0; i < data.mBoneTransforms.size(); ++i)
+				{
+					pShader->SetMat4("BoneTransforms[" + std::to_string(i) + "]", data.mBoneTransforms[i]);
+				}
+			}
 
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
@@ -301,6 +321,7 @@ namespace Hollow {
 				mesh->mpVAO->Unbind();
 			}
 		}
+		GLCall(glDisable(GL_CULL_FACE));
 	}
 
 	void RenderManager::DrawFSQ()
@@ -350,6 +371,12 @@ namespace Hollow {
 			if (mParticleData[i].mType == POINT)
 			{
 				mpParticleShader->SetMat4("Model", mParticleData[i].mModel);
+
+				mParticleData[i].mpParticleVBO->AddSubData(
+					&mParticleData[i].mParticlePositionList[0], // data
+					mParticleData[i].mParticlePositionList.size() , sizeof(glm::vec4)); // size of data to be sent
+
+
 				mParticleData[i].mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
 				mParticleData[i].mpParticleVAO->Bind();
@@ -360,6 +387,10 @@ namespace Hollow {
 			}
 			else if(mParticleData[i].mType == MODEL)
 			{
+				mParticleData[i].mpParticleVBO->AddSubData(
+					&mParticleData[i].mParticleModelMatrices[0], // data
+					mParticleData[i].mParticleModelMatrices.size(), sizeof(glm::mat4)); // size of data to be sent
+
 				for (Mesh* mesh : mParticleData[i].mParticleModel)
 				{
 					mesh->mpVAO->Bind();

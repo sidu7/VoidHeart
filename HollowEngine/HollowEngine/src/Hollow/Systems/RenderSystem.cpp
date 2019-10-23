@@ -6,9 +6,10 @@
 
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Model.h"
+#include "Hollow/Components/Animator.h"
 #include "Hollow/Components/Material.h"
 
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/RenderData.h"
 #include "Hollow/Graphics/Mesh.h"
 
 Hollow::RenderSystem Hollow::RenderSystem::instance;
@@ -25,6 +26,7 @@ void Hollow::RenderSystem::Update()
 		RenderData data;
 
 		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
+
 		if (trans->dirtyBit) {
 			trans->mTransformationMatrix = glm::translate(glm::mat4(1.0f), trans->mPosition);
 			trans->mTransformationMatrix *= glm::toMat4(trans->mQuaternion);
@@ -36,13 +38,23 @@ void Hollow::RenderSystem::Update()
 		//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
 		//DebugDrawManager::Instance().DebugCircle(trans->mPosition + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
 		//DebugDrawManager::Instance().DebugLine(trans->mPosition, trans->mPosition + glm::vec3(30.0f, 30.0f, -10.0f), COLOR_ORANGE);
-		DebugDrawManager::Instance().DebugCube(trans->mPosition,glm::vec3(2.0f));
+		DebugDrawManager::Instance().DebugCube(trans->mPosition+ glm::vec3(0.0f,trans->mScale.x,0.0f),glm::vec3(1.0f));
 		DebugDrawManager::Instance().DebugAxes(trans->mPosition, glm::vec3(2.0f));
 		
 
 		if (Material * material = mGameObjects[i]->GetComponent<Material>())
 		{
 			data.mpMaterial = material;
+		}
+
+		if (Animator* animator = mGameObjects[i]->GetComponent<Animator>())
+		{
+			data.mBoneTransforms = animator->mBoneTransformations;
+			data.mIsAnimated = true;
+		}
+		else
+		{
+			data.mIsAnimated = false;
 		}
 
 		Model* pModel = mGameObjects[i]->GetComponent<Model>();

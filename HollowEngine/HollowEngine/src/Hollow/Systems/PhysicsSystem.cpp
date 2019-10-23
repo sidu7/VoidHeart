@@ -292,6 +292,7 @@ namespace Hollow
 	void PhysicsSystem::Update()
 	{
 		isPaused = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_P) == true ? !isPaused : isPaused;
+		
 		nextStep = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_SPACE);
 
 		//================Physics Update======================
