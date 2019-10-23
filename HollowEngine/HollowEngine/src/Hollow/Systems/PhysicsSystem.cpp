@@ -37,9 +37,9 @@ namespace Hollow
 			pCol->mpBody->mQuaternion = pCol->mpTr->mQuaternion;
 			pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
 			
-			// update local shape
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -(pCol->mpTr->mScale);
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = (pCol->mpTr->mScale);
+			// update local shape (0.5f because we are updating half extents)
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f *(pCol->mpTr->mScale);
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
 
 			// Collider added to Dynamic BVH
 			mTree.AddCollider(pCol);

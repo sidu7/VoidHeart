@@ -124,14 +124,14 @@ namespace Hollow {
 		void SetMeshData()
 		{
 			// generate vertices
-			mMeshData.AddVertex(glm::vec3(-1.0f, -1.0f, 1.0f));
-			mMeshData.AddVertex(glm::vec3(1.0f, -1.0f, 1.0f));
-			mMeshData.AddVertex(glm::vec3(1.0f, 1.0f, 1.0f));
-			mMeshData.AddVertex(glm::vec3(-1.0f, 1.0f, 1.0f));
-			mMeshData.AddVertex(glm::vec3(-1.0f, -1.0f, -1.0f));
-			mMeshData.AddVertex(glm::vec3(1.0f, -1.0f, -1.0f));
-			mMeshData.AddVertex(glm::vec3(1.0f, 1.0f, -1.0f));
-			mMeshData.AddVertex(glm::vec3(-1.0f, 1.0f, -1.0f));
+			mMeshData.AddVertex(glm::vec3(-0.5f, -0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, -0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, 0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(-0.5f, 0.5f, 0.5f));
+			mMeshData.AddVertex(glm::vec3(-0.5f, -0.5f, -0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, -0.5f, -0.5f));
+			mMeshData.AddVertex(glm::vec3(0.5f, 0.5f, -0.5f));
+			mMeshData.AddVertex(glm::vec3(-0.5f, 0.5f, -0.5f));
 
 			// generate (quadrilateral) faces
 			std::vector<int> faceVerts;
