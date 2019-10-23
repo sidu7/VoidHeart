@@ -19,6 +19,8 @@ namespace Hollow
 		std::vector<Bone*> mBones;
 		std::vector<std::string> mAnimations;
 		std::vector<glm::mat4> mBoneTransformations;
+		std::string mRunningState;
 		float mScaleFactor;
+		double mRunTime;
 	};
 }

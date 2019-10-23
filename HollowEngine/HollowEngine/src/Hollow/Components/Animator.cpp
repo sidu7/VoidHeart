@@ -13,6 +13,12 @@ namespace Hollow
 
 	void Animator::Clear()
 	{
+		mBones.clear();
+		mAnimations.clear();
+		mBoneTransformations.clear();
+		mRunningState = "";
+		mScaleFactor = 0.0f;
+		mRunTime = 0.0;
 	}
 
 	void Animator::Serialize(rapidjson::Value::Object data)

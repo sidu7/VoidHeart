@@ -20,13 +20,19 @@ namespace Hollow
 
 	void AnimationSystem::Update()
 	{
-		mRunTime += FrameRateController::Instance().GetFrameTime();
+		
 
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			GameObject* gameobject = mGameObjects[i];
 			Animator* animator = gameobject->GetComponent<Animator>();
 			StateMachine* state = gameobject->GetComponent<StateMachine>();
+			if (animator->mRunningState != state->mCurrentState->mName)
+			{
+				animator->mRunningState = state->mCurrentState->mName;
+				animator->mRunTime = 0.0;
+			}
+			animator->mRunTime += FrameRateController::Instance().GetFrameTime();
 			animator->mBoneTransformations.clear();
 			std::string animationName = state->mCurrentState->mName;
 			for (unsigned int j = 0; j < animator->mBones.size(); ++j)
@@ -37,7 +43,7 @@ namespace Hollow
 				{
 					//interpolate for timeframe
 					AnimationData& anim = bone->mAnimations[animationName];
-					double TimeinTicks = mRunTime * anim.mTicksPerSec;
+					double TimeinTicks = animator->mRunTime * anim.mTicksPerSec;
 					double timeFrame = fmod(TimeinTicks, anim.mDuration);
 					unsigned int posIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyPositions);
 					unsigned int rotIndex = FindT2inList<glm::quat>(timeFrame, anim.mKeyRotations);

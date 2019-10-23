@@ -24,8 +24,5 @@ namespace Hollow
 			}
 			return 0;
 		}
-
-	private:
-		double mRunTime;
 	};
 }
