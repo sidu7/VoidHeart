@@ -1,6 +1,8 @@
 #include "hollowpch.h"
 #include "Camera.h"
 
+#include "Hollow/Graphics/Data/CameraData.h"
+
 namespace Hollow {
 	Camera Camera::instance;
 
@@ -19,14 +21,17 @@ namespace Hollow {
 		mMouseSensitivity = 0.1f;
 		mZoom = 45.0f;
 
-		mNear = 0.1f;
-		mFar = 1000.0f;
+		mNearPlane = 0.1f;
+		mFarPlane = 1000.0f;
 
 		mCanMouse = false;
 
 		mDefaultZoom = mZoom;
 		mDefaultPitch = mPitch;
 		mDefaultYaw = mYaw;
+
+		mScreenPosition = glm::ivec2(0,0);
+		mViewPort = glm::ivec2(0, 0);
 	}
 	void Camera::Serialize(rapidjson::Value::Object data)
 	{
@@ -62,17 +67,32 @@ namespace Hollow {
 			mDefaultZoom = mZoom;
 		}
 
-		if (data.HasMember("Near"))					//TODO: Change the name?
+		if (data.HasMember("NearPlane"))
 		{
-			mNear = data["Near"].GetFloat();
+			mNearPlane = data["Near"].GetFloat();
 		}
 
-		if (data.HasMember("Far"))					//TODO: Change the name?
+		if (data.HasMember("FarPlane"))
 		{
-			mFar = data["Far"].GetFloat();
+			mFarPlane = data["Far"].GetFloat();
 		}
 
-
+		if (data.HasMember("CameraType"))
+		{
+			mType = (CameraType)data["CameraType"].GetUint();
+		}
+		if (data.HasMember("Projection"))
+		{
+			mProjection = (CameraProjection)data["Projection"].GetUint();
+		}
+		if (data.HasMember("ScreenPosition"))
+		{
+			mScreenPosition = JSONHelper::GetIVec2(data["ScreenPosition"].GetArray());
+		}
+		if (data.HasMember("ScreenViewPort"))
+		{
+			mViewPort = JSONHelper::GetIVec2(data["ScreenViewPort"].GetArray());
+		}
 	}
 	void Camera::Clear()
 	{
@@ -89,14 +109,17 @@ namespace Hollow {
 		mMouseSensitivity = 0.1f;
 		mZoom = 45.0f;
 
-		mNear = 0.1f;
-		mFar = 1000.0f;
+		mNearPlane = 0.1f;
+		mFarPlane = 1000.0f;
 
 		mCanMouse = false;
 
 		mDefaultZoom = mZoom;
 		mDefaultPitch = mPitch;
 		mDefaultYaw = mYaw;
+
+		mScreenPosition = glm::ivec2(0, 0);
+		mViewPort = glm::ivec2(0, 0);
 	}
 	void Camera::DebugDisplay()
 	{

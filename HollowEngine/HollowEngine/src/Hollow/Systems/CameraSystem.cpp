@@ -154,9 +154,13 @@ namespace Hollow {
 			CameraData cameraData;
 			cameraData.mPosition = pCamera->mPosition;
 			cameraData.mZoom = GetZoom(pCamera);
-			cameraData.mNear = pCamera->mNear;
-			cameraData.mFar = pCamera->mFar;
+			cameraData.mNearPlane = pCamera->mNearPlane;
+			cameraData.mFarPlane = pCamera->mFarPlane;
 			cameraData.mViewMatrix = GetViewMatrix(pCamera);
+			cameraData.mProjection = pCamera->mProjection;
+			cameraData.mType = pCamera->mType;
+			cameraData.mScreenPosition = pCamera->mScreenPosition;
+			cameraData.mScreenViewPort = pCamera->mViewPort;
 
 			RenderManager::Instance().mCameraData.push_back(cameraData);
 		}

@@ -4,7 +4,9 @@
       "Type": "Camera",
       "Position": [ -5.894, 4.523, 27.430 ],
       "Pitch": 2.0,
-      "Yaw": -67.800
+      "Yaw": -67.800,
+      "CameraType": 0,
+      "Projection": 0
     }
   ]
 }

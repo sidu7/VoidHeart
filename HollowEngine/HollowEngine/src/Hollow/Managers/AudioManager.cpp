@@ -56,7 +56,7 @@ namespace Hollow {
 
 		if (mpCurrentSong == nullptr)
 		{
-			PlaySong("Resources/Audio/Songs/test.wav");
+			//PlaySong("Resources/Audio/Songs/test.wav");
 		}
 		// Update FMOD audio system
 		mpSystem->update();

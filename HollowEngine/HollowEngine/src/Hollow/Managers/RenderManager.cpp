@@ -56,31 +56,46 @@ namespace Hollow {
 
 	void RenderManager::Update()
 	{
-		// Initialize transform matrices
-		mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
-		mViewMatrix = mCameraData[0].mViewMatrix;
-
-		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
-		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));	
-
-		// Deferred G-Buffer Pass
-		GBufferPass();
-		for (unsigned int i = 0; i < mLightData.size(); ++i)
+		for (unsigned int i = 0; i < mCameraData.size(); ++i)
 		{
-			// ShadowMap Pass
-			CreateShadowMap(mLightData[i]);
+			// Initialize transform matrices
+			CameraData& camera = mCameraData[i];
+			if (camera.mProjection == CameraProjection::PERSPECTIVE)
+			{
+				mProjectionMatrix = glm::perspective(camera.mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), camera.mNearPlane, camera.mFarPlane);
+			}
+			else if (camera.mProjection == CameraProjection::ORTHOGRAPHIC)
+			{
+				mProjectionMatrix = glm::ortho(0, camera.mScreenViewPort.x, 0, camera.mScreenViewPort.y);
+			}
+			mViewMatrix = camera.mViewMatrix;
 
-			// Apply global lighting
-			GlobalLightingPass(mLightData[i]);
+			if (camera.mType != CameraType::MAIN_CAMERA)
+			{
+				GLCall(glViewport(camera.mScreenPosition.x, camera.mScreenPosition.y, camera.mScreenViewPort.x, camera.mScreenViewPort.y));
+			}
+			GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+			// Deferred G-Buffer Pass
+			GBufferPass();
+			for (unsigned int i = 0; i < mLightData.size(); ++i)
+			{
+				// ShadowMap Pass
+				CreateShadowMap(mLightData[i]);
+
+				// Apply global lighting
+				GlobalLightingPass(mLightData[i]);
+			}
+
+			if (ShowParticles)
+			{
+				DrawParticles();
+			}
 		}
 		mLightData.clear();
 		mRenderData.clear();
 		mCameraData.clear();
-
-		if (ShowParticles)
-		{
-			DrawParticles();
-		}
 
 		//Draw debug drawings
 		DrawDebugDrawings();

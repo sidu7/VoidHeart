@@ -1,0 +1,14 @@
+{
+  "Components": [
+    {
+      "Type": "Camera",
+      "Position": [ 0, 7, 0],
+      "Pitch": -90,
+      "Yaw": -67.800,
+      "CameraType": 2,
+      "Projection": 1,
+      "ScreenPosition": [ 100, 100 ],
+      "ScreenViewPort": [300,300]
+    }
+  ]
+}
