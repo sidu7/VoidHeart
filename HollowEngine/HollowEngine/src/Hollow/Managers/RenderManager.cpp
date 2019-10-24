@@ -56,6 +56,8 @@ namespace Hollow {
 
 	void RenderManager::Update()
 	{
+		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		for (unsigned int i = 0; i < mCameraData.size(); ++i)
 		{
 			// Initialize transform matrices
@@ -66,7 +68,8 @@ namespace Hollow {
 			}
 			else if (camera.mProjection == CameraProjection::ORTHOGRAPHIC)
 			{
-				mProjectionMatrix = glm::ortho(0, camera.mScreenViewPort.x, 0, camera.mScreenViewPort.y);
+				//mProjectionMatrix = glm::ortho(0, camera.mScreenViewPort.x, 0, camera.mScreenViewPort.y);
+				mProjectionMatrix = glm::perspective(camera.mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), camera.mNearPlane, camera.mFarPlane);
 			}
 			mViewMatrix = camera.mViewMatrix;
 
@@ -74,8 +77,10 @@ namespace Hollow {
 			{
 				GLCall(glViewport(camera.mScreenPosition.x, camera.mScreenPosition.y, camera.mScreenViewPort.x, camera.mScreenViewPort.y));
 			}
-			GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
-			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+			else
+			{
+				GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
+			}			
 
 			// Deferred G-Buffer Pass
 			GBufferPass();
@@ -103,7 +108,7 @@ namespace Hollow {
 		// Update ImGui
 		DebugDisplay();
 		ImGuiManager::Instance().Update();
-
+		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
 	}
 
@@ -163,7 +168,7 @@ namespace Hollow {
 	{
 		GLCall(glEnable(GL_DEPTH_TEST));
 		mpGBuffer->Bind();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		mpGBufferShader->Use();
 
 		// Send view and projection matrix
@@ -179,7 +184,7 @@ namespace Hollow {
 	void RenderManager::GlobalLightingPass(LightData& light)
 	{
 		// Clear opengl
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Bind G-Buffer textures
 		mpGBuffer->TexBind(0, 0);

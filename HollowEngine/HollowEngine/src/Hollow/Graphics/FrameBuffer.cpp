@@ -76,7 +76,7 @@ namespace Hollow {
 	{
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 		GLCall(glViewport(mScreenPosition.x, mScreenPosition.y, mScreenViewPort.x, mScreenViewPort.y));
-		Clear();
+		//Clear();
 	}
 
 	void FrameBuffer::TexBind(unsigned int index, unsigned int slot)
