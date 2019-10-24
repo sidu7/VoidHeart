@@ -57,7 +57,7 @@ namespace Hollow {
 	void RenderManager::Update()
 	{
 		// Initialize transform matrices
-		mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
+		mProjectionMatrix = glm::perspective(glm::radians(mCameraData[0].mZoom), (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
 		mViewMatrix = mCameraData[0].mViewMatrix;
 
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));

@@ -4,6 +4,8 @@
 #include "Hollow/Physics/NarrowPhase/SAT.h"
 
 namespace Hollow {
+	class Camera;
+	
 	class PhysicsSystem : public System
 	{
 		REGISTERSYSTEM(PhysicsSystem, 2)
@@ -11,9 +13,17 @@ namespace Hollow {
 		void Update();
 		void AddGameObject(GameObject* object);
 		void DebugContacts();
+
+		Collider* castRay();
+		
 	private:
 		void Step(float);
 		void InterpolateState(float);
+
+		void CheckCameraComponentAndAdd(GameObject* object);
+
+		// Main Camera Object
+		Camera* mRayCastCamera;
 		
 		// Data
 		DynamicAABBTree mTree;

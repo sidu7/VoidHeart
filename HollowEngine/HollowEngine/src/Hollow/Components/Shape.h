@@ -24,7 +24,7 @@ namespace Hollow {
 		virtual ~Shape() {}
 		virtual glm::vec3 GetHalfExtents() = 0;
 		virtual glm::mat4& DebugModelMatrix() { glm::mat4 mat = glm::mat4(1.0f); return mat; }
-
+		virtual bool TestRay(const Ray& r, IntersectionData& id) = 0;
 		Collider* mpOwnerCollider;
 
 	public:
@@ -38,7 +38,7 @@ namespace Hollow {
 		{
 			mRadius = radius;
 		}
-		bool TestPoint(float PointX, float PointY)
+		bool TestRay(const Ray& r, IntersectionData& id)
 		{
 			return false;
 		}
@@ -61,10 +61,55 @@ namespace Hollow {
 
 			SetMeshData();
 		}
-		bool TestRay(float PointX, float PointY)
+		bool TestRay(const Ray& r, IntersectionData& data)
 		{
+			float a = 0;
+			float b = std::numeric_limits<float>::infinity();
+
+			glm::vec3 Extents = GetHalfExtents() * 2.0f;
+			
+			int i = 0;
+			while (i < 6 && a <= b) {
+				glm::vec3 pointOnFace = mMeshData.GetPointOnFace(i) * Extents + GetCenter();
+				if (glm::dot(r.direction, mMeshData.faces[i].normal) < 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), mMeshData.faces[i].normal) /
+						glm::dot(r.direction, mMeshData.faces[i].normal);
+					if (a < data.depth) {
+						a = data.depth;
+					}
+				}
+				else if (glm::dot(r.direction, mMeshData.faces[i].normal) > 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), mMeshData.faces[i].normal) /
+						glm::dot(r.direction, mMeshData.faces[i].normal);
+
+					if (b > data.depth) {
+						b = data.depth;
+					}
+				}
+				else if (glm::dot(r.origin - GetCenter(), mMeshData.faces[i].normal) > 0) {
+					b = a - 1;
+				}
+
+				++i;
+			}
+
+			if (a > b) {
+				return false;
+			}
+			else if (a == 0) {
+				data.object = mpOwnerCollider; // should be saving gameobject pointer instead
+				data.depth = b;
+				return true;
+			}
+			else {
+				data.object = mpOwnerCollider; // should be saving gameobject pointer instead
+				data.depth = a;
+				return true;
+			}
+
 			return false;
 		}
+		
 		glm::vec3 GetHalfExtents() {
 			glm::vec3 extents;
 			extents = glm::vec3((mMax.x - mMin.x) * 0.5f, (mMax.y - mMin.y) * 0.5f, (mMax.z - mMin.z) * 0.5f);

@@ -5,13 +5,29 @@
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Components/Camera.h"
+#include "Hollow/Managers/DebugDrawManager.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Hollow
 {
 	PhysicsSystem PhysicsSystem::instance;
 
+	void PhysicsSystem::CheckCameraComponentAndAdd(GameObject* object)
+	{
+		Camera* c = object->GetComponent<Camera>();
+		if (c)
+		{
+			mRayCastCamera = c;
+		}
+	}
+
+	
 	void PhysicsSystem::AddGameObject(GameObject* object)
 	{
+		CheckCameraComponentAndAdd(object);
+		
 		if (CheckComponents<Collider>(object)) {
 			// Collider Init
 			Collider* pCol = object->GetComponent<Collider>();
@@ -60,6 +76,53 @@ namespace Hollow
 			}
 		}
 		ImGui::End();
+	}
+
+	Collider* PhysicsSystem::castRay()
+	{
+		std::pair<float, float> mouseXY = Hollow::InputManager::Instance().GetMousePosition();
+		float x = 2.0f * (mouseXY.first + 0.5f) / 1280.0f - 1.0f,
+			y = 1.0f- 2.0f * (mouseXY.second + 0.5f) / 720.0f;
+		
+		Ray r;
+		r.origin = mRayCastCamera->mPosition; // -mRayCastCamera->mFront;
+		//r.direction = mRayCastCamera->mFront + x * mRayCastCamera->mRight + y * mRayCastCamera->mUp;
+
+		glm::mat4 persp = glm::perspective(glm::radians(mRayCastCamera->mZoom), 16.0f/9.0f, mRayCastCamera->mNear, mRayCastCamera->mFar);
+		//glm::mat4 ortho = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, mRayCastCamera->mNear, mRayCastCamera->mFar);
+		glm::mat4 view = glm::lookAt(mRayCastCamera->mPosition, mRayCastCamera->mPosition + mRayCastCamera->mFront, mRayCastCamera->mUp);
+
+		// NDC to camera space
+		glm::vec4 ray_clip = glm::vec4(x, y, -1.0f, 1.0f);
+		glm::vec4 ray_eye = glm::inverse(persp) * ray_clip;
+
+		// camera to world space
+		ray_eye = glm::vec4(ray_eye.x, ray_eye.y , -1.0, 0.0);
+		glm::vec3 direction = glm::vec3(glm::inverse(view) * ray_eye);
+
+		direction = glm::normalize(direction);
+
+		r.direction = direction;
+		
+		DebugDrawManager::Instance().DebugRay(r.origin, r.direction);
+		
+		IntersectionData id, closest;
+		closest.object = nullptr;
+		closest.depth = std::numeric_limits<float>::max();
+
+		for (int i = 0; i < mGameObjects.size(); ++i) {
+			Shape* shape = mGameObjects[i]->GetComponent<Collider>()->mpShape;
+			if (shape->TestRay(r, id)) {
+				if (id.depth < closest.depth) {
+					closest = id;
+				}
+			}
+
+		}
+
+		if (closest.object == nullptr) { return nullptr; }
+		
+		return static_cast<Collider*>(closest.object);
 	}
 
 	void PhysicsSystem::Step(float fixedDeltaTime)
@@ -288,13 +351,27 @@ namespace Hollow
 			//pTr->mRotation = pBody->mRotationMatrix;
 		}
 	}
-	
+
 	void PhysicsSystem::Update()
 	{
 		isPaused = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_P) == true ? !isPaused : isPaused;
 		
 		nextStep = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_SPACE);
 
+		ImGui::Begin("RayCast Result");
+		ImGui::Text("Mouse X : %f", InputManager::Instance().GetMouseX());
+		ImGui::Text("Mouse Y : %f", InputManager::Instance().GetMouseY());
+		if(InputManager::Instance().IsKeyPressed(SDL_SCANCODE_R))
+		{
+			Collider* pCol = castRay();
+
+			if(pCol)
+			{
+				ImGui::InputFloat3("Collider present", &pCol->mpTr->mScale[0]);
+			}
+		}
+		ImGui::End();
+		
 		//================Physics Update======================
 		float dt = FrameRateController::Instance().GetFrameTime();
 
