@@ -147,9 +147,12 @@ namespace Hollow {
 		{
 			Camera* pCamera = mGameObjects[i]->GetComponent<Camera>();
 
-			HandleKeyboardInput(pCamera);
-			HandleMouseButtons(pCamera);
-			HandleMouseInput(pCamera);
+			if (pCamera->mHandleInputs)
+			{
+				HandleKeyboardInput(pCamera);
+				HandleMouseButtons(pCamera);
+				HandleMouseInput(pCamera);
+			}
 
 			CameraData cameraData;
 			cameraData.mPosition = pCamera->mPosition;

@@ -2,13 +2,13 @@
   "Components": [
     {
       "Type": "Camera",
-      "Position": [ -5.894, 4.523, 27.430 ],
-      "Pitch": 2.0,
+      "Position": [ 0, 10, 0 ],
+      "Pitch": -90.0,
       "Yaw": -67.800,
       "CameraType": 2,
       "Projection": 1,
-      "ScreenPosition": [ 100, 100 ],
-      "ScreenViewPort": [ 300, 300 ]
+      "ScreenViewPort": [ 300, 300 ],
+      "HandleInputs":  false
     }
   ]
 }

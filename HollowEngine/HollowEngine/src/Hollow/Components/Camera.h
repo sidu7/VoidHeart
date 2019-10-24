@@ -36,6 +36,7 @@ namespace Hollow
 		glm::ivec2 mViewPort;
 
 		bool mCanMouse;
+		bool mHandleInputs;
 
 		float mDefaultZoom;		//Used to reset the values
 		float mDefaultPitch;	//Used to reset the values

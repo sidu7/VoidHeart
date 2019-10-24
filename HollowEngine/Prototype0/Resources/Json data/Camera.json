@@ -6,7 +6,8 @@
       "Pitch": 2.0,
       "Yaw": -67.800,
       "CameraType": 0,
-      "Projection": 0
+      "Projection": 0,
+      "HandleInputs": true
     }
   ]
 }

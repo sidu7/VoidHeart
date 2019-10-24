@@ -319,8 +319,8 @@ namespace Hollow
 
 	const aiScene* ResourceManager::GetModelRootNodeFromFile(std::string path, unsigned int flags)
 	{
-		if (mModelRootsCache.find(path) == mModelRootsCache.end())
-		{
+		//if (mModelRootsCache.find(path) == mModelRootsCache.end())
+		//{
 			const aiScene* scene = importer.ReadFile(path,flags);
 
 			if (!scene || !scene->mRootNode)
@@ -328,10 +328,10 @@ namespace Hollow
 				HW_CORE_ERROR("Model file {0} could not be loaded", path);
 			}
 
-			mModelRootsCache[path] = scene;
+			//mModelRootsCache[path] = scene;
 			return scene;
-		}
-		return mModelRootsCache[path];
+		//}
+		//return mModelRootsCache[path];
 	}
 
 	void ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm, std::string name)

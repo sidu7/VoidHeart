@@ -25,6 +25,7 @@ namespace Hollow {
 		mFarPlane = 1000.0f;
 
 		mCanMouse = false;
+		mHandleInputs = false;
 
 		mDefaultZoom = mZoom;
 		mDefaultPitch = mPitch;
@@ -93,6 +94,10 @@ namespace Hollow {
 		{
 			mViewPort = JSONHelper::GetIVec2(data["ScreenViewPort"].GetArray());
 		}
+		if (data.HasMember("HandleInputs"))
+		{
+			mHandleInputs = data["HandleInputs"].GetBool();
+		}
 	}
 	void Camera::Clear()
 	{
@@ -113,6 +118,7 @@ namespace Hollow {
 		mFarPlane = 1000.0f;
 
 		mCanMouse = false;
+		mHandleInputs = false;
 
 		mDefaultZoom = mZoom;
 		mDefaultPitch = mPitch;

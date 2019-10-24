@@ -257,7 +257,7 @@ copy /y $(ProjectName)\*.dll Prototype0</Command>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lua53.lib;opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua53.lib;opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;assimp-vc141-mtd.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)vendor\Library\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>

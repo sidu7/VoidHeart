@@ -58,6 +58,13 @@ namespace Hollow {
 	{
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+		for (unsigned int i = 0; i < mLightData.size(); ++i)
+		{	
+			// ShadowMap Pass
+			CreateShadowMap(mLightData[i]);
+		}
+
 		for (unsigned int i = 0; i < mCameraData.size(); ++i)
 		{
 			// Initialize transform matrices
@@ -68,8 +75,8 @@ namespace Hollow {
 			}
 			else if (camera.mProjection == CameraProjection::ORTHOGRAPHIC)
 			{
-				//mProjectionMatrix = glm::ortho(0, camera.mScreenViewPort.x, 0, camera.mScreenViewPort.y);
-				mProjectionMatrix = glm::perspective(camera.mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), camera.mNearPlane, camera.mFarPlane);
+				//mProjectionMatrix = glm::ortho(0, mpWindow->GetWidth(), 0, mpWindow->GetHeight());
+				mProjectionMatrix = glm::perspective(camera.mZoom, camera.mScreenViewPort.x / (float)camera.mScreenViewPort.y, camera.mNearPlane, camera.mFarPlane);
 			}
 			mViewMatrix = camera.mViewMatrix;
 
@@ -86,9 +93,6 @@ namespace Hollow {
 			GBufferPass();
 			for (unsigned int i = 0; i < mLightData.size(); ++i)
 			{
-				// ShadowMap Pass
-				CreateShadowMap(mLightData[i]);
-
 				// Apply global lighting
 				GlobalLightingPass(mLightData[i]);
 			}
@@ -97,18 +101,23 @@ namespace Hollow {
 			{
 				DrawParticles();
 			}
+
+			if (camera.mType == CameraType::MAIN_CAMERA)
+			{
+				//Draw debug drawings
+				DrawDebugDrawings();
+			}
 		}
 		mLightData.clear();
 		mRenderData.clear();
 		mCameraData.clear();
-
-		//Draw debug drawings
-		DrawDebugDrawings();
+			   
+		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
 
 		// Update ImGui
 		DebugDisplay();
 		ImGuiManager::Instance().Update();
-		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
+
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
 	}
 
