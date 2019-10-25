@@ -18,6 +18,9 @@
 
 //#include "Hollow/Graphics/Camera.h"
 
+void apple() {
+	std::cout << "apple";
+}
 namespace Hollow {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -77,27 +80,48 @@ namespace Hollow {
 
 		lua.script("print('bark bark bark!')");
 
-
 		while (mIsRunning)
-		{
+		{			
 			FrameRateController::Instance().FrameStart();
 			// Start frame functions
 			ImGuiManager::Instance().StartFrame();
 
 			// Update functions
-			for(Layer* layer : mLayerStack)
+			for (Layer* layer : mLayerStack)
 			{
 				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
 			}
 			InputManager::Instance().Update();
+
 			SystemManager::Instance().Update();
+
 			EventManager::Instance().HandleEvents();
-			//RenderManager::Instance().GetCamera()->OnUpdate(FrameRateController::Instance().GetFrameTime());
+
+			AudioManager::Instance().Update();
+
+
 			RenderManager::Instance().Update();
-            AudioManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
 		}
+
+		// Attempt at multithreading
+		/*std::thread systemThread (std::bind(&Application::ThreadLoop, this)) ;
+
+		while (mIsRunning)
+		{
+			shouldGoIn = true;
+			// Start frame functions
+			ImGuiManager::Instance().StartFrame();
+			InputManager::Instance().Update();
+			RenderManager::Instance().Update();		
+			while (shoudlMainThreadSleep) {}
+
+			FrameRateController::Instance().FrameEnd();
+			shoudlMainThreadSleep = true;
+		}
+		shouldGoIn = true;
+		systemThread.join();*/
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -114,5 +138,28 @@ namespace Hollow {
 	{
 		mIsRunning = false;
 		return true;
+	}
+
+	// Attempt at multithreading
+	void Application::ThreadLoop() {
+
+		while (mIsRunning)
+		{
+			while (!shouldGoIn) {}
+			
+			FrameRateController::Instance().FrameStart();
+
+			// Update functions
+			for (Layer* layer : mLayerStack)
+			{
+				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			}
+			
+			SystemManager::Instance().Update();
+			AudioManager::Instance().Update();
+			
+			shoudlMainThreadSleep = false;
+			shouldGoIn = false;
+		}
 	}
 }

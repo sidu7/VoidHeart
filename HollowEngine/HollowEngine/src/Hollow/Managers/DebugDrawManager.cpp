@@ -3,7 +3,7 @@
 #include "RenderManager.h"
 #include "ResourceManager.h"
 
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/DebugRenderData.h"
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/Mesh.h"

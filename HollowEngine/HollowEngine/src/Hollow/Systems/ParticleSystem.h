@@ -5,7 +5,7 @@ namespace Hollow
 {
 	class ParticleEmitter;
 
-	class HOLLOW_API ParticleSystem : public System
+	class ParticleSystem : public System
 	{
 		REGISTERSYSTEM(ParticleSystem,3)
 	public:

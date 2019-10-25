@@ -6,7 +6,7 @@
 
 #include"Hollow/Managers/InputManager.h"
 #include"Hollow/Managers/RenderManager.h"
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/CameraData.h"
 #include "Hollow/Events/MouseEvent.h"
 
 
