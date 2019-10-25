@@ -7,7 +7,7 @@
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/Texture.h"
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/ParticleData.h"
 
 namespace Hollow
 {

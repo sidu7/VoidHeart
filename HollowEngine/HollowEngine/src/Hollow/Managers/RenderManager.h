@@ -1,7 +1,12 @@
 #pragma once
 
 #include "Utils/Singleton.h"
-#include "Hollow/Graphics/RenderData.h"
+#include "Hollow/Graphics/Data/RenderData.h"
+#include "Hollow/Graphics/Data/LightData.h"
+#include "Hollow/Graphics/Data/MaterialData.h"
+#include "Hollow/Graphics/Data/DebugRenderData.h"
+#include "Hollow/Graphics/Data/CameraData.h"
+#include "Hollow/Graphics/Data/ParticleData.h"
 #include <GL/glew.h>
 
 namespace Hollow {

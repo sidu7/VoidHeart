@@ -3,7 +3,6 @@
 
 #include "Hollow/Managers/ResourceManager.h"
 
-#include "Hollow/Graphics/RenderData.h"
 
 #include "Hollow/Graphics/Texture.h"
 

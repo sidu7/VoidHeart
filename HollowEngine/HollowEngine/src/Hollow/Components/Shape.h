@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hollow/Physics/NarrowPhase/MeshData.h"
+#include "Utils/RayCast.h"
 
 namespace Hollow {
 	class Collider;
@@ -23,7 +24,6 @@ namespace Hollow {
 		virtual ~Shape() {}
 		virtual glm::vec3 GetHalfExtents() = 0;
 		virtual glm::mat4& DebugModelMatrix() { glm::mat4 mat = glm::mat4(1.0f); return mat; }
-		virtual bool TestPoint(float PointX, float PointY) = 0;
 
 		Collider* mpOwnerCollider;
 
@@ -61,7 +61,7 @@ namespace Hollow {
 
 			SetMeshData();
 		}
-		bool TestPoint(float PointX, float PointY)
+		bool TestRay(float PointX, float PointY)
 		{
 			return false;
 		}
@@ -136,6 +136,7 @@ namespace Hollow {
 			// generate (quadrilateral) faces
 			std::vector<int> faceVerts;
 			faceVerts.clear();
+			// front
 			faceVerts.push_back(0);
 			faceVerts.push_back(1);
 			faceVerts.push_back(2);
@@ -143,30 +144,39 @@ namespace Hollow {
 			mMeshData.AddFace(faceVerts);
 
 			faceVerts.clear();
+			// back
 			faceVerts.push_back(7);
 			faceVerts.push_back(6);
 			faceVerts.push_back(5);
 			faceVerts.push_back(4);
 			mMeshData.AddFace(faceVerts);
+
 			faceVerts.clear();
-			faceVerts.push_back(1);
-			faceVerts.push_back(0);
-			faceVerts.push_back(4);
-			faceVerts.push_back(5);
-			mMeshData.AddFace(faceVerts);
-			faceVerts.clear();
-			faceVerts.push_back(2);
-			faceVerts.push_back(1);
-			faceVerts.push_back(5);
-			faceVerts.push_back(6);
-			mMeshData.AddFace(faceVerts);
-			faceVerts.clear();
+			// top
 			faceVerts.push_back(3);
 			faceVerts.push_back(2);
 			faceVerts.push_back(6);
 			faceVerts.push_back(7);
 			mMeshData.AddFace(faceVerts);
+			
 			faceVerts.clear();
+			// bottom
+			faceVerts.push_back(1);
+			faceVerts.push_back(0);
+			faceVerts.push_back(4);
+			faceVerts.push_back(5);
+			mMeshData.AddFace(faceVerts);
+			
+			faceVerts.clear();
+			// right
+			faceVerts.push_back(2);
+			faceVerts.push_back(1);
+			faceVerts.push_back(5);
+			faceVerts.push_back(6);
+			mMeshData.AddFace(faceVerts);
+			
+			faceVerts.clear();
+			// left
 			faceVerts.push_back(0);
 			faceVerts.push_back(3);
 			faceVerts.push_back(7);

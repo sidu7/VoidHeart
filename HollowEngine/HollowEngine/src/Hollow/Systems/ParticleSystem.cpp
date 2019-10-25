@@ -32,9 +32,9 @@ namespace Hollow
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model, mGameObjects[i]->GetComponent<Transform>()->mPosition);
 				model = glm::scale(model, glm::vec3(10.0f));
-				emitter->mpParticlePositionVBO->AddSubData(
-					&emitter->mParticlePositions[0], // data
-					emitter->mParticlePositions.size() , sizeof(glm::vec4)); // size of data to be sent
+				//emitter->mpParticlePositionVBO->AddSubData(
+				//	&emitter->mParticlePositions[0], // data
+				//	emitter->mParticlePositions.size() , sizeof(glm::vec4)); // size of data to be sent
 
 				// Create ParticleData
 				particle.mType = POINT;
@@ -42,20 +42,22 @@ namespace Hollow
 				particle.mpParticleVBO = emitter->mpParticlePositionVBO;
 				particle.mModel = model; //glm::translate(model,glm::vec3(5.0f,0.0f,0.0f)); // translate using offset position
 				particle.mParticlesCount = emitter->mParticlePositions.size();
+				particle.mParticlePositionList = emitter->mParticlePositions;
 				particle.mTex = emitter->mTexture;
 			}
 			if (emitter->mType == MODEL)
 			{
 				CalculateParticleMatrices(emitter);
-				emitter->mpParticleModelVBO->AddSubData(
-					&emitter->mModelMatrices[0], //data
-					emitter->mModelMatrices.size() , sizeof(glm::mat4)); //size of data to be sent
+				//emitter->mpParticleModelVBO->AddSubData(
+				//	&emitter->mModelMatrices[0], //data
+				//	emitter->mModelMatrices.size() , sizeof(glm::mat4)); //size of data to be sent
 
 				// Create ParticleData
 				particle.mType = MODEL;
 				particle.mParticleModel = emitter->mpParticle;
 				particle.mParticlesCount = emitter->mModelMatrices.size();
 				particle.mpParticleVBO = emitter->mpParticleModelVBO;
+				particle.mParticleModelMatrices = emitter->mModelMatrices;
 			}
 
 			RenderManager::Instance().mParticleData.push_back(particle);

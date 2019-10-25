@@ -32,5 +32,5 @@ void main()
 	gDiffuse = diffuseColor + texture(diffuseTexture, texCoords).rgb;
 
 	// Store specular color in the G-Buffer
-	gSpecular = vec4(specularColor /*+ texture(specularTexture, texCoords).rgb*/, shininess);
+	gSpecular = vec4(specularColor, shininess);
 }
