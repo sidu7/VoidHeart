@@ -112,7 +112,6 @@ namespace Hollow {
 
 		// Update ImGui
 		DebugDisplay();
-		ImGui::ShowDemoWindow();
 		ImGuiManager::Instance().Update();
 
 		SDL_GL_SwapWindow(mpWindow->GetWindow());

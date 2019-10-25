@@ -5,6 +5,7 @@
 
 #include "GameObjectManager.h"
 #include "FrameRateController.h"
+
 #include "Hollow/Core/GameObject.h"
 
 namespace Hollow {
@@ -13,6 +14,10 @@ namespace Hollow {
 	{
 		// Create reference to window
 		mpWindow = pWindow;
+
+		// Set game object selected to null
+		mpSelectedGameObject = nullptr;
+		mSelectedGameObjectID = 0;
 		// Initialize ImGui
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -38,16 +43,42 @@ namespace Hollow {
 			ImGui::Begin("Game Objects", NULL, ImGuiWindowFlags_NoScrollWithMouse);
 		}
 		else
+		{
 			ImGui::Begin("Game Objects");
+		}
+
 		ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
+		// Get selected object 
+		ImGui::BeginChild("Left Side", ImVec2(150, 0), true);
 		for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
 		{
-			pGameObject->DebugDisplay();
+			unsigned int ID = pGameObject->mID;
+			std::string name = "Object " + std::to_string(ID);
+			if (ImGui::Selectable(name.c_str(), ID == mSelectedGameObjectID))
+			{
+				mpSelectedGameObject = pGameObject;
+				mSelectedGameObjectID = ID;
+			}
 		}
+		ImGui::EndChild();
+		ImGui::SameLine();
+
+		// Display game object information
+		ImGui::BeginGroup();
+		ImGui::BeginChild("Item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+		ImGui::Text("Object: %d", mSelectedGameObjectID);
+		ImGui::Separator();
+		if (mpSelectedGameObject)
+		{
+			mpSelectedGameObject->DebugDisplay();
+		}
+		ImGui::EndChild();
+		ImGui::EndGroup();
+
 		ImGui::End();
 
 		// Show demo window for now
-		//ImGui::ShowDemoWindow((bool*)1);
+		ImGui::ShowDemoWindow();
 
 		Render();
 	}

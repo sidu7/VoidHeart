@@ -2,6 +2,7 @@
 
 namespace Hollow {
 	class GameWindow;
+	class GameObject;
 
 	class HOLLOW_API ImGuiManager{
 		SINGLETON(ImGuiManager)
@@ -15,5 +16,7 @@ namespace Hollow {
 		void Render();
 	private:
 		GameWindow* mpWindow;
+		GameObject* mpSelectedGameObject;
+		unsigned int mSelectedGameObjectID;
 	};
 }
