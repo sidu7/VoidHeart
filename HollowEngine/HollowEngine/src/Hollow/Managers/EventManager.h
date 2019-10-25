@@ -5,11 +5,11 @@ namespace Hollow {
 	class HOLLOW_API EventManager {
 		SINGLETON(EventManager)
 	public:
-		bool AddEvent(GameEvent);
-		bool AddDelayedEvent(GameEvent, Uint32);
+		bool AddEvent(GameEvent*);
+		bool AddDelayedEvent(GameEvent*, float);
 		void HandleEvents();
 	private:
-		std::vector<GameEvent> mCurrentEvents;
-		std::vector<GameEvent> mDelayedEvents;
+		std::vector<GameEvent*> mCurrentEvents;
+		std::vector<GameEvent*> mDelayedEvents;
 	};
 }

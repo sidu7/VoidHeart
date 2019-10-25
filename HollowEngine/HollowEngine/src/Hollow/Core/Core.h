@@ -27,8 +27,7 @@
 					}
 
 #define REGISTEREVENT(x) public:										\
-					x() : GameEvent(#x) {}							\
-					x(std::string name) : GameEvent(name) {}																		
+					x() : GameEvent(#x) {}																								
 
 
 #define REGISTERSYSTEM(x,y)	private:								\

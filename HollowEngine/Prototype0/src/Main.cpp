@@ -46,8 +46,8 @@ class UILayer : public Hollow::Layer
 			e.Handled = true;
 			
 			//Test Event
-			Hollow::CollisionEvent test;
-			Hollow::EventManager::Instance().AddEvent(test);
+			Hollow::CollisionEvent* test  = new Hollow::CollisionEvent();
+			Hollow::EventManager::Instance().AddDelayedEvent(test,5.0f);
 			//Test Event
 
 		}

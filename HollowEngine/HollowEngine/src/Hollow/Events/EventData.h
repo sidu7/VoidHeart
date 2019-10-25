@@ -6,7 +6,7 @@ namespace Hollow {
 		GameEvent(std::string name) {
 			mEventType = name;
 		}
-		Uint32 mTimer = 0;
+		float mTimer = 0.0f;
 		std::string mEventType;
 	};
 

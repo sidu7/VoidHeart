@@ -17,7 +17,7 @@ namespace Hollow
 		virtual ~System() {}
 		virtual void Update() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
-		virtual void HandleEvent(GameEvent event) {}
+		virtual bool HandleEvent(GameEvent* event) { return false; }
 		virtual void OnDeleteGameObject(GameObject* pGameObject) {}
 
 		void DeleteGameObject(GameObject* pGameObject)

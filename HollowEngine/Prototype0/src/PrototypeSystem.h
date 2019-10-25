@@ -7,7 +7,7 @@ class PrototypeSystem : public Hollow::System
 	REGISTERSYSTEM(PrototypeSystem,2)
 public:
 	~PrototypeSystem() {}
-	void HandleEvent(Hollow::GameEvent);
+	bool HandleEvent(Hollow::GameEvent*);
 	void Update();
 	void AddGameObject(Hollow::GameObject* object);
 };

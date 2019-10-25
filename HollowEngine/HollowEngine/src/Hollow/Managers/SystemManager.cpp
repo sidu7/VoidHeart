@@ -32,11 +32,12 @@ namespace Hollow
 		}
 	}
 
-	void SystemManager::AddEventsToSystems(GameEvent event)
+	void SystemManager::SendEventsToSystems(GameEvent* event)
 	{
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
 		{
-			mSystems[i]->HandleEvent(event);
+			if (mSystems[i]->HandleEvent(event))
+				break;
 		}
 	}
 
