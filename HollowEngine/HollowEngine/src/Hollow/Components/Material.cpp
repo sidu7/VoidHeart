@@ -3,7 +3,7 @@
 
 #include "Hollow/Managers/ResourceManager.h"
 
-
+#include "Hollow/Graphics/Data/MaterialData.h"
 #include "Hollow/Graphics/Texture.h"
 
 namespace Hollow {
