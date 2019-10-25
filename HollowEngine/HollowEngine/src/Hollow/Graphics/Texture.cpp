@@ -34,8 +34,9 @@ namespace Hollow
 		GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
 	}
 
-	void Texture::Unbind() const
+	void Texture::Unbind(unsigned int slot) const
 	{
+		GLCall(glActiveTexture(GL_TEXTURE0 + slot));
 		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 

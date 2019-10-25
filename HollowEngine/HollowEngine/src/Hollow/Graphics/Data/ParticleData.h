@@ -6,6 +6,7 @@ namespace Hollow
 	class VertexArray;
 	class VertexBuffer;
 	class Texture;
+	class ShaderStorageBuffer;
 
 	enum ParticleType
 	{
@@ -24,5 +25,6 @@ namespace Hollow
 		ParticleType mType;
 		std::vector<glm::vec4> mParticlePositionList;
 		std::vector<glm::mat4> mParticleModelMatrices;
+		ShaderStorageBuffer* mpShaderStorage;
 	};
 }

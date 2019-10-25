@@ -9,6 +9,7 @@ namespace Hollow
 	class VertexArray;
 	class Texture;
 	enum ParticleType;
+	class ShaderStorageBuffer;
 
 	struct Particle
 	{
@@ -29,9 +30,6 @@ namespace Hollow
 		void Clear();
 		void Serialize(rapidjson::Value::Object data);
 		void DebugDisplay();
-
-	private:
-		void UpdateAttributes();
 
 	public:
 		unsigned long mCount;
@@ -56,5 +54,8 @@ namespace Hollow
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
 		//TODO: direction data and scales
+
+		//Test
+		ShaderStorageBuffer* mShaderStorage;
 	};
 }

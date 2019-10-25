@@ -14,6 +14,7 @@
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/FrameBuffer.h"
+#include "Hollow/Graphics/ShaderStorageBuffer.h"
 
 #include "Utils/GLCall.h"
 
@@ -108,6 +109,7 @@ namespace Hollow {
 				DrawDebugDrawings();
 			}
 		}
+		mParticleData.clear();
 		mLightData.clear();
 		mRenderData.clear();
 		mCameraData.clear();
@@ -187,6 +189,7 @@ namespace Hollow {
 		// Draw all game objects
 		DrawAllRenderData(mpGBufferShader);
 
+		mpGBufferShader->Unbind();
 		mpGBuffer->Unbind();
 	}
 
@@ -219,6 +222,10 @@ namespace Hollow {
 		// Render FSQ
 		DrawFSQ();
 
+		mpGBuffer->TexUnbind(0);
+		mpGBuffer->TexUnbind(1);
+		mpGBuffer->TexUnbind(2);
+		mpGBuffer->TexUnbind(3);
 		light.mpShadowMap->TexUnbind(4);
 	}
 
@@ -292,19 +299,19 @@ namespace Hollow {
 					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
 					if (materialdata->mpDiffuse)
 					{
-						materialdata->mpDiffuse->Unbind();
+						materialdata->mpDiffuse->Unbind(1);
 					}
 					if (materialdata->mpSpecular)
 					{
-						materialdata->mpSpecular->Unbind();
+						materialdata->mpSpecular->Unbind(2);
 					}
 					if (materialdata->mpNormal)
 					{
-						materialdata->mpNormal->Unbind();
+						materialdata->mpNormal->Unbind(3);
 					}
 					if (materialdata->mpHeight)
 					{
-						materialdata->mpHeight->Unbind();
+						materialdata->mpHeight->Unbind(4);
 					}
 				}
 			}
@@ -396,46 +403,50 @@ namespace Hollow {
 
 		for (unsigned int i = 0; i < mParticleData.size(); ++i)
 		{
-			mpParticleShader->SetInt("Type", mParticleData[i].mType);
-			if (mParticleData[i].mType == POINT)
+			ParticleData& particle = mParticleData[i];
+			mpParticleShader->SetInt("Type", particle.mType);
+			if (particle.mType == POINT)
 			{
-				mpParticleShader->SetMat4("Model", mParticleData[i].mModel);
+				mpParticleShader->SetMat4("Model", particle.mModel);
 
-				mParticleData[i].mpParticleVBO->AddSubData(
-					&mParticleData[i].mParticlePositionList[0], // data
-					mParticleData[i].mParticlePositionList.size() , sizeof(glm::vec4)); // size of data to be sent
+				/*particle.mpParticleVBO->AddSubData(
+					&particle.mParticlePositionList[0], // data
+					particle.mParticlePositionList.size() , sizeof(glm::vec4));*/ // size of data to be sent
 
 
-				mParticleData[i].mTex->Bind(4);
+				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
-				mParticleData[i].mpParticleVAO->Bind();
-				mParticleData[i].mpParticleVBO->Bind();
-				glDrawArrays(GL_POINTS, 0, mParticleData[i].mpParticleVBO->GetVerticesCount());
-				mParticleData[i].mpParticleVBO->Unbind();
-				mParticleData[i].mpParticleVAO->Unbind();
+				//particle.mpParticleVAO->Bind();
+				//particle.mpParticleVBO->Bind();
+				particle.mpShaderStorage->Bind(2);
+				
+				GLCall(glDrawArrays(GL_POINTS, 0, 10000));
+				particle.mpShaderStorage->Unbind();
+				particle.mTex->Unbind(4);
+				//particle.mpParticleVBO->Unbind();
+				//particle.mpParticleVAO->Unbind();
 			}
-			else if(mParticleData[i].mType == MODEL)
+			else if(particle.mType == MODEL)
 			{
-				mParticleData[i].mpParticleVBO->AddSubData(
-					&mParticleData[i].mParticleModelMatrices[0], // data
-					mParticleData[i].mParticleModelMatrices.size(), sizeof(glm::mat4)); // size of data to be sent
+				particle.mpParticleVBO->AddSubData(
+					&particle.mParticleModelMatrices[0], // data
+					particle.mParticleModelMatrices.size(), sizeof(glm::mat4)); // size of data to be sent
 
-				for (Mesh* mesh : mParticleData[i].mParticleModel)
+				for (Mesh* mesh : particle.mParticleModel)
 				{
 					mesh->mpVAO->Bind();
 					mesh->mpVBO->Bind();
 					mesh->mpEBO->Bind();
-					mParticleData[i].mpParticleVBO->Bind();
-					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, mParticleData[i].mParticlesCount);
-					mParticleData[i].mpParticleVBO->Unbind();
+					particle.mpParticleVBO->Bind();
+					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.mParticlesCount);
+					particle.mpParticleVBO->Unbind();
 					mesh->mpEBO->Unbind();
 					mesh->mpVBO->Unbind();
 					mesh->mpVAO->Unbind();
 				}
 			}
 		}
-		glDisable(GL_BLEND);
-		mParticleData.clear();
+		glDisable(GL_BLEND);		
 	}
 
 	void RenderManager::DrawDebugDrawings()

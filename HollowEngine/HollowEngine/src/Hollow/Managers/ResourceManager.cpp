@@ -32,6 +32,7 @@ namespace Hollow
 		std::for_each(mSoundCache.begin(), mSoundCache.end(), [](std::pair<std::string, FMOD::Sound*> value) {value.second->release(); });
 		std::for_each(mBoneCache.begin(), mBoneCache.end(), [](std::pair<std::string, std::pair<float,std::vector<Bone*>>> value) { for (Bone* bone : value.second.second) delete bone; });
 		std::for_each(mMaterialCache.begin(), mMaterialCache.end(), [](std::pair<std::string, std::vector<MaterialData*>> value) { for (MaterialData* material : value.second) delete material; });
+		std::for_each(mModelRootsCache.begin(), mModelRootsCache.end(), [](std::pair<std::string, const aiScene*> value) { delete value.second; });
 	}
 
 	void ResourceManager::LoadLevelFromFile(std::string path)
@@ -66,8 +67,8 @@ namespace Hollow
 		root.Parse(contents.c_str());
 
 		if (root.IsObject()) {
-			GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(root.GetObject());
-
+			GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(root.GetObject());;
+			
 			if (pNewGameObject)
 			{
 				GameObjectManager::Instance().AddGameObject(pNewGameObject);
@@ -94,6 +95,7 @@ namespace Hollow
 		if (mModelCache.find(path) == mModelCache.end())
 		{
 			const aiScene* scene = GetModelRootNodeFromFile(path,Model_Flags);
+			importer.GetOrphanedScene();
 			float minm = std::numeric_limits<float>::max(), maxm = std::numeric_limits<float>::min();
 			for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
 			{
@@ -319,19 +321,19 @@ namespace Hollow
 
 	const aiScene* ResourceManager::GetModelRootNodeFromFile(std::string path, unsigned int flags)
 	{
-		//if (mModelRootsCache.find(path) == mModelRootsCache.end())
-		//{
+		if (mModelRootsCache.find(path) == mModelRootsCache.end())
+		{
 			const aiScene* scene = importer.ReadFile(path,flags);
-
+			importer.GetOrphanedScene();
 			if (!scene || !scene->mRootNode)
 			{
 				HW_CORE_ERROR("Model file {0} could not be loaded", path);
 			}
 
-			//mModelRootsCache[path] = scene;
+			mModelRootsCache[path] = scene;
 			return scene;
-		//}
-		//return mModelRootsCache[path];
+		}
+		return mModelRootsCache[path];
 	}
 
 	void ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm, std::string name)

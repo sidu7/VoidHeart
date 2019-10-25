@@ -10,6 +10,7 @@ namespace Hollow {
 
 	bool GLLogCall(const char* function, const char* file, int line)
 	{
+		return true;
 		while (GLenum error = glGetError())
 		{
 			std::cout << "[OpenGl Error] (" << std::hex << error << std::dec << "):" << function << " " << file << ":" << line << std::endl;

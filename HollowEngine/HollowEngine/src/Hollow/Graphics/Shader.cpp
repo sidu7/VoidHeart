@@ -116,7 +116,7 @@ namespace Hollow {
 		GLCall(glCompileShader(shaderId));
 
 		// Print errors
-		GLint success;
+		GLint success = false;
 		GLCall(glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success));
 		if (!success)
 		{
@@ -136,7 +136,7 @@ namespace Hollow {
 		GLCall(glLinkProgram(mProgram));
 
 		// Print linking errors
-		GLint success;
+		GLint success = false;
 		GLCall(glGetProgramiv(mProgram, GL_LINK_STATUS, &success));
 		if (!success)
 		{
