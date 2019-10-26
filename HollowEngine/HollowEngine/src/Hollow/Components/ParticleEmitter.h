@@ -10,17 +10,8 @@ namespace Hollow
 	class Texture;
 	enum ParticleType;
 	class ShaderStorageBuffer;
-
-	struct Particle
-	{
-		glm::vec3 mPosition;
-		glm::vec3 mScale;
-		glm::vec3 mRotation;
-		glm::vec3 mDirection;
-		float mSpeed;
-		float mLife;
-		glm::vec3 mColor;
-	};
+	struct Particle;
+	
 
 	class HOLLOW_API ParticleEmitter : public Component
 	{

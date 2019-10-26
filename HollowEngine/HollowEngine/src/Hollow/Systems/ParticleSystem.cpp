@@ -8,6 +8,7 @@
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/ShaderStorageBuffer.h"
+#include "Hollow/Graphics/Data/ParticleData.h"
 
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/FrameRateController.h"
@@ -100,7 +101,7 @@ namespace Hollow
 	}
 	void ParticleSystem::CalculateParticlePositions(ParticleEmitter* emitter, glm::vec3 center)
 	{ 
-		emitter->mParticlePositions.clear();
+		/*emitter->mParticlePositions.clear();
 
 		float deltaTime = FrameRateController::Instance().GetFrameTime();
 
@@ -112,7 +113,7 @@ namespace Hollow
 			particle.mLife -= deltaTime;
 			if (particle.mLife > 0.0f)
 			{
-				particle.mPosition += particle.mSpeed * deltaTime * particle.mDirection;
+				//particle.mPosition += particle.mSpeed * deltaTime * particle.mDirection;
 				emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition,1.0f));
 			}
 			else
@@ -145,7 +146,7 @@ namespace Hollow
 
 			emitter->mParticlesList.push_back(particle);
 			emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition, 1.0f));
-		}
+		}*/
 	}
 
 	void ParticleSystem::UpdateAttributes(ParticleEmitter* emitter)
@@ -154,14 +155,15 @@ namespace Hollow
 		if (emitter->mType == ParticleType::POINT)
 		{			
 			emitter->mShaderStorage = new ShaderStorageBuffer();
-			emitter->mShaderStorage->CreateBuffer(emitter->mCount * sizeof(glm::vec3));
-			glm::vec3* positions = static_cast<glm::vec3*>(emitter->mShaderStorage->GetBufferWritePointer());
+			emitter->mShaderStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
+			Particle* particles = static_cast<Particle*>(emitter->mShaderStorage->GetBufferWritePointer());
 
 			auto randomizer = Random::Range(-1.0f,1.0f);
 
 			for (unsigned int i = 0; i < emitter->mCount; ++i)
 			{
-				positions[i] = glm::vec3(randomizer(),randomizer(),randomizer());
+				particles[i].mPosition = glm::vec3(randomizer(),randomizer(),randomizer());
+				particles[i].mSpeed = 0.3f;
 			}
 
 			emitter->mShaderStorage->ReleaseBufferPointer();

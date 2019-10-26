@@ -1,0 +1,32 @@
+#version 430 compatibility
+#extension GL_ARB_COMPUTE_SHADER : enable
+#extension GL_ARB_SHADER_STORAGE_BUFFER_OBJECT : enable
+
+struct Particle
+{
+	vec3 mPos;
+	float speed;
+};
+
+layout(std140, binding = 2) buffer PosBlock
+{
+	Particle each_particle[];
+};
+
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+
+uniform vec3 Center;
+uniform float DeltaTime;
+
+void main()
+{
+	uint gid = gl_GlobalInvocationID.x;
+
+	vec3 pos = each_particle[gid].mPos;
+	float vel = each_particle[gid].speed;
+	vec3 dir = normalize(pos - Center);
+
+	pos = pos + vel * dir * DeltaTime;
+
+	each_particle[gid].mPos = pos;
+}

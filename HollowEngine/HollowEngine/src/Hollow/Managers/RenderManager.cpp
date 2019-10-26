@@ -51,7 +51,7 @@ namespace Hollow {
 
 		// Init Particle Shader
 		mpParticleShader = new Shader("Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag");
-		srand(time(NULL));
+		mpParticleCompute = new Shader("Resources/Shaders/ParticleSystem.compute");
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 	}
 
@@ -405,8 +405,6 @@ namespace Hollow {
 		mpParticleShader->Use();
 		mpParticleShader->SetMat4("View", mViewMatrix);
 		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
-		mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
-		mpParticleShader->SetFloat("SpriteSize", 0.1f);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -417,7 +415,13 @@ namespace Hollow {
 			mpParticleShader->SetInt("Type", particle.mType);
 			if (particle.mType == POINT)
 			{
+				//Compute particle positions according to velocities
+
+
+				mpParticleShader->Use();
 				mpParticleShader->SetMat4("Model", particle.mModel);
+				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
+				mpParticleShader->SetFloat("SpriteSize", 0.1f);
 								
 				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
