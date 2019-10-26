@@ -64,7 +64,8 @@
 #include "Hollow/Graphics/Data/Color.h"
 #include "Utils/Random.h"
 
-// GetObject() is defined by Windows and conflicts with GetObject() of rapidjson
+// GetObject() is defined by Windows and conflicts with GetObject() of 10004905
+
 #ifdef _MSC_VER   
 #undef GetObject
 #endif

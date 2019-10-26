@@ -38,6 +38,7 @@
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\DebugDrawManager.cpp" />
+    <ClCompile Include="src\Hollow\Managers\EventManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
@@ -94,6 +95,10 @@
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
+
+    <ClInclude Include="src\Hollow\Events\CollisionEvent.h" />
+    <ClInclude Include="src\Hollow\Events\EventData.h" />
+
     <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\CameraData.h" />
@@ -102,6 +107,7 @@
     <ClInclude Include="src\Hollow\Graphics\Data\LightData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\MaterialData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\ParticleData.h" />
+
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\RenderData.h" />
@@ -109,6 +115,7 @@
     <ClInclude Include="src\Hollow\Graphics\Texture.h" />
     <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Managers\DebugDrawManager.h" />
+    <ClInclude Include="src\Hollow\Managers\EventManager.h" />
     <ClInclude Include="src\Hollow\Managers\FrameRateController.h" />
     <ClInclude Include="src\hollowpch.h" />
     <ClInclude Include="src\Hollow\Components\Material.h" />
