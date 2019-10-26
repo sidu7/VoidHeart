@@ -96,6 +96,11 @@ namespace Hollow {
 		GLCall(glUniformMatrix4fv(glGetUniformLocation(mProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]));
 	}
 
+	void Shader::SetUniformBlock(const std::string& name, const int bindPoint) const
+	{
+		GLCall(glUniformBlockBinding(mProgram, glGetUniformBlockIndex(mProgram, name.c_str()), bindPoint));
+	}
+
 	std::stringstream Shader::CopyFileToStringStream(const GLchar* pFilePath)
 	{
 		std::ifstream shaderFile;

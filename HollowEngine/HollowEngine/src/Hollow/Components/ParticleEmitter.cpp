@@ -20,6 +20,7 @@ namespace Hollow
 		mMaxSpeed = 0.0f;
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
+		mModelMatrix = glm::mat4(1.0f);
 	}
 
 	void ParticleEmitter::Clear()

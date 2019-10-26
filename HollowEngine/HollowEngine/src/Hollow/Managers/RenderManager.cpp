@@ -28,6 +28,16 @@ namespace Hollow {
 			HW_CORE_ERROR("Failed to initialize GLEW");
 		}
 
+		if (!glewIsSupported("GL_VERSION_4_3"))
+		{
+			HW_CORE_ERROR("Opengl 4.3 is not supported");
+		}
+
+		int mj, mn;
+		glGetIntegerv(GL_MAJOR_VERSION, &mj);
+		glGetIntegerv(GL_MINOR_VERSION, &mn);
+		HW_CORE_INFO("Opengl version {0}.{1}", mj, mn);
+
 		mpWindow = pWindow;
 		
 		// Initialize G-Buffer
@@ -408,23 +418,16 @@ namespace Hollow {
 			if (particle.mType == POINT)
 			{
 				mpParticleShader->SetMat4("Model", particle.mModel);
-
-				/*particle.mpParticleVBO->AddSubData(
-					&particle.mParticlePositionList[0], // data
-					particle.mParticlePositionList.size() , sizeof(glm::vec4));*/ // size of data to be sent
-
-
+								
 				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
-				//particle.mpParticleVAO->Bind();
-				//particle.mpParticleVBO->Bind();
+				particle.mpParticleVAO->Bind();
 				particle.mpShaderStorage->Bind(2);
 				
-				GLCall(glDrawArrays(GL_POINTS, 0, 10000));
-				particle.mpShaderStorage->Unbind();
+				GLCall(glDrawArrays(GL_POINTS, 0, particle.mParticlesCount));
 				particle.mTex->Unbind(4);
-				//particle.mpParticleVBO->Unbind();
-				//particle.mpParticleVAO->Unbind();
+				particle.mpShaderStorage->Unbind();
+				particle.mpParticleVAO->Unbind();
 			}
 			else if(particle.mType == MODEL)
 			{

@@ -40,6 +40,7 @@ namespace Hollow
 		VertexBuffer* mpParticlePositionVBO;
 		VertexArray* mpParticlePositionVAO;
 		Texture* mTexture;
+		glm::mat4 mModelMatrix;
 
 		// For Mesh particles
 		std::vector<Mesh*> mpParticle;

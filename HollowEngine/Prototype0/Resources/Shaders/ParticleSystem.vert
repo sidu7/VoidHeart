@@ -1,7 +1,7 @@
 #version 430 core
 
-layout (location = 0) in vec3 aPos;
-layout (location = 3) in mat4 aInstancedMatrix;
+//layout (location = 0) in vec3 aPos;
+//layout (location = 3) in mat4 aInstancedMatrix;
 
 layout(std430, binding = 2) buffer PosBlock
 {
@@ -27,6 +27,6 @@ void main()
 	}
 	else if (Type == 1)
 	{
-		gl_Position = Projection * View * aInstancedMatrix * vec4(aPos,1.0);
+		//gl_Position = Projection * View * aInstancedMatrix * vec4(aPos,1.0);
 	}
 }
