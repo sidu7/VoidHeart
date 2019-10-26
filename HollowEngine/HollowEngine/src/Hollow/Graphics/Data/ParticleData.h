@@ -37,5 +37,6 @@ namespace Hollow
 		std::vector<glm::vec4> mParticlePositionList;
 		std::vector<glm::mat4> mParticleModelMatrices;
 		ShaderStorageBuffer* mpShaderStorage;
+		glm::vec3 mCenter;
 	};
 }

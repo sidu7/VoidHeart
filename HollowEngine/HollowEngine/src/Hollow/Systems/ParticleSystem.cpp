@@ -44,6 +44,7 @@ namespace Hollow
 				}
 				particle.mType = POINT;
 				particle.mpParticleVAO = emitter->mpParticlePositionVAO;
+				particle.mCenter = transform->mPosition;
 				particle.mModel = emitter->mModelMatrix;
 				particle.mParticlesCount = emitter->mCount;
 				particle.mpShaderStorage = emitter->mShaderStorage;

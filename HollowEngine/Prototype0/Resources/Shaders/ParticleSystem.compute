@@ -24,7 +24,7 @@ void main()
 
 	vec3 pos = each_particle[gid].mPos;
 	float vel = each_particle[gid].speed;
-	vec3 dir = normalize(pos - Center);
+	vec3 dir = normalize(Center - pos);
 
 	pos = pos + vel * dir * DeltaTime;
 

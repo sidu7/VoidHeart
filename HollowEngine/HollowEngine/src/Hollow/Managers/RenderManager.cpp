@@ -1,4 +1,3 @@
-// TODO: REMOVE THIS, TESTING PULL REQUEST
 #include <hollowpch.h>
 #include "RenderManager.h"
 
@@ -15,6 +14,8 @@
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/FrameBuffer.h"
 #include "Hollow/Graphics/ShaderStorageBuffer.h"
+
+#include "Hollow/Managers/FrameRateController.h"
 
 #include "Utils/GLCall.h"
 
@@ -416,8 +417,14 @@ namespace Hollow {
 			if (particle.mType == POINT)
 			{
 				//Compute particle positions according to velocities
+				particle.mpShaderStorage->Bind(2);
 
-
+				mpParticleCompute->Use();
+				mpParticleCompute->SetVec3("Center", particle.mCenter);
+				mpParticleCompute->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
+				mpParticleCompute->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
+				particle.mpShaderStorage->PutMemoryBarrier();
+				
 				mpParticleShader->Use();
 				mpParticleShader->SetMat4("Model", particle.mModel);
 				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
@@ -426,7 +433,6 @@ namespace Hollow {
 				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
 				particle.mpParticleVAO->Bind();
-				particle.mpShaderStorage->Bind(2);
 				
 				GLCall(glDrawArrays(GL_POINTS, 0, particle.mParticlesCount));
 				particle.mTex->Unbind(4);

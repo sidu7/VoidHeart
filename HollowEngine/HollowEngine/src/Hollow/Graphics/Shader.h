@@ -16,6 +16,7 @@ namespace Hollow {
 
 		void Use();
 		void Unbind();
+		void DispatchCompute(const int group_x, const int group_y, const int group_z) const;
 		void SetInt(const std::string& name, int value) const;
 		void SetUInt(const std::string& name, unsigned int value) const;
 		void SetFloat(const std::string& name, float value) const;

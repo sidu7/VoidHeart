@@ -61,6 +61,11 @@ namespace Hollow {
 		GLCall(glUseProgram(0));
 	}
 
+	void Shader::DispatchCompute(const int group_x, const int group_y, const int group_z) const
+	{
+		GLCall(glDispatchCompute(group_x, group_y, group_z));
+	}
+
 	void Shader::SetInt(const std::string& name, int value) const
 	{
 		GLCall(glUniform1i(glGetUniformLocation(mProgram, name.c_str()), value));

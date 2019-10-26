@@ -38,6 +38,11 @@ namespace Hollow
 		GLCall(glUnmapBuffer(GL_SHADER_STORAGE_BUFFER));
 	}
 
+	void ShaderStorageBuffer::PutMemoryBarrier() const
+	{
+		GLCall(glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT));
+	}
+
 	void* ShaderStorageBuffer::GetBufferWritePointer() const
 	{
 		return glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, mSize, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);

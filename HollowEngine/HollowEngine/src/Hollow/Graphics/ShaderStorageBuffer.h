@@ -16,5 +16,6 @@ namespace Hollow
 		void CreateBuffer(unsigned int size);
 		void* GetBufferWritePointer() const;
 		void ReleaseBufferPointer() const;
+		void PutMemoryBarrier() const;
 	};
 }
