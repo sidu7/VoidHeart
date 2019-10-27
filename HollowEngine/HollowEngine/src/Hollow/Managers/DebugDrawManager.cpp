@@ -113,4 +113,12 @@ namespace Hollow
 		DebugRenderData data(mesh, model, GL_LINES, Shapes::WIRECUBE, color);
 		RenderManager::Instance().mDebugRenderData.push_back(data);
 	}
+
+	void DebugDrawManager::DebugCube(glm::mat4& modelMatrix, glm::vec3 color)
+	{
+		std::vector<Mesh*> mesh;
+		mesh.push_back(ResourceManager::Instance().GetShape(Shapes::WIRECUBE));
+		DebugRenderData data(mesh, modelMatrix, GL_LINES, Shapes::WIRECUBE, color);
+		RenderManager::Instance().mDebugRenderData.push_back(data);
+	}
 }

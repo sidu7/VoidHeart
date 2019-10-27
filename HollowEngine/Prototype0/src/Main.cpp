@@ -58,7 +58,10 @@ public:
 		
 		//for(int i = 0; i < 100; ++i)
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 	

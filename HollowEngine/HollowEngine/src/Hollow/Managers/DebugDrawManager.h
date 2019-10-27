@@ -17,5 +17,6 @@ namespace Hollow
 		void DebugAxes(glm::vec3 position, glm::vec3 scale);
 		void DebugSphere(glm::vec3 position = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f), glm::vec3 color = COLOR_GREEN);
 		void DebugCube(glm::vec3 position = glm::vec3(1.0f), glm::vec3 scale = glm::vec3(1.0f), glm::vec3 color = COLOR_GREEN);
+		void DebugCube(glm::mat4& modelMatrix, glm::vec3 color = COLOR_GREEN);
 	};
 }

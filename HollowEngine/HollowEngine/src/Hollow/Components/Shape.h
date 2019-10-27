@@ -24,7 +24,7 @@ namespace Hollow {
 		virtual ~Shape() {}
 		virtual glm::vec3 GetHalfExtents() = 0;
 		virtual glm::mat4& DebugModelMatrix() { glm::mat4 mat = glm::mat4(1.0f); return mat; }
-		virtual bool TestRay(const Ray& r, IntersectionData& id) = 0;
+		virtual bool TestRay(const Ray& r, IntersectionData& id, glm::mat3& rot, glm::vec3& extents) = 0;
 		Collider* mpOwnerCollider;
 
 	public:
@@ -61,13 +61,15 @@ namespace Hollow {
 
 			SetMeshData();
 		}
+
+		// when testing for tree aabb use this
 		bool TestRay(const Ray& r, IntersectionData& data)
 		{
 			float a = 0;
 			float b = std::numeric_limits<float>::infinity();
 
 			glm::vec3 Extents = GetHalfExtents() * 2.0f;
-			
+
 			int i = 0;
 			while (i < 6 && a <= b) {
 				glm::vec3 pointOnFace = mMeshData.GetPointOnFace(i) * Extents + GetCenter();
@@ -87,6 +89,53 @@ namespace Hollow {
 					}
 				}
 				else if (glm::dot(r.origin - GetCenter(), mMeshData.faces[i].normal) > 0) {
+					b = a - 1;
+				}
+
+				++i;
+			}
+
+			if (a > b) {
+				return false;
+			}
+			else if (a == 0) {
+				data.depth = b;
+				return true;
+			}
+			else {
+				data.depth = a;
+				return true;
+			}
+
+			return false;
+		}
+
+		// when testing for actual object use this
+		bool TestRay(const Ray& r, IntersectionData& data, glm::mat3& rot, glm::vec3& extents)
+		{
+			float a = 0;
+			float b = std::numeric_limits<float>::infinity();
+			
+			int i = 0;
+			while (i < 6 && a <= b) {
+				glm::vec3 pointOnFace = rot * (mMeshData.GetPointOnFace(i) * extents) + GetCenter();
+				glm::vec3 normal = rot * mMeshData.faces[i].normal;
+				if (glm::dot(r.direction, normal) < 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), normal) /
+						glm::dot(r.direction, normal);
+					if (a < data.depth) {
+						a = data.depth;
+					}
+				}
+				else if (glm::dot(r.direction, normal) > 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), normal) /
+						glm::dot(r.direction, normal);
+
+					if (b > data.depth) {
+						b = data.depth;
+					}
+				}
+				else if (glm::dot(r.origin - GetCenter(), normal) > 0) {
 					b = a - 1;
 				}
 

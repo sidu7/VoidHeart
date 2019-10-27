@@ -9,6 +9,7 @@
 #include "Hollow/Managers/DebugDrawManager.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <stack>
 
 namespace Hollow
 {
@@ -110,14 +111,51 @@ namespace Hollow
 		closest.object = nullptr;
 		closest.depth = std::numeric_limits<float>::max();
 
-		for (int i = 0; i < mGameObjects.size(); ++i) {
+		/*for (int i = 0; i < mGameObjects.size(); ++i) {
 			Shape* shape = mGameObjects[i]->GetComponent<Collider>()->mpShape;
-			if (shape->TestRay(r, id)) {
+			glm::mat3& rot = mGameObjects[i]->GetComponent<Body>()->mRotationMatrix;
+			glm::vec3 extents = mGameObjects[i]->GetComponent<Transform>()->mScale;
+			
+			if (shape->TestRay(r, id, rot, extents)) {
 				if (id.depth < closest.depth) {
 					closest = id;
 				}
 			}
+		}*/
 
+		Node* root = mTree.GetRoot();
+
+		std::stack<Node*> s;
+		Node* curr = root;
+
+		// inorder traversal for printing
+		while ((curr != NULL && curr->aabb->TestRay(r, id)) || s.empty() == false)
+		{
+			
+			while (curr != NULL && curr->aabb->TestRay(r, id))
+			{
+				s.push(curr);
+				curr = curr->left;
+			}
+
+			curr = s.top();
+			s.pop();
+
+			if(curr->IsLeaf())
+			{
+				// cannot use curr->aabb because the mpOwnerCollider in the shape would always be null
+				Shape* shape = static_cast<Collider*>(curr->mClientData)->mpShape;
+				
+				glm::mat3& rot = static_cast<Collider*>(curr->mClientData)->mpBody->mRotationMatrix;
+				glm::vec3 extents = static_cast<Collider*>(curr->mClientData)->mpTr->mScale;
+				if (shape->TestRay(r, id, rot, extents)) {
+					if (id.depth < closest.depth) {
+						closest = id;
+					}
+				}
+			}
+
+			curr = curr->right;
 		}
 
 		if (closest.object == nullptr) { return nullptr; }
