@@ -31,12 +31,13 @@
         },
         {
             "Type": "Animator",
-            "AnimationData": "Resources/Models/Walking.fbx"
+            "BoneData": "Resources/Models/Walking.fbx",
+            "Animations": [ "Resources/Models/Walking.fbx","Resources/Models/Idle.fbx","Resources/Models/Running.fbx" ]
         },
         {
             "Type": "StateMachine",
             "StateFile": "Resources/State data/playerstate.json",
-            "StartState": "idle"
+            "StartState": "Idle"
         }
     ]
 }

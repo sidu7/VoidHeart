@@ -58,6 +58,9 @@
     <ClCompile Include="vendor\Include\ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="vendor\Include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Hollow\Managers\AudioManager.cpp" />
+
+    <ClCompile Include="src\Hollow\Managers\EventManager.cpp" />
+
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
     <ClCompile Include="src\Hollow\Systems\AnimationSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\StateMachineSystem.cpp" />
@@ -194,6 +197,11 @@
     <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
+
+    <ClInclude Include="src\Hollow\Managers\EventManager.h" />
+    <ClInclude Include="src\Hollow\Events\EventData.h" />
+    <ClInclude Include="src\Hollow\Events\CollisionEvent.h" />
+
     <ClInclude Include="src\Hollow\Graphics\Data\Color.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\RenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />

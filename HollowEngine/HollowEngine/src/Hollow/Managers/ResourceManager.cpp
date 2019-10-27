@@ -30,7 +30,7 @@ namespace Hollow
 		std::for_each(mModelCache.begin(), mModelCache.end(), [](std::pair<std::string, std::vector<Mesh*>> value) { for (Mesh* mesh : value.second) delete mesh; });
 		std::for_each(mShapes.begin(), mShapes.end(), [](std::pair<Shapes, Mesh*> value) { delete value.second; });
 		std::for_each(mSoundCache.begin(), mSoundCache.end(), [](std::pair<std::string, FMOD::Sound*> value) {value.second->release(); });
-		std::for_each(mBoneCache.begin(), mBoneCache.end(), [](std::pair<std::string, std::vector<Bone*>> value) { for (Bone* bone : value.second) delete bone; });
+		std::for_each(mBoneCache.begin(), mBoneCache.end(), [](std::pair<std::string, std::pair<float,std::vector<Bone*>>> value) { for (Bone* bone : value.second.second) delete bone; });
 		std::for_each(mMaterialCache.begin(), mMaterialCache.end(), [](std::pair<std::string, std::vector<MaterialData*>> value) { for (MaterialData* material : value.second) delete material; });
 	}
 
@@ -93,7 +93,7 @@ namespace Hollow
 		//Check in cache
 		if (mModelCache.find(path) == mModelCache.end())
 		{
-			const aiScene* scene = GetModelRootNodeFromFile(path);
+			const aiScene* scene = GetModelRootNodeFromFile(path,Model_Flags);
 			float minm = std::numeric_limits<float>::max(), maxm = std::numeric_limits<float>::min();
 			for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
 			{
@@ -113,10 +113,8 @@ namespace Hollow
 			std::vector<Bone*> bones;
 			ProcessMeshNode(scene->mRootNode, scene, nullptr, meshes, bones, maxm + minm);
 
-			ProcessAnimationData(scene, bones, maxm + minm);
-
 			mModelCache[path] = meshes;
-			mBoneCache[path] = bones;
+			mBoneCache[path] = std::make_pair(maxm+minm,bones);
 		}
 
 		return mModelCache[path];
@@ -127,13 +125,13 @@ namespace Hollow
 		//Check in cache
 		if (mMaterialCache.find(path) == mMaterialCache.end())
 		{
-			const aiScene* scene = GetModelRootNodeFromFile(path);
+			const aiScene* scene = GetModelRootNodeFromFile(path,Model_Flags);
 			mMaterialCache[path] = ProcessMaterials(scene, path);
 		}
 		return mMaterialCache[path];
 	}
 
-	std::vector<Bone*> ResourceManager::LoadBoneData(std::string path)
+	std::pair<float,std::vector<Bone*>> ResourceManager::LoadBoneData(std::string path)
 	{
 		if (mBoneCache.find(path) == mBoneCache.end())
 		{
@@ -142,25 +140,14 @@ namespace Hollow
 		return mBoneCache[path];
 	}
 
-	void ResourceManager::AddAnimationData(std::string path, std::vector<Bone*>& boneList)
+	void ResourceManager::AddAnimationData(std::string path, std::vector<Bone*>& boneList, float factor)
 	{
-		const aiScene* scene = GetModelRootNodeFromFile(path);
-		float minm = std::numeric_limits<float>::max(), maxm = std::numeric_limits<float>::min();
-		for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
-		{
-			aiMesh* mesh = scene->mMeshes[i];
-			for (unsigned int j = 0; j < mesh->mNumVertices; ++j)
-			{
-				aiVector3D vert = mesh->mVertices[j];
-				maxm = std::max(vert.x, maxm);
-				maxm = std::max(vert.y, maxm);
-				maxm = std::max(vert.z, maxm);
-				minm = std::min(vert.x, minm);
-				minm = std::min(vert.y, minm);
-				minm = std::min(vert.z, minm);
-			}
-		}
-		ProcessAnimationData(scene, boneList, maxm + minm);
+		const aiScene* scene = GetModelRootNodeFromFile(path,Animation_Flags);
+		
+		std::string name = path.substr(path.find_last_of('/')+1);
+		name = name.substr(0, name.find_last_of('.'));
+
+		ProcessAnimationData(scene, boneList, factor, name);
 	}
 
 	void ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene, const Bone* parent, std::vector<Mesh*>& meshlist, std::vector<Bone*>& boneList, float maxm)
@@ -179,7 +166,6 @@ namespace Hollow
 		tt[3].z /= maxm;
 		child->mTransformation = tt;
 		child->mName = node->mName.data;
-		child->isAnimated = false;
 		child->mOffset = glm::mat4(1.0f);
 		if (parent)
 		{
@@ -331,17 +317,13 @@ namespace Hollow
 		HW_CORE_ERROR("Bone index not found");
 	}
 
-	const aiScene* ResourceManager::GetModelRootNodeFromFile(std::string path)
+	const aiScene* ResourceManager::GetModelRootNodeFromFile(std::string path, unsigned int flags)
 	{
 		if (mModelRootsCache.find(path) == mModelRootsCache.end())
 		{
-			const aiScene* scene = importer.ReadFile(path,
-				aiProcess_RemoveRedundantMaterials |
-				aiProcess_Triangulate | aiProcess_FlipUVs |
-				aiProcess_OptimizeMeshes | aiProcess_GenSmoothNormals |
-				aiProcess_JoinIdenticalVertices | aiProcess_LimitBoneWeights);
+			const aiScene* scene = importer.ReadFile(path,flags);
 
-			if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+			if (!scene || !scene->mRootNode)
 			{
 				HW_CORE_ERROR("Model file {0} could not be loaded", path);
 			}
@@ -352,12 +334,16 @@ namespace Hollow
 		return mModelRootsCache[path];
 	}
 
-	void ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm)
+	void ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm, std::string name)
 	{
+		for (unsigned int i = 0; i < boneList.size(); ++i)
+		{
+			boneList[i]->mIsAnimated[name] = false;
+		}
+
 		for (unsigned int i = 0; i < scene->mNumAnimations; ++i)
 		{
-			aiAnimation* animation = scene->mAnimations[i];
-			std::string name = animation->mName.data; // TODO: not sure of unique name, find a better way to name animations
+			aiAnimation* animation = scene->mAnimations[i];			
 			for (unsigned int j = 0; j < animation->mNumChannels; ++j)
 			{
 				unsigned int index = GetBoneIndex(animation->mChannels[j]->mNodeName.data, boneList);
@@ -385,7 +371,7 @@ namespace Hollow
 				}
 
 				boneList[index]->mAnimations[name] = animData;
-				boneList[index]->isAnimated = true;
+				boneList[index]->mIsAnimated[name] = true;
 			}
 		}
 	}

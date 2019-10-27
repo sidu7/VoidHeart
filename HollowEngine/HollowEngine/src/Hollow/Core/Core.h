@@ -26,6 +26,9 @@
 						return new x(mComponentName);						\
 					}
 
+#define REGISTEREVENT(x) public:										\
+					x() : GameEvent(#x) {}																								
+
 
 #define REGISTERSYSTEM(x,y)	private:								\
 							static x instance;						\
