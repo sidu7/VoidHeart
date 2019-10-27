@@ -5,17 +5,17 @@
 
 namespace Hollow {
 	class Collider;
+
 	enum ShapeType
 	{
-		SPHERE,
-		AABB,
+		BALL,
+		BOX,
 		SHAPESNUM
 	};
 
 	class Shape
 	{
 	public:
-
 		Shape(ShapeType type)
 		{
 			mType = type;
@@ -34,7 +34,7 @@ namespace Hollow {
 	class ShapeCircle : public Shape
 	{
 	public:
-		ShapeCircle(float radius) : Shape(SPHERE)
+		ShapeCircle(float radius) : Shape(ShapeType::BALL)
 		{
 			mRadius = radius;
 		}
@@ -54,7 +54,7 @@ namespace Hollow {
 	class ShapeAABB : public Shape
 	{
 	public:
-		ShapeAABB(glm::vec3 min, glm::vec3 max) : Shape(AABB)
+		ShapeAABB(glm::vec3 min, glm::vec3 max) : Shape(ShapeType::BOX)
 		{
 			mMin = min;
 			mMax = max;
@@ -190,7 +190,7 @@ namespace Hollow {
 			mMin.x = std::min(first.mMin.x, second.mMin.x);
 			mMin.y = std::min(first.mMin.y, second.mMin.y);
 			mMin.z = std::min(first.mMin.z, second.mMin.z);
-
+			
 			mMax.x = std::max(first.mMax.x, second.mMax.x);
 			mMax.y = std::max(first.mMax.y, second.mMax.y);
 			mMax.z = std::max(first.mMax.z, second.mMax.z);

@@ -7,7 +7,7 @@
 
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Components/Transform.h"
-#include "Hollow/Components/Shape.h"
+#include "Hollow/Physics/Broadphase/Shape.h"
 
 #define epsilon 0.0001f
 namespace Hollow {
