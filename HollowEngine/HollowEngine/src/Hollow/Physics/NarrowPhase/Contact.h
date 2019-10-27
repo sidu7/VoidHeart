@@ -1,4 +1,6 @@
 #pragma once
+#include "Hollow/Physics/Resolution/PhysicsDataTypes.h"
+
 namespace Hollow {
 	struct Contact {
 		glm::vec3 point;
@@ -9,6 +11,11 @@ namespace Hollow {
 		float tangentImpulseSum1; // tangent impulses
 		float tangentImpulseSum2;
 
+		Jacobian jacobianN, jacobianT0, jacobianT1;
+
+		float effectiveMassN, effectiveMassT0, effectiveMassT1;
+		VelocityJacobian  mMatxjN, mMatxjT0, mMatxjT1;
+		
 		Contact() {
 			point = glm::vec3(0);
 			normalImpulseSum = 0.0f;
