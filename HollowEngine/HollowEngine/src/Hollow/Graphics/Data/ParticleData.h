@@ -2,6 +2,9 @@
 
 namespace Hollow
 {
+
+#define MAX_PARTICLES_COUNT 2000000
+
 	class Mesh;
 	class VertexArray;
 	class VertexBuffer;
@@ -15,7 +18,8 @@ namespace Hollow
 		//glm::vec3 mRotation;
 		//glm::vec3 mDirection;
 		float mSpeed;
-		//float mLife;
+		float mLife;
+		glm::vec3 mPadding;
 		//glm::vec3 mColor;
 	};
 
@@ -36,7 +40,8 @@ namespace Hollow
 		ParticleType mType;
 		std::vector<glm::vec4> mParticlePositionList;
 		std::vector<glm::mat4> mParticleModelMatrices;
-		ShaderStorageBuffer* mpShaderStorage;
+		ShaderStorageBuffer* mpParticleDataStorage;
+		ShaderStorageBuffer* mpDeadParticleStorage;
 		glm::vec3 mCenter;
 	};
 }

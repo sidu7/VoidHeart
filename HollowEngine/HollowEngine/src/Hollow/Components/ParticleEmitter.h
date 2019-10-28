@@ -32,6 +32,8 @@ namespace Hollow
 		VertexArray* mpParticlePositionVAO;
 		Texture* mTexture;
 		glm::mat4 mModelMatrix;
+		ShaderStorageBuffer* mpParticleStorage;
+		ShaderStorageBuffer* mpDeadParticleStorage;
 
 		// For Mesh particles
 		std::vector<Mesh*> mpParticle;
@@ -47,7 +49,5 @@ namespace Hollow
 		glm::vec3 mAreaOfEffect;
 		//TODO: direction data and scales
 
-		//Test
-		ShaderStorageBuffer* mShaderStorage;
 	};
 }

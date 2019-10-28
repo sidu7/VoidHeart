@@ -80,6 +80,7 @@ namespace Hollow {
 		// ParticleSystem
 		Shader* mpParticleShader;
 		Shader* mpParticleCompute;
+		ShaderStorageBuffer* mpParticleDrawList;
 		bool ShowParticles;
 	};
 }

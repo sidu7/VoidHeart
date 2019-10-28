@@ -3,9 +3,22 @@
 //layout (location = 0) in vec3 aPos;
 //layout (location = 3) in mat4 aInstancedMatrix;
 
+struct Particle
+{
+	vec3 mPos;
+	float speed;
+	float life;
+	vec3 padding;
+};
+
+layout(std430, binding = 4) buffer DrawListBlock
+{
+	uint drawList[];
+};
+
 layout(std430, binding = 2) buffer PosBlock
 {
-	vec3 mPos[];
+	Particle each_particle[];
 };
 
 uniform mat4 Projection;
@@ -19,7 +32,8 @@ void main()
 {
 	if(Type == 0)
 	{
-		vec4 eyePos = View * Model * vec4(mPos[gl_VertexID],1.0);
+		vec3 pos = each_particle[gl_VertexID].mPos;
+		vec4 eyePos = View * Model * vec4(pos,1.0);
 		vec4 projVoxel = Projection * vec4(SpriteSize,SpriteSize,eyePos.z,eyePos.w);
 		vec2 projSize = ScreenSize * projVoxel.xy / projVoxel.w;
 		gl_PointSize = 0.25 * (projSize.x+projSize.y);

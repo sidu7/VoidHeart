@@ -38,6 +38,8 @@ namespace Hollow
 		delete mTexture;
 		delete mpParticlePositionVAO;
 		delete mpParticleModelVBO;
+		delete mpParticleStorage;
+		delete mpDeadParticleStorage;
 	}
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)

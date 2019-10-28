@@ -42,12 +42,32 @@ namespace Hollow
 					model = glm::translate(model, transform->mPosition);
 					emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
 				}
+
+				unsigned int* deadList = static_cast<unsigned int*>(emitter->mpDeadParticleStorage->GetBufferReadWritePointer());
+
+				if (deadList[0] > 0)
+				{
+					Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer());
+					auto randomizer = Random::Range(-1.0f, 1.0f);
+					for (unsigned int i = 1; i <= deadList[0]; ++i)
+					{
+						unsigned int index = deadList[i];
+						float x = randomizer(); float y = randomizer(); float z = randomizer();
+						particles[i].mPosition = glm::vec3(x, y, z);
+						particles[i].mLife = 4.0f;
+					}
+					emitter->mpParticleStorage->ReleaseBufferPointer();
+					deadList[0] = 0;
+				}
+				emitter->mpDeadParticleStorage->ReleaseBufferPointer();
+
 				particle.mType = POINT;
 				particle.mpParticleVAO = emitter->mpParticlePositionVAO;
 				particle.mCenter = transform->mPosition;
 				particle.mModel = emitter->mModelMatrix;
 				particle.mParticlesCount = emitter->mCount;
-				particle.mpShaderStorage = emitter->mShaderStorage;
+				particle.mpParticleDataStorage = emitter->mpParticleStorage;
+				particle.mpDeadParticleStorage = emitter->mpDeadParticleStorage;
 				particle.mTex = emitter->mTexture;
 			}
 				// Create ParticleData
@@ -155,19 +175,33 @@ namespace Hollow
 
 		if (emitter->mType == ParticleType::POINT)
 		{			
-			emitter->mShaderStorage = new ShaderStorageBuffer();
-			emitter->mShaderStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
-			Particle* particles = static_cast<Particle*>(emitter->mShaderStorage->GetBufferWritePointer());
+			emitter->mpParticleStorage = new ShaderStorageBuffer();
+			emitter->mpParticleStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
+			Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer(true));
 
 			auto randomizer = Random::Range(-1.0f,1.0f);
 
 			for (unsigned int i = 0; i < emitter->mCount; ++i)
 			{
-				particles[i].mPosition = glm::vec3(randomizer(),randomizer(),randomizer());
+				float x = randomizer(); float y = randomizer(); float z = randomizer();
+				particles[i].mPosition = glm::vec3(x,y,z);			
 				particles[i].mSpeed = 0.3f;
+				particles[i].mLife = 4.0f;
+				particles[i].mPadding = glm::vec3(0.0f);
 			}
 
-			emitter->mShaderStorage->ReleaseBufferPointer();
+			emitter->mpParticleStorage->ReleaseBufferPointer();
+
+			emitter->mpDeadParticleStorage = new ShaderStorageBuffer();
+			emitter->mpDeadParticleStorage->CreateBuffer((emitter->mCount + 1) * sizeof(unsigned int));
+			unsigned int* deadList = static_cast<unsigned int*>(emitter->mpDeadParticleStorage->GetBufferWritePointer(true));
+
+			for (unsigned int i = 0; i <= emitter->mCount; ++i)
+			{
+				deadList[i] = 0;
+			}
+			emitter->mpDeadParticleStorage->ReleaseBufferPointer();
+
 			emitter->mpParticlePositionVAO = new VertexArray();			
 		}
 		else if (emitter->mType == ParticleType::MODEL)

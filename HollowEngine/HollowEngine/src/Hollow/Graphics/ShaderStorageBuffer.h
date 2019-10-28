@@ -6,16 +6,18 @@ namespace Hollow
 	{
 	private:
 		unsigned int mSize;
-	public:
 		unsigned int mRendererID;
+	public:
 		ShaderStorageBuffer();
 		~ShaderStorageBuffer();
 
 		void Bind(unsigned int bindPoint) const;
-		void Unbind() const;
+		void Unbind(unsigned int bindPoint) const;
 		void CreateBuffer(unsigned int size);
-		void* GetBufferWritePointer() const;
+		void* GetBufferWritePointer(const bool invalidateOldData = false) const;
+		void* GetBufferReadPointer() const;
+		void* GetBufferReadWritePointer() const;
 		void ReleaseBufferPointer() const;
-		void PutMemoryBarrier() const;
+		static void PutMemoryBarrier();
 	};
 }

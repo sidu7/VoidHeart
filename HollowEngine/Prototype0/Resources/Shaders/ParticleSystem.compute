@@ -6,9 +6,21 @@ struct Particle
 {
 	vec3 mPos;
 	float speed;
+	float life;
+	vec3 padding;
 };
 
-layout(std140, binding = 2) buffer PosBlock
+layout(std430, binding = 4) buffer DrawListBlock
+{
+	uint drawList[];
+};
+
+layout(std430, binding = 3) buffer DeadParticleBlock
+{
+	uint deadIndices[];
+};
+
+layout(std430, binding = 2) buffer PosBlock
 {
 	Particle each_particle[];
 };
@@ -22,11 +34,24 @@ void main()
 {
 	uint gid = gl_GlobalInvocationID.x;
 
-	vec3 pos = each_particle[gid].mPos;
-	float vel = each_particle[gid].speed;
-	vec3 dir = normalize(Center - pos);
 
-	pos = pos + vel * dir * DeltaTime;
-
-	each_particle[gid].mPos = pos;
+	each_particle[gid].life = each_particle[gid].life - DeltaTime;
+	if (each_particle[gid].life > 0)
+	{
+		vec3 pos = each_particle[gid].mPos;
+		float vel = each_particle[gid].speed;
+		vec3 dir = normalize(pos - Center);
+	
+		pos = pos + vel * dir * DeltaTime;
+	
+		each_particle[gid].mPos = pos;
+		drawList[drawList[0] + 1] = gid;
+		drawList[0] = drawList[0] + 1;
+	}
+	else
+	{
+		each_particle[gid].mPos = vec3(0.0f);
+		deadIndices[deadIndices[0] + 1] = gid;
+		deadIndices[0] = deadIndices[0] + 1;
+	}
 }
