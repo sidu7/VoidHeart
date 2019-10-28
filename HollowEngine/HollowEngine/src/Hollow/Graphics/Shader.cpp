@@ -61,7 +61,7 @@ namespace Hollow {
 		GLCall(glUseProgram(0));
 	}
 
-	void Shader::DispatchCompute(const int group_x, const int group_y, const int group_z) const
+	void Shader::DispatchCompute(const unsigned int group_x, const unsigned int group_y, const unsigned int group_z) const
 	{
 		GLCall(glDispatchCompute(group_x, group_y, group_z));
 	}

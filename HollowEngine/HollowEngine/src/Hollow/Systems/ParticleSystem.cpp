@@ -42,32 +42,15 @@ namespace Hollow
 					model = glm::translate(model, transform->mPosition);
 					emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
 				}
-
-				unsigned int* deadList = static_cast<unsigned int*>(emitter->mpDeadParticleStorage->GetBufferReadWritePointer());
-
-				if (deadList[0] > 0)
-				{
-					Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer());
-					auto randomizer = Random::Range(-1.0f, 1.0f);
-					for (unsigned int i = 1; i <= deadList[0]; ++i)
-					{
-						unsigned int index = deadList[i];
-						float x = randomizer(); float y = randomizer(); float z = randomizer();
-						particles[i].mPosition = glm::vec3(x, y, z);
-						particles[i].mLife = 4.0f;
-					}
-					emitter->mpParticleStorage->ReleaseBufferPointer();
-					deadList[0] = 0;
-				}
-				emitter->mpDeadParticleStorage->ReleaseBufferPointer();
-
+				
 				particle.mType = POINT;
 				particle.mpParticleVAO = emitter->mpParticlePositionVAO;
 				particle.mCenter = transform->mPosition;
 				particle.mModel = emitter->mModelMatrix;
 				particle.mParticlesCount = emitter->mCount;
 				particle.mpParticleDataStorage = emitter->mpParticleStorage;
-				particle.mpDeadParticleStorage = emitter->mpDeadParticleStorage;
+				particle.mLifeRange = emitter->mLifeRange;
+				particle.mSpeedRange = emitter->mSpeedRange;
 				particle.mTex = emitter->mTexture;
 			}
 				// Create ParticleData
@@ -119,56 +102,7 @@ namespace Hollow
 			//model = glm::translate(model, glm::vec3(0.0f, i * 2.0f, 0.0f));
 			emitter->mModelMatrices.push_back(model);
 		}
-	}
-	void ParticleSystem::CalculateParticlePositions(ParticleEmitter* emitter, glm::vec3 center)
-	{ 
-		/*emitter->mParticlePositions.clear();
-
-		float deltaTime = FrameRateController::Instance().GetFrameTime();
-
-		//UpdateCurrentParticles
-		for (unsigned int i = 0; i < emitter->mParticlesList.size(); ++i)
-		{
-			Particle& particle = emitter->mParticlesList[i];
-
-			particle.mLife -= deltaTime;
-			if (particle.mLife > 0.0f)
-			{
-				//particle.mPosition += particle.mSpeed * deltaTime * particle.mDirection;
-				emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition,1.0f));
-			}
-			else
-			{
-				emitter->mParticlesList.erase(emitter->mParticlesList.begin() + i);
-			}
-		}
-		
-		//SpawnNewParticles
-
-		int amount = 200;
-		for (unsigned int i = 0; i < amount; i++)
-		{
-			if (emitter->mParticlesList.size() >= emitter->mCount)
-			{
-				break;
-			}
-			float x, y, z;
-
-			x = (rand() % (2 * amount + 1) - amount) / ((float)amount);
-			y = (rand() % (2 * amount + 1) - amount) / ((float)amount);
-			z = (rand() % (2 * amount + 1) - amount) / ((float)amount);
-
-			Particle particle;
-
-			particle.mPosition = glm::vec3(x, y, z);
-			particle.mSpeed = 0.5f;
-			particle.mDirection = glm::normalize(particle.mPosition - center);
-			particle.mLife = 0.5f;
-
-			emitter->mParticlesList.push_back(particle);
-			emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition, 1.0f));
-		}*/
-	}
+	}	
 
 	void ParticleSystem::UpdateAttributes(ParticleEmitter* emitter)
 	{
@@ -180,28 +114,20 @@ namespace Hollow
 			Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer(true));
 
 			auto randomizer = Random::Range(-1.0f,1.0f);
+			auto liferandomizer = Random::Range(emitter->mLifeRange.x, emitter->mLifeRange.y);
+			auto speedrandomizer = Random::Range(emitter->mSpeedRange.x, emitter->mSpeedRange.y);
 
 			for (unsigned int i = 0; i < emitter->mCount; ++i)
 			{
 				float x = randomizer(); float y = randomizer(); float z = randomizer();
 				particles[i].mPosition = glm::vec3(x,y,z);			
-				particles[i].mSpeed = 0.3f;
-				particles[i].mLife = 4.0f;
-				particles[i].mPadding = glm::vec3(0.0f);
+				particles[i].mSpeed = speedrandomizer();
+				particles[i].mLife = liferandomizer();
+				particles[i].mCurrentLife = particles[i].mLife;
+				particles[i].mPadding = glm::vec2(0.0f);
 			}
 
 			emitter->mpParticleStorage->ReleaseBufferPointer();
-
-			emitter->mpDeadParticleStorage = new ShaderStorageBuffer();
-			emitter->mpDeadParticleStorage->CreateBuffer((emitter->mCount + 1) * sizeof(unsigned int));
-			unsigned int* deadList = static_cast<unsigned int*>(emitter->mpDeadParticleStorage->GetBufferWritePointer(true));
-
-			for (unsigned int i = 0; i <= emitter->mCount; ++i)
-			{
-				deadList[i] = 0;
-			}
-			emitter->mpDeadParticleStorage->ReleaseBufferPointer();
-
 			emitter->mpParticlePositionVAO = new VertexArray();			
 		}
 		else if (emitter->mType == ParticleType::MODEL)

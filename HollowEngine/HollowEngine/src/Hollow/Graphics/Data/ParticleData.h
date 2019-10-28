@@ -19,7 +19,8 @@ namespace Hollow
 		//glm::vec3 mDirection;
 		float mSpeed;
 		float mLife;
-		glm::vec3 mPadding;
+		float mCurrentLife;
+		glm::vec2 mPadding;
 		//glm::vec3 mColor;
 	};
 
@@ -41,7 +42,8 @@ namespace Hollow
 		std::vector<glm::vec4> mParticlePositionList;
 		std::vector<glm::mat4> mParticleModelMatrices;
 		ShaderStorageBuffer* mpParticleDataStorage;
-		ShaderStorageBuffer* mpDeadParticleStorage;
+		glm::vec2 mSpeedRange;
+		glm::vec2 mLifeRange;
 		glm::vec3 mCenter;
 	};
 }

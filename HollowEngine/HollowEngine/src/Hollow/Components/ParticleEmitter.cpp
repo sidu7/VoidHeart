@@ -15,19 +15,13 @@ namespace Hollow
 
 	void ParticleEmitter::Init()
 	{
-		mCount = 0;
-		mMinSpeed = 0.0f;
-		mMaxSpeed = 0.0f;
-		mCenterOffset = glm::vec3(0.0f);
-		mAreaOfEffect = glm::vec3(0.0f);
-		mModelMatrix = glm::mat4(1.0f);
 	}
 
 	void ParticleEmitter::Clear()
 	{
 		mCount = 0;
-		mMinSpeed = 0.0f;
-		mMaxSpeed = 0.0f;
+		mSpeedRange = glm::vec2(0.0f);
+		mLifeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
 		mParticlesList.clear();
@@ -39,7 +33,6 @@ namespace Hollow
 		delete mpParticlePositionVAO;
 		delete mpParticleModelVBO;
 		delete mpParticleStorage;
-		delete mpDeadParticleStorage;
 	}
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)
@@ -61,6 +54,14 @@ namespace Hollow
 		if (data.HasMember("Area"))
 		{
 			mAreaOfEffect = JSONHelper::GetVec3F(data["Area"].GetArray());
+		}
+		if (data.HasMember("Speed"))
+		{
+			mSpeedRange = JSONHelper::GetVec2F(data["Speed"].GetArray());
+		}
+		if (data.HasMember("Life"))
+		{
+			mLifeRange = JSONHelper::GetVec2F(data["Life"].GetArray());
 		}
 	}
 

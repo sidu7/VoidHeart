@@ -53,12 +53,8 @@ namespace Hollow {
 		// Init Particle Shader
 		mpParticleShader = new Shader("Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag");
 		mpParticleCompute = new Shader("Resources/Shaders/ParticleSystem.compute");
-		mpParticleDrawList = new ShaderStorageBuffer();
-		mpParticleDrawList->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(unsigned int));
-		unsigned int* drawList = static_cast<unsigned int*>(mpParticleDrawList->GetBufferWritePointer());
-		drawList[0] = 0;
-		mpParticleDrawList->ReleaseBufferPointer();
-		
+		mpParticlesPositionStorage = new ShaderStorageBuffer();
+		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 	}
 
@@ -424,19 +420,16 @@ namespace Hollow {
 			{
 				//Compute particle positions according to velocities
 				particle.mpParticleDataStorage->Bind(2);
-				particle.mpDeadParticleStorage->Bind(3);
-				mpParticleDrawList->Bind(4);
+				mpParticlesPositionStorage->Bind(3);
 
 				mpParticleCompute->Use();
 				mpParticleCompute->SetVec3("Center", particle.mCenter);
 				mpParticleCompute->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
+				mpParticleCompute->SetVec2("SpeedRange", particle.mSpeedRange);
+				mpParticleCompute->SetVec2("LifeRange", particle.mLifeRange);
 				mpParticleCompute->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
 				ShaderStorageBuffer::PutMemoryBarrier();
-				particle.mpDeadParticleStorage->Unbind(3);
-
-				unsigned int* drawList = static_cast<unsigned int*>(mpParticleDrawList->GetBufferReadPointer());
-				unsigned int drawSize = drawList[0];
-				mpParticleDrawList->ReleaseBufferPointer();
+				particle.mpParticleDataStorage->Unbind(2);	
 
 				mpParticleShader->Use();
 				mpParticleShader->SetMat4("Model", particle.mModel);
@@ -449,12 +442,7 @@ namespace Hollow {
 				
 				GLCall(glDrawArrays(GL_POINTS, 0, particle.mParticlesCount));
 				particle.mTex->Unbind(4);
-				particle.mpParticleDataStorage->Unbind(2);
-
-				drawList = static_cast<unsigned int*>(mpParticleDrawList->GetBufferWritePointer());
-				drawList[0] = 0;
-				mpParticleDrawList->ReleaseBufferPointer();
-				mpParticleDrawList->Unbind(4);
+				mpParticlesPositionStorage->Unbind(3);
 				particle.mpParticleVAO->Unbind();
 			}
 			else if(particle.mType == MODEL)

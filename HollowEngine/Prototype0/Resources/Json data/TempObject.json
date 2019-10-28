@@ -27,7 +27,9 @@
       "Shape": 0,
       "Texture": "Resources/Textures/star.png",
       "Count": 100000.0,
-      "Area": [ 10.0, 10.0, 10.0 ]
+      "Area": [ 5.0, 5.0, 5.0 ],
+      "Speed": [ 0.1, 0.7 ],
+      "Life": [ 1.0, 4.0 ]
     },
     {
       "Type": "Animator",

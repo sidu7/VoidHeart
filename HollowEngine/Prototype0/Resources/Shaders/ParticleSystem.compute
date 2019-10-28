@@ -7,51 +7,59 @@ struct Particle
 	vec3 mPos;
 	float speed;
 	float life;
-	vec3 padding;
+	float currentlife;
+	vec2 padding;
 };
 
-layout(std430, binding = 4) buffer DrawListBlock
-{
-	uint drawList[];
-};
-
-layout(std430, binding = 3) buffer DeadParticleBlock
-{
-	uint deadIndices[];
-};
-
-layout(std430, binding = 2) buffer PosBlock
+layout(std430, binding = 2) buffer ParticleDataBlock
 {
 	Particle each_particle[];
+};
+
+layout(std430, binding = 3) buffer PosBlock
+{
+	vec4 mPos[];
 };
 
 layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
 
 uniform vec3 Center;
 uniform float DeltaTime;
+uniform vec2 SpeedRange;
+uniform vec2 LifeRange;
+
+highp float rand(vec2 co)
+{
+	highp float a = 12.9898;
+	highp float b = 78.233;
+	highp float c = 43758.5453;
+	highp float dt = dot(co.xy, vec2(a, b));
+	highp float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
+}
 
 void main()
 {
 	uint gid = gl_GlobalInvocationID.x;
-
-
-	each_particle[gid].life = each_particle[gid].life - DeltaTime;
-	if (each_particle[gid].life > 0)
+	
+	each_particle[gid].currentlife = each_particle[gid].currentlife - DeltaTime;
+	vec3 pos = each_particle[gid].mPos;
+	if (each_particle[gid].currentlife > 0)
 	{
-		vec3 pos = each_particle[gid].mPos;
 		float vel = each_particle[gid].speed;
 		vec3 dir = normalize(pos - Center);
-	
+
 		pos = pos + vel * dir * DeltaTime;
-	
-		each_particle[gid].mPos = pos;
-		drawList[drawList[0] + 1] = gid;
-		drawList[0] = drawList[0] + 1;
 	}
 	else
 	{
-		each_particle[gid].mPos = vec3(0.0f);
-		deadIndices[deadIndices[0] + 1] = gid;
-		deadIndices[0] = deadIndices[0] + 1;
+		pos = vec3(rand(pos.xy) * 2.0f - 1.0f,rand(pos.yz) * 2.0f - 1.0f,rand(pos.xz) * 2.0f - 1.0f);
+		each_particle[gid].life = rand(pos.xy) * (LifeRange.y - LifeRange.x) + LifeRange.x;
+		each_particle[gid].currentlife = each_particle[gid].life;
+		each_particle[gid].speed = rand(pos.yz) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
 	}
+
+	each_particle[gid].mPos = pos;
+	mPos[gid].xyz = pos;
+	mPos[gid].w = each_particle[gid].currentlife / each_particle[gid].life;
 }

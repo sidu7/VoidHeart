@@ -33,7 +33,6 @@ namespace Hollow
 		Texture* mTexture;
 		glm::mat4 mModelMatrix;
 		ShaderStorageBuffer* mpParticleStorage;
-		ShaderStorageBuffer* mpDeadParticleStorage;
 
 		// For Mesh particles
 		std::vector<Mesh*> mpParticle;
@@ -41,10 +40,8 @@ namespace Hollow
 		VertexBuffer* mpParticleModelVBO;
 
 		ParticleType mType;
-		float mMinSpeed;
-		float mMaxSpeed;
-		float mMinLife;
-		float mMaxLife;
+		glm::vec2 mSpeedRange;
+		glm::vec2 mLifeRange;
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
 		//TODO: direction data and scales
