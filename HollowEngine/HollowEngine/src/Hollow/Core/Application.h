@@ -13,7 +13,7 @@ namespace Hollow {
 	{
 		//SINGLETON(Application)
 	public:
-		Application();
+		Application(const std::string& settingsFilePath);
 		virtual ~Application();
 
 		//inline static Application& Instance() { return *instance; }

@@ -37,42 +37,27 @@ namespace Hollow
 
 	void ResourceManager::LoadLevelFromFile(std::string path)
 	{
-		std::ifstream file(path);
-		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+		rapidjson::Value::Object root = JSONHelper::ReadFile(path);
 
-		rapidjson::Document root;
-		root.Parse(contents.c_str());
-
-		if (root.IsObject())
+		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
+		for (unsigned int i = 0; i < gameobjects.Size(); ++i)
 		{
-			rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
-			for (unsigned int i = 0; i < gameobjects.Size(); ++i)
-			{
-				GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(gameobjects[i].GetObject());
+			GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(gameobjects[i].GetObject());
 
-				if (pNewGameObject)
-				{
-					GameObjectManager::Instance().AddGameObject(pNewGameObject);
-				}
+			if (pNewGameObject)
+			{
+				GameObjectManager::Instance().AddGameObject(pNewGameObject);
 			}
 		}
 	}
 
 	void ResourceManager::LoadGameObjectFromFile(std::string path)
 	{
-		std::ifstream file(path);
-		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-		rapidjson::Document root;
-		root.Parse(contents.c_str());
-
-		if (root.IsObject()) {
-			GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(root.GetObject());;
+		GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(JSONHelper::ReadFile(path));;
 			
-			if (pNewGameObject)
-			{
-				GameObjectManager::Instance().AddGameObject(pNewGameObject);
-			}
+		if (pNewGameObject)
+		{
+			GameObjectManager::Instance().AddGameObject(pNewGameObject);
 		}
 	}
 
@@ -95,7 +80,7 @@ namespace Hollow
 		if (mModelCache.find(path) == mModelCache.end())
 		{
 			const aiScene* scene = GetModelRootNodeFromFile(path,Model_Flags);
-			importer.GetOrphanedScene();
+
 			float minm = std::numeric_limits<float>::max(), maxm = std::numeric_limits<float>::min();
 			for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
 			{
@@ -411,57 +396,46 @@ namespace Hollow
 	{
 		if (mStateFileCache.find(path) == mStateFileCache.end())
 		{
-			std::ifstream file(path);
-			std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+			rapidjson::Value::Object root = JSONHelper::ReadFile(path);
+						
+			std::vector<State*> states;
+			rapidjson::Value::Array stateList = root["States"].GetArray();
 
-			rapidjson::Document root;
-			root.Parse(contents.c_str());
-
-			if (root.IsObject())
+			for (unsigned int i = 0; i < stateList.Size(); ++i)
 			{
-				std::vector<State*> states;
-				rapidjson::Value::Array stateList = root["States"].GetArray();
+				State* newState = new State();
+				newState->mName = stateList[i].GetString();
+				newState->mIndex = i;
+				states.emplace_back(newState);
+			}
 
-				for (unsigned int i = 0; i < stateList.Size(); ++i)
+			rapidjson::Value::Array conditions = root["Conditions"].GetArray();
+
+			for (unsigned int i = 0; i < conditions.Size(); ++i)
+			{
+				rapidjson::Value::Object statecondition = conditions[i].GetObject();
+
+				State* state = states[State::FindState(states,statecondition["State"].GetString())];
+
+				state->mEvents = JSONHelper::GetArray<std::string>(statecondition["Events"].GetArray());
+				rapidjson::Value::Array eventState = statecondition["EventStates"].GetArray();
+				state->mEventStates.reserve(eventState.Size());
+				for (unsigned int i = 0; i < eventState.Size(); ++i)
 				{
-					State* newState = new State();
-					newState->mName = stateList[i].GetString();
-					newState->mIndex = i;
-					states.emplace_back(newState);
+					state->mEventStates.emplace_back(State::FindState(states,eventState[i].GetString()));
 				}
 
-				rapidjson::Value::Array conditions = root["Conditions"].GetArray();
-
-				for (unsigned int i = 0; i < conditions.Size(); ++i)
+				state->mInputs = JSONHelper::GetArray<unsigned int>(statecondition["Inputs"].GetArray());
+				rapidjson::Value::Array inputState = statecondition["InputStates"].GetArray();
+				state->mInputStates.reserve(inputState.Size());
+				for (unsigned int i = 0; i < inputState.Size(); ++i)
 				{
-					rapidjson::Value::Object statecondition = conditions[i].GetObject();
-
-					State* state = states[State::FindState(states,statecondition["State"].GetString())];
-
-					state->mEvents = JSONHelper::GetArray<std::string>(statecondition["Events"].GetArray());
-					rapidjson::Value::Array eventState = statecondition["EventStates"].GetArray();
-					state->mEventStates.reserve(eventState.Size());
-					for (unsigned int i = 0; i < eventState.Size(); ++i)
-					{
-						state->mEventStates.emplace_back(State::FindState(states,eventState[i].GetString()));
-					}
-
-					state->mInputs = JSONHelper::GetArray<unsigned int>(statecondition["Inputs"].GetArray());
-					rapidjson::Value::Array inputState = statecondition["InputStates"].GetArray();
-					state->mInputStates.reserve(inputState.Size());
-					for (unsigned int i = 0; i < inputState.Size(); ++i)
-					{
-						state->mInputStates.emplace_back(State::FindState(states,inputState[i].GetString()));
-					}
-					state->mInputConditions = JSONHelper::GetArray<State::StateInputCondition>(statecondition["InputCondition"].GetArray());
+					state->mInputStates.emplace_back(State::FindState(states,inputState[i].GetString()));
 				}
+				state->mInputConditions = JSONHelper::GetArray<State::StateInputCondition>(statecondition["InputCondition"].GetArray());
+			}
 				
-				mStateFileCache[path] = states;
-			}
-			else
-			{
-				HW_CORE_ERROR("Error reading state file {0}", path);
-			}
+			mStateFileCache[path] = states;
 		}
 
 		return mStateFileCache[path];

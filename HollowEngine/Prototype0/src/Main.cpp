@@ -58,7 +58,7 @@ class UILayer : public Hollow::Layer
 class Prototype0 : public Hollow::Application
 {
 public:
-	Prototype0()
+	Prototype0() : Application("Resources/Settings.json")
 	{
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());

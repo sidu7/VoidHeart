@@ -21,7 +21,7 @@
 
 namespace Hollow {
 
-	void RenderManager::Init(GameWindow* pWindow)
+	void RenderManager::Init(rapidjson::Value::Object& data, GameWindow* pWindow)
 	{
 		// Init opengl
 		if (glewInit() != GLEW_OK)
@@ -42,17 +42,17 @@ namespace Hollow {
 		mpWindow = pWindow;
 		
 		// Initialize G-Buffer
-		InitializeGBuffer();
+		InitializeGBuffer(data);
 
 		// Init ShadowMap shader
-		mpShadowMapShader = new Shader("Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag");
+		mpShadowMapShader = new Shader(data["ShadowMapShader"].GetArray()[0].GetString(), data["ShadowMapShader"].GetArray()[1].GetString());
 
 		// Init Debug Shader
-		mpDebugShader = new Shader("Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag");
+		mpDebugShader = new Shader(data["DebugShader"].GetArray()[0].GetString(), data["DebugShader"].GetArray()[1].GetString());
 
 		// Init Particle Shader
-		mpParticleShader = new Shader("Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag");
-		mpParticleCompute = new Shader("Resources/Shaders/ParticleSystem.compute");
+		mpParticleShader = new Shader(data["ParticleShader"].GetArray()[0].GetString(), data["ParticleShader"].GetArray()[1].GetString());
+		mpParticleCompute = new Shader(data["ParticleCompute"].GetString());
 		mpParticlesPositionStorage = new ShaderStorageBuffer();
 		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
@@ -141,11 +141,11 @@ namespace Hollow {
 		return glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight());
 	}
 
-	void RenderManager::InitializeGBuffer()
+	void RenderManager::InitializeGBuffer(rapidjson::Value::Object& data)
 	{
 		// Compile G-Buffer shader and deferred shader
-		mpGBufferShader = new Shader("Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag");
-		CreateDeferredShader();
+		mpGBufferShader = new Shader(data["GBufferShader"].GetArray()[0].GetString(), data["GBufferShader"].GetArray()[1].GetString());
+		CreateDeferredShader(data);
 
 		// Create G-Buffer
 		mpGBuffer = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 4, true);
@@ -154,9 +154,9 @@ namespace Hollow {
 		mGBufferDisplayMode = 0;
 	}
 
-	void RenderManager::CreateDeferredShader()
+	void RenderManager::CreateDeferredShader(rapidjson::Value::Object& data)
 	{
-		mpDeferredShader = new Shader("Resources/Shaders/Deferred.vert", "Resources/Shaders/Deferred.frag");
+		mpDeferredShader = new Shader(data["DeferredShader"].GetArray()[0].GetString(), data["DeferredShader"].GetArray()[1].GetString());
 		mpDeferredShader->Use();
 		mpDeferredShader->SetInt("gPosition", 0);
 		mpDeferredShader->SetInt("gNormal", 1);

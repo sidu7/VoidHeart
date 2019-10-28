@@ -3,12 +3,39 @@
 #include "rapidjson/document.h"
 #include "glm/glm.hpp"
 
+#ifdef _MSC_VER   
+#undef GetObject
+#endif
+
 namespace Hollow
 {
 	class HOLLOW_API JSONHelper
 	{
 	public:
 		//JSON parsing
+		inline static rapidjson::Value::Object ReadFile(const std::string& filePath)
+		{
+			std::ifstream file(filePath);
+			std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+			rapidjson::Document root;
+			root.Parse(contents.c_str());
+			if (root.IsObject())
+			{
+				rapidjson::Value::Object obj = root["Window"].GetArray()[0].GetObject();
+				return root.GetObject();
+			}
+			else
+			{
+				HW_CORE_ERROR("Error reading JSON file {0}", filePath);
+			}
+		}
+
+		inline static rapidjson::Value::Object GetSettings(rapidjson::Value::Object& data, const char* setting)
+		{
+			return data[setting].GetArray()[0].GetObject();
+		}
+
 		inline static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec3(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat());

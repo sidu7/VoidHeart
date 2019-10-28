@@ -25,17 +25,21 @@ namespace Hollow {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 	
-	Application::Application()
+	Application::Application(const std::string& settingsFilePath)
 	{
 		//instance = this;
-		mpWindow = new GameWindow("Hollow Engine", 1280, 720);
+		rapidjson::Value::Object data = JSONHelper::ReadFile(settingsFilePath);
+
+		rapidjson::Value::Array arr = data["Window"].GetArray();
+
+		mpWindow = new GameWindow(arr[0].GetObject());
 
 		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
 		
 		mIsRunning = true;
 		// Initalize managers
 		MemoryManager::Instance().Init();
-		RenderManager::Instance().Init(mpWindow);
+		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
 		ResourceManager::Instance().Init();

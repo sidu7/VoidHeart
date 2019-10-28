@@ -20,16 +20,16 @@ namespace Hollow {
 	{
 		SINGLETON(RenderManager)
 	public:
-		void Init(GameWindow* pWindow = nullptr);
+		void Init(rapidjson::Value::Object& data, GameWindow* pWindow = nullptr);
 		void CleanUp();
 		void Update();
 		inline glm::vec2 GetWindowSize();
 
 	private:
 		// Initialization Functions
-		void InitializeGBuffer();
+		void InitializeGBuffer(rapidjson::Value::Object& data);
 
-		void CreateDeferredShader();
+		void CreateDeferredShader(rapidjson::Value::Object& data);
 
 		void CreateShadowMap(LightData& light);
 
