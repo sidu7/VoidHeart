@@ -53,7 +53,7 @@ void main()
 	}
 	else
 	{
-		pos = vec3(rand(pos.xy) * 2.0f - 1.0f,rand(pos.yz) * 2.0f - 1.0f,rand(pos.xz) * 2.0f - 1.0f);
+		pos = vec3(rand(pos.xy),rand(pos.yz),rand(pos.xz)) * 2.0f - 1.0f;
 		each_particle[gid].life = rand(pos.xy) * (LifeRange.y - LifeRange.x) + LifeRange.x;
 		each_particle[gid].currentlife = each_particle[gid].life;
 		each_particle[gid].speed = rand(pos.yz) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;

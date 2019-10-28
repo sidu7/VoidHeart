@@ -7,7 +7,8 @@
       "Yaw": -67.800,
       "CameraType": 2,
       "Projection": 1,
-      "ScreenViewPort": [ 300, 300 ],
+      "ScreenPosition": [0,-200],
+      "ScreenViewPort": [ 300, 200 ],
       "HandleInputs":  false
     }
   ]

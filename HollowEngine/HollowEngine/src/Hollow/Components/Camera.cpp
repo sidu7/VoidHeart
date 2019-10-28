@@ -3,6 +3,8 @@
 
 #include "Hollow/Graphics/Data/CameraData.h"
 
+#include "Hollow/Managers/RenderManager.h"
+
 namespace Hollow {
 	Camera Camera::instance;
 
@@ -88,7 +90,9 @@ namespace Hollow {
 		}
 		if (data.HasMember("ScreenPosition"))
 		{
-			mScreenPosition = JSONHelper::GetIVec2(data["ScreenPosition"].GetArray());
+			 glm::vec2 pos = JSONHelper::GetIVec2(data["ScreenPosition"].GetArray());
+			 glm::vec2 size = RenderManager::Instance().GetWindowSize();
+			 mScreenPosition = glm::vec2(pos.x < 0 ? size.x + pos.x : pos.x, pos.y < 0 ? size.y + pos.y : pos.y);
 		}
 		if (data.HasMember("ScreenViewPort"))
 		{

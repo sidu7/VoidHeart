@@ -114,16 +114,14 @@ namespace Hollow
 			Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer(true));
 
 			auto randomizer = Random::Range(-1.0f,1.0f);
-			auto liferandomizer = Random::Range(emitter->mLifeRange.x, emitter->mLifeRange.y);
-			auto speedrandomizer = Random::Range(emitter->mSpeedRange.x, emitter->mSpeedRange.y);
 
 			for (unsigned int i = 0; i < emitter->mCount; ++i)
 			{
 				float x = randomizer(); float y = randomizer(); float z = randomizer();
 				particles[i].mPosition = glm::vec3(x,y,z);			
-				particles[i].mSpeed = speedrandomizer();
-				particles[i].mLife = liferandomizer();
-				particles[i].mCurrentLife = particles[i].mLife;
+				particles[i].mSpeed = 0.0f;
+				particles[i].mLife = 0.0f;
+				particles[i].mCurrentLife = 0.0f;
 				particles[i].mPadding = glm::vec2(0.0f);
 			}
 

@@ -26,8 +26,8 @@
       "Type": "ParticleEmitter",
       "Shape": 0,
       "Texture": "Resources/Textures/star.png",
-      "Count": 100000.0,
-      "Area": [ 5.0, 5.0, 5.0 ],
+      "Count": 10000.0,
+      "Area": [ 0.7, 0.7, 0.7 ],
       "Speed": [ 0.1, 0.7 ],
       "Life": [ 1.0, 4.0 ]
     },
