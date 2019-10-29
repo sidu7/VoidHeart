@@ -37,7 +37,7 @@ namespace Hollow
 
 	void ResourceManager::LoadLevelFromFile(std::string path)
 	{
-		rapidjson::Value::Object root = JSONHelper::ReadFile(path);
+		PARSE_JSON_FILE(path);
 
 		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
 		for (unsigned int i = 0; i < gameobjects.Size(); ++i)
@@ -53,7 +53,9 @@ namespace Hollow
 
 	void ResourceManager::LoadGameObjectFromFile(std::string path)
 	{
-		GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(JSONHelper::ReadFile(path));;
+		PARSE_JSON_FILE(path);
+
+		GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(root.GetObject());;
 			
 		if (pNewGameObject)
 		{
@@ -396,7 +398,7 @@ namespace Hollow
 	{
 		if (mStateFileCache.find(path) == mStateFileCache.end())
 		{
-			rapidjson::Value::Object root = JSONHelper::ReadFile(path);
+			PARSE_JSON_FILE(path);
 						
 			std::vector<State*> states;
 			rapidjson::Value::Array stateList = root["States"].GetArray();

@@ -1,8 +1,6 @@
 #pragma once
 #include "Hollow/Systems/System.h"
 
-#define MAX_OBJECTS 1000
-
 namespace Hollow
 {
 	class Component;
@@ -11,7 +9,7 @@ namespace Hollow
 	{
 		SINGLETON(MemoryManager)
 	public:
-		void Init();
+		void Init(rapidjson::Value::Object& data);
 		void RegisterComponent(std::string name, Component* component);
 	
 		Component* NewComponent(std::string name);

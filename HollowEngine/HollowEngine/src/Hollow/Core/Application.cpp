@@ -27,18 +27,16 @@ namespace Hollow {
 	
 	Application::Application(const std::string& settingsFilePath)
 	{
-		//instance = this;
-		rapidjson::Value::Object data = JSONHelper::ReadFile(settingsFilePath);
-
-		rapidjson::Value::Array arr = data["Window"].GetArray();
-
-		mpWindow = new GameWindow(arr[0].GetObject());
+		PARSE_JSON_FILE(settingsFilePath);
+		
+		rapidjson::Value::Object data = root.GetObject();
+		mpWindow = new GameWindow(JSONHelper::GetSettings(data,"Window"));
 
 		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
 		
 		mIsRunning = true;
 		// Initalize managers
-		MemoryManager::Instance().Init();
+		MemoryManager::Instance().Init(JSONHelper::GetSettings(data,"Memory"));
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
@@ -46,7 +44,7 @@ namespace Hollow {
         AudioManager::Instance().Init();
 
 
-		FrameRateController::Instance().SetMaxFrameRate(60);
+		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
 	}
 
 	Application::~Application()
