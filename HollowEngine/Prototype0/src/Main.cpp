@@ -65,7 +65,7 @@ public:
 
 		for (int i = 0; i < 100; ++i)
 		{
-			Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/LocalLight.json");
+			//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/LocalLight.json");
 		}
 		//TODO: Remove test json deserialize
 		/*std::ofstream file("Resources/Json data/test.json");
