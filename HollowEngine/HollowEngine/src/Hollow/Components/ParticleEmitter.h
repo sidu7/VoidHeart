@@ -9,17 +9,9 @@ namespace Hollow
 	class VertexArray;
 	class Texture;
 	enum ParticleType;
-
-	struct Particle
-	{
-		glm::vec3 mPosition;
-		glm::vec3 mScale;
-		glm::vec3 mRotation;
-		glm::vec3 mDirection;
-		float mSpeed;
-		float mLife;
-		glm::vec3 mColor;
-	};
+	class ShaderStorageBuffer;
+	struct Particle;
+	
 
 	class HOLLOW_API ParticleEmitter : public Component
 	{
@@ -30,9 +22,6 @@ namespace Hollow
 		void Serialize(rapidjson::Value::Object data);
 		void DebugDisplay();
 
-	private:
-		void UpdateAttributes();
-
 	public:
 		unsigned long mCount;
 		std::vector<Particle> mParticlesList;
@@ -42,6 +31,8 @@ namespace Hollow
 		VertexBuffer* mpParticlePositionVBO;
 		VertexArray* mpParticlePositionVAO;
 		Texture* mTexture;
+		glm::mat4 mModelMatrix;
+		ShaderStorageBuffer* mpParticleStorage;
 
 		// For Mesh particles
 		std::vector<Mesh*> mpParticle;
@@ -49,12 +40,11 @@ namespace Hollow
 		VertexBuffer* mpParticleModelVBO;
 
 		ParticleType mType;
-		float mMinSpeed;
-		float mMaxSpeed;
-		float mMinLife;
-		float mMaxLife;
+		glm::vec2 mSpeedRange;
+		glm::vec2 mLifeRange;
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
 		//TODO: direction data and scales
+
 	};
 }

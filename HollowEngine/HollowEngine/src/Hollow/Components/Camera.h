@@ -1,6 +1,11 @@
 #pragma once
 #include "Component.h"
-namespace Hollow {
+
+namespace Hollow 
+{
+	enum CameraType;
+	enum CameraProjection;
+
 	class Camera : public Component
 	{
 		REGISTERCOMPONENT(Camera);
@@ -11,6 +16,8 @@ namespace Hollow {
 		void DebugDisplay();
 
 	public:
+		CameraType mType;
+		CameraProjection mProjection;
 		glm::vec3 mPosition;
 		glm::vec3 mFront;
 		glm::vec3 mUp;			//Camera's Up Direction
@@ -23,10 +30,13 @@ namespace Hollow {
 		float mMovementSpeed;
 		float mMouseSensitivity;
 		float mZoom;
-		float mNear;
-		float mFar;
+		float mNearPlane;
+		float mFarPlane;
+		glm::ivec2 mScreenPosition;
+		glm::ivec2 mViewPort;
 
 		bool mCanMouse;
+		bool mHandleInputs;
 
 		float mDefaultZoom;		//Used to reset the values
 		float mDefaultPitch;	//Used to reset the values

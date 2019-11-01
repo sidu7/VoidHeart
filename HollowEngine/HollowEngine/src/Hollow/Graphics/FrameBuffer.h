@@ -6,8 +6,8 @@ namespace Hollow {
 	{
 	private:
 		unsigned int mRendererID;
-		unsigned int mPrevWidth, mPrevHeight;
-		unsigned int mPrevPosX, mPrevPosY;
+		glm::ivec2 mScreenViewPort;
+		glm::ivec2 mScreenPosition;
 
 	public:
 		unsigned int *mpTextureID;

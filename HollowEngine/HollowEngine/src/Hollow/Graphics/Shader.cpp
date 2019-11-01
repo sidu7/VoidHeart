@@ -61,6 +61,11 @@ namespace Hollow {
 		GLCall(glUseProgram(0));
 	}
 
+	void Shader::DispatchCompute(const unsigned int group_x, const unsigned int group_y, const unsigned int group_z) const
+	{
+		GLCall(glDispatchCompute(group_x, group_y, group_z));
+	}
+
 	void Shader::SetInt(const std::string& name, int value) const
 	{
 		GLCall(glUniform1i(glGetUniformLocation(mProgram, name.c_str()), value));
@@ -96,6 +101,11 @@ namespace Hollow {
 		GLCall(glUniformMatrix4fv(glGetUniformLocation(mProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]));
 	}
 
+	void Shader::SetUniformBlock(const std::string& name, const int bindPoint) const
+	{
+		GLCall(glUniformBlockBinding(mProgram, glGetUniformBlockIndex(mProgram, name.c_str()), bindPoint));
+	}
+
 	std::stringstream Shader::CopyFileToStringStream(const GLchar* pFilePath)
 	{
 		std::ifstream shaderFile;
@@ -116,7 +126,7 @@ namespace Hollow {
 		GLCall(glCompileShader(shaderId));
 
 		// Print errors
-		GLint success;
+		GLint success = false;
 		GLCall(glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success));
 		if (!success)
 		{
@@ -136,7 +146,7 @@ namespace Hollow {
 		GLCall(glLinkProgram(mProgram));
 
 		// Print linking errors
-		GLint success;
+		GLint success = false;
 		GLCall(glGetProgramiv(mProgram, GL_LINK_STATUS, &success));
 		if (!success)
 		{

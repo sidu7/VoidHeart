@@ -15,24 +15,24 @@ namespace Hollow
 
 	void ParticleEmitter::Init()
 	{
-		mCount = 0;
-		mMinSpeed = 0.0f;
-		mMaxSpeed = 0.0f;
-		mCenterOffset = glm::vec3(0.0f);
-		mAreaOfEffect = glm::vec3(0.0f);
 	}
 
 	void ParticleEmitter::Clear()
 	{
 		mCount = 0;
-		mMinSpeed = 0.0f;
-		mMaxSpeed = 0.0f;
+		mSpeedRange = glm::vec2(0.0f);
+		mLifeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
+		mParticlesList.clear();
+		mParticlePositions.clear();
+		mpParticle.clear();
+		mModelMatrices.clear();
 		delete mpParticlePositionVBO;
 		delete mTexture;
 		delete mpParticlePositionVAO;
 		delete mpParticleModelVBO;
+		delete mpParticleStorage;
 	}
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)
@@ -44,49 +44,28 @@ namespace Hollow
 			mType = (ParticleType)data["Shape"].GetUint();
 			if (mType == POINT)
 			{
-				mTexture = new Texture(data["Texture"].GetString());
+				mTexture = ResourceManager::Instance().LoadTexture(data["Texture"].GetString());
 			}
 			else if (mType == MODEL)
 			{
 				mpParticle = ResourceManager::Instance().LoadModel(data["Model"].GetString());
 			}
 		}
-		
-		UpdateAttributes();
-		mAreaOfEffect = JSONHelper::GetVec3F(data["Area"].GetArray());
+		if (data.HasMember("Area"))
+		{
+			mAreaOfEffect = JSONHelper::GetVec3F(data["Area"].GetArray());
+		}
+		if (data.HasMember("Speed"))
+		{
+			mSpeedRange = JSONHelper::GetVec2F(data["Speed"].GetArray());
+		}
+		if (data.HasMember("Life"))
+		{
+			mLifeRange = JSONHelper::GetVec2F(data["Life"].GetArray());
+		}
 	}
 
 	void ParticleEmitter::DebugDisplay()
 	{
-	}
-
-	void ParticleEmitter::UpdateAttributes()
-	{
-		mParticlesList.reserve(mCount);
-		mParticlePositions.reserve(mCount);
-		
-		mpParticlePositionVBO = new VertexBuffer();
-
-		mpParticlePositionVAO = new VertexArray();
-		mpParticlePositionVAO->AddBuffer(*mpParticlePositionVBO);
-
-		mpParticlePositionVBO->AddStreamingData(mCount * sizeof(glm::vec4));
-
-		mpParticlePositionVAO->Push(4, GL_FLOAT, sizeof(float));
-		mpParticlePositionVAO->AddLayout();
-
-		mpParticlePositionVAO->Unbind();
-
-		mpParticleModelVBO = new VertexBuffer();
-
-		mpParticleModelVBO->AddStreamingData(mCount * sizeof(glm::mat4));
-
-		for (unsigned int i = 0; i < mpParticle.size(); ++i)
-		{
-			VertexArray* vao = mpParticle[i]->mpVAO;
-			vao->Bind();
-			vao->PushMatrix(4, GL_FLOAT, sizeof(glm::mat4), sizeof(glm::vec4));
-			vao->Unbind();
-		}
-	}
+	}	
 }

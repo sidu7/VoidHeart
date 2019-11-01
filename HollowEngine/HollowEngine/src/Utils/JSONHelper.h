@@ -24,6 +24,11 @@ namespace Hollow
 			return glm::vec4(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat(), arr[3].GetFloat());
 		}
 
+		inline static glm::ivec2 GetIVec2(const rapidjson::Value::Array& arr)
+		{
+			return glm::ivec2(arr[0].GetInt(), arr[1].GetInt());
+		}
+
 		template<typename T>
 		inline static std::vector<T> GetArray(const rapidjson::Value::Array& arr)
 		{
