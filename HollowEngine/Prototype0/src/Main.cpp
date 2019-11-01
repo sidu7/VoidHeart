@@ -18,12 +18,17 @@
 #define NUM_VERT 1000000000
 #define PI 3.14159f
 
+#include "Hollow/Components/Collider.h"
+#include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
+
+
 // Quoting theCherno: "A layer basically handles events and draws stuff"
 // The game layer could draw the entire 3d scene
 class GameLayer : public Hollow::Layer
 {
 	void OnUpdate(float dt) override
-	{
+	{		
 		
 	}
 
@@ -53,7 +58,6 @@ class UILayer : public Hollow::Layer
 			Hollow::CollisionEvent* test  = new Hollow::CollisionEvent();
 			Hollow::EventManager::Instance().AddDelayedEvent(test,5.0f);
 			//Test Event
-			
 		}
 		//HW_TRACE("{0}", e);
 	}
@@ -84,6 +88,10 @@ public:
 
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
+		//for(int i = 0; i < 100; ++i)
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");

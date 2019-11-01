@@ -12,7 +12,7 @@
 #include "Hollow/Graphics/Data/RenderData.h"
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Components/Collider.h"
-#include "Hollow/Components/Shape.h"
+#include "Hollow/Physics/Broadphase/Shape.h"
 
 Hollow::RenderSystem Hollow::RenderSystem::instance;
 

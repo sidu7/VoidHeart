@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Hollow\Managers\PhysicsManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
     <ClCompile Include="src\Hollow\Components\Collider.cpp" />
     <ClCompile Include="src\hollowpch.cpp">
@@ -86,16 +87,19 @@
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />
     <ClInclude Include="src\Hollow\Components\Collider.h" />
-    <ClInclude Include="src\Hollow\Components\Shape.h" />
+    <ClInclude Include="src\Hollow\Physics\Broadphase\Shape.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
+
     <ClInclude Include="src\Hollow\Events\CollisionEvent.h" />
     <ClInclude Include="src\Hollow\Events\EventData.h" />
+
     <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\CameraData.h" />
@@ -104,6 +108,7 @@
     <ClInclude Include="src\Hollow\Graphics\Data\LightData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\MaterialData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\ParticleData.h" />
+
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\RenderData.h" />
