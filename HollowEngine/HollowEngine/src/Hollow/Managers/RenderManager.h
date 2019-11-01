@@ -29,24 +29,32 @@ namespace Hollow {
 		// Initialization Functions
 		void InitializeGBuffer(rapidjson::Value::Object& data);
 
+		void CreateLocalLightShader();
 		void CreateDeferredShader(rapidjson::Value::Object& data);
 
 		void CreateShadowMap(LightData& light);
+		void BlurShadowMap(LightData& light);
+		std::vector<float> CreateBlurKernel(unsigned int distance);
 
 		void GBufferPass();
 		void GlobalLightingPass(LightData& light);
+		void LocalLightingPass();
 
 		void DrawAllRenderData(Shader* pShader);
 		void DrawShadowCastingObjects(Shader* pShader);
 		void DrawFSQ();
+		void DrawSphere();
 
 		void DrawParticles();
 
 		void DrawDebugDrawings();
 
+		void DrawShadowMap();
+
 		// ImGui Debug functions
 		void DebugDisplay();
 		void DebugDisplayGBuffer();
+		void DebugDisplayLighting();
 
 	public:
 		std::vector<RenderData> mRenderData;
@@ -65,6 +73,7 @@ namespace Hollow {
 
 		// Lighting
 		Shader* mpDeferredShader;
+		Shader* mpLocalLightShader;
 
 		// Debug drawing Shader
 		Shader* mpDebugShader;
@@ -76,6 +85,13 @@ namespace Hollow {
 
 		// Shadows
 		Shader* mpShadowMapShader;
+		Shader* mpShadowDebugShader;
+		bool mShadowMapDebugMode;
+		unsigned int mShadowMapDebugLightIndex;
+
+		// Blur
+		Shader* mpHorizontalBlurShader;
+		Shader* mpVerticalBlurShader;
 
 		// ParticleSystem
 		Shader* mpParticleShader;

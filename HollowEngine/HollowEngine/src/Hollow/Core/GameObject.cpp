@@ -32,13 +32,9 @@ namespace Hollow {
 
 	void GameObject::DebugDisplay()
 	{
-		if (ImGui::TreeNode((void*)mID, "Object %d", mID))
+		for (std::type_index typeIndex : mIndices)
 		{
-			for (std::type_index typeIndex : mIndices)
-			{
-				mComponents[typeIndex]->DebugDisplay();
-			}
-			ImGui::TreePop();
+			mComponents[typeIndex]->DebugDisplay();
 		}
 	}
 

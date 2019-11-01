@@ -35,14 +35,14 @@ struct MeshData {
 		ver.point = vert;
 		ver.edge = -1;
 
-		vertices.push_back(ver);
+		vertices[vIndex++] = ver;
 	}
 	void AddFace(const std::vector<int>& fVerts) {
 		Face f;
 		f.edge = -1;
-		faces.push_back(f);
+		int faceIndex = fIndex;
+		faces[fIndex++] = f;
 
-		int faceIndex = faces.size() - 1;
 
 		int edge = -1;
 		int edgeTwin = -1;
@@ -60,11 +60,12 @@ struct MeshData {
 			else {
 				// if edge was not in the map, then create the edges and set all values
 				Edge e1, e2;
-				edges.push_back(e1);
-				edges.push_back(e2);
+	
+				edges[eIndex] = (e1);
+				edges[eIndex +1] = (e2);
 
 				// set edge indices
-				edge = edges.size() - 2;
+				edge = eIndex;
 				edgeTwin = edge + 1;
 
 				// set twins
@@ -74,6 +75,8 @@ struct MeshData {
 				// add to edge map
 				edgeMap[std::pair<int, int>(fVerts[i], fVerts[j])] = edge;
 				edgeMap[std::pair<int, int>(fVerts[j], fVerts[i])] = edgeTwin;
+
+				eIndex += 2;
 			}
 
 			// link vertices and edges and faces
@@ -153,9 +156,13 @@ struct MeshData {
 	}
 
 	// Vectors to store vertices, edges and faces
-	std::vector<Vertex> vertices;
-	std::vector<Edge> edges;
-	std::vector<Face> faces;
+	std::array<Vertex, 8> vertices;
+	std::array<Edge, 24> edges;
+	std::array<Face, 6> faces;
+
+	int vIndex = 0;
+	int eIndex = 0;
+	int fIndex = 0;
 
 	// Map to store the edges
 	std::map<std::pair<int, int>, int> edgeMap;
