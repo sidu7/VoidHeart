@@ -1,117 +1,105 @@
 #pragma once
 
-#include "Eigen/Dense"
-
 #include "Hollow/Physics/NarrowPhase/Contact.h"
 #include "Hollow/Components/Body.h"
 
 #include "glm/glm.hpp"
+#include "PhysicsDataTypes.h"
 
 namespace Hollow {
+	
 	class Constraint
 	{
-		Eigen::Matrix<float, 12, 1> deltaV;
+		MassMatrix massMatrix;
 	public:
-		Eigen::Matrix<float, 12, 12> massMatrixInverse;
-		Eigen::Matrix<float, 1, 12> jacobian;
-		Eigen::Matrix<float, 12, 1> jacobianT;
-		Eigen::Matrix<float, 12, 1> velocityMatrix;
-		// makes the jacobian for the given constraint
-		inline void EvaluateJacobian(Hollow::Contact* c, glm::vec3 dir)
+		VelocityJacobian velocityJacobian;
+		
+		inline void EvaluateJacobian(Jacobian& jacobian, Contact* c, glm::vec3 dir)
 		{
-
-			jacobian(0, 0) = -dir.x;
-			jacobian(0, 1) = -dir.y;
-			jacobian(0, 2) = -dir.z;
-
-			glm::vec3 rA_x_n = glm::cross(c->rA, dir);
-			jacobian(0, 3) = -rA_x_n.x;
-			jacobian(0, 4) = -rA_x_n.y;
-			jacobian(0, 5) = -rA_x_n.z;
-
-			jacobian(0, 6) = dir.x;
-			jacobian(0, 7) = dir.y;
-			jacobian(0, 8) = dir.z;
-
-			glm::vec3 rB_x_n = glm::cross(c->rB, dir);
-			jacobian(0, 9) = rB_x_n.x;
-			jacobian(0, 10) = rB_x_n.y;
-			jacobian(0, 11) = rB_x_n.z;
-
-
-			jacobianT(0, 0) = -dir.x;
-			jacobianT(1, 0) = -dir.y;
-			jacobianT(2, 0) = -dir.z;
-			jacobianT(3, 0) = -rA_x_n.x;
-			jacobianT(4, 0) = -rA_x_n.y;
-			jacobianT(5, 0) = -rA_x_n.z;
-			jacobianT(6, 0) = dir.x;
-			jacobianT(7, 0) = dir.y;
-			jacobianT(8, 0) = dir.z;
-			jacobianT(9, 0) = rB_x_n.x;
-			jacobianT(10, 0) = rB_x_n.y;
-			jacobianT(11, 0) = rB_x_n.z;
+			jacobian.positionA = -dir;
+			jacobian.positionB = dir;
+ 
+			jacobian.orientationA = -glm::cross(c->rA, dir);
+			jacobian.orientationB = glm::cross(c->rB, dir);
 		}
 
+		VelocityJacobian MassMatrixJacobianMult(MassMatrix& m, Jacobian& j)
+		{
+			VelocityJacobian result;
+			result.velocityA = m.massA * j.positionA;
+			result.velocityB = m.massB * j.positionB;
+			result.angularVelocityA = m.inertiaA * j.orientationA;
+			result.angularVelocityB = m.inertiaB * j.orientationB;
+
+			return result;
+		}
+
+		float JacobianJacobianMult(Jacobian& j1, VelocityJacobian& j2)
+		{
+			float sum = 0.0f;
+			sum += glm::dot(j1.positionA, j2.velocityA);
+			sum += glm::dot(j1.positionB, j2.velocityB);
+			sum += glm::dot(j1.orientationA, j2.angularVelocityA);
+			sum += glm::dot(j1.orientationB, j2.angularVelocityB);
+
+			return sum;
+		}
+		
+		VelocityJacobian& JacobianScalarMult(VelocityJacobian& j, float val)
+		{
+			VelocityJacobian result;
+			result.velocityA = j.velocityA* val;
+			result.velocityB = j.velocityB * val;
+			result.angularVelocityA = j.angularVelocityA* val;
+			result.angularVelocityB	 = j.angularVelocityB * val;
+			return result;
+		}
+		
 		// makes the mass matrix and calculates the effective mass
 		inline void CalculateMassMatrixInv(Body* bodyA, Body* bodyB)
 		{
-
-			for (int i = 0; i < 12; ++i) {
-				for (int j = 0; j < 12; ++j) {
-					massMatrixInverse(i, j) = 0;
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					if(i==j)
+					{
+						massMatrix.massA[i][j] = bodyA->mInverseMass;
+						massMatrix.massB[i][j] = bodyB->mInverseMass;
+					}
+					else
+					{
+						massMatrix.massA[i][j] = 0;
+						massMatrix.massB[i][j] = 0;
+					}				
 				}
 			}
-
-			massMatrixInverse(0, 0) = bodyA->mInverseMass;
-			massMatrixInverse(1, 1) = bodyA->mInverseMass;
-			massMatrixInverse(2, 2) = bodyA->mInverseMass;
-
-			for (int i = 3, m = 0; i < 6; ++i, ++m) {
-				for (int j = 3, n = 0; j < 6; ++j, ++n) {
-					massMatrixInverse(i, j) = bodyA->mWorldInertiaInverse[n][m];
-				}
-			}
-
-			massMatrixInverse(6, 6) = bodyB->mInverseMass;
-			massMatrixInverse(7, 7) = bodyB->mInverseMass;
-			massMatrixInverse(8, 8) = bodyB->mInverseMass;
-
-			for (int i = 9, m = 0; i < 12; ++i, ++m) {
-				for (int j = 9, n = 0; j < 12; ++j, ++n) {
-					massMatrixInverse(i, j) = bodyB->mWorldInertiaInverse[n][m];
-				}
-			}
+			massMatrix.inertiaA = bodyA->mWorldInertiaInverse;
+			massMatrix.inertiaB = bodyB->mWorldInertiaInverse;
 		}
 
-		inline void EvaluateVelocityVector(Body* bodyA, Body* bodyB)
+		inline void EvaluateVelocityJacobian(Body* bodyA, Body* bodyB)
 		{
-			velocityMatrix(0, 0) = bodyA->mVelocity.x;
-			velocityMatrix(1, 0) = bodyA->mVelocity.y;
-			velocityMatrix(2, 0) = bodyA->mVelocity.z;
+			velocityJacobian.velocityA = bodyA->mVelocity;
+			velocityJacobian.velocityB = bodyB->mVelocity;
 
-			velocityMatrix(3, 0) = bodyA->mAngularVelocity.x;
-			velocityMatrix(4, 0) = bodyA->mAngularVelocity.y;
-			velocityMatrix(5, 0) = bodyA->mAngularVelocity.z;
-
-			velocityMatrix(6, 0) = bodyB->mVelocity.x;
-			velocityMatrix(7, 0) = bodyB->mVelocity.y;
-			velocityMatrix(8, 0) = bodyB->mVelocity.z;
-
-			velocityMatrix(9, 0) = bodyB->mAngularVelocity.x;
-			velocityMatrix(10, 0) = bodyB->mAngularVelocity.y;
-			velocityMatrix(11, 0) = bodyB->mAngularVelocity.z;
+			velocityJacobian.angularVelocityA = bodyA->mAngularVelocity;
+			velocityJacobian.angularVelocityB = bodyB->mAngularVelocity;
 		}
 
-		inline void ApplyImpulse(Body* bodyA, Body* bodyB, float impulse)
+		void CalculateEffectiveMass(VelocityJacobian& mMatxj, Jacobian& jacobian, float& effectiveMass)
 		{
-			deltaV = massMatrixInverse * jacobianT * impulse;
+			mMatxj = MassMatrixJacobianMult(massMatrix, jacobian);
+			effectiveMass = 1.0f / JacobianJacobianMult(jacobian, mMatxj);
+		}
+		
+		inline void ApplyImpulse(Body* bodyA, Body* bodyB, VelocityJacobian& mMatxj, float impulse)
+		{
+			VelocityJacobian& dvj = JacobianScalarMult(mMatxj, impulse);
 
-			bodyA->mVelocity += glm::vec3(deltaV(0, 0), deltaV(1, 0), deltaV(2, 0));
-			bodyA->mAngularVelocity += glm::vec3(deltaV(3, 0), deltaV(4, 0), deltaV(5, 0));
+			bodyA->mVelocity += dvj.velocityA;
+			bodyB->mVelocity += dvj.velocityB;
 
-			bodyB->mVelocity += glm::vec3(deltaV(6, 0), deltaV(7, 0), deltaV(8, 0));
-			bodyB->mAngularVelocity += glm::vec3(deltaV(9, 0), deltaV(10, 0), deltaV(11, 0));
+			bodyA->mAngularVelocity += dvj.angularVelocityA;
+			bodyB->mAngularVelocity += dvj.angularVelocityB;
 		}
 
 	};

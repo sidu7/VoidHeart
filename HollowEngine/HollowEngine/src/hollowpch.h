@@ -53,6 +53,7 @@
 #include <rapidjson/ostreamwrapper.h>
 
 // TODO: Add ifdef guards if more platforms
+#define NOMINMAX
 #include <Windows.h>
 
 // Our stuff, only add things here that don't change

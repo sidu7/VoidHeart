@@ -58,7 +58,7 @@ namespace Hollow
 		}
 	}
 
-	void ResourceManager::LoadGameObjectFromFile(std::string path)
+	GameObject* ResourceManager::LoadGameObjectFromFile(std::string path)
 	{
 		std::ifstream file(path);
 		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -72,8 +72,11 @@ namespace Hollow
 			if (pNewGameObject)
 			{
 				GameObjectManager::Instance().AddGameObject(pNewGameObject);
+				return pNewGameObject;
 			}
 		}
+
+		return nullptr;
 	}
 
 	Texture* ResourceManager::LoadTexture(std::string path)
@@ -656,14 +659,14 @@ namespace Hollow
 		{
 			std::vector<glm::vec3> verts;
 
-			verts.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-			verts.push_back(glm::vec3(1.0f, 1.0f, -1.0f));
-			verts.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
-			verts.push_back(glm::vec3(-1.0f, 1.0f, -1.0f));
-			verts.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
-			verts.push_back(glm::vec3(1.0f, -1.0f, -1.0f));
-			verts.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
-			verts.push_back(glm::vec3(-1.0f, -1.0f, -1.0f));
+			verts.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+			verts.push_back(glm::vec3(0.5f, 0.5f, -0.5f));
+			verts.push_back(glm::vec3(-0.5f, 0.5f, 0.5f));
+			verts.push_back(glm::vec3(-0.5f, 0.5f, -0.5f));
+			verts.push_back(glm::vec3(0.5f, -0.5f, 0.5f));
+			verts.push_back(glm::vec3(0.5f, -0.5f, -0.5f));
+			verts.push_back(glm::vec3(-0.5f, -0.5f, 0.5f));
+			verts.push_back(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 			unsigned int ind[] = {
 				0, 1, 0, 2, 1, 3, 2, 3, 4, 5, 4, 6, 5, 7, 6, 7, 0, 4, 1, 5, 2, 6, 3, 7

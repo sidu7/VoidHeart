@@ -34,6 +34,18 @@ namespace Hollow
 		RenderManager::Instance().mDebugRenderData.push_back(data);
 	}
 
+	void DebugDrawManager::DebugRay(glm::vec3 startPos, glm::vec3 direction, glm::vec3 color)
+	{
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, startPos);
+		model *= GraphicsMath::RotationFromDirection(glm::normalize(direction));
+		//model = glm::scale(model, glm::vec3(length(direction)));
+		std::vector<Mesh*> mesh;
+		mesh.push_back(ResourceManager::Instance().GetShape(Shapes::DIRECTION_LINE));
+		DebugRenderData data(mesh, model, GL_LINES, Shapes::DIRECTION_LINE, color);
+		RenderManager::Instance().mDebugRenderData.push_back(data);
+	}
+
 	void DebugDrawManager::DebugLine(glm::vec3 startPos, glm::vec3 endPos, glm::vec3 color)
 	{
 		glm::vec3 dirvec = endPos - startPos;
@@ -99,6 +111,14 @@ namespace Hollow
 		std::vector<Mesh*> mesh;
 		mesh.push_back(ResourceManager::Instance().GetShape(Shapes::WIRECUBE));
 		DebugRenderData data(mesh, model, GL_LINES, Shapes::WIRECUBE, color);
+		RenderManager::Instance().mDebugRenderData.push_back(data);
+	}
+
+	void DebugDrawManager::DebugCube(glm::mat4& modelMatrix, glm::vec3 color)
+	{
+		std::vector<Mesh*> mesh;
+		mesh.push_back(ResourceManager::Instance().GetShape(Shapes::WIRECUBE));
+		DebugRenderData data(mesh, modelMatrix, GL_LINES, Shapes::WIRECUBE, color);
 		RenderManager::Instance().mDebugRenderData.push_back(data);
 	}
 }

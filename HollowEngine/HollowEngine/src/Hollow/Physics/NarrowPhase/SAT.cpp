@@ -7,7 +7,7 @@
 
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Components/Transform.h"
-#include "Hollow/Components/Shape.h"
+#include "Hollow/Physics/Broadphase/Shape.h"
 
 #define epsilon 0.0001f
 namespace Hollow {
@@ -422,14 +422,14 @@ namespace Hollow {
 
 	FaceQuery SAT::FaceIntersectionQuery(Collider* col1, Collider* col2) {
 		glm::mat3& Ra = col1->mpBody->mRotationMatrix;
-		glm::mat3& Rb = col2->mpBody->mRotationMatrix;
+		glm::mat3& RbTrans = glm::transpose(col2->mpBody->mRotationMatrix);
 
 		glm::vec3 Ea = col1->mpTr->mScale;
 		glm::vec3 Eb = col2->mpTr->mScale;
 		
 		// rotation matrix to convert from A's local to B's local
 		//glm::mat3 C = Rb * glm::transpose(Ra);
-		glm::mat3 C = glm::transpose(Rb) * Ra;
+		glm::mat3 C = RbTrans * Ra;
 
 		FaceQuery fq;
 		fq.faceIndex = -1;
@@ -438,7 +438,7 @@ namespace Hollow {
 		MeshData& md1 = static_cast<ShapeAABB*>(col1->mpShape)->mMeshData;
 		MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
 
-		glm::vec3 centerA = glm::transpose(Rb) * (col1->mpBody->mPosition - col2->mpBody->mPosition);
+		glm::vec3 centerA = RbTrans * (col1->mpBody->mPosition - col2->mpBody->mPosition);
 		
 		for (int i = 0; i < md1.faces.size(); ++i) {
 			glm::vec3 normalInBSpace = C * md1.faces[i].normal;
@@ -488,15 +488,15 @@ namespace Hollow {
 
 	EdgeQuery SAT::EdgeIntersectionQuery(Collider* col1, Collider* col2) {
 		glm::mat3& Ra = col1->mpBody->mRotationMatrix;
-		glm::mat3& Rb = col2->mpBody->mRotationMatrix;
+		glm::mat3& RbTrans = glm::transpose(col2->mpBody->mRotationMatrix);
 
 		glm::vec3 Ea = col1->mpTr->mScale;
 		glm::vec3 Eb = col2->mpTr->mScale;
 		
 		// rotation matrix to convert from A's local to B's local
-		glm::mat3 C = glm::transpose(Rb) * Ra;
+		glm::mat3 C = RbTrans * Ra;
 
-		glm::vec3 centerA = glm::transpose(Rb) * (col1->mpBody->mPosition - col2->mpBody->mPosition);
+		glm::vec3 centerA = RbTrans * (col1->mpBody->mPosition - col2->mpBody->mPosition);
 
 		EdgeQuery eq;
 		eq.edgeA = -1;
