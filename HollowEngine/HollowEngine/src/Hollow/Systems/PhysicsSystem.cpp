@@ -80,7 +80,7 @@ namespace Hollow
 		ImGui::End();
 	}
 
-	Collider* PhysicsSystem::castRay()
+	/*Collider* PhysicsSystem::castRay()
 	{
 		std::pair<float, float> mouseXY = Hollow::InputManager::Instance().GetMousePosition();
 		float x = 2.0f * (mouseXY.first + 0.5f) / 1280.0f - 1.0f,
@@ -123,7 +123,7 @@ namespace Hollow
 					closest = id;
 				}
 			}
-		}*/
+		}/
 
 		Node* root = mTree.GetRoot();
 
@@ -163,7 +163,7 @@ namespace Hollow
 		if (closest.object == nullptr) { return nullptr; }
 		
 		return static_cast<Collider*>(closest.object);
-	}
+	}*/
 
 	void PhysicsSystem::Step(float fixedDeltaTime)
 	{
