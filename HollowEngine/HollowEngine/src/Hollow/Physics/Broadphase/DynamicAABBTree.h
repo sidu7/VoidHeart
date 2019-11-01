@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Broadphase.h"
-#include "Hollow/Components/Shape.h"
 #include "Hollow/Components/Collider.h"
+#include "Shape.h"
 
 namespace Hollow {
 	class Node {

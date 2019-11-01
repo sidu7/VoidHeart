@@ -2,8 +2,10 @@
 #include "AnimationSystem.h"
 
 #include "Hollow/Components/Animator.h"
+#include "Hollow/Components/StateMachine.h"
 
 #include "Hollow/Graphics/Data/Bone.h"
+#include "Hollow/Core/Data/StateData.h"
 
 #include "Hollow/Managers/FrameRateController.h"
 
@@ -13,27 +15,35 @@ namespace Hollow
 	
 	void AnimationSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<Animator>(object);
+		CheckComponents<Animator,StateMachine>(object);
 	}
 
 	void AnimationSystem::Update()
 	{
-		mRunTime += FrameRateController::Instance().GetFrameTime();
+		
 
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			GameObject* gameobject = mGameObjects[i];
 			Animator* animator = gameobject->GetComponent<Animator>();
+			StateMachine* state = gameobject->GetComponent<StateMachine>();
+			if (animator->mRunningState != state->mCurrentState->mName)
+			{
+				animator->mRunningState = state->mCurrentState->mName;
+				animator->mRunTime = 0.0;
+			}
+			animator->mRunTime += FrameRateController::Instance().GetFrameTime();
 			animator->mBoneTransformations.clear();
+			std::string animationName = state->mCurrentState->mName;
 			for (unsigned int j = 0; j < animator->mBones.size(); ++j)
 			{
 				Bone* bone = animator->mBones[j];
 				glm::mat4 trans = glm::mat4(1.0f);
-				if (bone->isAnimated)
+				if (bone->mIsAnimated[animationName])
 				{
 					//interpolate for timeframe
-					AnimationData& anim = bone->mAnimations["mixamo.com"];
-					double TimeinTicks = mRunTime * anim.mTicksPerSec;
+					AnimationData& anim = bone->mAnimations[animationName];
+					double TimeinTicks = animator->mRunTime * anim.mTicksPerSec;
 					double timeFrame = fmod(TimeinTicks, anim.mDuration);
 					unsigned int posIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyPositions);
 					unsigned int rotIndex = FindT2inList<glm::quat>(timeFrame, anim.mKeyRotations);

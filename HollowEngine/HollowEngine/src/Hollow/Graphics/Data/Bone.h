@@ -10,7 +10,7 @@ namespace Hollow
 		glm::mat4 mTransformation;
 		glm::mat4 mCurrentTransformation;
 		glm::mat4 mOffset;
-		bool isAnimated;
+		std::unordered_map<std::string, bool> mIsAnimated;
 		std::string mName;
 		std::unordered_map<std::string, AnimationData> mAnimations;
 	};

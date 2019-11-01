@@ -3,7 +3,7 @@
         {
             "Type": "Transform",
           "Position": [ 0.0, 6.0, 0.0 ],
-          "Scale" :  [1.0, 1.0, 1.0]
+          "Scale" :  [1.0, 2.0, 1.0]
         },
         {
             "Type": "Body",

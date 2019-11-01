@@ -1,9 +1,9 @@
 #pragma once
 #include "System.h"
-#include "Hollow/Physics/Broadphase/DynamicAABBTree.h"
-#include "Hollow/Physics/NarrowPhase/SAT.h"
 
 namespace Hollow {
+	class Camera;
+	
 	class PhysicsSystem : public System
 	{
 		REGISTERSYSTEM(PhysicsSystem, 2)
@@ -11,15 +11,13 @@ namespace Hollow {
 		void Update();
 		void AddGameObject(GameObject* object);
 		void DebugContacts();
+		
 	private:
 		void Step(float);
 		void InterpolateState(float);
-		
-		// Data
-		DynamicAABBTree mTree;
 
-		// SAT
-		SAT mSAT;
+		// TODO temp function
+		void CheckCameraComponentAndAdd(GameObject* object);
 
 		bool isPaused;
 		bool nextStep;
