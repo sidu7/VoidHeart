@@ -16,5 +16,6 @@ namespace Hollow
 	private:
 		void CalculateParticleMatrices(ParticleEmitter* emitter);
 		void CalculateParticlePositions(ParticleEmitter* emitter, glm::vec3 center);
+		void UpdateAttributes(ParticleEmitter* emitter);
 	};
 }

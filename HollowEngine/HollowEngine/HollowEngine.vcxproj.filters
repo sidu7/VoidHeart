@@ -64,7 +64,10 @@
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
     <ClCompile Include="src\Hollow\Systems\AnimationSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\StateMachineSystem.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\ShaderStorageBuffer.cpp" />
+
     <ClCompile Include="src\Hollow\Managers\PhysicsManager.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -218,9 +221,13 @@
     <ClInclude Include="src\Utils\Random.h" />
     <ClInclude Include="src\Utils\RayCast.h" />
 
+    <ClInclude Include="src\Hollow\Graphics\ShaderStorageBuffer.h" />
+
+
     <ClInclude Include="src\Hollow\Physics\Resolution\PhysicsDataTypes.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Shape.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
+
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

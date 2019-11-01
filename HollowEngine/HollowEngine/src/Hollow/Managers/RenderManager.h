@@ -23,7 +23,7 @@ namespace Hollow {
 		void Init(GameWindow* pWindow = nullptr);
 		void CleanUp();
 		void Update();
-		//inline Camera* GetCamera(){ return mpCamera; }
+		inline glm::vec2 GetWindowSize();
 
 	private:
 		// Initialization Functions
@@ -79,6 +79,8 @@ namespace Hollow {
 
 		// ParticleSystem
 		Shader* mpParticleShader;
+		Shader* mpParticleCompute;
+		ShaderStorageBuffer* mpParticlesPositionStorage;
 		bool ShowParticles;
 	};
 }

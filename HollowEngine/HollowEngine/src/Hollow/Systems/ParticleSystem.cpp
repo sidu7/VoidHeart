@@ -5,9 +5,15 @@
 #include "Hollow/Components/Transform.h"
 
 #include "Hollow/Graphics/VertexBuffer.h"
+#include "Hollow/Graphics/VertexArray.h"
+#include "Hollow/Graphics/Mesh.h"
+#include "Hollow/Graphics/ShaderStorageBuffer.h"
+#include "Hollow/Graphics/Data/ParticleData.h"
 
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+
+#include "Utils/Random.h"
 
 namespace Hollow
 {
@@ -15,43 +21,43 @@ namespace Hollow
 
 	void ParticleSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<ParticleEmitter>(object);
+		if (CheckComponents<ParticleEmitter>(object))
+		{
+			UpdateAttributes(object->GetComponent<ParticleEmitter>());
+		}
 	}
 	
 	void ParticleSystem::Update()
-	{
+	{	
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			ParticleEmitter* emitter = mGameObjects[i]->GetComponent<ParticleEmitter>();
-
+			Transform* transform = mGameObjects[i]->GetComponent<Transform>();
 			ParticleData particle;
 			if (emitter->mType == POINT)
-			{
-				CalculateParticlePositions(emitter, mGameObjects[i]->GetComponent<Transform>()->mPosition);
-
-				glm::mat4 model = glm::mat4(1.0f);
-				model = glm::translate(model, mGameObjects[i]->GetComponent<Transform>()->mPosition);
-				model = glm::scale(model, glm::vec3(10.0f));
-				//emitter->mpParticlePositionVBO->AddSubData(
-				//	&emitter->mParticlePositions[0], // data
-				//	emitter->mParticlePositions.size() , sizeof(glm::vec4)); // size of data to be sent
-
-				// Create ParticleData
+			{	
+				if (transform->dirtyBit)
+				{
+					glm::mat4 model = glm::mat4(1.0f);
+					model = glm::translate(model, transform->mPosition);
+					emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
+				}
+				
 				particle.mType = POINT;
 				particle.mpParticleVAO = emitter->mpParticlePositionVAO;
-				particle.mpParticleVBO = emitter->mpParticlePositionVBO;
-				particle.mModel = model; //glm::translate(model,glm::vec3(5.0f,0.0f,0.0f)); // translate using offset position
-				particle.mParticlesCount = emitter->mParticlePositions.size();
-				particle.mParticlePositionList = emitter->mParticlePositions;
+				particle.mCenter = transform->mPosition;
+				particle.mModel = emitter->mModelMatrix;
+				particle.mParticlesCount = emitter->mCount;
+				particle.mpParticleDataStorage = emitter->mpParticleStorage;
+				particle.mLifeRange = emitter->mLifeRange;
+				particle.mSpeedRange = emitter->mSpeedRange;
 				particle.mTex = emitter->mTexture;
 			}
+				// Create ParticleData
 			if (emitter->mType == MODEL)
 			{
 				CalculateParticleMatrices(emitter);
-				//emitter->mpParticleModelVBO->AddSubData(
-				//	&emitter->mModelMatrices[0], //data
-				//	emitter->mModelMatrices.size() , sizeof(glm::mat4)); //size of data to be sent
-
+			
 				// Create ParticleData
 				particle.mType = MODEL;
 				particle.mParticleModel = emitter->mpParticle;
@@ -96,54 +102,45 @@ namespace Hollow
 			//model = glm::translate(model, glm::vec3(0.0f, i * 2.0f, 0.0f));
 			emitter->mModelMatrices.push_back(model);
 		}
-	}
-	void ParticleSystem::CalculateParticlePositions(ParticleEmitter* emitter, glm::vec3 center)
-	{ 
-		emitter->mParticlePositions.clear();
+	}	
 
-		float deltaTime = FrameRateController::Instance().GetFrameTime();
+	void ParticleSystem::UpdateAttributes(ParticleEmitter* emitter)
+	{
 
-		//UpdateCurrentParticles
-		for (unsigned int i = 0; i < emitter->mParticlesList.size(); ++i)
-		{
-			Particle& particle = emitter->mParticlesList[i];
+		if (emitter->mType == ParticleType::POINT)
+		{			
+			emitter->mpParticleStorage = new ShaderStorageBuffer();
+			emitter->mpParticleStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
+			Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer(true));
 
-			particle.mLife -= deltaTime;
-			if (particle.mLife > 0.0f)
+			auto randomizer = Random::Range(-1.0f,1.0f);
+
+			for (unsigned int i = 0; i < emitter->mCount; ++i)
 			{
-				particle.mPosition += particle.mSpeed * deltaTime * particle.mDirection;
-				emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition,1.0f));
+				float x = randomizer(); float y = randomizer(); float z = randomizer();
+				particles[i].mPosition = glm::vec3(x,y,z);			
+				particles[i].mSpeed = 0.0f;
+				particles[i].mLife = 0.0f;
+				particles[i].mCurrentLife = 0.0f;
+				particles[i].mPadding = glm::vec2(0.0f);
 			}
-			else
-			{
-				emitter->mParticlesList.erase(emitter->mParticlesList.begin() + i);
-			}
+
+			emitter->mpParticleStorage->ReleaseBufferPointer();
+			emitter->mpParticlePositionVAO = new VertexArray();			
 		}
-		
-		//SpawnNewParticles
-
-		int amount = 200;
-		for (unsigned int i = 0; i < amount; i++)
+		else if (emitter->mType == ParticleType::MODEL)
 		{
-			if (emitter->mParticlesList.size() >= emitter->mCount)
+			emitter->mpParticleModelVBO = new VertexBuffer();
+
+			emitter->mpParticleModelVBO->AddStreamingData(emitter->mCount * sizeof(glm::mat4));
+
+			for (unsigned int i = 0; i < emitter->mpParticle.size(); ++i)
 			{
-				break;
+				VertexArray* vao = emitter->mpParticle[i]->mpVAO;
+				vao->Bind();
+				vao->PushMatrix(4, GL_FLOAT, sizeof(glm::mat4), sizeof(glm::vec4));
+				vao->Unbind();
 			}
-			float x, y, z;
-
-			x = (rand() % (2 * amount + 1) - amount) / ((float)amount);
-			y = (rand() % (2 * amount + 1) - amount) / ((float)amount);
-			z = (rand() % (2 * amount + 1) - amount) / ((float)amount);
-
-			Particle particle;
-
-			particle.mPosition = glm::vec3(x, y, z);
-			particle.mSpeed = 0.5f;
-			particle.mDirection = glm::normalize(particle.mPosition - center);
-			particle.mLife = 0.5f;
-
-			emitter->mParticlesList.push_back(particle);
-			emitter->mParticlePositions.push_back(glm::vec4(particle.mPosition, 1.0f));
 		}
 	}
 }

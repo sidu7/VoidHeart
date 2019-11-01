@@ -63,10 +63,10 @@ namespace Hollow {
 	{
 		GLint* data = new GLint[4];
 		GLCall(glGetIntegerv(GL_VIEWPORT, data));
-		mPrevPosX = data[0];
-		mPrevPosY = data[1];
-		mPrevWidth = data[2];
-		mPrevHeight = data[3];
+		mScreenPosition.x = data[0];
+		mScreenPosition.y = data[1];
+		mScreenViewPort.x = data[2];
+		mScreenViewPort.y = data[3];
 		GLCall(glViewport(0, 0,mWidth, mHeight));
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mRendererID));
 		Clear();
@@ -75,8 +75,8 @@ namespace Hollow {
 	void FrameBuffer::Unbind() const
 	{
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-		GLCall(glViewport(mPrevPosX, mPrevPosY, mPrevWidth, mPrevHeight));
-		Clear();
+		GLCall(glViewport(mScreenPosition.x, mScreenPosition.y, mScreenViewPort.x, mScreenViewPort.y));
+		//Clear();
 	}
 
 	void FrameBuffer::TexBind(unsigned int index, unsigned int slot)

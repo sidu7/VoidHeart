@@ -1,4 +1,3 @@
-// TODO: REMOVE THIS, TESTING PULL REQUEST
 #include <hollowpch.h>
 #include "RenderManager.h"
 
@@ -14,6 +13,9 @@
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/FrameBuffer.h"
+#include "Hollow/Graphics/ShaderStorageBuffer.h"
+
+#include "Hollow/Managers/FrameRateController.h"
 
 #include "Utils/GLCall.h"
 
@@ -26,6 +28,16 @@ namespace Hollow {
 		{
 			HW_CORE_ERROR("Failed to initialize GLEW");
 		}
+
+		if (!glewIsSupported("GL_VERSION_4_3"))
+		{
+			HW_CORE_ERROR("Opengl 4.3 is not supported");
+		}
+
+		int mj, mn;
+		glGetIntegerv(GL_MAJOR_VERSION, &mj);
+		glGetIntegerv(GL_MINOR_VERSION, &mn);
+		HW_CORE_INFO("Opengl version {0}.{1}", mj, mn);
 
 		mpWindow = pWindow;
 		
@@ -40,7 +52,9 @@ namespace Hollow {
 
 		// Init Particle Shader
 		mpParticleShader = new Shader("Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag");
-		srand(time(NULL));
+		mpParticleCompute = new Shader("Resources/Shaders/ParticleSystem.compute");
+		mpParticlesPositionStorage = new ShaderStorageBuffer();
+		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 	}
 
@@ -56,40 +70,75 @@ namespace Hollow {
 
 	void RenderManager::Update()
 	{
-		// Initialize transform matrices
-		mProjectionMatrix = glm::perspective(mCameraData[0].mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), mCameraData[0].mNear, mCameraData[0].mFar);
-		mViewMatrix = mCameraData[0].mViewMatrix;
-
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
-		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));	
+		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		// Deferred G-Buffer Pass
-		GBufferPass();
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
-		{
+		{	
 			// ShadowMap Pass
 			CreateShadowMap(mLightData[i]);
-
-			// Apply global lighting
-			GlobalLightingPass(mLightData[i]);
 		}
+
+		for (unsigned int i = 0; i < mCameraData.size(); ++i)
+		{
+			// Initialize transform matrices
+			CameraData& camera = mCameraData[i];
+			if (camera.mProjection == CameraProjection::PERSPECTIVE)
+			{
+				mProjectionMatrix = glm::perspective(camera.mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), camera.mNearPlane, camera.mFarPlane);
+			}
+			else if (camera.mProjection == CameraProjection::ORTHOGRAPHIC)
+			{
+				//mProjectionMatrix = glm::ortho(0, mpWindow->GetWidth(), 0, mpWindow->GetHeight());
+				mProjectionMatrix = glm::perspective(camera.mZoom, camera.mScreenViewPort.x / (float)camera.mScreenViewPort.y, camera.mNearPlane, camera.mFarPlane);
+			}
+			mViewMatrix = camera.mViewMatrix;
+
+			if (camera.mType != CameraType::MAIN_CAMERA)
+			{
+				GLCall(glViewport(camera.mScreenPosition.x, camera.mScreenPosition.y, camera.mScreenViewPort.x, camera.mScreenViewPort.y));
+			}
+			else
+			{
+				GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
+			}			
+
+			// Deferred G-Buffer Pass
+			GBufferPass();
+			for (unsigned int i = 0; i < mLightData.size(); ++i)
+			{
+				// Apply global lighting
+				GlobalLightingPass(mLightData[i]);
+			}
+
+			if (ShowParticles)
+			{
+				DrawParticles();
+			}
+
+			if (camera.mType == CameraType::MAIN_CAMERA)
+			{
+				//Draw debug drawings
+				DrawDebugDrawings();
+			}
+		}
+		mParticleData.clear();
 		mLightData.clear();
 		mRenderData.clear();
 		mCameraData.clear();
-
-		if (ShowParticles)
-		{
-			DrawParticles();
-		}
-
-		//Draw debug drawings
-		DrawDebugDrawings();
+			   
+		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
 
 		// Update ImGui
 		DebugDisplay();
 		ImGuiManager::Instance().Update();
 
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
+	}
+
+	inline glm::vec2 RenderManager::GetWindowSize()
+	{
+		return glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight());
 	}
 
 	void RenderManager::InitializeGBuffer()
@@ -148,7 +197,7 @@ namespace Hollow {
 	{
 		GLCall(glEnable(GL_DEPTH_TEST));
 		mpGBuffer->Bind();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		mpGBufferShader->Use();
 
 		// Send view and projection matrix
@@ -158,13 +207,14 @@ namespace Hollow {
 		// Draw all game objects
 		DrawAllRenderData(mpGBufferShader);
 
+		mpGBufferShader->Unbind();
 		mpGBuffer->Unbind();
 	}
 
 	void RenderManager::GlobalLightingPass(LightData& light)
 	{
 		// Clear opengl
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Bind G-Buffer textures
 		mpGBuffer->TexBind(0, 0);
@@ -190,6 +240,10 @@ namespace Hollow {
 		// Render FSQ
 		DrawFSQ();
 
+		mpGBuffer->TexUnbind(0);
+		mpGBuffer->TexUnbind(1);
+		mpGBuffer->TexUnbind(2);
+		mpGBuffer->TexUnbind(3);
 		light.mpShadowMap->TexUnbind(4);
 	}
 
@@ -263,19 +317,19 @@ namespace Hollow {
 					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
 					if (materialdata->mpDiffuse)
 					{
-						materialdata->mpDiffuse->Unbind();
+						materialdata->mpDiffuse->Unbind(1);
 					}
 					if (materialdata->mpSpecular)
 					{
-						materialdata->mpSpecular->Unbind();
+						materialdata->mpSpecular->Unbind(2);
 					}
 					if (materialdata->mpNormal)
 					{
-						materialdata->mpNormal->Unbind();
+						materialdata->mpNormal->Unbind(3);
 					}
 					if (materialdata->mpHeight)
 					{
-						materialdata->mpHeight->Unbind();
+						materialdata->mpHeight->Unbind(4);
 					}
 				}
 			}
@@ -359,54 +413,64 @@ namespace Hollow {
 		mpParticleShader->Use();
 		mpParticleShader->SetMat4("View", mViewMatrix);
 		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
-		mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
-		mpParticleShader->SetFloat("SpriteSize", 0.1f);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		for (unsigned int i = 0; i < mParticleData.size(); ++i)
 		{
-			mpParticleShader->SetInt("Type", mParticleData[i].mType);
-			if (mParticleData[i].mType == POINT)
+			ParticleData& particle = mParticleData[i];
+			mpParticleShader->SetInt("Type", particle.mType);
+			if (particle.mType == POINT)
 			{
-				mpParticleShader->SetMat4("Model", mParticleData[i].mModel);
+				//Compute particle positions according to velocities
+				particle.mpParticleDataStorage->Bind(2);
+				mpParticlesPositionStorage->Bind(3);
 
-				mParticleData[i].mpParticleVBO->AddSubData(
-					&mParticleData[i].mParticlePositionList[0], // data
-					mParticleData[i].mParticlePositionList.size() , sizeof(glm::vec4)); // size of data to be sent
+				mpParticleCompute->Use();
+				mpParticleCompute->SetVec3("Center", particle.mCenter);
+				mpParticleCompute->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
+				mpParticleCompute->SetVec2("SpeedRange", particle.mSpeedRange);
+				mpParticleCompute->SetVec2("LifeRange", particle.mLifeRange);
+				mpParticleCompute->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
+				ShaderStorageBuffer::PutMemoryBarrier();
+				particle.mpParticleDataStorage->Unbind(2);	
 
-
-				mParticleData[i].mTex->Bind(4);
+				mpParticleShader->Use();
+				mpParticleShader->SetMat4("Model", particle.mModel);
+				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
+				mpParticleShader->SetFloat("SpriteSize", 0.1f);
+								
+				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
-				mParticleData[i].mpParticleVAO->Bind();
-				mParticleData[i].mpParticleVBO->Bind();
-				glDrawArrays(GL_POINTS, 0, mParticleData[i].mpParticleVBO->GetVerticesCount());
-				mParticleData[i].mpParticleVBO->Unbind();
-				mParticleData[i].mpParticleVAO->Unbind();
+				particle.mpParticleVAO->Bind();
+				
+				GLCall(glDrawArrays(GL_POINTS, 0, particle.mParticlesCount));
+				particle.mTex->Unbind(4);
+				mpParticlesPositionStorage->Unbind(3);
+				particle.mpParticleVAO->Unbind();
 			}
-			else if(mParticleData[i].mType == MODEL)
+			else if(particle.mType == MODEL)
 			{
-				mParticleData[i].mpParticleVBO->AddSubData(
-					&mParticleData[i].mParticleModelMatrices[0], // data
-					mParticleData[i].mParticleModelMatrices.size(), sizeof(glm::mat4)); // size of data to be sent
+				particle.mpParticleVBO->AddSubData(
+					&particle.mParticleModelMatrices[0], // data
+					particle.mParticleModelMatrices.size(), sizeof(glm::mat4)); // size of data to be sent
 
-				for (Mesh* mesh : mParticleData[i].mParticleModel)
+				for (Mesh* mesh : particle.mParticleModel)
 				{
 					mesh->mpVAO->Bind();
 					mesh->mpVBO->Bind();
 					mesh->mpEBO->Bind();
-					mParticleData[i].mpParticleVBO->Bind();
-					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, mParticleData[i].mParticlesCount);
-					mParticleData[i].mpParticleVBO->Unbind();
+					particle.mpParticleVBO->Bind();
+					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.mParticlesCount);
+					particle.mpParticleVBO->Unbind();
 					mesh->mpEBO->Unbind();
 					mesh->mpVBO->Unbind();
 					mesh->mpVAO->Unbind();
 				}
 			}
 		}
-		glDisable(GL_BLEND);
-		mParticleData.clear();
+		glDisable(GL_BLEND);		
 	}
 
 	void RenderManager::DrawDebugDrawings()
