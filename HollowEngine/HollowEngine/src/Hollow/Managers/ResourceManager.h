@@ -10,7 +10,8 @@ namespace Hollow
 	class VertexBuffer;
 	struct Bone;
 	struct State;
-
+	class GameObject;
+	
 	enum Shapes
 	{
 		SPHERE,
@@ -33,7 +34,7 @@ namespace Hollow
 		void Init();
 		void CleanUp();
 		void LoadLevelFromFile(std::string path);
-		void LoadGameObjectFromFile(std::string path);
+		GameObject* LoadGameObjectFromFile(std::string path);
 		Texture* LoadTexture(std::string path);
 		std::vector<Mesh*> LoadModel(std::string path);
 		std::vector<MaterialData*> LoadMaterials(std::string path);

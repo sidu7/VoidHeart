@@ -57,7 +57,7 @@ namespace Hollow
 		}
 	}
 
-	void ResourceManager::LoadGameObjectFromFile(std::string path)
+	GameObject* ResourceManager::LoadGameObjectFromFile(std::string path)
 	{
 		std::ifstream file(path);
 		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -71,8 +71,11 @@ namespace Hollow
 			if (pNewGameObject)
 			{
 				GameObjectManager::Instance().AddGameObject(pNewGameObject);
+				return pNewGameObject;
 			}
 		}
+
+		return nullptr;
 	}
 
 	Texture* ResourceManager::LoadTexture(std::string path)
