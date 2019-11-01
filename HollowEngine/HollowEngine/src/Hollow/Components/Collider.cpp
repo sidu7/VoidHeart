@@ -1,6 +1,6 @@
 #include <hollowpch.h>
 #include "Collider.h"
-#include "Shape.h"
+#include "Hollow/Physics/Broadphase/Shape.h"
 
 namespace Hollow
 {

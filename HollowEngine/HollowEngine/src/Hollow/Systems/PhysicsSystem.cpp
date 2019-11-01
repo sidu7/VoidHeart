@@ -5,13 +5,31 @@
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Components/Camera.h"
+#include "Hollow/Physics/Broadphase/DynamicAABBTree.h"
+#include "Hollow/Physics/NarrowPhase/SAT.h"
+#include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Physics/Broadphase/Shape.h"
 
 namespace Hollow
 {
 	PhysicsSystem PhysicsSystem::instance;
 
+	// TODO Temporary Solution- Remove this when main camera can be obtained from elsewhere
+	void PhysicsSystem::CheckCameraComponentAndAdd(GameObject* object)
+	{
+		Camera* c = object->GetComponent<Camera>();
+		if (c)
+		{
+			PhysicsManager::Instance().mRayCastCamera = c;
+		}
+	}
+
+	
 	void PhysicsSystem::AddGameObject(GameObject* object)
 	{
+		CheckCameraComponentAndAdd(object);
+		
 		if (CheckComponents<Collider>(object)) {
 			// Collider Init
 			Collider* pCol = object->GetComponent<Collider>();
@@ -21,7 +39,7 @@ namespace Hollow
 
 			// TODO write inertia formula for spheres
 			glm::mat3 inertia = glm::mat3(0.0f);
-			if (pCol->mpShape->mType == AABB) {
+			if (pCol->mpShape->mType == ShapeType::BOX) {
 				inertia[0][0] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
 				inertia[1][1] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.x * pCol->mpTr->mScale.x + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
 				inertia[2][2] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.x * pCol->mpTr->mScale.x);
@@ -42,7 +60,7 @@ namespace Hollow
 			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
 
 			// Collider added to Dynamic BVH
-			mTree.AddCollider(pCol);
+			PhysicsManager::Instance().mTree.AddCollider(pCol);
 		}
 	}
 
@@ -50,7 +68,7 @@ namespace Hollow
 	{
 		ImGui::Begin("Contacts");
 		{
-			for (auto points : *mSAT.mContacts)
+			for (auto points : *PhysicsManager::Instance().mSAT.mContacts)
 			{
 				for (int i = 0; i < points->contactPoints.size(); i++)
 				{
@@ -81,13 +99,15 @@ namespace Hollow
 		}
 
 		// balancing the tree
-		mTree.Update();
+		PhysicsManager::Instance().mTree.Update();
 
 		// finds out intersecting bounding boxes
-		mTree.CalculatePairs();
+		PhysicsManager::Instance().mTree.CalculatePairs();
 
-		std::list < std::pair<Collider*, Collider*>>& pairs = mTree.GetPairs();
+		std::list < std::pair<Collider*, Collider*>>& pairs = PhysicsManager::Instance().mTree.GetPairs();
 
+		SAT& mSAT = PhysicsManager::Instance().mSAT;
+		
 		for (auto& pair : pairs) {
 			// perform the SAT intersection test
 			mSAT.TestIntersection3D(pair.first, pair.second);
@@ -288,13 +308,27 @@ namespace Hollow
 			//pTr->mRotation = pBody->mRotationMatrix;
 		}
 	}
-	
+
 	void PhysicsSystem::Update()
 	{
 		isPaused = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_P) == true ? !isPaused : isPaused;
 		
 		nextStep = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_SPACE);
 
+		ImGui::Begin("RayCast Result");
+		ImGui::Text("Mouse X : %f", Hollow::InputManager::Instance().GetMouseX());
+		ImGui::Text("Mouse Y : %f", Hollow::InputManager::Instance().GetMouseY());
+		if (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_R))
+		{
+			Collider* pCol = PhysicsManager::Instance().castRay();
+
+			if (pCol)
+			{
+				ImGui::InputFloat3("Collider present", &pCol->mpTr->mScale[0]);
+			}
+		}
+		ImGui::End();
+		
 		//================Physics Update======================
 		float dt = FrameRateController::Instance().GetFrameTime();
 

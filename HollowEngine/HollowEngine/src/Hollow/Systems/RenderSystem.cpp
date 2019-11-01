@@ -11,6 +11,8 @@
 
 #include "Hollow/Graphics/Data/RenderData.h"
 #include "Hollow/Graphics/Mesh.h"
+#include "Hollow/Components/Collider.h"
+#include "Hollow/Physics/Broadphase/Shape.h"
 
 Hollow::RenderSystem Hollow::RenderSystem::instance;
 
@@ -38,7 +40,8 @@ void Hollow::RenderSystem::Update()
 		//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));
 		//DebugDrawManager::Instance().DebugCircle(trans->mPosition + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
 		//DebugDrawManager::Instance().DebugLine(trans->mPosition, trans->mPosition + glm::vec3(30.0f, 30.0f, -10.0f), COLOR_ORANGE);
-		DebugDrawManager::Instance().DebugCube(trans->mPosition+ glm::vec3(0.0f,trans->mScale.x,0.0f),glm::vec3(1.0f));
+		//DebugDrawManager::Instance().DebugCube(trans->mPosition+ glm::vec3(0.0f,trans->mScale.x,0.0f),glm::vec3(1.0f));
+		DebugDrawManager::Instance().DebugCube(trans->mPosition,mGameObjects[i]->GetComponent<Collider>()->mpShape->GetHalfExtents() * 2.0f);
 		DebugDrawManager::Instance().DebugAxes(trans->mPosition, glm::vec3(2.0f));
 		
 

@@ -73,7 +73,7 @@ namespace Hollow {
 		//mCurrentSongName = songName;
 		mpSystem->playSound(song, 0, true, &mpCurrentSong);
 		mpCurrentSong->setChannelGroup(mpChannelGroups[SOUND_BACKGROUND]);
-		mpCurrentSong->setVolume(1.0f);
+		mpCurrentSong->setVolume(0.0f);
 		mpCurrentSong->setPaused(false);
 		//mFadeStatus = FADE_IN;
 	}

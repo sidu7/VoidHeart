@@ -5,17 +5,17 @@
 
 namespace Hollow {
 	class Collider;
+
 	enum ShapeType
 	{
-		SPHERE,
-		AABB,
+		BALL,
+		BOX,
 		SHAPESNUM
 	};
 
 	class Shape
 	{
 	public:
-
 		Shape(ShapeType type)
 		{
 			mType = type;
@@ -24,7 +24,7 @@ namespace Hollow {
 		virtual ~Shape() {}
 		virtual glm::vec3 GetHalfExtents() = 0;
 		virtual glm::mat4& DebugModelMatrix() { glm::mat4 mat = glm::mat4(1.0f); return mat; }
-
+		virtual bool TestRay(const Ray& r, IntersectionData& id, glm::mat3& rot, glm::vec3& extents) = 0;
 		Collider* mpOwnerCollider;
 
 	public:
@@ -34,11 +34,11 @@ namespace Hollow {
 	class ShapeCircle : public Shape
 	{
 	public:
-		ShapeCircle(float radius) : Shape(SPHERE)
+		ShapeCircle(float radius) : Shape(ShapeType::BALL)
 		{
 			mRadius = radius;
 		}
-		bool TestPoint(float PointX, float PointY)
+		bool TestRay(const Ray& r, IntersectionData& id)
 		{
 			return false;
 		}
@@ -54,17 +54,111 @@ namespace Hollow {
 	class ShapeAABB : public Shape
 	{
 	public:
-		ShapeAABB(glm::vec3 min, glm::vec3 max) : Shape(AABB)
+		ShapeAABB(glm::vec3 min, glm::vec3 max) : Shape(ShapeType::BOX)
 		{
 			mMin = min;
 			mMax = max;
 
 			SetMeshData();
 		}
-		bool TestRay(float PointX, float PointY)
+
+		// when testing for tree aabb use this
+		bool TestRay(const Ray& r, IntersectionData& data)
 		{
+			float a = 0;
+			float b = std::numeric_limits<float>::infinity();
+
+			glm::vec3 Extents = GetHalfExtents() * 2.0f;
+
+			int i = 0;
+			while (i < 6 && a <= b) {
+				glm::vec3 pointOnFace = mMeshData.GetPointOnFace(i) * Extents + GetCenter();
+				if (glm::dot(r.direction, mMeshData.faces[i].normal) < 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), mMeshData.faces[i].normal) /
+						glm::dot(r.direction, mMeshData.faces[i].normal);
+					if (a < data.depth) {
+						a = data.depth;
+					}
+				}
+				else if (glm::dot(r.direction, mMeshData.faces[i].normal) > 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), mMeshData.faces[i].normal) /
+						glm::dot(r.direction, mMeshData.faces[i].normal);
+
+					if (b > data.depth) {
+						b = data.depth;
+					}
+				}
+				else if (glm::dot(r.origin - GetCenter(), mMeshData.faces[i].normal) > 0) {
+					b = a - 1;
+				}
+
+				++i;
+			}
+
+			if (a > b) {
+				return false;
+			}
+			else if (a == 0) {
+				data.depth = b;
+				return true;
+			}
+			else {
+				data.depth = a;
+				return true;
+			}
+
 			return false;
 		}
+
+		// when testing for actual object use this
+		bool TestRay(const Ray& r, IntersectionData& data, glm::mat3& rot, glm::vec3& extents)
+		{
+			float a = 0;
+			float b = std::numeric_limits<float>::infinity();
+			
+			int i = 0;
+			while (i < 6 && a <= b) {
+				glm::vec3 pointOnFace = rot * (mMeshData.GetPointOnFace(i) * extents) + GetCenter();
+				glm::vec3 normal = rot * mMeshData.faces[i].normal;
+				if (glm::dot(r.direction, normal) < 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), normal) /
+						glm::dot(r.direction, normal);
+					if (a < data.depth) {
+						a = data.depth;
+					}
+				}
+				else if (glm::dot(r.direction, normal) > 0) {
+					data.depth = glm::dot((pointOnFace - r.origin), normal) /
+						glm::dot(r.direction, normal);
+
+					if (b > data.depth) {
+						b = data.depth;
+					}
+				}
+				else if (glm::dot(r.origin - GetCenter(), normal) > 0) {
+					b = a - 1;
+				}
+
+				++i;
+			}
+
+			if (a > b) {
+				return false;
+			}
+			else if (a == 0) {
+				data.object = mpOwnerCollider; // should be saving gameobject pointer instead
+				data.depth = b;
+				return true;
+			}
+			else {
+				data.object = mpOwnerCollider; // should be saving gameobject pointer instead
+				data.depth = a;
+				return true;
+			}
+
+			return false;
+		}
+		
 		glm::vec3 GetHalfExtents() {
 			glm::vec3 extents;
 			extents = glm::vec3((mMax.x - mMin.x) * 0.5f, (mMax.y - mMin.y) * 0.5f, (mMax.z - mMin.z) * 0.5f);
@@ -96,7 +190,7 @@ namespace Hollow {
 			mMin.x = std::min(first.mMin.x, second.mMin.x);
 			mMin.y = std::min(first.mMin.y, second.mMin.y);
 			mMin.z = std::min(first.mMin.z, second.mMin.z);
-
+			
 			mMax.x = std::max(first.mMax.x, second.mMax.x);
 			mMax.y = std::max(first.mMax.y, second.mMax.y);
 			mMax.z = std::max(first.mMax.z, second.mMax.z);

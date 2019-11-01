@@ -11,15 +11,19 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
 
+
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Collider.h"
+#include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
 // The game layer could draw the entire 3d scene
 class GameLayer : public Hollow::Layer
 {
 	void OnUpdate(float dt) override
-	{
+	{		
 		
 	}
 
@@ -65,7 +69,10 @@ public:
 	
 		//for(int i = 0; i < 100; ++i)
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 	

@@ -99,7 +99,6 @@ namespace Hollow {
 
 			AudioManager::Instance().Update();
 
-
 			RenderManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
