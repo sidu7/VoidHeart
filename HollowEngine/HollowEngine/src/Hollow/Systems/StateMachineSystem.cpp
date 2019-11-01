@@ -55,7 +55,7 @@ namespace Hollow
 				{
 					state->mPreviousState = state->mCurrentState;
 					state->mCurrentState = state->mStates[state->mCurrentState->mInputStates[i]];
-					HW_CORE_TRACE("State changed from {0} to {1}", state->mPreviousState->mName, state->mCurrentState->mName);
+					//HW_CORE_TRACE("State changed from {0} to {1}", state->mPreviousState->mName, state->mCurrentState->mName);
 					break;
 				}
 			}

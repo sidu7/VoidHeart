@@ -17,23 +17,6 @@ namespace Hollow
 			mDataQueue.push(std::move(new_value));        
 			mDataCondition.notify_one(); 
 		}   
-		
-		void WaitAndPop(T& value) 
-		{ 
-			std::unique_lock<std::mutex> lk(mMutex);
-			mDataCondition.wait(lk, [this] {return !mDataQueue.empty(); });        
-			value = std::move(mDataQueue.front());        
-			mDataQueue.pop(); 
-		}   
-		
-		std::shared_ptr<T> WaitAndPop()
-		{		
-			std::unique_lock<std::mutex> lk(mMutex);
-			mDataCondition.wait(lk, [this] {return !mDataQueue.empty(); });           
-			std::shared_ptr<T> res(std::make_shared<T>(std::move(mDataQueue.front()))); 
-			mDataQueue.pop();        
-			return res;
-		} 
 
 		bool TryPop(T& value) 
 		{ 

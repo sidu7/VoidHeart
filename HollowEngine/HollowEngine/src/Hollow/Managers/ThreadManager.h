@@ -4,6 +4,8 @@
 
 namespace Hollow
 {
+#define THREAD_FUNCTION(x) std::bind(&x,this,std::placeholders::_1,std::placeholders::_2)
+
 	class HOLLOW_API ThreadManager
 	{
 		typedef std::pair<std::packaged_task<void(unsigned int, unsigned int)>, std::pair<unsigned int, unsigned int>> Task;
