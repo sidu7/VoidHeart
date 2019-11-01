@@ -27,7 +27,31 @@ namespace Hollow
 					mShadowMapSize = JSONHelper::GetVec2F(data["ShadowMapSize"].GetArray());
 					mpShadowMap = new FrameBuffer(mShadowMapSize.x, mShadowMapSize.y, 1, true);
 				}
+				if (data.HasMember("ShadowMapNearPlane"))
+				{
+					mShadowMapNearPlane = data["ShadowMapNearPlane"].GetFloat();
+				}
+				if (data.HasMember("ShadowMapFarPlane"))
+				{
+					mShadowMapFarPlane = data["ShadowMapFarPlane"].GetFloat();
+				}
+				if (data.HasMember("BlurDistance"))
+				{
+					mBlurDistance = data["BlurDistance"].GetUint();
+				}
+				if (data.HasMember("Alpha"))
+				{
+					mAlpha = data["Alpha"].GetFloat();
+				}
+				if (data.HasMember("MD"))
+				{
+					mMD = data["MD"].GetFloat();
+				}
 			}
+		}
+		if (data.HasMember("Radius"))
+		{
+			mRadius = data["Radius"].GetFloat();
 		}
 		
 	}
@@ -49,5 +73,21 @@ namespace Hollow
 
 	void Light::DebugDisplay()
 	{
+		if (ImGui::TreeNode("Light"))
+		{
+			ImGui::InputFloat("Radius", &mRadius);
+			ImGui::InputFloat3("Position", &mPosition[0]);
+
+			if (mCastShadow)
+			{
+				ImGui::InputFloat("Shadow Map Far Plane", &mShadowMapFarPlane);
+				ImGui::InputFloat("Shadow Map Near Plane", &mShadowMapNearPlane);
+				ImGui::InputScalar("Blur Distance", ImGuiDataType_U32 ,&mBlurDistance);
+				ImGui::InputFloat("Alpha", &mAlpha);
+				ImGui::InputFloat("MD", &mMD);
+			}
+
+			ImGui::TreePop();
+		}
 	}
 }

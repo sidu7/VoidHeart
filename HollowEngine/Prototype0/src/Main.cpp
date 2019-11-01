@@ -102,6 +102,7 @@ public:
 
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
+	
 
 		//TODO: Remove test json deserialize
 		/*std::ofstream file("Resources/Json data/test.json");

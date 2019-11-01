@@ -18,6 +18,7 @@ namespace Hollow
 		void Bind(unsigned int slot = 0) const;
 		void Unbind(unsigned int slot = 0) const;
 		void EnableTiling() const;
+		inline unsigned int GetRendererID() { return mRendererID; }
 
 	private:
 		void ReadBufferToTexture();

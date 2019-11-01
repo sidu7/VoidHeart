@@ -24,7 +24,7 @@ namespace Hollow {
 		r.origin = mRayCastCamera->mPosition; // -mRayCastCamera->mFront;
 		//r.direction = mRayCastCamera->mFront + x * mRayCastCamera->mRight + y * mRayCastCamera->mUp;
 
-		glm::mat4 persp = glm::perspective(glm::radians(mRayCastCamera->mZoom), 16.0f / 9.0f, mRayCastCamera->mNear, mRayCastCamera->mFar);
+		glm::mat4 persp = glm::perspective(glm::radians(mRayCastCamera->mZoom), 16.0f / 9.0f, mRayCastCamera->mNearPlane, mRayCastCamera->mFarPlane);
 		//glm::mat4 ortho = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, mRayCastCamera->mNear, mRayCastCamera->mFar);
 		glm::mat4 view = glm::lookAt(mRayCastCamera->mPosition, mRayCastCamera->mPosition + mRayCastCamera->mFront, mRayCastCamera->mUp);
 
