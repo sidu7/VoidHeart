@@ -12,6 +12,7 @@ namespace Hollow
 		void AddGameObject(GameObject* object);
 
 	private:
+		void Animate(unsigned int start, unsigned int end);
 		template<typename T>
 		inline unsigned int FindT2inList(double time, std::vector<std::pair<double, T>> list)
 		{

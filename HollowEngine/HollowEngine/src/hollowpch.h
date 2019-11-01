@@ -12,11 +12,17 @@
 #include <random>
 #include <limits>
 
+// Multi-Threading
+#include <future>
+#include <concrt.h>
+#include <concurrent_queue.h>
+
 // Data structures
 #include <string>
 #include <sstream>
 #include <array>
 #include <vector>
+#include <queue>
 #include <unordered_map>
 
 //Indexing
@@ -63,6 +69,7 @@
 #include "Utils/GraphicsMath.h"
 #include "Hollow/Graphics/Data/Color.h"
 #include "Utils/Random.h"
+#include "Utils/ThreadSafeQueue.h"
 
 // GetObject() is defined by Windows and conflicts with GetObject() of 10004905
 

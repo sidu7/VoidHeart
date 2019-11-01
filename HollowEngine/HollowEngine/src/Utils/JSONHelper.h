@@ -15,6 +15,7 @@ namespace Hollow
 
 #define PARSE_JSON_FILE(x) std::ifstream file(x);\
 		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());\
+		file.close(); \
 		rapidjson::Document root;\
 		root.Parse(contents.c_str());\
 		if(!root.IsObject()) { HW_CORE_ERROR("Error reading JSON file {0}",x); }

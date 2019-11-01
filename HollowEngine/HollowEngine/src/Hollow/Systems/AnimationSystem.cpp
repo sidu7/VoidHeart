@@ -8,6 +8,7 @@
 #include "Hollow/Core/Data/StateData.h"
 
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/ThreadManager.h"
 
 namespace Hollow
 {
@@ -18,11 +19,9 @@ namespace Hollow
 		CheckComponents<Animator,StateMachine>(object);
 	}
 
-	void AnimationSystem::Update()
+	void AnimationSystem::Animate(unsigned int start, unsigned int end)
 	{
-		
-
-		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
+		for (unsigned int i = start; i < end; ++i)
 		{
 			GameObject* gameobject = mGameObjects[i];
 			Animator* animator = gameobject->GetComponent<Animator>();
@@ -68,7 +67,7 @@ namespace Hollow
 						double T2 = anim.mKeyRotations[rotIndex].first;
 						double T1 = anim.mKeyRotations[rotIndex - 1].first;
 						double localT = (timeFrame - T1) / (T2 - T1);
-						rotation = glm::slerp(anim.mKeyRotations[rotIndex - 1].second, anim.mKeyRotations[rotIndex].second,(float)localT);
+						rotation = glm::slerp(anim.mKeyRotations[rotIndex - 1].second, anim.mKeyRotations[rotIndex].second, (float)localT);
 						rot = glm::toMat4(rotation);
 					}
 					else
@@ -107,5 +106,13 @@ namespace Hollow
 				animator->mBoneTransformations.push_back(bone->mCurrentTransformation * bone->mOffset);
 			}
 		}
+	}
+
+	void AnimationSystem::Update()
+	{
+		auto res1 = ThreadManager::Instance().Push(std::bind(&AnimationSystem::Animate, this, std::placeholders::_1, std::placeholders::_2), 0, mGameObjects.size() / 2);
+		auto res2 = ThreadManager::Instance().Push(std::bind(&AnimationSystem::Animate, this, std::placeholders::_1, std::placeholders::_2),mGameObjects.size()/2,mGameObjects.size());
+		res1.get();
+		res2.get();
 	}
 }

@@ -25,12 +25,9 @@ namespace Hollow {
 		
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
-		void ThreadLoop();
 
 		GameWindow* mpWindow;
 		bool mIsRunning;
-		bool shouldGoIn = true;
-		bool shoudlMainThreadSleep = true;
 		LayerStack mLayerStack;
 		//static Application* instance;
 	};

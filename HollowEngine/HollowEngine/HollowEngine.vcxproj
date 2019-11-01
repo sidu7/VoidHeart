@@ -43,6 +43,7 @@
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
+    <ClCompile Include="src\Hollow\Managers\ThreadManager.cpp" />
     <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
     <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
     <ClCompile Include="src\Hollow\Systems\AnimationSystem.cpp" />
@@ -95,10 +96,8 @@
     <ClInclude Include="src\Hollow\Components\Model.h" />
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
-
     <ClInclude Include="src\Hollow\Events\CollisionEvent.h" />
     <ClInclude Include="src\Hollow\Events\EventData.h" />
-
     <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\CameraData.h" />
@@ -107,7 +106,6 @@
     <ClInclude Include="src\Hollow\Graphics\Data\LightData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\MaterialData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\ParticleData.h" />
-
     <ClInclude Include="src\Hollow\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\Mesh.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\RenderData.h" />
@@ -136,6 +134,7 @@
     <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
     <ClInclude Include="src\Hollow\Managers\ImGuiManager.h" />
     <ClInclude Include="src\Hollow\Managers\ResourceManager.h" />
+    <ClInclude Include="src\Hollow\Managers\ThreadManager.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Broadphase.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
@@ -169,6 +168,7 @@
     <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="src\Hollow\Core\Data\StateData.h" />
+    <ClInclude Include="src\Utils\ThreadSafeQueue.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui_impl_opengl3.h" />

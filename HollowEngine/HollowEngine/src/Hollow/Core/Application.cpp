@@ -12,6 +12,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/ThreadManager.h"
 
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp> // or #include "sol.hpp", whichever suits your needs
@@ -36,6 +37,7 @@ namespace Hollow {
 		
 		mIsRunning = true;
 		// Initalize managers
+		ThreadManager::Instance().Init();
 		MemoryManager::Instance().Init(JSONHelper::GetSettings(data,"Memory"));
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		SystemManager::Instance().Init();
@@ -52,6 +54,7 @@ namespace Hollow {
 		ResourceManager::Instance().CleanUp();
 		RenderManager::Instance().CleanUp();
 		ImGuiManager::Instance().CleanUp();
+		ThreadManager::Instance().CleanUp();
 		delete mpWindow;
 	}
 
@@ -105,25 +108,7 @@ namespace Hollow {
 			RenderManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
-		}
-
-		// Attempt at multithreading
-		/*std::thread systemThread (std::bind(&Application::ThreadLoop, this)) ;
-
-		while (mIsRunning)
-		{
-			shouldGoIn = true;
-			// Start frame functions
-			ImGuiManager::Instance().StartFrame();
-			InputManager::Instance().Update();
-			RenderManager::Instance().Update();		
-			while (shoudlMainThreadSleep) {}
-
-			FrameRateController::Instance().FrameEnd();
-			shoudlMainThreadSleep = true;
-		}
-		shouldGoIn = true;
-		systemThread.join();*/
+		}		
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -140,28 +125,5 @@ namespace Hollow {
 	{
 		mIsRunning = false;
 		return true;
-	}
-
-	// Attempt at multithreading
-	void Application::ThreadLoop() {
-
-		while (mIsRunning)
-		{
-			while (!shouldGoIn) {}
-			
-			FrameRateController::Instance().FrameStart();
-
-			// Update functions
-			for (Layer* layer : mLayerStack)
-			{
-				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
-			}
-			
-			SystemManager::Instance().Update();
-			AudioManager::Instance().Update();
-			
-			shoudlMainThreadSleep = false;
-			shouldGoIn = false;
-		}
 	}
 }
