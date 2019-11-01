@@ -123,7 +123,7 @@ namespace Hollow
 					closest = id;
 				}
 			}
-		//}/
+		}/
 
 		Node* root = mTree.GetRoot();
 

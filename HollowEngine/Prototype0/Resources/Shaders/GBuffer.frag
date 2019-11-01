@@ -12,9 +12,13 @@ in float cameraDepth;
 
 uniform vec3 diffuseColor;
 uniform sampler2D diffuseTexture;
-uniform sampler2D specularTexture;
+
 uniform vec3 specularColor;
+uniform sampler2D specularTexture;
 uniform float shininess;
+
+uniform sampler2D normalTexture;
+uniform sampler2D heightTexture;
 
 void main()
 {
@@ -25,7 +29,6 @@ void main()
 	gNormal = vec4(normalize(normalVector), gl_FragDepth);
 
 	// Store diffuse color in the G-Buffer
-	//gDiffuse = diffuseColor;
 	gDiffuse = diffuseColor + texture(diffuseTexture, texCoords).rgb;
 
 	// Store specular color in the G-Buffer
