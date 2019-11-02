@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Hollow\Graphics\UniformBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\PhysicsManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
     <ClCompile Include="src\Hollow\Components\Collider.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hollow\Graphics\UniformBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />
     <ClInclude Include="src\Hollow\Components\Collider.h" />

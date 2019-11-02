@@ -4,11 +4,11 @@
 
 namespace Hollow
 {
-	Texture::Texture(const std::string& FilePath) : mRendererID(0), mFilePath(FilePath), mWidth(0), mHeight(0), mBPP(0), mLocalBuffer(nullptr)
+	Texture::Texture(const std::string& FilePath) : mRendererID(0), mFilePath(FilePath), mWidth(0), mHeight(0), mChannels(0), mLocalBuffer(nullptr)
 	{
 		stbi_set_flip_vertically_on_load(1);
 
-		mLocalBuffer = stbi_load(mFilePath.c_str(), &mWidth, &mHeight, &mBPP, 0);
+		mLocalBuffer = stbi_load(mFilePath.c_str(), &mWidth, &mHeight, &mChannels, 0);
 
 		ReadBufferToTexture();
 
@@ -18,9 +18,38 @@ namespace Hollow
 
 	Texture::Texture(void* buffer, int size)
 	{
-		mLocalBuffer = stbi_load_from_memory(reinterpret_cast<unsigned char*>(buffer), size, &mWidth, &mHeight, &mBPP, 0);
+		mLocalBuffer = stbi_load_from_memory(reinterpret_cast<unsigned char*>(buffer), size, &mWidth, &mHeight, &mChannels, 0);
 
 		ReadBufferToTexture();
+	}
+
+	Texture::Texture(int channels, int width, int height) : mChannels(channels), mRendererID(0), mWidth(width), mHeight(height), mLocalBuffer(nullptr)
+	{
+		GLCall(glGenTextures(1, &mRendererID));
+		GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
+
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+
+		GLint format;
+		GLint internalformat;
+		switch (mChannels) {
+
+		case 1: format = GL_RED;
+			internalformat = GL_R32F;
+			break;
+		case 3: format = GL_RGB;
+			internalformat = GL_RGB32F;
+			break;
+		case 4: format = GL_RGBA;
+			internalformat = GL_RGBA32F;
+			break;
+		}
+
+		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, internalformat, mWidth, mHeight, 0, format, GL_FLOAT, NULL));
+		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 
 	Texture::~Texture()
@@ -63,7 +92,7 @@ namespace Hollow
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
 		GLint format;
-		switch (mBPP) {
+		switch (mChannels) {
 
 		case 1: format = GL_RED;
 			break;

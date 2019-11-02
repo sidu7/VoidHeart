@@ -15,6 +15,7 @@ namespace Hollow {
 	//class Camera;
 	class Shader;
 	class FrameBuffer;
+	class UniformBuffer;
 
 	class HOLLOW_API RenderManager
 	{
@@ -33,7 +34,7 @@ namespace Hollow {
 		void CreateDeferredShader(rapidjson::Value::Object& data);
 
 		void CreateShadowMap(LightData& light);
-		void BlurShadowMap(LightData& light);
+		void BlurTexture(unsigned int inputTextureID, unsigned int width, unsigned int height, unsigned int channels, unsigned int blurWidth, unsigned int& outputTextureID);
 		std::vector<float> CreateBlurKernel(unsigned int distance);
 
 		void GBufferPass();
@@ -50,6 +51,8 @@ namespace Hollow {
 		void DrawDebugDrawings();
 
 		void DrawShadowMap();
+
+		void DrawSceneWithBloom();
 
 		// ImGui Debug functions
 		void DebugDisplay();
@@ -90,6 +93,7 @@ namespace Hollow {
 		unsigned int mShadowMapDebugLightIndex;
 
 		// Blur
+		UniformBuffer* mpWeights;
 		Shader* mpHorizontalBlurShader;
 		Shader* mpVerticalBlurShader;
 
@@ -97,5 +101,10 @@ namespace Hollow {
 		Shader* mpParticleShader;
 		ShaderStorageBuffer* mpParticlesPositionStorage;
 		bool ShowParticles;
+
+		// Bloom
+		Shader* mpBloomShader;
+		FrameBuffer* mpBloomFrame;
+		bool mBloomEnabled;
 	};
 }

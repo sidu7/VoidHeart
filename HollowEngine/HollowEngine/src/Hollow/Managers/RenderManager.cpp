@@ -14,6 +14,7 @@
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/FrameBuffer.h"
 #include "Hollow/Graphics/ShaderStorageBuffer.h"
+#include "Hollow/Graphics/UniformBuffer.h"
 
 #include "Hollow/Managers/FrameRateController.h"
 
@@ -54,6 +55,7 @@ namespace Hollow {
 		// Init blur shader
 		mpHorizontalBlurShader = new Shader(data["BlurComputeShaders"].GetArray()[0].GetString());
 		mpVerticalBlurShader = new Shader(data["BlurComputeShaders"].GetArray()[1].GetString());
+		mpWeights = new UniformBuffer(101 * sizeof(float));
 
 		// Init Debug Shader
 		mpDebugShader = new Shader(data["DebugShader"].GetArray()[0].GetString(), data["DebugShader"].GetArray()[1].GetString());
@@ -63,6 +65,10 @@ namespace Hollow {
 		mpParticlesPositionStorage = new ShaderStorageBuffer();
 		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
+
+		// Init Bloom Shader and FrameBuffer
+		mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
+		mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2);
 	}
 
 	void RenderManager::CleanUp()
@@ -73,6 +79,7 @@ namespace Hollow {
 		// CleanUp GBuffer things
 		delete mpGBufferShader;
 		delete mpGBuffer;
+		delete mpWeights;
 	}
 
 	void RenderManager::Update()
@@ -85,7 +92,12 @@ namespace Hollow {
 			// ShadowMap Pass
 			CreateShadowMap(mLightData[i]);
 			// Blur ShadowMap
-			BlurShadowMap(mLightData[i]);
+			FrameBuffer& shadowmap = *mLightData[i].mpShadowMap;
+			BlurTexture(shadowmap.mpTextureID[0],
+				shadowmap.mWidth,
+				shadowmap.mHeight,4,
+				mLightData[i].mBlurDistance,
+				shadowmap.mpTextureID[0]);
 		}
 
 		for (unsigned int i = 0; i < mCameraData.size(); ++i)
@@ -114,6 +126,13 @@ namespace Hollow {
 
 			// Deferred G-Buffer Pass
 			GBufferPass();
+
+			// Bloom Capture Start
+			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
+			{
+				mpBloomFrame->Bind();
+			}
+
 			for (unsigned int i = 0; i < mLightData.size(); ++i)
 			{
 				// Apply global lighting
@@ -123,6 +142,13 @@ namespace Hollow {
 			if (ShowParticles)
 			{
 				DrawParticles();
+			}
+
+			//Bloom capture End
+			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
+			{
+				mpBloomFrame->Unbind();
+				DrawSceneWithBloom();
 			}
 
 			if (camera.mType == CameraType::MAIN_CAMERA)
@@ -225,86 +251,47 @@ namespace Hollow {
 		light.mpShadowMap->Unbind();
 	}
 
-	void RenderManager::BlurShadowMap(LightData& light)
+	void RenderManager::BlurTexture(unsigned int inputTextureID, unsigned int width, unsigned int height, unsigned int channels, unsigned int blurWidth, unsigned int& outputTextureID)
 	{
 		// Create blur kernel
-		std::vector<float> weights = CreateBlurKernel(light.mBlurDistance);
+		std::vector<float> weights = CreateBlurKernel(blurWidth);
 
 		// Apply horizontal blur
 		// Make horizontal blur shader current
 		mpHorizontalBlurShader->Use();
 
 		// Send block of weights to shader as uniform block
-		GLuint hBlockID;
-		GLuint hBindpoint = 0;
-		// TODO: Refactor in to function
-		glGenBuffers(1, &hBlockID);
-		GLint loc = glGetUniformBlockIndex(mpHorizontalBlurShader->mProgram, "blurKernel");
-		glUniformBlockBinding(mpHorizontalBlurShader->mProgram, loc, hBindpoint);
-		glBindBufferBase(GL_UNIFORM_BUFFER, hBindpoint, hBlockID);
-		glBufferData(GL_UNIFORM_BUFFER, weights.size() * sizeof(float), &weights[0], GL_STATIC_DRAW);
+		mpWeights->Bind(2);
+		mpWeights->SubData(sizeof(float) * weights.size(), &weights[0]);
 
-		// Send blur distance to shader
-		mpHorizontalBlurShader->SetUInt("blurDistance", light.mBlurDistance);
+		// Intermediate Texture
+		Texture horizontalBlurred(channels,width, height);
 
 		// Send texture to shader
-		GLuint hImageUnit = 0;
-		glBindImageTexture(hImageUnit, light.mpShadowMap->mpTextureID[0], 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
-		mpHorizontalBlurShader->SetInt("src", hImageUnit++);
-		//Texture intermediate();
-		static GLuint intermediate = 0;
-		if (intermediate == 0)
-		{
-			glGenTextures(1, &intermediate);
-			glBindTexture(GL_TEXTURE_2D, intermediate);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 2048, 2048, 0, GL_RGBA, GL_FLOAT, 0);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-		}
+		mpHorizontalBlurShader->SetInputUniformImage("src", inputTextureID, 0, channels);
+		mpHorizontalBlurShader->SetOutputUniformImage("dst", horizontalBlurred.GetTextureID(), 1, horizontalBlurred.mChannels);
+		// Send blur distance to shader
+		mpHorizontalBlurShader->SetUInt("blurDistance", blurWidth);
+		mpHorizontalBlurShader->SetUniformBlock("blurKernel", 2);
 
-		glBindImageTexture(hImageUnit, intermediate, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
-		mpHorizontalBlurShader->SetInt("dst", hImageUnit++);
-
-		// Uniforms and image variables
-		int W = 2048;
-		int H = 2048;
-		glDispatchCompute(W / 128, H, 1);
-		glMemoryBarrier(GL_ALL_BARRIER_BITS);
-
-		glUseProgram(0);
+		mpHorizontalBlurShader->DispatchCompute(width / 128, height, 1);
+		mpHorizontalBlurShader->Unbind();
 
 		// Apply vertical blur
 		// Make vertical blur shader current
 		mpVerticalBlurShader->Use();
-
-		// Send block of weights to shader as uniform block
-		GLuint blockID;
-		GLuint bindpoint = 0;
-		glGenBuffers(1, &blockID);
-		loc = glGetUniformBlockIndex(mpVerticalBlurShader->mProgram, "blurKernel");
-		glUniformBlockBinding(mpVerticalBlurShader->mProgram, loc, bindpoint);
-		glBindBufferBase(GL_UNIFORM_BUFFER, bindpoint, blockID);
-		glBufferData(GL_UNIFORM_BUFFER, weights.size() * sizeof(float), &weights[0], GL_STATIC_DRAW);
-
-		// Send blur distance to shader
-		mpVerticalBlurShader->SetUInt("blurDistance", light.mBlurDistance);
-
+				
 		// Send texture to shader
-		GLuint imageUnit = 0;
-		glBindImageTexture(imageUnit, intermediate, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
-		mpVerticalBlurShader->SetInt("src", imageUnit++);
-		glBindImageTexture(imageUnit, light.mpShadowMap->mpTextureID[0], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
-		mpVerticalBlurShader->SetInt("dst", imageUnit++);
+		mpVerticalBlurShader->SetInputUniformImage("src", horizontalBlurred.GetTextureID(), 0, horizontalBlurred.mChannels);
+		mpVerticalBlurShader->SetOutputUniformImage("dst", outputTextureID, 1, horizontalBlurred.mChannels);
+		// Send blur distance to shader
+		mpVerticalBlurShader->SetUInt("blurDistance", blurWidth);
+		// Send block of weights to shader as uniform block
+		mpVerticalBlurShader->SetUniformBlock("blurKernel", 2);
 
-		// Uniforms and image variables
-		glDispatchCompute(W, H / 128, 1);
-		glMemoryBarrier(GL_ALL_BARRIER_BITS);
-
-		glUseProgram(0);
+		mpVerticalBlurShader->DispatchCompute(width, height / 128, 1);
+		mpVerticalBlurShader->Unbind();
+		mpWeights->Unbind();
 	}
 
 	std::vector<float> RenderManager::CreateBlurKernel(unsigned int distance)
@@ -379,6 +366,7 @@ namespace Hollow {
 		mpDeferredShader->SetMat4("shadowMatrix", light.mShadowMatrix);
 		mpDeferredShader->SetFloat("alpha", light.mAlpha);
 		mpDeferredShader->SetFloat("md", light.mMD);
+		mpDeferredShader->SetInt("bloomEnabled", mBloomEnabled);
 
 		// Send debug information
 		mpDeferredShader->SetInt("displayMode", mGBufferDisplayMode);
@@ -790,6 +778,22 @@ namespace Hollow {
 		}
 	}
 
+	void RenderManager::DrawSceneWithBloom()
+	{
+		BlurTexture(mpBloomFrame->mpTextureID[1],
+			mpBloomFrame->mWidth,
+			mpBloomFrame->mHeight,
+			4, 5, mpBloomFrame->mpTextureID[1]);
+
+		mpBloomShader->Use();
+		mpBloomFrame->TexBind(0, 1);
+		mpBloomShader->SetInt("scene", 1);
+		mpBloomFrame->TexBind(1, 2);
+		mpBloomShader->SetInt("blur", 2);
+		DrawFSQ();
+		mpBloomShader->Unbind();
+	}
+
 	void RenderManager::DebugDisplay()
 	{
 		if(ImGui::Begin("Renderer"))
@@ -797,6 +801,7 @@ namespace Hollow {
 			DebugDisplayGBuffer();
 			DebugDisplayLighting();
 			ImGui::Checkbox("Particle System",&ShowParticles);
+			ImGui::Checkbox("Bloom", &mBloomEnabled);
 		}
 		ImGui::End();
 	}

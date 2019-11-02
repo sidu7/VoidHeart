@@ -64,6 +64,7 @@ namespace Hollow {
 	void Shader::DispatchCompute(const unsigned int group_x, const unsigned int group_y, const unsigned int group_z) const
 	{
 		GLCall(glDispatchCompute(group_x, group_y, group_z));
+		GLCall(glMemoryBarrier(GL_ALL_BARRIER_BITS));
 	}
 
 	void Shader::SetInt(const std::string& name, int value) const
@@ -104,6 +105,36 @@ namespace Hollow {
 	void Shader::SetUniformBlock(const std::string& name, const int bindPoint) const
 	{
 		GLCall(glUniformBlockBinding(mProgram, glGetUniformBlockIndex(mProgram, name.c_str()), bindPoint));
+	}
+
+	void Shader::SetInputUniformImage(std::string name, unsigned int textureId, unsigned int imageUnit, unsigned int channels) const
+	{
+		unsigned int channelFlag;
+		switch (channels)
+		{
+		case 1: channelFlag = GL_R32F; break;
+		case 2: channelFlag = GL_RG32F; break;
+		case 3: channelFlag = GL_RGB32F; break;
+		case 4: channelFlag = GL_RGBA32F; break;
+		}
+		GLCall(unsigned int loc = glGetUniformLocation(mProgram, name.c_str()));
+		GLCall(glBindImageTexture(imageUnit, textureId, 0, GL_FALSE, 0, GL_READ_ONLY, channelFlag));
+		GLCall(glUniform1i(loc, imageUnit));
+	}
+
+	void Shader::SetOutputUniformImage(std::string name, unsigned int textureId, unsigned int imageUnit, unsigned int channels) const
+	{
+		unsigned int channelFlag;
+		switch (channels)
+		{
+		case 1: channelFlag = GL_R32F; break;
+		case 2: channelFlag = GL_RG32F; break;
+		case 3: channelFlag = GL_RGB32F; break;
+		case 4: channelFlag = GL_RGBA32F; break;
+		}
+		GLCall(unsigned int loc = glGetUniformLocation(mProgram, name.c_str()));
+		GLCall(glBindImageTexture(imageUnit, textureId, 0, GL_FALSE, 0, GL_WRITE_ONLY, channelFlag));
+		GLCall(glUniform1i(loc, imageUnit));
 	}
 
 	std::stringstream Shader::CopyFileToStringStream(const GLchar* pFilePath)
