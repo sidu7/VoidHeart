@@ -21,23 +21,6 @@ namespace Hollow
 		if(!root.IsObject()) { HW_CORE_ERROR("Error reading JSON file {0}",x); }
 
 		//JSON parsing
-		inline static rapidjson::Value::Object ReadFile(const std::string& filePath)
-		{
-			std::ifstream file(filePath);
-			std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-			rapidjson::Document root;
-			root.Parse(contents.c_str());
-			if (root.IsObject())
-			{
-				return root.GetObject();
-			}
-			else
-			{
-				HW_CORE_ERROR("Error reading JSON file {0}", filePath);
-			}
-		}
-
 		inline static rapidjson::Value::Object GetSettings(rapidjson::Value::Object& data, const char* setting)
 		{
 			if (data.HasMember(setting))
