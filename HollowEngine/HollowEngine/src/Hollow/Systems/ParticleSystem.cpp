@@ -36,12 +36,12 @@ namespace Hollow
 			ParticleData particle;
 			if (emitter->mType == POINT)
 			{	
-				if (transform->dirtyBit)
-				{
+				//if (transform->dirtyBit)
+				//{
 					glm::mat4 model = glm::mat4(1.0f);
 					model = glm::translate(model, transform->mPosition);
 					emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
-				}
+				//}
 				
 				particle.mType = POINT;
 				particle.mpParticleVAO = emitter->mpParticlePositionVAO;

@@ -475,7 +475,7 @@ namespace Hollow {
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
 			{
-				if (mesh->mMaterialIndex != -1)
+				if (mesh->mMaterialIndex != -1 && pMaterial->mMaterials.size() > 0)
 				{
 					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
 					if (materialdata->mpDiffuse)
@@ -506,7 +506,8 @@ namespace Hollow {
 				mesh->mpEBO->Unbind();
 				mesh->mpVBO->Unbind();
 				mesh->mpVAO->Unbind();
-				if (mesh->mMaterialIndex != -1)
+
+				if (mesh->mMaterialIndex != -1 && pMaterial->mMaterials.size() > 0)
 				{
 					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
 					if (materialdata->mpDiffuse)
@@ -680,7 +681,7 @@ namespace Hollow {
 		mpParticleShader->Use();
 		mpParticleShader->SetMat4("View", mViewMatrix);
 		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
-
+				
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -707,7 +708,7 @@ namespace Hollow {
 				mpParticleShader->Use();
 				mpParticleShader->SetMat4("Model", particle.mModel);
 				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
-				mpParticleShader->SetFloat("SpriteSize", 0.1f);
+				mpParticleShader->SetFloat("SpriteSize", 0.2f);
 								
 				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
