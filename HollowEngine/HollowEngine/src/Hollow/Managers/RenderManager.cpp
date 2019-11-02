@@ -45,22 +45,21 @@ namespace Hollow {
 		InitializeGBuffer(data);
 
 		// Initialize local light shader
-		CreateLocalLightShader();
+		CreateLocalLightShader(data);
 
 		// Init ShadowMap shader
 		mpShadowMapShader = new Shader(data["ShadowMapShader"].GetArray()[0].GetString(), data["ShadowMapShader"].GetArray()[1].GetString());
-		mpShadowDebugShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag");
+		mpShadowDebugShader = new Shader(data["DebugShadowMapShader"].GetArray()[0].GetString(), data["DebugShadowMapShader"].GetArray()[1].GetString());
 
 		// Init blur shader
-		mpHorizontalBlurShader = new Shader("Resources/Shaders/HorizontalBlur.comp");
-		mpVerticalBlurShader = new Shader("Resources/Shaders/VerticalBlur.comp");
+		mpHorizontalBlurShader = new Shader(data["BlurComputeShaders"].GetArray()[0].GetString());
+		mpVerticalBlurShader = new Shader(data["BlurComputeShaders"].GetArray()[1].GetString());
 
 		// Init Debug Shader
 		mpDebugShader = new Shader(data["DebugShader"].GetArray()[0].GetString(), data["DebugShader"].GetArray()[1].GetString());
 
 		// Init Particle Shader
 		mpParticleShader = new Shader(data["ParticleShader"].GetArray()[0].GetString(), data["ParticleShader"].GetArray()[1].GetString());
-		mpParticleCompute = new Shader(data["ParticleCompute"].GetString());
 		mpParticlesPositionStorage = new ShaderStorageBuffer();
 		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
@@ -184,9 +183,9 @@ namespace Hollow {
 		mpDeferredShader->SetInt("gSpecular", 3);
 	}
 
-	void RenderManager::CreateLocalLightShader()
+	void RenderManager::CreateLocalLightShader(rapidjson::Value::Object& data)
 	{
-		mpLocalLightShader = new Shader("Resources/Shaders/LocalLight.vert", "Resources/Shaders/LocalLight.frag");
+		mpLocalLightShader = new Shader(data["LocalLightShader"].GetArray()[0].GetString(), data["LocalLightShader"].GetArray()[1].GetString());
 		mpLocalLightShader->Use();
 		mpLocalLightShader->SetInt("gPosition", 0);
 		mpLocalLightShader->SetInt("gNormal", 1);
@@ -695,13 +694,14 @@ namespace Hollow {
 				particle.mpParticleDataStorage->Bind(2);
 				mpParticlesPositionStorage->Bind(3);
 
-				mpParticleCompute->Use();
-				mpParticleCompute->SetVec3("Center", particle.mCenter);
-				mpParticleCompute->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
-				mpParticleCompute->SetVec2("SpeedRange", particle.mSpeedRange);
-				mpParticleCompute->SetVec2("LifeRange", particle.mLifeRange);
-				mpParticleCompute->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
+				particle.mpComputeShader->Use();
+				particle.mpComputeShader->SetVec3("Center", particle.mCenter);
+				particle.mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
+				particle.mpComputeShader->SetVec2("SpeedRange", particle.mSpeedRange);
+				particle.mpComputeShader->SetVec2("LifeRange", particle.mLifeRange);
+				particle.mpComputeShader->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
 				ShaderStorageBuffer::PutMemoryBarrier();
+				particle.mpComputeShader->Unbind();
 				particle.mpParticleDataStorage->Unbind(2);	
 
 				mpParticleShader->Use();

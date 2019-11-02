@@ -52,6 +52,7 @@ namespace Hollow
 				particle.mLifeRange = emitter->mLifeRange;
 				particle.mSpeedRange = emitter->mSpeedRange;
 				particle.mTex = emitter->mTexture;
+				particle.mpComputeShader = emitter->mpComputeShader;
 			}
 				// Create ParticleData
 			if (emitter->mType == MODEL)

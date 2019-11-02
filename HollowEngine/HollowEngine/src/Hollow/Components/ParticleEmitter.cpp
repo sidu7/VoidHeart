@@ -63,6 +63,10 @@ namespace Hollow
 		{
 			mLifeRange = JSONHelper::GetVec2F(data["Life"].GetArray());
 		}
+		if (data.HasMember("ComputeShader"))
+		{
+			mpComputeShader = ResourceManager::Instance().LoadShader(data["ComputeShader"].GetString());
+		}
 	}
 
 	void ParticleEmitter::DebugDisplay()

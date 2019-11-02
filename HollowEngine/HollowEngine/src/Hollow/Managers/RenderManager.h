@@ -29,7 +29,7 @@ namespace Hollow {
 		// Initialization Functions
 		void InitializeGBuffer(rapidjson::Value::Object& data);
 
-		void CreateLocalLightShader();
+		void CreateLocalLightShader(rapidjson::Value::Object& data);
 		void CreateDeferredShader(rapidjson::Value::Object& data);
 
 		void CreateShadowMap(LightData& light);
@@ -95,7 +95,6 @@ namespace Hollow {
 
 		// ParticleSystem
 		Shader* mpParticleShader;
-		Shader* mpParticleCompute;
 		ShaderStorageBuffer* mpParticlesPositionStorage;
 		bool ShowParticles;
 	};

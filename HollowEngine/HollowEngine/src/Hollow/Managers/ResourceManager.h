@@ -11,6 +11,7 @@ namespace Hollow
 	struct Bone;
 	struct State;
 	class GameObject;
+	class Shader;
 	
 	enum Shapes
 	{
@@ -43,6 +44,7 @@ namespace Hollow
 		Mesh* GetShape(Shapes shape);
 		FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
 		std::vector<State*> ReadStateMachineFile(std::string path);
+		Shader* LoadShader(std::string path);
 
 	private:
 		void InitializeShapes();
@@ -64,6 +66,7 @@ namespace Hollow
 		std::unordered_map<Shapes, Mesh*> mShapes;
 		std::unordered_map<std::string, const aiScene*> mModelRootsCache;
 		std::unordered_map<std::string, std::vector<State*>> mStateFileCache;
+		std::unordered_map<std::string, Shader*> mShaderCache;
 
 		// Sounds cache, maybe split into SFX and Songs
 		std::unordered_map<std::string, FMOD::Sound*> mSoundCache;

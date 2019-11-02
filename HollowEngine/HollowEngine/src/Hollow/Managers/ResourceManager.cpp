@@ -14,6 +14,7 @@
 #include "Hollow/Graphics/Data/RenderData.h"
 #include "Hollow/Graphics/Data/Bone.h"
 #include "Hollow/Graphics/Data/MaterialData.h"
+#include "Hollow/Graphics/Shader.h"
 
 #include "Hollow/Core/Data/StateData.h"
 
@@ -443,6 +444,16 @@ namespace Hollow
 		}
 
 		return mStateFileCache[path];
+	}
+
+	Shader* ResourceManager::LoadShader(std::string path)
+	{
+		if (mShaderCache.find(path) == mShaderCache.end())
+		{
+			Shader* shader = new Shader(path.c_str());
+			mShaderCache[path] = shader;
+		}
+		return mShaderCache[path];
 	}
 
 	void ResourceManager::InitializeShapes()
