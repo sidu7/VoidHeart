@@ -23,6 +23,8 @@ namespace Hollow
 		std::vector<ARCTABLE_ENTRY> mArcLengthTable;
 		float mPathTolerance;
 		float mPathRunTime;
+		bool mMove;
+		
 		// Debug Path Data
 		bool mDebugPath;
 		VertexArray* mpCurveVAO;

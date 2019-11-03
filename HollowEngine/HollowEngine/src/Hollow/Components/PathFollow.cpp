@@ -1,10 +1,6 @@
 #include <hollowpch.h>
 #include "PathFollow.h"
 
-#include "Hollow/Managers/RenderManager.h"
-
-#include "Hollow/Graphics/VertexArray.h"
-
 namespace Hollow
 {
 	PathFollow PathFollow::instance;
@@ -17,6 +13,7 @@ namespace Hollow
 
 	void PathFollow::Clear()
 	{
+		mMove = false;
 		mControlPointsChanged = false;
 		delete mpCurveVAO;
 		mControlPoints.clear();
@@ -37,6 +34,14 @@ namespace Hollow
 				mControlPoints.emplace_back(glm::vec4(JSONHelper::GetVec3F(points[i].GetArray()), 1.0f));
 			}
 		}
+		if(data.HasMember("Move"))
+		{
+			mMove = data["Move"].GetBool();
+		}
+		if(data.HasMember("Tolerance"))
+		{
+			mPathTolerance = data["Tolerance"].GetFloat();
+		}
 	}
 
 	void PathFollow::DebugDisplay()
@@ -44,13 +49,7 @@ namespace Hollow
 		if (ImGui::TreeNode("PathFollow"))
 		{
 			ImGui::Checkbox("Show Path", &mDebugPath);
-			if(mDebugPath)
-			{
-				DebugPathData pathData;
-				pathData.mCurveVAO = mpCurveVAO;
-				pathData.mCurvePointsCount = mCurvePointsCount;
-				RenderManager::Instance().mDebugPathData.push_back(pathData);
-			}
+			ImGui::Checkbox("Move", &mMove);
 			if (ImGui::Button(mShowControlWindow ? "Hide Control Points Window" : "Show Control Points Window"))
 			{
 				mShowControlWindow = !mShowControlWindow;
@@ -63,11 +62,26 @@ namespace Hollow
 					mControlPoints.emplace_back(mControlPoints[mControlPoints.size() - 1]);
 					mControlPointsChanged = true;
 				}
+				ImGui::SameLine();
+				if(ImGui::Button("Copy Control Points To Clipboard"))
+				{
+					std::string control_data = "";
+					for(unsigned int i = 0; i < mControlPoints.size(); ++i)
+					{
+						const glm::vec4& point = mControlPoints[i];
+						control_data += '[' + std::to_string(point.x) + ',' + std::to_string(point.y) + ',' + std::to_string(point.z) + "],";
+					}
+					ImGui::SetClipboardText(control_data.c_str());
+				}				
 				for (unsigned int i = 0; i < mControlPoints.size(); ++i)
 				{
-					if (ImGui::SliderFloat3(std::string("Point" + std::to_string(i + 1)).c_str(), (float*)&mControlPoints[i], -150.0f, 150.0f, "%.1f"))
+					if (ImGui::SliderFloat("", &mControlPoints[i].x, -150.0f, 150.0f, "%.1f"))
 					{
-						mControlPoints[i].y = 0.0f;
+						mControlPointsChanged = true;
+					}
+					ImGui::SameLine();
+					if (ImGui::SliderFloat(std::string("Point" + std::to_string(i + 1)).c_str(), &mControlPoints[i].z, -150.0f, 150.0f, "%.1f"))
+					{
 						mControlPointsChanged = true;
 					}
 				}

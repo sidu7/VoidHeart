@@ -17,5 +17,6 @@ namespace Hollow
 		void CreateArcLengthTable(PathFollow* pathFollow);
 		void CreateDebugVAO(PathFollow* pathFollow);
 		inline std::pair<float, int> SearchInArcTable(const float distance, PathFollow* pathFollow);
+		int BinarySearch(unsigned int start, unsigned int end, float distance, std::vector<std::pair<float, std::pair<float, int>>>& list);
 	};
 }

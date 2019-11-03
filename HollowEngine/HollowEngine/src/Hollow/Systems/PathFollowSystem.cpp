@@ -5,6 +5,7 @@
 #include "Hollow/Components/Body.h"
 
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/RenderManager.h"
 
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/VertexBuffer.h"
@@ -31,6 +32,12 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			PathFollow* pathFollow = mGameObjects[i]->GetComponent<PathFollow>();
+
+			if(pathFollow->mMove)
+			{
+				pathFollow->mPathRunTime += FrameRateController::Instance().GetFrameTime();
+			}
+			
 			Body* pBody = mGameObjects[i]->GetComponent<Body>();
 
 			// Debug
@@ -41,8 +48,14 @@ namespace Hollow
 				CreateDebugVAO(pathFollow);
 				pathFollow->mControlPointsChanged = false;
 			}
+			if (pathFollow->mDebugPath)
+			{
+				DebugPathData pathData;
+				pathData.mCurveVAO = pathFollow->mpCurveVAO;
+				pathData.mCurvePointsCount = pathFollow->mCurvePointsCount;
+				RenderManager::Instance().mDebugPathData.push_back(pathData);
+			}
 			
-			pathFollow->mPathRunTime += FrameRateController::Instance().GetFrameTime();
 			const double distance = pBody->mVelocity.z * pathFollow->mPathRunTime;
 			const std::pair<float, int> searchedValue = SearchInArcTable(distance,pathFollow);
 			glm::vec3 position = BSplineCurve::GetPointOnCurve(searchedValue.first, pathFollow->mControlPointsMatrices[searchedValue.second]);
@@ -138,7 +151,7 @@ namespace Hollow
 			for (float i = 0.0f; i <= 1.0f; i += 0.01f)
 			{
 				glm::vec4 pointOnCurve = BSplineCurve::GetPointOnCurve(i, pathFollow->mControlPointsMatrices[j]);
-				pointOnCurve.y = 0.5f;
+				//pointOnCurve.y = 0.5f;
 				curvePoints.emplace_back(pointOnCurve);
 				curvePoints.emplace_back(pointOnCurve);
 			}
@@ -163,29 +176,60 @@ namespace Hollow
 	std::pair<float, int> PathFollowSystem::SearchInArcTable(const float distance,PathFollow* pathFollow)
 	{
 		auto& table = pathFollow->mArcLengthTable;
-		for (unsigned int i = 0; i < table.size(); ++i)
+		int index = BinarySearch(0, table.size(), distance, table);
+
+		if(index > 0)
 		{
-			float tableDistance = table[i].first;
-			if (tableDistance > distance)
+			float tableDistance = table[index].first;
+			float factor = (distance - table[index - 1].first) / (tableDistance - table[index - 1].first);
+			float s;
+			if (table[index - 1].second.second == table[index].second.second)
 			{
-				float factor = (distance - table[i - 1].first) / (tableDistance - table[i - 1].first);
-				float s; int index;
-				if (table[i - 1].second.second == table[i].second.second)
-				{
-					float T2 = table[i].second.first;
-					float T1 = table[i - 1].second.first;
-					s = glm::lerp(T1, T2, factor);
-					index = i;
-				}
-				else
-				{
-					s = table[i - 1].second.first;
-					index = i - 1;
-				}
-				return std::make_pair(s, table[index].second.second);
+				float T2 = table[index].second.first;
+				float T1 = table[index - 1].second.first;
+				s = glm::lerp(T1, T2, factor);
 			}
+			else
+			{
+				s = table[index - 1].second.first;
+				index = index - 1;
+			}
+			return std::make_pair(s, table[index].second.second);
 		}
-		pathFollow->mPathRunTime = 0.0f;
-		return std::make_pair(0.0f, 0);
+		else
+		{
+			pathFollow->mPathRunTime = 0.0f;
+			return std::make_pair(0.0f, 0);
+		}		
+	}
+
+	int PathFollowSystem::BinarySearch(unsigned int start, unsigned int end, float distance,
+		std::vector<std::pair<float, std::pair<float, int>>>& list)
+	{
+		unsigned int mid = start + (end - start) / 2;
+		if (distance == list[mid].first)
+		{
+			return mid;
+		}
+		else if (distance > list[mid].first)
+		{
+			if(mid == list.size() - 1)
+			{
+				return -1;
+			}
+			if (distance < list[mid + 1].first)
+			{
+				return mid + 1;
+			}
+			return BinarySearch(mid + 1, end, distance, list);
+		}
+		else if (distance < list[mid].first)
+		{
+			if(distance > list[mid - 1].first)
+			{
+				return mid;
+			}
+			return BinarySearch(start, mid - 1, distance, list);
+		}
 	}
 }
