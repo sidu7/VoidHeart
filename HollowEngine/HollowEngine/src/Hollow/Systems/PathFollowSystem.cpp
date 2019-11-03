@@ -32,6 +32,16 @@ namespace Hollow
 		{
 			PathFollow* pathFollow = mGameObjects[i]->GetComponent<PathFollow>();
 			Body* pBody = mGameObjects[i]->GetComponent<Body>();
+
+			// Debug
+			if(pathFollow->mControlPointsChanged)
+			{
+				CalculateControlPointMatrices(pathFollow);
+				CreateArcLengthTable(pathFollow);
+				CreateDebugVAO(pathFollow);
+				pathFollow->mControlPointsChanged = false;
+			}
+			
 			pathFollow->mPathRunTime += FrameRateController::Instance().GetFrameTime();
 			const double distance = pBody->mVelocity.z * pathFollow->mPathRunTime;
 			const std::pair<float, int> searchedValue = SearchInArcTable(distance,pathFollow);
@@ -58,6 +68,8 @@ namespace Hollow
 
 	void PathFollowSystem::CalculateControlPointMatrices(PathFollow* pathFollow)
 	{
+		pathFollow->mControlPointsMatrices.clear();
+		
 		for (unsigned int i = 0; i <= pathFollow->mControlPoints.size() - 4; ++i)
 		{
 			glm::mat4 matrix;
@@ -72,6 +84,7 @@ namespace Hollow
 
 	void PathFollowSystem::CreateArcLengthTable(PathFollow* pathFollow)
 	{
+		pathFollow->mArcLengthTable.clear();
 		pathFollow->mArcLengthTable.emplace_back(MAKE_ARCTABLE_ENTRY(0.0f, 0.0f, 0));
 		for (unsigned int i = 0; i < pathFollow->mControlPointsMatrices.size(); ++i)
 		{
@@ -114,6 +127,11 @@ namespace Hollow
 
 	void PathFollowSystem::CreateDebugVAO(PathFollow* pathFollow)
 	{
+		if (pathFollow->mpCurveVAO)
+		{
+			delete pathFollow->mpCurveVAO;
+		}
+		
 		std::vector<glm::vec4> curvePoints;
 		for (unsigned int j = 0; j < pathFollow->mControlPointsMatrices.size(); ++j)
 		{

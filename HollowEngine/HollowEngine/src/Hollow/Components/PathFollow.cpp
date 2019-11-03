@@ -17,6 +17,7 @@ namespace Hollow
 
 	void PathFollow::Clear()
 	{
+		mControlPointsChanged = false;
 		delete mpCurveVAO;
 		mControlPoints.clear();
 		mControlPointsMatrices.clear();
@@ -50,6 +51,29 @@ namespace Hollow
 				pathData.mCurvePointsCount = mCurvePointsCount;
 				RenderManager::Instance().mDebugPathData.push_back(pathData);
 			}
+			if (ImGui::Button(mShowControlWindow ? "Hide Control Points Window" : "Show Control Points Window"))
+			{
+				mShowControlWindow = !mShowControlWindow;
+			}
+			if (mShowControlWindow)
+			{
+				ImGui::Begin("Control Points");
+				if (ImGui::Button("New Control Point"))
+				{
+					mControlPoints.emplace_back(mControlPoints[mControlPoints.size() - 1]);
+					mControlPointsChanged = true;
+				}
+				for (unsigned int i = 0; i < mControlPoints.size(); ++i)
+				{
+					if (ImGui::SliderFloat3(std::string("Point" + std::to_string(i + 1)).c_str(), (float*)&mControlPoints[i], -150.0f, 150.0f, "%.1f"))
+					{
+						mControlPoints[i].y = 0.0f;
+						mControlPointsChanged = true;
+					}
+				}
+				ImGui::End();
+			}
+			
 			ImGui::TreePop();
 		}
 	}

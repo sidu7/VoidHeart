@@ -27,5 +27,7 @@ namespace Hollow
 		bool mDebugPath;
 		VertexArray* mpCurveVAO;
 		unsigned int mCurvePointsCount;
+		bool mShowControlWindow;
+		bool mControlPointsChanged;
 	};
 }

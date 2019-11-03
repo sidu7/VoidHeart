@@ -4,7 +4,7 @@
 namespace Hollow {
 	class GameObject;
 	
-	class HOLLOW_API CollisionEvent : public GameEvent
+	class CollisionEvent : public GameEvent
 	{
 	public:
 		CollisionEvent() : GameEvent(COLLISION_EVENT), mObject1(nullptr), mObject2(nullptr) {}
