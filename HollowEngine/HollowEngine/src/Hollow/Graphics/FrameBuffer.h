@@ -19,6 +19,7 @@ namespace Hollow {
 		~FrameBuffer();
 
 		void Bind();
+		void BindRead();
 		void Unbind() const;
 		void TexBind(unsigned int index = 0, unsigned int slot = 0);
 		void TexUnbind(unsigned int slot = 0);

@@ -220,6 +220,15 @@ namespace Hollow
 				vertex.tex = glm::vec2(0.0f, 0.0f);
 			}
 
+			if (mesh->mTangents)
+			{
+				vertex.tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+			}
+			else
+			{
+				vertex.tangent = glm::vec3(0.0f, 0.0f, 0.0f);
+			}
+
 			vertices.push_back(vertex);
 			bonedata.push_back(BoneData(0, 0.0f));
 		}
@@ -275,9 +284,9 @@ namespace Hollow
 				// Note: Assuming Material has only 1 texture of each type, rarely is otherwise
 				aiMaterial* material = scene->mMaterials[i];
 				materialdata->mpDiffuse = LoadMaterialTexture(material, aiTextureType_DIFFUSE, scene, path);
-				//materialdata->mpSpecular = LoadMaterialTexture(material, aiTextureType_SPECULAR, scene,path);
-				//materialdata->mpNormal = LoadMaterialTexture(material, aiTextureType_NORMALS, scene,path);
-				//materialdata->mpHeight = LoadMaterialTexture(material, aiTextureType_HEIGHT, scene,path);
+				materialdata->mpSpecular = LoadMaterialTexture(material, aiTextureType_SPECULAR, scene,path);
+				materialdata->mpNormal = LoadMaterialTexture(material, aiTextureType_NORMALS, scene,path);
+				materialdata->mpHeight = LoadMaterialTexture(material, aiTextureType_HEIGHT, scene,path);
 
 				materials.push_back(materialdata);
 			}
@@ -750,6 +759,7 @@ namespace Hollow
 			v.position = glm::vec3(-1.0f, 0.0f, 1.0f);
 			v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 			v.tex = glm::vec2(0.0f, 0.0f);
+			v.tangent = glm::vec3(1.0f, 0.0f, 0.0f);
 			vertices.push_back(v);
 
 			v.position = glm::vec3(1.0f, 0.0f, 1.0f);
@@ -785,7 +795,7 @@ namespace Hollow
 			indices.push_back(2);
 			indices.push_back(3);
 
-			mShapes[QUAD] = CreateMesh(vertices, indices);
+			mShapes[QUAD] = CreateMesh(vertices, indices, 0);
 
 			vertices.clear();
 			indices.clear();
@@ -802,6 +812,7 @@ namespace Hollow
 
 		//front
 		Vertex v;
+		v.tangent = glm::vec3(0.0f, 1.0f, 0.0f);
 		v.position = glm::vec3(-0.5f, -0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
@@ -820,6 +831,7 @@ namespace Hollow
 		vertices.push_back(v);
 
 		//right
+		v.tangent = glm::vec3(0.0f, 1.0f, 0.0f);
 		v.position = glm::vec3(0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
@@ -838,6 +850,7 @@ namespace Hollow
 		vertices.push_back(v);
 
 		//back
+		v.tangent = glm::vec3(0.0f, -1.0f, 0.0f);
 		v.position = glm::vec3(-0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, 0.0f, -1.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
@@ -856,6 +869,7 @@ namespace Hollow
 		vertices.push_back(v);
 
 		//left
+		v.tangent = glm::vec3(0.0f, 0.0f, -1.0f);
 		v.position = glm::vec3(-0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(-1.0f, 0.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
@@ -874,6 +888,7 @@ namespace Hollow
 		vertices.push_back(v);
 
 		//upper
+		v.tangent = glm::vec3(0.0f, 0.0f, 1.0f);
 		v.position = glm::vec3(0.5f, 0.5f, 0.5f);
 		v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 		v.tex = glm::vec2(1.0f, 0.0f);
@@ -892,6 +907,7 @@ namespace Hollow
 		vertices.push_back(v);
 
 		//bottom
+		v.tangent = glm::vec3(0.0f, 0.0f, -1.0f);
 		v.position = glm::vec3(-0.5f, -0.5f, -0.5f);
 		v.normal = glm::vec3(0.0f, -1.0f, 0.0f);
 		v.tex = glm::vec2(0.0f, 0.0f);
@@ -932,12 +948,9 @@ namespace Hollow
 				v.position = glm::vec3(x, y, z);
 				v.normal = glm::vec3(x, y, z);
 				v.tex = glm::vec2(s / (2.0f * PI), t / PI);
-				//v.tangent = glm::vec3(-sinf(s), cosf(s), 0.0);
+				v.tangent = glm::vec3(-sinf(s), cosf(s), 0.0);
 
 				vertices.push_back(v);
-
-				//mPoints.push_back(glm::vec3(x, y, z));
-				//mNormals.push_back(glm::vec3(x, y, z));
 
 				// Add indices
 				if (i > 0 && j > 0)
@@ -1172,14 +1185,12 @@ namespace Hollow
 					Vertex vert;
 					vert.position = glm::vec3(V[0], V[1], V[2]);
 
-					//mPoints.push_back(glm::vec3(V[0], V[1], V[2]));// , 1.0));
-
 					// Evaluate the u-tangent of the Bezier patch at (u,v)
 					glm::vec3 du =
 						du0 * v0 * (*p10 - *p00) + du0 * v1 * (*p11 - *p01) + du0 * v2 * (*p12 - *p02) + du0 * v3 * (*p13 - *p03) +
 						du1 * v0 * (*p20 - *p10) + du1 * v1 * (*p21 - *p11) + du1 * v2 * (*p22 - *p12) + du1 * v3 * (*p23 - *p13) +
 						du2 * v0 * (*p30 - *p20) + du2 * v1 * (*p31 - *p21) + du2 * v2 * (*p32 - *p22) + du2 * v3 * (*p33 - *p23);
-					//vert.tangent = du;
+					vert.tangent = du;
 
 					// Evaluate the v-tangent of the Bezier patch at (u,v)
 					glm::vec3 dv =
@@ -1189,7 +1200,6 @@ namespace Hollow
 						u3 * dv0 * (*p31 - *p30) + u3 * dv1 * (*p32 - *p31) + u3 * dv2 * (*p33 - *p32);
 
 					// Calculate the surface normal as the cross product of the two tangents.
-					//mNormals.push_back(glm::cross(dv, du));
 					vert.normal = glm::vec3(glm::cross(dv, du));
 
 					// Get texture coordinates
@@ -1235,7 +1245,7 @@ namespace Hollow
 		// Texture coordinates
 		VAO->Push(2, GL_FLOAT, sizeof(float));
 		// Tangent
-		//mVAO.Push(3, GL_FLOAT, sizeof(float));
+		VAO->Push(3, GL_FLOAT, sizeof(float));
 		VAO->AddLayout();
 
 		if (vbo)

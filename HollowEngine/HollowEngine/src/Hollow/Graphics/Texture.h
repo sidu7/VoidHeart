@@ -19,8 +19,11 @@ namespace Hollow
 		void Unbind(unsigned int slot = 0) const;
 		void EnableTiling() const;
 		inline unsigned int GetRendererID() { return mRendererID; }
+		inline unsigned int GetWidth() { return mWidth; }
+		inline unsigned int GetHeight() { return mHeight; }
 
 	private:
 		void ReadBufferToTexture();
+		void ReadBufferToHDRTexture(float* data);
 	};
 }

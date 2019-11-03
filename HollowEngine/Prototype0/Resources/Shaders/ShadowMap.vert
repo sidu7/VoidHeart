@@ -1,7 +1,7 @@
 #version 430 core
 layout (location = 0) in vec3 aPos;
-layout (location = 3) in ivec4 boneIndex;
-layout (location = 4) in vec4 boneWeights;
+layout (location = 4) in ivec4 boneIndex;
+layout (location = 5) in vec4 boneWeights;
 
 const int MAX_BONES = 100;
 

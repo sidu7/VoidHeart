@@ -8,12 +8,32 @@ namespace Hollow
 	{
 		stbi_set_flip_vertically_on_load(1);
 
-		mLocalBuffer = stbi_load(mFilePath.c_str(), &mWidth, &mHeight, &mBPP, 0);
+		// Check file extension for HDR image
+		bool isHDR = FilePath.substr(FilePath.find_last_of(".")) == ".hdr";
 
-		ReadBufferToTexture();
+		// Load hdr texture
+		if (isHDR)
+		{
+			float* data = stbi_loadf(mFilePath.c_str(), &mWidth, &mHeight, &mBPP, 0);
 
-		if (mLocalBuffer)
-			stbi_image_free(mLocalBuffer);
+			ReadBufferToHDRTexture(data);
+
+			if (data)
+			{
+				stbi_image_free(data);
+			}
+		}
+		else
+		{
+			mLocalBuffer = stbi_load(mFilePath.c_str(), &mWidth, &mHeight, &mBPP, 0);
+
+			ReadBufferToTexture();
+
+			if (mLocalBuffer)
+			{
+				stbi_image_free(mLocalBuffer);
+			}
+		}
 	}
 
 	Texture::Texture(void* buffer, int size)
@@ -74,6 +94,28 @@ namespace Hollow
 		}
 		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, mLocalBuffer));
 		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+	}
+
+	void Texture::ReadBufferToHDRTexture(float* data)
+	{
+		if (!data)
+		{
+			HW_CORE_ERROR("[Texture] HDR Texture {0} could not be loaded", mFilePath);
+		}
+
+		GLCall(glGenTextures(1, &mRendererID));
+		GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
+
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, mWidth, mHeight, 0, GL_RGB, GL_FLOAT, data));
+		GLCall(glGenerateMipmap(GL_TEXTURE_2D));
+
+		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+
 	}
 
 }

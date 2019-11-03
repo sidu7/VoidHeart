@@ -109,6 +109,10 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\SVN\CS_560\Projects\Project2\Camera\Camera\Resources\Shaders\Skydome.frag" />
+    <None Include="..\..\..\..\SVN\CS_560\Projects\Project2\Camera\Camera\Resources\Shaders\Skydome.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

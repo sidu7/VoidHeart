@@ -7,6 +7,7 @@
 #include "Hollow/Graphics/Data/DebugRenderData.h"
 #include "Hollow/Graphics/Data/CameraData.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
+#include "Hollow/Graphics/Data/SkydomeData.h"
 #include <GL/glew.h>
 
 namespace Hollow {
@@ -28,9 +29,12 @@ namespace Hollow {
 	private:
 		// Initialization Functions
 		void InitializeGBuffer();
+		void InitializeSkydome();
+		void InitializeHammersley(unsigned int n);
 
 		void CreateDeferredShader();
 		void CreateLocalLightShader();
+		void CreateSkydomeShader();
 
 		void CreateShadowMap(LightData& light);
 		void BlurShadowMap(LightData& light);
@@ -47,6 +51,8 @@ namespace Hollow {
 
 		void DrawParticles();
 
+		void DrawSkydome(const CameraData& camera);
+
 		void DrawDebugDrawings();
 
 		void DrawShadowMap();
@@ -54,7 +60,8 @@ namespace Hollow {
 		// ImGui Debug functions
 		void DebugDisplay();
 		void DebugDisplayGBuffer();
-		void DebugDisplayLighting();
+		void DebugDisplayShadow();
+		void DebugDisplayIBL();
 
 	public:
 		std::vector<RenderData> mRenderData;
@@ -70,10 +77,21 @@ namespace Hollow {
 
 		GameWindow* mpWindow;
 		//Camera* mpCamera;
+		glm::vec3 mCameraPosition;
 
 		// Lighting
 		Shader* mpDeferredShader;
 		Shader* mpLocalLightShader;
+
+		// Skydome
+		Shader* mpSkydomeShader;
+		Texture* mpSkydomeTexture;
+		Texture* mpSkydomeIrradianceMap;
+		SkydomeData mSkydomeData;
+
+		// Image based lighting
+		float mExposure;
+		float mContrast;
 
 		// Debug drawing Shader
 		Shader* mpDebugShader;
