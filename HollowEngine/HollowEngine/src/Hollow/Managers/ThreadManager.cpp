@@ -6,7 +6,9 @@ namespace Hollow
 	void ThreadManager::Init()
 	{
 		mIsRunning = true;
-		for (unsigned int i = 0; i < MAX_THREADS; ++i)
+		unsigned int threads_count = std::thread::hardware_concurrency();
+		threads_count = threads_count == 0 ? MAX_THREADS : threads_count;		
+		for (unsigned int i = 0; i < threads_count; ++i)
 		{
 			mThreads.push_back(std::thread(&ThreadManager::WaitForTask, this));
 		}
@@ -28,11 +30,10 @@ namespace Hollow
 	{
 		while (mIsRunning)
 		{
-			Task task;
+			std::packaged_task<void(unsigned int, unsigned int)> task;
 			if (mTaskQueue.TryPop(task))
 			{
-				std::pair<unsigned int, unsigned int> args = task.second;
-				task.first(args.first, args.second);				
+				task(0, 0);
 			}
 			else
 			{

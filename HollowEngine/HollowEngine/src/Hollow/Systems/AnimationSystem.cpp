@@ -110,8 +110,8 @@ namespace Hollow
 
 	void AnimationSystem::Update()
 	{
-		auto res1 = ThreadManager::Instance().Push(THREAD_FUNCTION(AnimationSystem::Animate), 0, mGameObjects.size() / 2);
-		auto res2 = ThreadManager::Instance().Push(THREAD_FUNCTION(AnimationSystem::Animate),mGameObjects.size()/2,mGameObjects.size());
+		auto res1 = ThreadManager::Instance().Push(THREAD_FUNCTION(AnimationSystem::Animate, 0, mGameObjects.size() / 2));
+		auto res2 = ThreadManager::Instance().Push(THREAD_FUNCTION(AnimationSystem::Animate, mGameObjects.size() / 2, mGameObjects.size()));
 		res1.get();
 		res2.get();
 	}
