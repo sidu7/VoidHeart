@@ -52,6 +52,7 @@ namespace Hollow {
 	Application::~Application()
 	{
 		ResourceManager::Instance().CleanUp();
+		EventManager::Instance().CleanUp();
 		RenderManager::Instance().CleanUp();
 		ImGuiManager::Instance().CleanUp();
 		ThreadManager::Instance().CleanUp();
@@ -98,9 +99,9 @@ namespace Hollow {
 			}
 			InputManager::Instance().Update();
 
-			SystemManager::Instance().Update();
+			EventManager::Instance().Update();
 
-			EventManager::Instance().HandleEvents();
+			SystemManager::Instance().Update();
 
 			AudioManager::Instance().Update();
 

@@ -67,8 +67,8 @@ namespace Hollow {
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 
 		// Init Bloom Shader and FrameBuffer
-		mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
-		mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2);
+		//mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
+		//mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2);
 	}
 
 	void RenderManager::CleanUp()
@@ -128,10 +128,10 @@ namespace Hollow {
 			GBufferPass();
 
 			// Bloom Capture Start
-			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
-			{
-				mpBloomFrame->Bind();
-			}
+			//if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
+			//{
+			//	mpBloomFrame->Bind();
+			//}
 
 			for (unsigned int i = 0; i < mLightData.size(); ++i)
 			{
@@ -145,11 +145,11 @@ namespace Hollow {
 			}
 
 			//Bloom capture End
-			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
-			{
-				mpBloomFrame->Unbind();
-				DrawSceneWithBloom();
-			}
+			//if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
+			//{
+			//	mpBloomFrame->Unbind();
+			//	DrawSceneWithBloom();
+			//}
 
 			if (camera.mType == CameraType::MAIN_CAMERA)
 			{
@@ -761,6 +761,22 @@ namespace Hollow {
 		}
 
 		mDebugRenderData.clear();
+
+		mpDebugShader->SetMat4("Model", glm::mat4(1.0f));
+		mpDebugShader->SetVec3("Color", COLOR_BLUE);
+		
+		for(unsigned int i = 0; i < mDebugPathData.size(); ++i)
+		{
+			DebugPathData& path = mDebugPathData[i];
+			path.mCurveVAO->Bind();
+			//glLineWidth(2.0f);
+			glDrawArrays(GL_LINES, 1, path.mCurvePointsCount - 1);
+			path.mCurveVAO->Unbind();
+		}
+
+		mDebugPathData.clear();
+
+		mpDebugShader->Unbind();
 	}
 
 	void RenderManager::DrawShadowMap()

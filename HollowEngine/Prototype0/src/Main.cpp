@@ -22,6 +22,8 @@
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
 
+#include "Hollow/Events/CollisionEvent.h"
+
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
 // The game layer could draw the entire 3d scene
@@ -55,8 +57,8 @@ class UILayer : public Hollow::Layer
 			e.Handled = true;
 			
 			//Test Event
-			Hollow::CollisionEvent* test  = new Hollow::CollisionEvent();
-			Hollow::EventManager::Instance().AddDelayedEvent(test,5.0f);
+			Hollow::CollisionEvent test;
+			Hollow::EventManager::Instance().BroadcastToSubscribers(&test);
 			//Test Event
 		}
 		//HW_TRACE("{0}", e);
@@ -72,10 +74,10 @@ public:
 		PushOverlay(new UILayer());
 
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
 		//for(int i = 0; i < 10; ++i)
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
 	
 		//int dim = 2;
 		//int height = 5;
@@ -97,7 +99,7 @@ public:
 		//for(int i = 0; i < 100; ++i)
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
 

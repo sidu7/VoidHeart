@@ -1,7 +1,9 @@
 #include <hollowpch.h>
 #include "Model.h"
+
 #include "Hollow/Managers/ResourceManager.h"
-#include "Hollow/Graphics/Mesh.h"
+
+#include "Hollow/Components/Transform.h"
 
 namespace Hollow {
 
@@ -21,6 +23,10 @@ namespace Hollow {
 		{
 			mModelPath = object["Model"].GetString();
 			mMeshes = ResourceManager::Instance().LoadModel(mModelPath);
+		}
+		if(object.HasMember("ModelHasOffset"))
+		{
+			mModelHasOffset = object["ModelHasOffset"].GetBool();
 		}
 		if (object.HasMember("Shape"))
 		{
@@ -44,6 +50,7 @@ namespace Hollow {
 			JSONHelper::Write<std::string>("Model", mModelPath, writer);
 		}
 		JSONHelper::Write<bool>("CastShadow", mCastShadow, writer);
+		JSONHelper::Write<bool>("ModelHasOffset", mModelHasOffset, writer);
 	}
 
 	void Model::DebugDisplay()

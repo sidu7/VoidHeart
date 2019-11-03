@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Hollow\Components\PathFollow.cpp" />
     <ClCompile Include="src\Hollow\Graphics\UniformBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\PhysicsManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
@@ -52,9 +53,11 @@
     <ClCompile Include="src\Hollow\Systems\CameraSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\PathFollowSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\StateMachineSystem.cpp" />
+    <ClCompile Include="src\Utils\BSplineCurve.cpp" />
     <ClCompile Include="src\Utils\GLCall.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Hollow\Core\Application.cpp" />
@@ -90,6 +93,7 @@
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hollow\Components\PathFollow.h" />
     <ClInclude Include="src\Hollow\Graphics\UniformBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />
@@ -101,7 +105,7 @@
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
     <ClInclude Include="src\Hollow\Events\CollisionEvent.h" />
-    <ClInclude Include="src\Hollow\Events\EventData.h" />
+    <ClInclude Include="src\Hollow\Events\GameEvent.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\CameraData.h" />
@@ -151,9 +155,11 @@
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
     <ClInclude Include="src\Hollow\Systems\ParticleSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\PathFollowSystem.h" />
     <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
     <ClInclude Include="src\Hollow\Systems\StateMachineSystem.h" />
+    <ClInclude Include="src\Utils\BSplineCurve.h" />
     <ClInclude Include="src\Utils\GLCall.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />

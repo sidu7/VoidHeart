@@ -21,7 +21,7 @@ namespace Hollow
 		void Init();
 		void Update();
 		void AddObjectToSystems(GameObject* GameObject);
-		void SendEventsToSystems(GameEvent* event);
+		void BroadcastEventToSystems(GameEvent* event);
 		void DeleteGameObejectInSystems(GameObject* GameObject);
 		void DeleteAllGameObjectsInSystems();
 

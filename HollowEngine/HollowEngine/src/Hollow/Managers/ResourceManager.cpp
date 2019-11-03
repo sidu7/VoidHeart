@@ -86,7 +86,7 @@ namespace Hollow
 		{
 			const aiScene* scene = GetModelRootNodeFromFile(path,Model_Flags);
 
-			float minm = std::numeric_limits<float>::max(), maxm = std::numeric_limits<float>::min();
+			float maxm = std::numeric_limits<float>::min();
 			for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
 			{
 				aiMesh* mesh = scene->mMeshes[i];
@@ -96,17 +96,14 @@ namespace Hollow
 					maxm = std::max(vert.x, maxm);
 					maxm = std::max(vert.y, maxm);
 					maxm = std::max(vert.z, maxm);
-					minm = std::min(vert.x, minm);
-					minm = std::min(vert.y, minm);
-					minm = std::min(vert.z, minm);
 				}
 			}
 			std::vector<Mesh*> meshes;
 			std::vector<Bone*> bones;
-			ProcessMeshNode(scene->mRootNode, scene, nullptr, meshes, bones, maxm + minm);
+			ProcessMeshNode(scene->mRootNode, scene, nullptr, meshes, bones, maxm);
 
 			mModelCache[path] = meshes;
-			mBoneCache[path] = std::make_pair(maxm+minm,bones);
+			mBoneCache[path] = std::make_pair(maxm,bones);
 		}
 
 		return mModelCache[path];
@@ -897,8 +894,8 @@ namespace Hollow
 
 		mShapes[CUBE] = CreateMesh(vertices, indices);
 
-			vertices.clear();
-			indices.clear();
+		vertices.clear();
+		indices.clear();
 		}
 		//Sphere
 		const float PI = 3.141592f;

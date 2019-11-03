@@ -21,7 +21,7 @@ namespace Hollow {
 
 		bool isPaused;
 		bool nextStep;
-		bool isApplyFriction = true;
+		bool isApplyFriction = false;
 		float accumulator;
 
 		const int impulseIterations = 8;

@@ -1,30 +1,29 @@
-#include"hollowpch.h"
-#include "Hollow/Managers/EventManager.h"
+#include <hollowpch.h>
+#include "EventManager.h"
+
+#include "Hollow/Events/GameEvent.h"
+
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 
 namespace Hollow {
-	bool EventManager::AddDelayedEvent(GameEvent* event, float delayTimer)
+	
+	void EventManager::AddDelayedEvent(GameEvent* event, float delayTimer)
 	{
 		event->mTimer = delayTimer;
 		mDelayedEvents.emplace_back(event);
-		return true;
 	}
-	void EventManager::HandleEvents()
+	
+	void EventManager::Update()
 	{
-		for (unsigned int i = 0; i < mCurrentEvents.size(); i++)
-		{
-			SystemManager::Instance().SendEventsToSystems(mCurrentEvents[i]);
-		}
-
-		mCurrentEvents.clear();
-
 		for (unsigned int i = 0; i < mDelayedEvents.size(); i++)
 		{
 			if (mDelayedEvents[i]->mTimer <= 0.0f)
 			{
-				SystemManager::Instance().SendEventsToSystems(mDelayedEvents[i]);
+				SystemManager::Instance().BroadcastEventToSystems(mDelayedEvents[i]);
+				GameEvent* event = mDelayedEvents[i];
 				mDelayedEvents.erase(mDelayedEvents.begin() + i);
+				delete event;
 			}
 			else
 			{
@@ -32,9 +31,37 @@ namespace Hollow {
 			}
 		}
 	}
-	bool EventManager::AddEvent(GameEvent* event)
+
+	void EventManager::SubscribeEvent(GameEventType eventType, std::function<void(GameEvent*)> callbackFunction)
 	{
-		mCurrentEvents.emplace_back(event);
-		return true;
+		mEventsMap[eventType].emplace_back(callbackFunction);
+	}
+
+	void EventManager::CleanUp()
+	{
+		mEventsMap.clear();
+		std::for_each(mDelayedEvents.begin(), mDelayedEvents.end(), [](GameEvent* event) {delete event; });
+		mDelayedEvents.clear();
+	}
+
+	void EventManager::BroadcastToSubscribers(GameEvent* event)
+	{
+		if(mEventsMap.find(event->mType) != mEventsMap.end())
+		{
+			auto& list = mEventsMap[event->mType];
+			for(auto function : list)
+			{
+				function(event);
+			}
+		}
+		else
+		{
+			HW_CORE_ERROR("EventType not found");
+		}
+	}
+
+	void EventManager::BroadcastEvent(GameEvent* event)
+	{
+		SystemManager::Instance().BroadcastEventToSystems(event);
 	}
 }

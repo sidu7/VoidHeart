@@ -15,6 +15,7 @@
         {
             "Type": "Model",
             "Model": "Resources/Models/Walking.fbx",
+            "ModelHasOffset" : true,
             "CastShadow": true
         },
         {

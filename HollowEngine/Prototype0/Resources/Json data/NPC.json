@@ -1,0 +1,50 @@
+{
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 10.0, 10.0, 10.0 ],
+      "Scale": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 1.0,
+      "Velocity": [0.0,0.0,2.0]
+    },
+    {
+      "Type": "Collider"
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Walking.fbx",
+      "ModelHasOffset" : true,
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Shininess": 1.0,
+      "MaterialData": "Resources/Models/Walking.fbx"
+    },
+    {
+      "Type": "Animator",
+      "BoneData": "Resources/Models/Walking.fbx",
+      "Animations": [ "Resources/Models/Walking.fbx"]
+    },
+    {
+      "Type": "StateMachine",
+      "StateFile": "Resources/State data/npcstate.json",
+      "StartState": "Walking"
+    },
+    {
+      "Type": "PathFollow",
+      "ControlPoints": [
+        [ 2.29, 0.0, 5.09 ],
+        [ -5.70, 0.0, 5.79 ],
+        [ -4.29, 0.0, -6.19 ],
+        [ 2.0, 0.0, -8.80 ],
+        [ 2.79, 0.0, 2.79 ],
+        [ -7.19, 0.0, 7.0 ],
+        [ 0.0, 0.0, -1.19 ]
+      ]
+    }
+  ]
+}

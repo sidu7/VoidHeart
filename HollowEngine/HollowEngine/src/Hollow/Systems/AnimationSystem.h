@@ -5,7 +5,7 @@ namespace Hollow
 {
 	class AnimationSystem : public System
 	{
-		REGISTERSYSTEM(AnimationSystem, 2);
+		REGISTERSYSTEM(AnimationSystem, 3);
 	public:
 		virtual ~AnimationSystem() {}
 		void Update();

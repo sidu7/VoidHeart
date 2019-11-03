@@ -2,11 +2,12 @@
 #include <vector>
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Core/GameObject.h"
-#include "Hollow/Events/EventData.h"
 
 
 namespace Hollow
 {
+	class GameEvent;
+	
 	class HOLLOW_API System
 	{
 	public:
@@ -15,9 +16,10 @@ namespace Hollow
 			this->mTier = tier;
 		}
 		virtual ~System() {}
+		virtual void Init() {}
 		virtual void Update() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
-		virtual bool HandleEvent(GameEvent* event) { return false; }
+		virtual void HandleBroadcastEvent(GameEvent* event) { }
 		virtual void OnDeleteGameObject(GameObject* pGameObject) {}
 
 		void DeleteGameObject(GameObject* pGameObject)

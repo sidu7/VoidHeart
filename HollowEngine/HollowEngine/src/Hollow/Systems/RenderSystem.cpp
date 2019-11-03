@@ -28,9 +28,15 @@ void Hollow::RenderSystem::Update()
 		RenderData data;
 
 		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
+		Model* pModel = mGameObjects[i]->GetComponent<Model>();
 
 		if (trans->dirtyBit) {
-			trans->mTransformationMatrix = glm::translate(glm::mat4(1.0f), trans->mPosition);
+			glm::vec3 position = trans->mPosition;
+			if(pModel->mModelHasOffset)
+			{
+				position -= glm::vec3(0.0f, trans->mScale.y / 2, 0.0f);
+			}
+			trans->mTransformationMatrix = glm::translate(glm::mat4(1.0f), position);
 			trans->mTransformationMatrix *= glm::toMat4(trans->mQuaternion);
 			trans->mTransformationMatrix = glm::scale(trans->mTransformationMatrix, trans->mScale);
 			trans->dirtyBit = false;
@@ -41,7 +47,7 @@ void Hollow::RenderSystem::Update()
 		//DebugDrawManager::Instance().DebugCircle(trans->mPosition + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
 		//DebugDrawManager::Instance().DebugLine(trans->mPosition, trans->mPosition + glm::vec3(30.0f, 30.0f, -10.0f), COLOR_ORANGE);
 		//DebugDrawManager::Instance().DebugCube(trans->mPosition+ glm::vec3(0.0f,trans->mScale.x,0.0f),glm::vec3(1.0f));
-		//DebugDrawManager::Instance().DebugCube(trans->mPosition,mGameObjects[i]->GetComponent<Collider>()->mpShape->GetHalfExtents() * 2.0f);
+		DebugDrawManager::Instance().DebugCube(trans->mPosition,mGameObjects[i]->GetComponent<Collider>()->mpShape->GetHalfExtents() * 2.0f);
 		//DebugDrawManager::Instance().DebugAxes(trans->mPosition, glm::vec3(2.0f));
 		
 
@@ -60,7 +66,6 @@ void Hollow::RenderSystem::Update()
 			data.mIsAnimated = false;
 		}
 
-		Model* pModel = mGameObjects[i]->GetComponent<Model>();
 		data.mpMeshes = pModel->mMeshes;
 
 		data.mCastShadow = pModel->mCastShadow;

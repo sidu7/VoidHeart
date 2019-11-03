@@ -1,13 +1,13 @@
 #pragma once
-#include <string>
-#include "Hollow/Core/Core.h"
-#include "Hollow/Events/EventData.h"
-#include "Hollow/Core/GameObject.h"
+#include "Hollow/Events/GameEvent.h"
 
 namespace Hollow {
-	class CollisionEvent : public GameEvent
+	class GameObject;
+	
+	class HOLLOW_API CollisionEvent : public GameEvent
 	{
-		REGISTEREVENT(CollisionEvent);
+	public:
+		CollisionEvent() : GameEvent(COLLISION_EVENT), mObject1(nullptr), mObject2(nullptr) {}
 		GameObject* mObject1;
 		GameObject* mObject2;
 	};

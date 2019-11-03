@@ -1,0 +1,13 @@
+{
+  "States": [ "Walking" ],
+  "Conditions": [
+    {
+      "State": "Walking",
+      "Events": [ ],
+      "Inputs": [ ],
+      "InputCondition": [ ],
+      "EventStates": [ ],
+      "InputStates": [ ]
+    }
+  ]
+}
