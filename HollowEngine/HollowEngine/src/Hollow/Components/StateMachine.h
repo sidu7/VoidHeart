@@ -18,5 +18,6 @@ namespace Hollow
 		std::vector<State*> mStates;
 		State* mCurrentState;
 		State* mPreviousState;
+		bool mNeedChangeState;
 	};
 }

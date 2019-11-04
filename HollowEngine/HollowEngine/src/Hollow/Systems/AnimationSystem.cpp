@@ -29,11 +29,26 @@ namespace Hollow
 			if (animator->mRunningState != state->mCurrentState->mName)
 			{
 				animator->mRunningState = state->mCurrentState->mName;
-				animator->mRunTime = 0.0;
+				animator->mLoopingAnimation = state->mCurrentState->mIsLoop;
+				animator->mRunTime = FrameRateController::Instance().GetFrameTime();
 			}
 			animator->mRunTime += FrameRateController::Instance().GetFrameTime();
+			
+			auto ticks_duration = animator->mAnimations[animator->mRunningState];
+			double TimeinTicks = animator->mRunTime * ticks_duration.first;
+			double animationTime = TimeinTicks / ticks_duration.second;
+			
+			if (animationTime > 1.0 && !animator->mLoopingAnimation)
+			{
+				state->mNeedChangeState = true;
+				break;
+			}
+			
+			double timeFrame = fmod(TimeinTicks, ticks_duration.second);
 			animator->mBoneTransformations.clear();
-			std::string animationName = state->mCurrentState->mName;
+			std::string animationName = animator->mRunningState;
+			std::vector<glm::mat4> currentTransformations;
+			currentTransformations.reserve(animator->mBones.size());
 			for (unsigned int j = 0; j < animator->mBones.size(); ++j)
 			{
 				Bone* bone = animator->mBones[j];
@@ -41,9 +56,8 @@ namespace Hollow
 				if (bone->mIsAnimated[animationName])
 				{
 					//interpolate for timeframe
-					AnimationData& anim = bone->mAnimations[animationName];
-					double TimeinTicks = animator->mRunTime * anim.mTicksPerSec;
-					double timeFrame = fmod(TimeinTicks, anim.mDuration);
+					AnimationData& anim = bone->mAnimations[animationName];					
+					
 					auto posIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyPositions);
 					auto rotIndex = FindT2inList<glm::quat>(timeFrame, anim.mKeyRotations);
 					auto sclIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyScalings);
@@ -96,15 +110,16 @@ namespace Hollow
 				unsigned int parent = bone->mParentIndex;
 				if (parent != -1)
 				{
-					bone->mCurrentTransformation = animator->mBones[parent]->mCurrentTransformation * trans;
+					currentTransformations.emplace_back(currentTransformations[parent] * trans);
 				}
 				else
 				{
-					bone->mCurrentTransformation = trans;
+					currentTransformations.emplace_back(trans);
 				}
 
-				animator->mBoneTransformations.push_back(bone->mCurrentTransformation * bone->mOffset);
+				animator->mBoneTransformations.push_back(currentTransformations[currentTransformations.size() - 1] * bone->mOffset);
 			}
+			currentTransformations.clear();
 		}
 	}
 

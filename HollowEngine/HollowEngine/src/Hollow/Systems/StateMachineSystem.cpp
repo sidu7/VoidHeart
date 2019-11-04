@@ -25,10 +25,21 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			StateMachine* state = mGameObjects[i]->GetComponent<StateMachine>();
+
+			if (state->mNeedChangeState)
+			{
+				State* temp = state->mCurrentState;
+				state->mCurrentState = state->mPreviousState;
+				state->mPreviousState = temp;
+				state->mNeedChangeState = false;
+				continue;
+			}
+
+			// Check for state change by inputs
 			std::vector<unsigned int>& inputs = state->mCurrentState->mInputs;
 			std::vector<State::StateInputCondition>& inputconditions = state->mCurrentState->mInputConditions;
 			for (unsigned int i = 0; i < inputs.size(); ++i)
-			{
+			{	
 				bool stateChanged = false;
 				switch (inputconditions[i])
 				{

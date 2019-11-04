@@ -129,14 +129,11 @@ namespace Hollow
 		return mBoneCache[path];
 	}
 
-	void ResourceManager::AddAnimationData(std::string path, std::vector<Bone*>& boneList, float factor)
+	std::pair<double, double> ResourceManager::AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, float factor)
 	{
 		const aiScene* scene = GetModelRootNodeFromFile(path,Animation_Flags);
 		
-		std::string name = path.substr(path.find_last_of('/')+1);
-		name = name.substr(0, name.find_last_of('.'));
-
-		ProcessAnimationData(scene, boneList, factor, name);
+		return ProcessAnimationData(scene, boneList, factor, name);
 	}
 
 	void ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene, const Bone* parent, std::vector<Mesh*>& meshlist, std::vector<Bone*>& boneList, float maxm)
@@ -323,22 +320,25 @@ namespace Hollow
 		return mModelRootsCache[path];
 	}
 
-	void ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm, std::string name)
+	std::pair<double, double> ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm, std::string name)
 	{
 		for (unsigned int i = 0; i < boneList.size(); ++i)
 		{
 			boneList[i]->mIsAnimated[name] = false;
 		}
 
+		std::pair<double, double> ticks_duration;
 		for (unsigned int i = 0; i < scene->mNumAnimations; ++i)
 		{
-			aiAnimation* animation = scene->mAnimations[i];			
+			aiAnimation* animation = scene->mAnimations[i];
+			ticks_duration.first = animation->mTicksPerSecond;
+			ticks_duration.second = animation->mDuration;
 			for (unsigned int j = 0; j < animation->mNumChannels; ++j)
 			{
 				unsigned int index = GetBoneIndex(animation->mChannels[j]->mNodeName.data, boneList);
 				AnimationData animData;
-				animData.mDuration = animation->mDuration;
-				animData.mTicksPerSec = animation->mTicksPerSecond;
+				animData.mDuration = ticks_duration.first;
+				animData.mTicksPerSec = ticks_duration.second;
 				//Key Positions
 				for (unsigned int k = 0; k < animation->mChannels[j]->mNumPositionKeys; ++k)
 				{
@@ -363,6 +363,7 @@ namespace Hollow
 				boneList[index]->mIsAnimated[name] = true;
 			}
 		}
+		return ticks_duration;
 	}
 
 
@@ -419,6 +420,7 @@ namespace Hollow
 
 				State* state = states[State::FindState(states,statecondition["State"].GetString())];
 
+				state->mIsLoop = statecondition["IsLoop"].GetBool();
 				state->mEvents = JSONHelper::GetArray<std::string>(statecondition["Events"].GetArray());
 				rapidjson::Value::Array eventState = statecondition["EventStates"].GetArray();
 				state->mEventStates.reserve(eventState.Size());

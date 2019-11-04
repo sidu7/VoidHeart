@@ -8,7 +8,7 @@
     {
       "Type": "Body",
       "Mass": 1.0,
-      "Velocity": [0.0,0.0,2.0]
+      "Velocity": [ 0.0, 0.0, 2.0 ]
     },
     {
       "Type": "Collider"
@@ -16,7 +16,7 @@
     {
       "Type": "Model",
       "Model": "Resources/Models/Walking.fbx",
-      "ModelHasOffset" : true,
+      "ModelHasOffset": true,
       "CastShadow": true
     },
     {
@@ -27,7 +27,7 @@
     {
       "Type": "Animator",
       "BoneData": "Resources/Models/Walking.fbx",
-      "Animations": [ "Resources/Models/Walking.fbx"]
+      "Animations": [ [ "Walking", "Resources/Models/Walking.fbx" ] ]
     },
     {
       "Type": "StateMachine",
@@ -36,7 +36,7 @@
     },
     {
       "Type": "PathFollow",
-      "Move":  true,
+      "Move": true,
       "ControlPoints": [
         [ 15.200000, 0.500000, 73.900002 ],
         [ -5.700000, 0.500000, -14.800000 ],
