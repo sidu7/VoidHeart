@@ -75,12 +75,7 @@ namespace Hollow
 				}				
 				for (unsigned int i = 0; i < mControlPoints.size(); ++i)
 				{
-					if (ImGui::SliderFloat("", &mControlPoints[i].x, -150.0f, 150.0f, "%.1f"))
-					{
-						mControlPointsChanged = true;
-					}
-					ImGui::SameLine();
-					if (ImGui::SliderFloat(std::string("Point" + std::to_string(i + 1)).c_str(), &mControlPoints[i].z, -150.0f, 150.0f, "%.1f"))
+					if (ImGui::SliderFloat3(std::string("Point" + std::to_string(i + 1)).c_str(), (float*)&mControlPoints[i], -150.0f, 150.0f, "%.1f"))
 					{
 						mControlPointsChanged = true;
 					}
