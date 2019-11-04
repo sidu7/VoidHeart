@@ -5,6 +5,8 @@ namespace Hollow {
 
 	Body Body::instance;
 
+	std::unordered_map<std::string, RigidbodyType> Body::mapOfTypesToStrings;
+
 	void Body::Init()
 	{
 		mMass = 0.0f;
@@ -17,6 +19,15 @@ namespace Hollow {
 		mTotalTorque = glm::vec3(0);
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
+		isFrictionLess = false;
+
+		bodyType = DYNAMIC;
+
+		{
+#define RIGIDBODY_TYPE(name) Body::mapOfTypesToStrings[#name] = Hollow::RigidbodyType::name;
+#include "RigidbodyTypes.enum"
+#undef RIGIDBODY_TYPE
+		}
 	}
 
 	void Body::Clear()
@@ -42,6 +53,17 @@ namespace Hollow {
 		if (data.HasMember("Mass"))
 		{
 			mMass = data["Mass"].GetFloat();
+		}
+		if (data.HasMember("RigidbodyType"))
+		{
+			bodyType = mapOfTypesToStrings[data["RigidbodyType"].GetString()];
+
+			if(bodyType == STATIC)
+				mMass = 1e39;
+		}
+		if (data.HasMember("isFrictionLess"))
+		{
+			isFrictionLess = data["isFrictionLess"].GetBool();
 		}
 
 		mInverseMass = 1.0f / mMass;

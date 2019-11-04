@@ -37,27 +37,30 @@ namespace Hollow
 			pCol->mpTr = static_cast<Transform*>(object->GetComponent<Transform>());
 			pCol->mpBody = static_cast<Body*>(object->GetComponent<Body>());
 
-			// TODO write inertia formula for spheres
-			glm::mat3 inertia = glm::mat3(0.0f);
-			if (pCol->mpShape->mType == ShapeType::BOX) {
-				inertia[0][0] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
-				inertia[1][1] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.x * pCol->mpTr->mScale.x + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
-				inertia[2][2] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.x * pCol->mpTr->mScale.x);
+			if (!pCol->isTrigger)
+			{
+				// TODO write inertia formula for spheres
+				glm::mat3 inertia = glm::mat3(0.0f);
+				if (pCol->mpShape->mType == ShapeType::BOX) {
+					inertia[0][0] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
+					inertia[1][1] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.x * pCol->mpTr->mScale.x + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
+					inertia[2][2] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.x * pCol->mpTr->mScale.x);
+				}
+				if (pCol->mpBody->mInverseMass == 0.0f)
+					pCol->mpBody->mLocalInertiaInverse = glm::mat3(0);
+				else
+					pCol->mpBody->mLocalInertiaInverse = glm::inverse(inertia);
+
+
+				pCol->mpBody->mPosition = pCol->mpTr->mPosition;
+				pCol->mpBody->mPreviousPosition = pCol->mpTr->mPosition;
+				pCol->mpBody->mQuaternion = pCol->mpTr->mQuaternion;
+				pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
+
+				// update local shape (0.5f because we are updating half extents)
+				static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f * (pCol->mpTr->mScale);
+				static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
 			}
-			if (pCol->mpBody->mInverseMass == 0.0f)
-				pCol->mpBody->mLocalInertiaInverse = glm::mat3(0);
-			else
-				pCol->mpBody->mLocalInertiaInverse = glm::inverse(inertia);
-			
-			
-			pCol->mpBody->mPosition = pCol->mpTr->mPosition;
-			pCol->mpBody->mPreviousPosition = pCol->mpTr->mPosition;
-			pCol->mpBody->mQuaternion = pCol->mpTr->mQuaternion;
-			pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
-			
-			// update local shape (0.5f because we are updating half extents)
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f *(pCol->mpTr->mScale);
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
 
 			// Collider added to Dynamic BVH
 			PhysicsManager::Instance().mTree.AddCollider(pCol);
@@ -85,17 +88,25 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			Collider* pCol = mGameObjects[i]->GetComponent<Collider>();
-			glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
-			glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
-			glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
-			glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-			glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
-				abs((pCol->mpBody->mRotationMatrix) * y) +
-				abs((pCol->mpBody->mRotationMatrix) * z);
 
-			// based on normalized body vertices
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
+			if (!pCol->isTrigger) {
+				glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
+				glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
+				glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
+				glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
+				glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
+					abs((pCol->mpBody->mRotationMatrix) * y) +
+					abs((pCol->mpBody->mRotationMatrix) * z);
+
+				// based on normalized body vertices
+				static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
+				static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
+			}
+			else 
+			{
+				static_cast<ShapeAABB*>(pCol->mpShape)->mMin = -static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
+				static_cast<ShapeAABB*>(pCol->mpShape)->mMax = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
+			}
 		}
 
 		// balancing the tree
@@ -109,6 +120,11 @@ namespace Hollow
 		SAT& mSAT = PhysicsManager::Instance().mSAT;
 		
 		for (auto& pair : pairs) {
+			if (pair.first->isTrigger || pair.second->isTrigger) {
+				// TODO create event that an object entered a trigger
+
+				continue;
+			}
 			// perform the SAT intersection test
 			mSAT.TestIntersection3D(pair.first, pair.second);
 		}
@@ -119,21 +135,23 @@ namespace Hollow
 		{
 			Body* pBody = static_cast<Body*>(go->GetComponent<Body>());
 
-			if (pBody->mInverseMass == 0.0f)
-				continue;
+			if (pBody != nullptr) {
+		
+				if (pBody->bodyType == STATIC || pBody->bodyType == KINEMATIC)
+					continue;
+				// compute acceleration
+				glm::vec3 acc = pBody->mTotalForce * pBody->mInverseMass;
+				acc += gravity;
+				glm::vec3 alpha = pBody->mTotalTorque * pBody->mWorldInertiaInverse;
 
-			// compute acceleration
-			glm::vec3 acc = pBody->mTotalForce * pBody->mInverseMass;
-			acc += gravity;
-			glm::vec3 alpha = pBody->mTotalTorque * pBody->mWorldInertiaInverse;
+				// integrate acc into the velocity
+				pBody->mVelocity += acc * fixedDeltaTime;
+				pBody->mAngularVelocity += alpha * fixedDeltaTime;
 
-			// integrate acc into the velocity
-			pBody->mVelocity += acc * fixedDeltaTime;
-			pBody->mAngularVelocity += alpha * fixedDeltaTime;
-
-			// set forces to zero
-			pBody->mTotalForce = glm::vec3(0);
-			pBody->mTotalTorque = glm::vec3(0);
+				// set forces to zero
+				pBody->mTotalForce = glm::vec3(0);
+				pBody->mTotalTorque = glm::vec3(0);
+			}
 		}
 
 		// TODO remove loops and replace with hashmap
@@ -191,7 +209,7 @@ namespace Hollow
 					// bias value
 					float b = baumgarte / fixedDeltaTime * std::min(c->contactPoints[j].penetrationDepth - slop, 0.0f);
 
-					float lambda = -c->contactPoints[j].effectiveMassN * 
+					float lambda = -c->contactPoints[j].effectiveMassN *
 						(c->constraint.JacobianJacobianMult(c->contactPoints[j].jacobianN, c->constraint.velocityJacobian) + b);
 
 					float origNormalImpulseSum = c->contactPoints[j].normalImpulseSum;
@@ -204,14 +222,14 @@ namespace Hollow
 
 					c->constraint.ApplyImpulse(c->bodyA, c->bodyB, c->contactPoints[j].mMatxjN, deltaLambda);
 
-					if (isApplyFriction) {
+					if (!(c->bodyA->isFrictionLess || c->bodyB->isFrictionLess)) {
 						c->constraint.EvaluateVelocityJacobian(c->bodyA, c->bodyB);
-						
+
 						//float nLambda = c->contactPoints[j]->normalImpulseSum;
 						float nLambda = -gravity.y / pointCount;
 
 						//==== solve for tangent 0
-						lambda = -c->contactPoints[j].effectiveMassT0 * 
+						lambda = -c->contactPoints[j].effectiveMassT0 *
 							(c->constraint.JacobianJacobianMult(c->contactPoints[j].jacobianT0, c->constraint.velocityJacobian) + 0.0f);
 
 						float origTangent0ImpulseSum = c->contactPoints[j].tangentImpulseSum1;
@@ -226,7 +244,7 @@ namespace Hollow
 
 						//==== solve for tangent 1
 						c->constraint.EvaluateVelocityJacobian(c->bodyA, c->bodyB);
-						
+
 						lambda = -c->contactPoints[j].effectiveMassT1 *
 							(c->constraint.JacobianJacobianMult(c->contactPoints[j].jacobianT1, c->constraint.velocityJacobian) + 0.0f);
 
@@ -241,6 +259,7 @@ namespace Hollow
 						c->constraint.ApplyImpulse(c->bodyA, c->bodyB, c->contactPoints[j].mMatxjT1, deltaLambda);
 					}
 				}
+				
 			}
 		}
 
@@ -249,17 +268,19 @@ namespace Hollow
 		for (auto go : mGameObjects)
 		{
 			Body* pBody = static_cast<Body*>(go->GetComponent<Body>());
-			// save current position
-			pBody->mPreviousPosition = pBody->mPosition;
+			if (pBody != nullptr) {
+				// save current position
+				pBody->mPreviousPosition = pBody->mPosition;
 
-			// integrate the position
-			pBody->mPosition += pBody->mVelocity * fixedDeltaTime;
+				// integrate the position
+				pBody->mPosition += pBody->mVelocity * fixedDeltaTime;
 
-			pBody->mPreviousQuaternion = pBody->mQuaternion;
+				pBody->mPreviousQuaternion = pBody->mQuaternion;
 
-			// integrate the orientation
-			glm::fquat newQuat = 0.5f * (pBody->mAngularVelocity) * pBody->mQuaternion * fixedDeltaTime;
-			pBody->mQuaternion *= newQuat;
+				// integrate the orientation
+				glm::fquat newQuat = 0.5f * (pBody->mAngularVelocity) * pBody->mQuaternion * fixedDeltaTime;
+				pBody->mQuaternion *= newQuat;
+			}
 		}
 	}
 
@@ -270,25 +291,27 @@ namespace Hollow
 			Body* pBody = static_cast<Body*>(go->GetComponent<Body>());
 			Transform* pTr = static_cast<Transform*>(go->GetComponent<Transform>());
 
-			pTr->mPosition.x = glm::mix(pBody->mPreviousPosition.x, pBody->mPosition.x, blendingFactor);
-			pTr->mPosition.y = glm::mix(pBody->mPreviousPosition.y, pBody->mPosition.y, blendingFactor);
-			pTr->mPosition.z = glm::mix(pBody->mPreviousPosition.z, pBody->mPosition.z, blendingFactor);
+			if (pBody != nullptr) {
+				pTr->mPosition.x = glm::mix(pBody->mPreviousPosition.x, pBody->mPosition.x, blendingFactor);
+				pTr->mPosition.y = glm::mix(pBody->mPreviousPosition.y, pBody->mPosition.y, blendingFactor);
+				pTr->mPosition.z = glm::mix(pBody->mPreviousPosition.z, pBody->mPosition.z, blendingFactor);
 
 
-			// if there is a significant change in position or orientation only then update transformation matrix
-			if (glm::length2(pBody->mVelocity) > 0.0001f || glm::length2(pBody->mAngularVelocity) > 0.0001f) {
-				pTr->dirtyBit = true;
+				// if there is a significant change in position or orientation only then update transformation matrix
+				if (glm::length2(pBody->mVelocity) > 0.0001f || glm::length2(pBody->mAngularVelocity) > 0.0001f) {
+					pTr->dirtyBit = true;
+				}
+
+				pBody->mQuaternion = glm::normalize(pBody->mQuaternion);
+				pTr->mQuaternion = glm::slerp(pBody->mPreviousQuaternion, pBody->mQuaternion, blendingFactor);
+
+				pBody->mRotationMatrix = glm::toMat3(pBody->mQuaternion);
+				pBody->mWorldInertiaInverse =
+					pBody->mRotationMatrix *
+					pBody->mLocalInertiaInverse *
+					glm::transpose(pBody->mRotationMatrix);
+				//pTr->mRotation = pBody->mRotationMatrix;
 			}
-
-			pBody->mQuaternion = glm::normalize(pBody->mQuaternion);
-			pTr->mQuaternion = glm::slerp(pBody->mPreviousQuaternion, pBody->mQuaternion, blendingFactor);
-			
-			pBody->mRotationMatrix = glm::toMat3(pBody->mQuaternion);
-			pBody->mWorldInertiaInverse =
-				pBody->mRotationMatrix *
-				pBody->mLocalInertiaInverse *
-				glm::transpose(pBody->mRotationMatrix);
-			//pTr->mRotation = pBody->mRotationMatrix;
 		}
 	}
 
