@@ -17,10 +17,11 @@ namespace Hollow
 
 	public:
 		std::vector<Bone*> mBones;
-		std::vector<std::string> mAnimations;
+		std::unordered_map<std::string,std::pair<double,double>> mAnimations;
 		std::vector<glm::mat4> mBoneTransformations;
 		std::string mRunningState;
 		float mScaleFactor;
 		double mRunTime;
+		bool mLoopingAnimation;
 	};
 }

@@ -8,6 +8,7 @@
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
+#include "Hollow/Graphics/ShaderStorageBuffer.h"
 
 namespace Hollow
 {
@@ -15,15 +16,16 @@ namespace Hollow
 
 	void ParticleEmitter::Init()
 	{
-	}
-
-	void ParticleEmitter::Clear()
-	{
+		mCenterOffset = glm::vec3(0.0f);
 		mCount = 0;
 		mSpeedRange = glm::vec2(0.0f);
 		mLifeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
+	}
+
+	void ParticleEmitter::Clear()
+	{		
 		mParticlesList.clear();
 		mParticlePositions.clear();
 		mpParticle.clear();
@@ -62,6 +64,14 @@ namespace Hollow
 		if (data.HasMember("Life"))
 		{
 			mLifeRange = JSONHelper::GetVec2F(data["Life"].GetArray());
+		}
+		if (data.HasMember("ComputeShader"))
+		{
+			mpComputeShader = ResourceManager::Instance().LoadShader(data["ComputeShader"].GetString());
+		}
+		if(data.HasMember("CenterOffset"))
+		{
+			mCenterOffset = JSONHelper::GetVec3F(data["CenterOffset"].GetArray());
 		}
 	}
 

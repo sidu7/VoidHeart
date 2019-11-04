@@ -72,19 +72,19 @@ namespace Hollow {
 			{
 				if (material->mpDiffuse)
 				{
-					ImGui::Image((void*)material->mpDiffuse->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Image((void*)material->mpDiffuse->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
 				}
 				if (material->mpSpecular)
 				{
-					ImGui::Image((void*)material->mpSpecular->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Image((void*)material->mpSpecular->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
 				}
 				if (material->mpNormal)
 				{
-					ImGui::Image((void*)material->mpNormal->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Image((void*)material->mpNormal->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
 				}
 				if (material->mpHeight)
 				{
-					ImGui::Image((void*)material->mpHeight->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Image((void*)material->mpHeight->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
 				}
 			}
 			

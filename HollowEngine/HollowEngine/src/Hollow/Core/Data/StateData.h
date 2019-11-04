@@ -15,6 +15,7 @@ namespace Hollow
 
 		std::string mName;
 		unsigned int mIndex;
+		bool mIsLoop;
 		std::vector<std::string> mEvents;
 		std::vector<unsigned int> mEventStates;
 		std::vector<unsigned int> mInputs;

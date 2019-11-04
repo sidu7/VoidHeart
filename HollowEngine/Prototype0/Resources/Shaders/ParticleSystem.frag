@@ -1,6 +1,7 @@
 #version 430 core
 
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 bloom;
 
 uniform sampler2D Texx;
 uniform int Type;
@@ -18,4 +19,5 @@ void main()
 	{
 		FragColor = vec4(0,1,0,1);
 	}
+	bloom = FragColor;
 }

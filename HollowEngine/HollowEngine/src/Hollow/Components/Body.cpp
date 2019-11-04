@@ -54,6 +54,10 @@ namespace Hollow {
 		{
 			mMass = data["Mass"].GetFloat();
 		}
+		if(data.HasMember("Velocity"))
+		{
+			mVelocity = JSONHelper::GetVec3F(data["Velocity"].GetArray());
+		}
 		if (data.HasMember("RigidbodyType"))
 		{
 			bodyType = mapOfTypesToStrings[data["RigidbodyType"].GetString()];
