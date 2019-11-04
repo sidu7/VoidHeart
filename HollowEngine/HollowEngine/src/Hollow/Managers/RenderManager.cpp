@@ -19,6 +19,7 @@
 #include "Hollow/Managers/FrameRateController.h"
 
 #include "Utils/GLCall.h"
+#include "ResourceManager.h"
 
 namespace Hollow {
 
@@ -69,13 +70,16 @@ namespace Hollow {
 		// Init Bloom Shader and FrameBuffer
 		mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
 		mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2,true);
+
+		// Init UI Shader
+		mpUIShader = new Shader(data["UIShader"].GetArray()[0].GetString(), data["UIShader"].GetArray()[1].GetString());
 	}
 
 	void RenderManager::CleanUp()
 	{
 
 		delete mpDeferredShader;
-
+		delete mpUIShader;
 		// CleanUp GBuffer things
 		delete mpGBufferShader;
 		delete mpGBuffer;
@@ -168,7 +172,10 @@ namespace Hollow {
 		if (mShadowMapDebugMode > 0)
 		{
 			DrawShadowMap();
-		}	   
+		}
+
+		// UI camera stuff
+		DrawUI();
 
 		// Update ImGui
 		DebugDisplay();
@@ -824,6 +831,39 @@ namespace Hollow {
 		mpBloomShader->SetInt("blur", 2);
 		DrawFSQ();
 		mpBloomShader->Unbind();
+	}
+
+	void RenderManager::DrawUI()
+	{
+		glDisable(GL_DEPTH_TEST);
+		glm::mat4 UIProjectionMatrix = glm::ortho(0, mpWindow->GetWidth(), 0, mpWindow->GetHeight(),-1,10);
+
+		mpUIShader->Use();
+		Mesh* quad = ResourceManager::Instance().GetShape(Shapes::QUAD);
+
+		Texture* texture = ResourceManager::Instance().LoadTexture("Resources/Textures/star.png");
+		
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 10.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(100.0f));
+
+		mpUIShader->SetMat4("Projection", UIProjectionMatrix);
+		mpUIShader->SetMat4("Model", model);
+		texture->Bind(1);
+		mpUIShader->SetInt("UITexture", 1);
+
+		quad->mpVAO->Bind();
+		quad->mpEBO->Bind();
+		quad->mpVBO->Bind();
+		GLCall(glDrawElements(GL_TRIANGLES, quad->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+		quad->mpEBO->Unbind();
+		quad->mpVBO->Unbind();
+		quad->mpVAO->Unbind();
+		
+		mpUIShader->Unbind();
+		//for (unsigned int i = 0; i < mUIData.size(); ++i)
+		//{
+		//	
+		//}
 	}
 
 	void RenderManager::DebugDisplay()

@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Hollow\Components\PathFollow.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\UIRenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\UniformBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />

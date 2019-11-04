@@ -7,6 +7,7 @@
 #include "Hollow/Graphics/Data/DebugRenderData.h"
 #include "Hollow/Graphics/Data/CameraData.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
+#include "Hollow/Graphics/Data/UIRenderData.h"
 #include <GL/glew.h>
 
 namespace Hollow {
@@ -54,6 +55,8 @@ namespace Hollow {
 
 		void DrawSceneWithBloom();
 
+		void DrawUI();
+
 		// ImGui Debug functions
 		void DebugDisplay();
 		void DebugDisplayGBuffer();
@@ -66,6 +69,9 @@ namespace Hollow {
 		std::vector<ParticleData> mParticleData;
 		std::vector<CameraData> mCameraData;
 		std::vector<DebugPathData> mDebugPathData;
+		std::vector<UIRenderData> mUIData;
+		CameraData mMainCamera;
+		CameraData mUICamera;
 
 	private:
 		// Transformation matricies
@@ -107,5 +113,8 @@ namespace Hollow {
 		Shader* mpBloomShader;
 		FrameBuffer* mpBloomFrame;
 		bool mBloomEnabled;
+
+		// UI Shader
+		Shader* mpUIShader;
 	};
 }

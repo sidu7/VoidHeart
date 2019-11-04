@@ -1,0 +1,10 @@
+{
+  "Components": [
+    {
+      "Type": "Camera",
+      "CameraType": 1,
+      "Projection": 1,
+      "HandleInputs": true
+    }
+  ]
+}

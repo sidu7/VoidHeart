@@ -23,7 +23,7 @@
             "Area": [ 3.0, 4.0, 2.0 ],
             "Life": [1.0,6.0],
             "Speed": [0.1,0.7],
-            "ComputeShader": "Resources/Shaders/CenterParticles.compute",
+            "ComputeShader": "Resources/Shaders/CenterParticles.comp",
             "CenterOffset":[0.0,-4.0,1.0]
         }  
     ]

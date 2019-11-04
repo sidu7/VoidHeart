@@ -21,7 +21,8 @@
       "DebugShadowMapShader": [ "Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag" ],
       "BlurComputeShaders": [ "Resources/Shaders/HorizontalBlur.comp", "Resources/Shaders/VerticalBlur.comp" ],
       "LocalLightShader": [ "Resources/Shaders/LocalLight.vert", "Resources/Shaders/LocalLight.frag" ],
-      "BloomShader": ["Resources/Shaders/Bloom.vert","Resources/Shaders/Bloom.frag"]
+      "BloomShader": [ "Resources/Shaders/Bloom.vert", "Resources/Shaders/Bloom.frag" ],
+      "UIShader": [ "Resources/Shaders/UIShader.vert", "Resources/Shaders/UIShader.frag" ]
     }
   ],
   "Memory": [
