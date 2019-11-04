@@ -14,6 +14,15 @@
 
 namespace Hollow {
 
+	void PhysicsManager::ApplyImpulse(GameObject* object, glm::vec3 impulse)
+	{
+		Body* pBody = object->GetComponent<Body>();
+
+		pBody->mVelocity += impulse / pBody->mMass;
+		// TODO should also have some angular component to it
+		// depending on the axis the impulse was applied on
+	}
+	
 	Collider* PhysicsManager::castRay()
 	{
 		std::pair<float, float> mouseXY = InputManager::Instance().GetMousePosition();

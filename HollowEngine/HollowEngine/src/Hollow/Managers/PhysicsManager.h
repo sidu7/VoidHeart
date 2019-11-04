@@ -23,6 +23,8 @@ namespace Hollow
 		// SAT
 		SAT mSAT;
 
+
+		void ApplyImpulse(GameObject* object, glm::vec3 impulse);
 		Collider* castRay();
 	};
 }

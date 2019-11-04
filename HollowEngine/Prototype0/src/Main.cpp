@@ -21,6 +21,7 @@
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
@@ -76,7 +77,7 @@ public:
 		//for(int i = 0; i < 40; ++i)
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 	
-		int dim = 2;
+		int dim = 1;
 		int height = 5;
 		for (int i = 0; i < dim; ++i) {
 			for (int j = 0; j < dim; ++j) {
@@ -95,7 +96,7 @@ public:
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		//for(int i = 0; i < 100; ++i)
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
@@ -103,7 +104,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 	
-
+		//Hollow::ScriptingManager::Instance().lua.script_file("Resources/Scripts/test.lua");
 		//TODO: Remove test json deserialize
 		/*std::ofstream file("Resources/Json data/test.json");
 		rapidjson::StringBuffer s;

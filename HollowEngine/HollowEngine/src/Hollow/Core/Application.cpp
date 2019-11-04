@@ -12,9 +12,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/EventManager.h"
-
-#define SOL_ALL_SAFETIES_ON 1
-#include <sol/sol.hpp> // or #include "sol.hpp", whichever suits your needs
+#include "Hollow/Managers/ScriptingManager.h"
 
 //#include "Hollow/Graphics/Camera.h"
 
@@ -40,7 +38,7 @@ namespace Hollow {
 		ImGuiManager::Instance().Init(mpWindow);
 		ResourceManager::Instance().Init();
         AudioManager::Instance().Init();
-
+		ScriptingManager::Instance().Init();
 
 		FrameRateController::Instance().SetMaxFrameRate(60);
 	}
@@ -74,12 +72,6 @@ namespace Hollow {
 
 	void Application::Run()
 	{
-		
-		sol::state lua;
-		lua.open_libraries(sol::lib::base);
-
-		lua.script("print('bark bark bark!')");
-
 		while (mIsRunning)
 		{			
 			FrameRateController::Instance().FrameStart();
