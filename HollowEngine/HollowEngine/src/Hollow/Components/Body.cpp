@@ -43,7 +43,10 @@ namespace Hollow {
 		{
 			mMass = data["Mass"].GetFloat();
 		}
-
+		if(data.HasMember("Velocity"))
+		{
+			mVelocity = JSONHelper::GetVec3F(data["Velocity"].GetArray());
+		}
 		mInverseMass = 1.0f / mMass;
 		
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);

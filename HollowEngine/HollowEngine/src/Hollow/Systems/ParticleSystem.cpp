@@ -36,12 +36,12 @@ namespace Hollow
 			ParticleData particle;
 			if (emitter->mType == POINT)
 			{	
-				if (transform->dirtyBit)
-				{
+				//if (transform->dirtyBit)
+				//{
 					glm::mat4 model = glm::mat4(1.0f);
-					model = glm::translate(model, transform->mPosition);
+					model = glm::translate(model, transform->mPosition + emitter->mCenterOffset);
 					emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
-				}
+				//}
 				
 				particle.mType = POINT;
 				particle.mpParticleVAO = emitter->mpParticlePositionVAO;
@@ -52,6 +52,7 @@ namespace Hollow
 				particle.mLifeRange = emitter->mLifeRange;
 				particle.mSpeedRange = emitter->mSpeedRange;
 				particle.mTex = emitter->mTexture;
+				particle.mpComputeShader = emitter->mpComputeShader;
 			}
 				// Create ParticleData
 			if (emitter->mType == MODEL)

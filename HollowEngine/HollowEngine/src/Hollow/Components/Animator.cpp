@@ -9,6 +9,7 @@ namespace Hollow
 
 	void Animator::Init()
 	{
+		mLoopingAnimation = true;
 	}
 
 	void Animator::Clear()
@@ -34,8 +35,10 @@ namespace Hollow
 			rapidjson::Value::Array arr = data["Animations"].GetArray();
 			for (unsigned int i = 0; i < arr.Size(); ++i)
 			{
-				ResourceManager::Instance().AddAnimationData(arr[i].GetString(),mBones,mScaleFactor);
-			}			
+				auto anim = arr[i].GetArray();
+				std::string name = anim[0].GetString();
+				mAnimations[name] = ResourceManager::Instance().AddAnimationData(anim[1].GetString(),name,mBones,mScaleFactor);
+			}
 		}
 	}
 

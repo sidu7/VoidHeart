@@ -4,7 +4,7 @@ namespace Hollow {
 	class HOLLOW_API GameWindow
 	{
 	public:
-		GameWindow(std::string title = "Hollow Engine", int width = 1024, int height = 720);
+		GameWindow(rapidjson::Value::Object& data);
 		~GameWindow();
 
 		inline SDL_Window* GetWindow() { return mpWindow; }
@@ -13,7 +13,7 @@ namespace Hollow {
 		inline int GetHeight() { return mHeight; }
 
 	private:
-		void Initialize();
+		void Initialize(rapidjson::Value::Object& data);
 
 	private:
 		SDL_Window* mpWindow;

@@ -165,6 +165,17 @@ namespace Hollow {
 			cameraData.mScreenPosition = pCamera->mScreenPosition;
 			cameraData.mScreenViewPort = pCamera->mViewPort;
 
+
+			if(cameraData.mType == CameraType::MAIN_CAMERA)
+			{
+				RenderManager::Instance().mMainCamera = cameraData;
+			}
+			else if (cameraData.mType == CameraType::UI_CAMERA)
+			{
+				RenderManager::Instance().mUICamera = cameraData;
+				continue;
+			}
+			
 			RenderManager::Instance().mCameraData.push_back(cameraData);
 		}
 

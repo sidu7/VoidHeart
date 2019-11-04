@@ -2,7 +2,8 @@
 
 #define PI 3.14159265
 
-out vec4 color;
+layout (location = 0) out vec4 color;
+layout (location = 1) out vec4 bloom;
 
 in vec2 texCoords;
 
@@ -19,6 +20,8 @@ uniform sampler2D shadowMap;
 uniform mat4 shadowMatrix;
 uniform float alpha;
 uniform float md;
+uniform bool bloomEnabled;
+uniform bool bloomObject;
 
 uniform int displayMode;
 
@@ -136,10 +139,11 @@ void main()
 		G = 1.0 - ((z2*z3 - bP.x*(z2+z3)+bP.y)/((zf-z2)*(zf-z3)));
 	}
 
-	//G = shadow;
+	G = shadow;
 
 	result = (1.0 - G)*result;
 	color = vec4(result, 1.0);
+	bloom = vec4(0.0);
 
 	if(displayMode == 1)
 	{

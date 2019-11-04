@@ -1,19 +1,34 @@
 #include "PrototypeSystem.h"
 #include "PrototypeComponent.h"
 
+#include "Hollow/Events/GameEvent.h"
+
+#include "Hollow/Managers/EventManager.h"
+
 PrototypeSystem PrototypeSystem::instance;
+
+void PrototypeSystem::AddGameObject(Hollow::GameObject* object)
+{
+	CheckComponents<PrototypeComponent>(object);
+}
+
+void PrototypeSystem::TestEventHandling(Hollow::GameEvent* event)
+{
+	HW_TRACE("Event Collision");
+}
+
+void PrototypeSystem::Init()
+{
+	Hollow::EventManager::Instance().SubscribeEvent(Hollow::COLLISION_EVENT,EVENT_CALLBACK(PrototypeSystem::TestEventHandling));
+}
+
+void PrototypeSystem::HandleBroadcastEvent(Hollow::GameEvent*)
+{
+	HW_TRACE("Broadcast EVENT TEST");
+}
 
 void PrototypeSystem::Update()
 {
 	//HW_TRACE("Prototype system has {0} gameobjects", mGameObjects.size());
 }
 
-bool PrototypeSystem::HandleEvent(Hollow::GameEvent* gameEvent)
-{
-	HW_TRACE("EVENT TEST");
-	return true;
-}
-void PrototypeSystem::AddGameObject(Hollow::GameObject* object)
-{
-	CheckComponents<PrototypeComponent>(object);
-}

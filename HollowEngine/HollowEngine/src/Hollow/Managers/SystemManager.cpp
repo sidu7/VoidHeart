@@ -2,7 +2,7 @@
 
 #include "SystemManager.h"
 #include "Hollow/Systems/System.h"
-#include "Hollow/Events/EventData.h"
+#include "Hollow/Events/GameEvent.h"
 
 namespace Hollow
 {
@@ -14,6 +14,7 @@ namespace Hollow
 	void SystemManager::Init()
 	{
 		std::sort(mSystems.begin(), mSystems.end(), [](System* x, System* y) { return x->mTier < y->mTier; });
+		std::for_each(mSystems.begin(), mSystems.end(), [](System* x) { x->Init(); });
 	}
 
 	void SystemManager::Update()
@@ -32,12 +33,11 @@ namespace Hollow
 		}
 	}
 
-	void SystemManager::SendEventsToSystems(GameEvent* event)
+	void SystemManager::BroadcastEventToSystems(GameEvent* event)
 	{
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
 		{
-			if (mSystems[i]->HandleEvent(event))
-				break;
+			mSystems[i]->HandleBroadcastEvent(event);
 		}
 	}
 

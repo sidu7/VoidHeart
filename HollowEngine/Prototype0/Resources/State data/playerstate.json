@@ -1,8 +1,9 @@
 {
-  "States": [ "Walking", "Running", "Idle", "dead" ],
+  "States": [ "Walking", "Running", "Idle", "Jump" ],
   "Conditions": [
     {
       "State": "Walking",
+      "IsLoop": true,
       "Events": [ "WallHit" ],
       "Inputs": [ 82, 81 ],
       "InputCondition": [ 1, 2 ],
@@ -11,6 +12,7 @@
     },
     {
       "State": "Running",
+      "IsLoop": true,
       "Events": [ "WallHit" ],
       "Inputs": [ 82 ],
       "InputCondition": [ 0 ],
@@ -19,11 +21,21 @@
     },
     {
       "State": "Idle",
+      "IsLoop": true,
       "Events": [],
-      "Inputs": [ 82 ],
-      "InputCondition": [ 2 ],
+      "Inputs": [ 82, 13 ],
+      "InputCondition": [ 2, 0 ],
       "EventStates": [],
-      "InputStates": [ "Walking" ]
+      "InputStates": [ "Walking", "Jump" ]
+    },
+    {
+      "State": "Jump",
+      "IsLoop": false,
+      "Events": [],
+      "Inputs": [],
+      "InputCondition": [],
+      "EventStates": [],
+      "InputStates": []
     }
   ]
 }

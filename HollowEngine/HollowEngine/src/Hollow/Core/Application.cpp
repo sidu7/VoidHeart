@@ -12,6 +12,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/ThreadManager.h"
 
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp> // or #include "sol.hpp", whichever suits your needs
@@ -25,31 +26,36 @@ namespace Hollow {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 	
-	Application::Application()
+	Application::Application(const std::string& settingsFilePath)
 	{
-		//instance = this;
-		mpWindow = new GameWindow("Hollow Engine", 1280, 720);
+		PARSE_JSON_FILE(settingsFilePath);
+		
+		rapidjson::Value::Object data = root.GetObject();
+		mpWindow = new GameWindow(JSONHelper::GetSettings(data,"Window"));
 
 		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
 		
 		mIsRunning = true;
 		// Initalize managers
-		MemoryManager::Instance().Init();
-		RenderManager::Instance().Init(mpWindow);
+		ThreadManager::Instance().Init();
+		MemoryManager::Instance().Init(JSONHelper::GetSettings(data,"Memory"));
+		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
 		ResourceManager::Instance().Init();
         AudioManager::Instance().Init();
 
 
-		FrameRateController::Instance().SetMaxFrameRate(60);
+		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
 	}
 
 	Application::~Application()
 	{
 		ResourceManager::Instance().CleanUp();
+		EventManager::Instance().CleanUp();
 		RenderManager::Instance().CleanUp();
 		ImGuiManager::Instance().CleanUp();
+		ThreadManager::Instance().CleanUp();
 		delete mpWindow;
 	}
 
@@ -93,9 +99,9 @@ namespace Hollow {
 			}
 			InputManager::Instance().Update();
 
-			SystemManager::Instance().Update();
+			EventManager::Instance().Update();
 
-			EventManager::Instance().HandleEvents();
+			SystemManager::Instance().Update();
 
 			AudioManager::Instance().Update();
 
@@ -103,25 +109,7 @@ namespace Hollow {
 			RenderManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
-		}
-
-		// Attempt at multithreading
-		/*std::thread systemThread (std::bind(&Application::ThreadLoop, this)) ;
-
-		while (mIsRunning)
-		{
-			shouldGoIn = true;
-			// Start frame functions
-			ImGuiManager::Instance().StartFrame();
-			InputManager::Instance().Update();
-			RenderManager::Instance().Update();		
-			while (shoudlMainThreadSleep) {}
-
-			FrameRateController::Instance().FrameEnd();
-			shoudlMainThreadSleep = true;
-		}
-		shouldGoIn = true;
-		systemThread.join();*/
+		}		
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -138,28 +126,5 @@ namespace Hollow {
 	{
 		mIsRunning = false;
 		return true;
-	}
-
-	// Attempt at multithreading
-	void Application::ThreadLoop() {
-
-		while (mIsRunning)
-		{
-			while (!shouldGoIn) {}
-			
-			FrameRateController::Instance().FrameStart();
-
-			// Update functions
-			for (Layer* layer : mLayerStack)
-			{
-				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
-			}
-			
-			SystemManager::Instance().Update();
-			AudioManager::Instance().Update();
-			
-			shoudlMainThreadSleep = false;
-			shouldGoIn = false;
-		}
 	}
 }

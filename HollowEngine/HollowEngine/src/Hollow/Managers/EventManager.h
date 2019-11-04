@@ -1,15 +1,23 @@
 #pragma once
-#include"Hollow/Events/EventData.h"
-#include"Hollow/Events/CollisionEvent.h"
-namespace Hollow {
-	class HOLLOW_API EventManager {
+
+namespace Hollow
+{
+	class GameEvent;
+	enum GameEventType;
+	class GameObject;
+	
+	class HOLLOW_API EventManager
+	{
 		SINGLETON(EventManager)
 	public:
-		bool AddEvent(GameEvent*);
-		bool AddDelayedEvent(GameEvent*, float);
-		void HandleEvents();
+		void BroadcastToSubscribers(GameEvent* event);
+		void BroadcastEvent(GameEvent*);
+		void AddDelayedEvent(GameEvent*, float);
+		void Update();
+		void SubscribeEvent(GameEventType eventType, std::function<void(GameEvent*)> callbackFunction);
+		void CleanUp();
 	private:
-		std::vector<GameEvent*> mCurrentEvents;
 		std::vector<GameEvent*> mDelayedEvents;
+		std::unordered_map<GameEventType, std::vector<std::function<void(GameEvent*)>>> mEventsMap;
 	};
 }
