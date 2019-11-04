@@ -3,7 +3,7 @@
         {
             "Type": "Transform",
             "Position": [ -10.0, 15.0, 0.0 ],
-            "Scale": [1.0,1.0,1.0]
+            "Scale": [4.0,4.0,4.0]
         },
         {
             "Type": "Model",
@@ -20,10 +20,11 @@
             "Shape": 0,
             "Texture": "Resources/Textures/star.png",
             "Count": 10000.0,
-            "Area": [ 2.0, 2.0, 2.0 ],
-            "Life": [1.0,4.0],
+            "Area": [ 3.0, 4.0, 2.0 ],
+            "Life": [1.0,6.0],
             "Speed": [0.1,0.7],
-            "ComputeShader": "Resources/Shaders/CenterParticles.compute"
+            "ComputeShader": "Resources/Shaders/CenterParticles.compute",
+            "CenterOffset":[0.0,-4.0,1.0]
         }  
     ]
 }

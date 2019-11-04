@@ -3,6 +3,7 @@
 #define PI 3.14159265
 
 layout (location = 0) out vec4 color;
+layout (location = 1) out vec4 bloom;
 
 in vec2 texCoords;
 
@@ -142,6 +143,7 @@ void main()
 
 	result = (1.0 - G)*result;
 	color = vec4(result, 1.0);
+	bloom = vec4(0.0);
 
 	if(displayMode == 1)
 	{

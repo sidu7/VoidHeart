@@ -67,8 +67,8 @@ namespace Hollow {
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 
 		// Init Bloom Shader and FrameBuffer
-		//mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
-		//mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2);
+		mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
+		mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2,true);
 	}
 
 	void RenderManager::CleanUp()
@@ -128,10 +128,10 @@ namespace Hollow {
 			GBufferPass();
 
 			// Bloom Capture Start
-			//if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
-			//{
-			//	mpBloomFrame->Bind();
-			//}
+			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
+			{
+				mpBloomFrame->Bind();
+			}
 
 			for (unsigned int i = 0; i < mLightData.size(); ++i)
 			{
@@ -139,17 +139,18 @@ namespace Hollow {
 				GlobalLightingPass(mLightData[i]);
 			}
 
+			
 			if (ShowParticles)
 			{
 				DrawParticles();
 			}
-
+			
 			//Bloom capture End
-			//if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
-			//{
-			//	mpBloomFrame->Unbind();
-			//	DrawSceneWithBloom();
-			//}
+			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
+			{
+				mpBloomFrame->Unbind();
+				DrawSceneWithBloom();
+			}
 
 			if (camera.mType == CameraType::MAIN_CAMERA)
 			{
@@ -665,6 +666,20 @@ namespace Hollow {
 
 	void RenderManager::DrawParticles()
 	{
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, mpGBuffer->GetFrameBufferID());
+		if (mBloomEnabled)
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpBloomFrame->GetFrameBufferID());
+		}
+		else
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);// write to default framebuffer
+		}
+		glBlitFramebuffer(0, 0, mpGBuffer->mWidth, mpGBuffer->mHeight, 
+			0, 0, mpGBuffer->mWidth, mpGBuffer->mHeight, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+		glEnable(GL_DEPTH_TEST);
+		
 		// Draw Particles 
 		mpParticleShader->Use();
 		mpParticleShader->SetMat4("View", mViewMatrix);
@@ -727,7 +742,8 @@ namespace Hollow {
 				}
 			}
 		}
-		glDisable(GL_BLEND);		
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 	}
 
 	void RenderManager::DrawDebugDrawings()

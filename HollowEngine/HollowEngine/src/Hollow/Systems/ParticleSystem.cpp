@@ -39,7 +39,7 @@ namespace Hollow
 				//if (transform->dirtyBit)
 				//{
 					glm::mat4 model = glm::mat4(1.0f);
-					model = glm::translate(model, transform->mPosition);
+					model = glm::translate(model, transform->mPosition + emitter->mCenterOffset);
 					emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
 				//}
 				
