@@ -196,7 +196,7 @@ namespace Hollow {
 						return;
 					}
 					
-					if(colA->mpBody->bodyType == STATIC && colB->mpBody->bodyType == STATIC)
+					if(colA->mpBody->bodyType == Body::STATIC && colB->mpBody->bodyType == Body::STATIC)
 						return;
 
 					colliderPairs.push_front(std::make_pair(colA, colB));

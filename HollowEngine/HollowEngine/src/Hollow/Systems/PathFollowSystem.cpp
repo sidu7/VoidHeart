@@ -73,8 +73,15 @@ namespace Hollow
 			rotation[2] = glm::vec4(viewDirection, 0.0f);
 			rotation[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-			pBody->mPosition.x = position.x;
-			pBody->mPosition.z = position.z;
+			if (pBody->bodyType == Body::KINEMATIC)
+			{
+				pBody->mPosition = position;
+			}
+			else
+			{
+				pBody->mPosition.x = position.x;
+				pBody->mPosition.z = position.z;
+			}
 			pBody->mQuaternion = glm::toQuat(rotation);
 		}
 	}

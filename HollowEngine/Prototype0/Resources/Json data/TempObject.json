@@ -1,45 +1,50 @@
 {
-    "Components": [
-        {
-            "Type": "Transform",
-            "Position": [ 0.0, 10.0, 0.0 ],
-            "Scale": [1.0,1.0,1.0]
-        },
-      {
-        "Type": "Body",
-        "Mass": 1.0,
-        "RigidbodyType": "KINEMATIC"
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 10.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 1.0,
+      "RigidbodyType": "KINEMATIC"
 
-      },
-        {
-            "Type": "Collider"
-        },
-        {
-            "Type": "Model",
-            "Model": "Resources/Models/Walking.fbx",
-            "CastShadow": true
-        },
-        {
-            "Type": "Material",
-            "Shininess": 1.0,
-            "MaterialData": "Resources/Models/Walking.fbx"
-        },
-        {
-            "Type": "ParticleEmitter",
-            "Shape": 0,
-            "Texture": "Resources/Textures/star.png",
-            "Count": 100000.0,
-            "Area": [ 50.0, 50.0, 50.0 ]
-        },
-        {
-            "Type": "Animator",
-            "BoneData": "Resources/Models/Walking.fbx",
-            "Animations": [ "Resources/Models/Walking.fbx","Resources/Models/Idle.fbx","Resources/Models/Running.fbx" ]
-        },
-        {
-            "Type": "StateMachine",
-            "StateFile": "Resources/State data/playerstate.json",
-            "StartState": "Walking"
-        }
-    ]
+    },
+    {
+      "Type": "Collider"
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Walking.fbx",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Shininess": 1.0,
+      "MaterialData": "Resources/Models/Walking.fbx"
+    },
+    {
+      "Type": "ParticleEmitter",
+      "Shape": 0,
+      "Texture": "Resources/Textures/star.png",
+      "Count": 100000.0,
+      "Area": [ 50.0, 50.0, 50.0 ]
+    },
+    {
+      "Type": "Animator",
+      "BoneData": "Resources/Models/Walking.fbx",
+      "Animations": [
+        [ "Walking", "Resources/Models/Walking.fbx" ],
+        [ "Idle", "Resources/Models/Idle.fbx" ],
+        [ "Running", "Resources/Models/Running.fbx" ],
+        ["Jump","Resources/Models/Jump.fbx"]
+      ]
+    },
+    {
+      "Type": "StateMachine",
+      "StateFile": "Resources/State data/playerstate.json",
+      "StartState": "Walking"
+    }
+  ]
 }

@@ -4,18 +4,18 @@
 namespace Hollow {
 
 
-	enum RigidbodyType
-	{
-#define RIGIDBODY_TYPE(name) name,
-#include "RigidbodyTypes.enum"
-#undef RIGIDBODY_TYPE
-		NUM
-	};
-
 	class HOLLOW_API Body : public Component
 	{
+
 		REGISTERCOMPONENT(Body);
 	public:
+		enum RigidbodyType
+		{
+	#define RIGIDBODY_TYPE(name) name,
+	#include "RigidbodyTypes.enum"
+	#undef RIGIDBODY_TYPE
+			NUM
+		};
 		void Init();
 		void Clear();
 		void DebugDisplay();

@@ -78,7 +78,9 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UICamera.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
 		//for(int i = 0; i < 10; ++i)
+		
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");

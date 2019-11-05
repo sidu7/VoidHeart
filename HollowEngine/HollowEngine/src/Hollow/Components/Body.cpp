@@ -5,7 +5,7 @@ namespace Hollow {
 
 	Body Body::instance;
 
-	std::unordered_map<std::string, RigidbodyType> Body::mapOfTypesToStrings;
+	std::unordered_map<std::string, Body::RigidbodyType> Body::mapOfTypesToStrings;
 
 	void Body::Init()
 	{
@@ -24,7 +24,7 @@ namespace Hollow {
 		bodyType = DYNAMIC;
 
 		{
-#define RIGIDBODY_TYPE(name) Body::mapOfTypesToStrings[#name] = Hollow::RigidbodyType::name;
+#define RIGIDBODY_TYPE(name) Body::mapOfTypesToStrings[#name] = Body::name;
 #include "RigidbodyTypes.enum"
 #undef RIGIDBODY_TYPE
 		}
@@ -62,7 +62,7 @@ namespace Hollow {
 		{
 			bodyType = mapOfTypesToStrings[data["RigidbodyType"].GetString()];
 
-			if(bodyType == STATIC)
+			if(bodyType == Body::STATIC)
 				mMass = 1e39;
 		}
 		if (data.HasMember("isFrictionLess"))

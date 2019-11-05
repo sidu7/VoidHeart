@@ -137,7 +137,7 @@ namespace Hollow
 
 			if (pBody != nullptr) {
 		
-				if (pBody->bodyType == STATIC || pBody->bodyType == KINEMATIC)
+				if (pBody->bodyType == Body::STATIC || pBody->bodyType == Body::KINEMATIC)
 					continue;
 				// compute acceleration
 				glm::vec3 acc = pBody->mTotalForce * pBody->mInverseMass;
