@@ -38,8 +38,8 @@ namespace Hollow {
 		void BlurTexture(unsigned int inputTextureID, unsigned int width, unsigned int height, unsigned int channels, unsigned int blurWidth, unsigned int& outputTextureID);
 		std::vector<float> CreateBlurKernel(unsigned int distance);
 
-		void GBufferPass();
-		void GlobalLightingPass(LightData& light);
+		void GBufferPass(CameraData& cameraData);
+		void GlobalLightingPass(LightData& light, glm::vec3 eyePosition);
 		void LocalLightingPass();
 
 		void DrawAllRenderData(Shader* pShader);
@@ -47,7 +47,7 @@ namespace Hollow {
 		void DrawFSQ();
 		void DrawSphere();
 
-		void DrawParticles();
+		void DrawParticles(CameraData& cameraData);
 
 		void DrawDebugDrawings();
 
@@ -67,16 +67,14 @@ namespace Hollow {
 		std::vector<DebugRenderData> mDebugRenderData;
 		std::vector<LightData> mLightData;
 		std::vector<ParticleData> mParticleData;
-		std::vector<CameraData> mCameraData;
 		std::vector<DebugPathData> mDebugPathData;
 		std::vector<UIRenderData> mUIData;
+		
 		CameraData mMainCamera;
 		CameraData mUICamera;
+		std::vector<CameraData> mSecondaryCameras;
 
 	private:
-		// Transformation matricies
-		glm::mat4 mProjectionMatrix;
-		glm::mat4 mViewMatrix;
 
 		GameWindow* mpWindow;
 		//Camera* mpCamera;

@@ -80,6 +80,7 @@
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
     <None Include="Resources\Shaders\CenterParticles.comp" />
+    <None Include="Resources\Json data\UICamera.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\test.lua" />

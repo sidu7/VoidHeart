@@ -15,20 +15,9 @@ namespace Hollow
 {
 	PhysicsSystem PhysicsSystem::instance;
 
-	// TODO Temporary Solution- Remove this when main camera can be obtained from elsewhere
-	void PhysicsSystem::CheckCameraComponentAndAdd(GameObject* object)
-	{
-		Camera* c = object->GetComponent<Camera>();
-		if (c)
-		{
-			PhysicsManager::Instance().mRayCastCamera = c;
-		}
-	}
-
 	
 	void PhysicsSystem::AddGameObject(GameObject* object)
 	{
-		CheckCameraComponentAndAdd(object);
 		
 		if (CheckComponents<Collider>(object)) {
 			// Collider Init

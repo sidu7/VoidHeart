@@ -16,9 +16,6 @@ namespace Hollow {
 		void Step(float);
 		void InterpolateState(float);
 
-		// TODO temp function
-		void CheckCameraComponentAndAdd(GameObject* object);
-
 		bool isPaused;
 		bool nextStep;
 		bool isApplyFriction = false;

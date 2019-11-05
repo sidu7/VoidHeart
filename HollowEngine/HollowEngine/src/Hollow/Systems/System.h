@@ -50,8 +50,7 @@ namespace Hollow
 		{
 			if (pGameObject->GetComponent<First>())
 			{
-				CheckComponents<Second, Rest...>(pGameObject);
-				return true;
+				return CheckComponents<Second, Rest...>(pGameObject);
 			}
 
 			return false;

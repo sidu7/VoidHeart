@@ -78,9 +78,10 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +129,7 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
     <None Include="Resources\Json data\Plane.json" />
     <None Include="Resources\Json data\TempObject.json" />
     <None Include="Resources\Json data\test.json" />
+    <None Include="Resources\Json data\UICamera.json" />
     <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Bloom.frag" />
     <None Include="Resources\Shaders\Bloom.vert" />

@@ -14,8 +14,6 @@ namespace Hollow
 	{
 		SINGLETON(PhysicsManager)
 	public:
-		// Main Camera Object
-		Camera* mRayCastCamera;
 
 		// Data
 		DynamicAABBTree mTree;

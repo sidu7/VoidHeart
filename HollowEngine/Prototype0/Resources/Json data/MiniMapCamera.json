@@ -1,15 +1,18 @@
 {
-  "Components": [
-    {
-      "Type": "Camera",
-      "Position": [ 0, 10, 0 ],
-      "Pitch": -90.0,
-      "Yaw": -67.800,
-      "CameraType": 2,
-      "Projection": 1,
-      "ScreenPosition": [0,-200],
-      "ScreenViewPort": [ 300, 200 ],
-      "HandleInputs":  false
-    }
-  ]
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0, 10, 0 ]
+        },
+        {
+            "Type": "Camera",
+            "IsActive": true,
+            "Pitch": -90.0,
+            "Yaw": -67.800,
+            "CameraType": 2,
+            "ProjectionType": 0,
+            "ViewPortPosition": [ 0, -200 ],
+            "ViewPortSize": [ 300, 200 ]
+        }
+    ]
 }
