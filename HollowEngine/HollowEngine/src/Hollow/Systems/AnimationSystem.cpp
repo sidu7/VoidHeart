@@ -16,7 +16,7 @@ namespace Hollow
 	
 	void AnimationSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<Animator,StateMachine>(object);
+		CheckAllComponents<Animator,StateMachine>(object);
 	}
 
 	void AnimationSystem::Animate(unsigned int start, unsigned int end)

@@ -187,11 +187,6 @@ namespace Hollow {
 		}
 
 		// UI camera stuff
-		mProjectionMatrix = mUICamera.mProjectionMatrix;
-		mViewMatrix = mUICamera.mViewMatrix;
-
-		GLCall(glViewport(0, 0, mUICamera.mViewPortSize.x, mUICamera.mViewPortSize.y));
-		
 		DrawUI();
 
 		// Update ImGui
@@ -852,35 +847,35 @@ namespace Hollow {
 
 	void RenderManager::DrawUI()
 	{
-		glDisable(GL_DEPTH_TEST);
-		glm::mat4 UIProjectionMatrix = glm::ortho(0.0f, (float)mpWindow->GetWidth(), 0.0f, (float)mpWindow->GetHeight(),-1.0f,1.0f);
+		glm::mat4& mProjectionMatrix = mUICamera.mProjectionMatrix;
+		glm::mat4& mViewMatrix = mUICamera.mViewMatrix;
+
+		GLCall(glViewport(0, 0, mUICamera.mViewPortSize.x, mUICamera.mViewPortSize.y));
 
 		mpUIShader->Use();
-		Mesh* quad = ResourceManager::Instance().GetShape(Shapes::QUAD);
+		mpUIShader->SetMat4("Projection", mProjectionMatrix);
 
-		Texture* texture = ResourceManager::Instance().LoadTexture("Resources/Textures/star.png");
-		
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(400.0f, 400.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(100.0f));
+		for (unsigned int i = 0; i < mUIRenderData.size(); ++i)
+		{
+			UIRenderData& uidata = mUIRenderData[i];
 
-		mpUIShader->SetMat4("Projection", UIProjectionMatrix);
-		mpUIShader->SetMat4("Model", model);
-		texture->Bind(1);
-		mpUIShader->SetInt("UITexture", 1);
+			uidata.mpTexture->Bind(1);
+			mpUIShader->SetInt("UITexture", 1);
+			mpUIShader->SetMat4("Model", uidata.mModelTransform);
 
-		quad->mpVAO->Bind();
-		quad->mpEBO->Bind();
-		quad->mpVBO->Bind();
-		GLCall(glDrawElements(GL_TRIANGLES, quad->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
-		quad->mpEBO->Unbind();
-		quad->mpVBO->Unbind();
-		quad->mpVAO->Unbind();
-		
+			Mesh* shape = uidata.mpShape;
+
+			shape->mpVAO->Bind();
+			shape->mpEBO->Bind();
+			shape->mpVBO->Bind();
+			GLCall(glDrawElements(GL_TRIANGLES, shape->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+			shape->mpEBO->Unbind();
+			shape->mpVBO->Unbind();
+			shape->mpVAO->Unbind();
+		}
+
 		mpUIShader->Unbind();
-		//for (unsigned int i = 0; i < mUIData.size(); ++i)
-		//{
-		//	
-		//}
+		mUIRenderData.clear();
 	}
 
 	void RenderManager::DebugDisplay()

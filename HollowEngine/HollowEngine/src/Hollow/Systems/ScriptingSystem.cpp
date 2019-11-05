@@ -34,6 +34,6 @@ namespace Hollow
 
 	void ScriptingSystem::AddGameObject(GameObject* pGameObject)
 	{
-		CheckComponents<Script>(pGameObject);
+		CheckAllComponents<Script>(pGameObject);
 	}
 }

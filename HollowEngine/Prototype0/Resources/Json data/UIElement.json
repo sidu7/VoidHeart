@@ -1,0 +1,14 @@
+{
+  "Components": [
+    {
+      "Type": "UITransform",
+      "Position": [ 100, 100 ],
+      "Scale": [ 50, 50 ]
+    },
+    {
+      "Type": "UIImage",
+      "Shape": 3,
+      "Image": "Resources/Textures/star.png"
+    }
+  ]
+}

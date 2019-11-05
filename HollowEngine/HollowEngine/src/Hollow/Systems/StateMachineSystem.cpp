@@ -17,7 +17,7 @@ namespace Hollow
 
 	void StateMachineSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<StateMachine>(object);
+		CheckAllComponents<StateMachine>(object);
 	}
 
 	void StateMachineSystem::Update()

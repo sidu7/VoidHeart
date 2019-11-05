@@ -15,7 +15,7 @@ namespace Hollow {
 	CameraSystem CameraSystem::instance;
 	void CameraSystem::AddGameObject(GameObject* object)
 	{
-		if (CheckComponents<Transform, Camera>(object))
+		if (CheckAllComponents<Transform, Camera>(object))
 		{
 			Camera* pCamera = object->GetComponent<Camera>();
 			UpdateCamera(pCamera);

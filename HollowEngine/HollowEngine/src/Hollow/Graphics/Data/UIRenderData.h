@@ -3,16 +3,12 @@
 namespace Hollow
 {
 	class Texture;
-	class VertexArray;
-	class VertexBuffer;
-	class ElementArrayBuffer;
-	
+	class Mesh;
+
 	struct UIRenderData
 	{
-		glm::vec3 mPosition;
+		glm::mat4 mModelTransform;
 		Texture* mpTexture;
-		VertexArray* mpVAO;
-		VertexBuffer* mpVBO;
-		ElementArrayBuffer* mpEBO;
+		Mesh* mpShape;
 	};
 }

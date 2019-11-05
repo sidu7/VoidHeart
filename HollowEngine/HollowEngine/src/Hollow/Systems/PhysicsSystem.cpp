@@ -19,7 +19,7 @@ namespace Hollow
 	void PhysicsSystem::AddGameObject(GameObject* object)
 	{
 		
-		if (CheckComponents<Collider>(object)) {
+		if (CheckAllComponents<Collider>(object)) {
 			// Collider Init
 			Collider* pCol = object->GetComponent<Collider>();
 			

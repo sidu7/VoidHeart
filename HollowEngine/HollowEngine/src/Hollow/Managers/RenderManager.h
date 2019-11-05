@@ -68,7 +68,7 @@ namespace Hollow {
 		std::vector<LightData> mLightData;
 		std::vector<ParticleData> mParticleData;
 		std::vector<DebugPathData> mDebugPathData;
-		std::vector<UIRenderData> mUIData;
+		std::vector<UIRenderData> mUIRenderData;
 		
 		CameraData mMainCamera;
 		CameraData mUICamera;

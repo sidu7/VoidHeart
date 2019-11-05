@@ -34,7 +34,7 @@ namespace Hollow
 		}
 	protected:
 		template<typename First> // 1 template parameter
-		bool CheckComponents(GameObject* pGameObject)
+		bool CheckAllComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
@@ -46,14 +46,36 @@ namespace Hollow
 		}
 
 		template<typename First, typename Second, typename ... Rest> // >=2 template parameters
-		bool CheckComponents(GameObject* pGameObject)
+		bool CheckAllComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
-				return CheckComponents<Second, Rest...>(pGameObject);
+				return CheckAllComponents<Second, Rest...>(pGameObject);
 			}
 
 			return false;
+		}
+
+		template<typename First> // 1 template parameter
+		bool CheckAnyComponents(GameObject* pGameObject)
+		{
+			if (pGameObject->GetComponent<First>())
+			{
+				mGameObjects.push_back(pGameObject);
+				return true;
+			}
+			return false;
+		}
+
+		template<typename First, typename Second, typename ... Rest> // >=2 template parameters
+		bool CheckAnyComponents(GameObject* pGameObject)
+		{
+			if (pGameObject->GetComponent<First>())
+			{
+				mGameObjects.push_back(pGameObject);
+				return true;
+			}
+			return CheckAnyComponents<Second, Rest...>(pGameObject);
 		}
 
 	public:

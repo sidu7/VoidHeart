@@ -84,6 +84,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UIElement.json");
 	
 		//int dim = 2;
 		//int height = 5;

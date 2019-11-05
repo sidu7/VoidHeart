@@ -21,7 +21,7 @@ namespace Hollow
 
 	void ParticleSystem::AddGameObject(GameObject* object)
 	{
-		if (CheckComponents<ParticleEmitter>(object))
+		if (CheckAllComponents<ParticleEmitter>(object))
 		{
 			UpdateAttributes(object->GetComponent<ParticleEmitter>());
 		}

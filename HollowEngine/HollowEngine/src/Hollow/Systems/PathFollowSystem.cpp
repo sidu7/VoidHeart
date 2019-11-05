@@ -18,7 +18,7 @@ namespace Hollow
 	
 	void PathFollowSystem::AddGameObject(GameObject* pGameObject)
 	{
-		if(CheckComponents<PathFollow,Body>(pGameObject))
+		if(CheckAllComponents<PathFollow,Body>(pGameObject))
 		{
 			PathFollow* pathFollow = pGameObject->GetComponent<PathFollow>();
 			CalculateControlPointMatrices(pathFollow);

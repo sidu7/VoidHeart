@@ -72,6 +72,9 @@
     <ClCompile Include="src\Hollow\Managers\ScriptingManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Script.cpp" />
     <ClCompile Include="src\Hollow\Systems\ScriptingSystem.cpp" />
+    <ClCompile Include="src\Hollow\Components\UITransform.cpp" />
+    <ClCompile Include="src\Hollow\Components\UIImage.cpp" />
+    <ClCompile Include="src\Hollow\Systems\UIElementSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -236,6 +239,10 @@
     <ClInclude Include="src\Hollow\Managers\ScriptingManager.h" />
     <ClInclude Include="src\Hollow\Components\Script.h" />
     <ClInclude Include="src\Hollow\Systems\ScriptingSystem.h" />
+    <ClInclude Include="src\Hollow\Events\EventData.h" />
+    <ClInclude Include="src\Hollow\Components\UITransform.h" />
+    <ClInclude Include="src\Hollow\Components\UIImage.h" />
+    <ClInclude Include="src\Hollow\Systems\UIElementSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

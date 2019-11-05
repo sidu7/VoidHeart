@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClCompile Include="src\Hollow\Components\Script.cpp" />
     <ClCompile Include="src\Hollow\Components\PathFollow.cpp" />
+    <ClCompile Include="src\Hollow\Components\UIImage.cpp" />
+    <ClCompile Include="src\Hollow\Components\UITransform.cpp" />
     <ClCompile Include="src\Hollow\Graphics\UniformBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\PhysicsManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
@@ -60,6 +62,7 @@
     <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\StateMachineSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\UIElementSystem.cpp" />
     <ClCompile Include="src\Utils\BSplineCurve.cpp" />
     <ClCompile Include="src\Utils\GLCall.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
@@ -98,6 +101,8 @@
   <ItemGroup>
     <ClInclude Include="src\Hollow\Components\Script.h" />
     <ClInclude Include="src\Hollow\Components\PathFollow.h" />
+    <ClInclude Include="src\Hollow\Components\UIImage.h" />
+    <ClInclude Include="src\Hollow\Components\UITransform.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\UIRenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\UniformBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
@@ -167,6 +172,7 @@
     <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
     <ClInclude Include="src\Hollow\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\Hollow\Systems\StateMachineSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\UIElementSystem.h" />
     <ClInclude Include="src\Utils\BSplineCurve.h" />
     <ClInclude Include="src\Utils\GLCall.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
