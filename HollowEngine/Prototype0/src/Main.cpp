@@ -21,6 +21,7 @@
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 #include "Hollow/Events/CollisionEvent.h"
 
@@ -77,7 +78,9 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UICamera.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
 		//for(int i = 0; i < 10; ++i)
+		
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
@@ -104,12 +107,12 @@ public:
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
 
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 	
-
+		//Hollow::ScriptingManager::Instance().lua.script_file("Resources/Scripts/test.lua");
 		//TODO: Remove test json deserialize
 		/*std::ofstream file("Resources/Json data/test.json");
 		rapidjson::StringBuffer s;

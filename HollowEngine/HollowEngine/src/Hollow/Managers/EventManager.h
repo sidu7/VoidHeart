@@ -1,9 +1,8 @@
 #pragma once
+#include "Hollow/Events/GameEvent.h"
 
 namespace Hollow
 {
-	class GameEvent;
-	enum GameEventType;
 	class GameObject;
 	
 	class HOLLOW_API EventManager
@@ -14,10 +13,10 @@ namespace Hollow
 		void BroadcastEvent(GameEvent*);
 		void AddDelayedEvent(GameEvent*, float);
 		void Update();
-		void SubscribeEvent(GameEventType eventType, std::function<void(GameEvent*)> callbackFunction);
+		void SubscribeEvent(GameEvent::GameEventType eventType, std::function<void(GameEvent*)> callbackFunction);
 		void CleanUp();
 	private:
 		std::vector<GameEvent*> mDelayedEvents;
-		std::unordered_map<GameEventType, std::vector<std::function<void(GameEvent*)>>> mEventsMap;
+		std::unordered_map<GameEvent::GameEventType, std::vector<std::function<void(GameEvent*)>>> mEventsMap;
 	};
 }

@@ -33,7 +33,18 @@ namespace Hollow
 
 	void Collider::Serialize(rapidjson::Value::Object data)
 	{
-		
+		if (data.HasMember("isTrigger"))
+		{
+			isTrigger = data["isTrigger"].GetBool();
+		}
+		if (data.HasMember("kRestitution"))
+		{
+			coeffRestitution = data["kRestitution"].GetFloat();
+		}
+		if (data.HasMember("kFriction"))
+		{
+			coeffDynamicFriction = data["kFriction"].GetFloat();
+		}
 	}
 
 

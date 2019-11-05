@@ -1,8 +1,6 @@
 #include <hollowpch.h>
 #include "EventManager.h"
 
-#include "Hollow/Events/GameEvent.h"
-
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 
@@ -32,7 +30,7 @@ namespace Hollow {
 		}
 	}
 
-	void EventManager::SubscribeEvent(GameEventType eventType, std::function<void(GameEvent*)> callbackFunction)
+	void EventManager::SubscribeEvent(GameEvent::GameEventType eventType, std::function<void(GameEvent*)> callbackFunction)
 	{
 		mEventsMap[eventType].emplace_back(callbackFunction);
 	}

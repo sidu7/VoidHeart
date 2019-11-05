@@ -19,7 +19,7 @@ void PrototypeSystem::TestEventHandling(Hollow::GameEvent* event)
 
 void PrototypeSystem::Init()
 {
-	Hollow::EventManager::Instance().SubscribeEvent(Hollow::COLLISION_EVENT,EVENT_CALLBACK(PrototypeSystem::TestEventHandling));
+	Hollow::EventManager::Instance().SubscribeEvent(Hollow::GameEvent::COLLISION_EVENT,EVENT_CALLBACK(PrototypeSystem::TestEventHandling));
 }
 
 void PrototypeSystem::HandleBroadcastEvent(Hollow::GameEvent*)

@@ -1,5 +1,6 @@
 #include <hollowpch.h>
 #include "DynamicAABBTree.h"
+#include "Hollow/Components/Body.h"
 
 namespace Hollow {
 
@@ -187,8 +188,18 @@ namespace Hollow {
 				//if (A_Shape->Collides(B_Shape)) {
 				if (A->aabb->Collides(B->aabb)) {
 					// push the colliding pairs
-					colliderPairs.push_front(std::make_pair(static_cast<Collider*>(A->mClientData),
-						static_cast<Collider*>(B->mClientData)));
+					Collider* colA = static_cast<Collider*>(A->mClientData);
+					Collider* colB = static_cast<Collider*>(B->mClientData);
+
+					if (colA->isTrigger || colB->isTrigger) {
+						colliderPairs.push_front(std::make_pair(colA, colB));
+						return;
+					}
+					
+					if(colA->mpBody->bodyType == Body::STATIC && colB->mpBody->bodyType == Body::STATIC)
+						return;
+
+					colliderPairs.push_front(std::make_pair(colA, colB));
 				}
 			}
 			else {
