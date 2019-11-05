@@ -10,39 +10,32 @@ namespace Hollow {
 
 	void Camera::Init()
 	{
-		mPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 		mFront = glm::vec3(0.0f, 0.0f, 0.0f);
-		mWorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-		mUp = mWorldUp;
+		mUp = glm::vec3(0.0f, 1.0f, 0.0f);
 		mRight = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		mYaw = -90.0f;
 		mPitch = 0.0f;
 
+		mIsActive = false;
+		
 		mMovementSpeed = 5.0f;
 		mMouseSensitivity = 0.1f;
 		mZoom = 45.0f;
 
 		mNearPlane = 0.1f;
 		mFarPlane = 1000.0f;
-
-		mCanMouse = false;
-		mHandleInputs = false;
-
+		mAspectRatio = 1.0f;
+		
 		mDefaultZoom = mZoom;
 		mDefaultPitch = mPitch;
 		mDefaultYaw = mYaw;
 
-		mScreenPosition = glm::ivec2(0,0);
-		mViewPort = glm::ivec2(0, 0);
+		mViewPortPosition = glm::ivec2(0,0);
+		mViewPortSize = glm::ivec2(0, 0);
 	}
 	void Camera::Serialize(rapidjson::Value::Object data)
 	{
-
-		if (data.HasMember("Position"))
-		{
-			mPosition = JSONHelper::GetVec3F(data["Position"].GetArray());
-		}
 
 		if (data.HasMember("Yaw"))
 		{
@@ -79,63 +72,38 @@ namespace Hollow {
 		{
 			mFarPlane = data["Far"].GetFloat();
 		}
-
+		if (data.HasMember("IsActive"))
+		{
+			mIsActive = data["IsActive"].GetBool();
+		}
 		if (data.HasMember("CameraType"))
 		{
 			mType = (CameraType)data["CameraType"].GetUint();
 		}
-		if (data.HasMember("Projection"))
+		if (data.HasMember("ViewPortPosition"))
 		{
-			mProjection = (CameraProjection)data["Projection"].GetUint();
-		}
-		if (data.HasMember("ScreenPosition"))
-		{
-			 glm::vec2 pos = JSONHelper::GetIVec2(data["ScreenPosition"].GetArray());
+			 glm::vec2 pos = JSONHelper::GetIVec2(data["ViewPortPosition"].GetArray());
 			 glm::vec2 size = RenderManager::Instance().GetWindowSize();
-			 mScreenPosition = glm::vec2(pos.x < 0 ? size.x + pos.x : pos.x, pos.y < 0 ? size.y + pos.y : pos.y);
+			 mViewPortPosition = glm::vec2(pos.x < 0 ? size.x + pos.x : pos.x, pos.y < 0 ? size.y + pos.y : pos.y);
 		}
-		if (data.HasMember("ScreenViewPort"))
+		if (data.HasMember("ViewPortSize"))
 		{
-			mViewPort = JSONHelper::GetIVec2(data["ScreenViewPort"].GetArray());
+			mViewPortSize = JSONHelper::GetIVec2(data["ViewPortSize"].GetArray());
 		}
-		if (data.HasMember("HandleInputs"))
+		if (data.HasMember("ProjectionType"))
 		{
-			mHandleInputs = data["HandleInputs"].GetBool();
+			mProjectionType = (CameraProjection)data["ProjectionType"].GetUint();
 		}
+		
 	}
 	void Camera::Clear()
 	{
-		mPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-		mFront = glm::vec3(0.0f, 0.0f, 0.0f);
-		mWorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-		mUp = mWorldUp;
-		mRight = glm::vec3(0.0f, 0.0f, 0.0f);
 
-		mYaw = -90.0f;
-		mPitch = 0.0f;
-
-		mMovementSpeed = 5.0f;
-		mMouseSensitivity = 0.1f;
-		mZoom = 45.0f;
-
-		mNearPlane = 0.1f;
-		mFarPlane = 1000.0f;
-
-		mCanMouse = false;
-		mHandleInputs = false;
-
-		mDefaultZoom = mZoom;
-		mDefaultPitch = mPitch;
-		mDefaultYaw = mYaw;
-
-		mScreenPosition = glm::ivec2(0, 0);
-		mViewPort = glm::ivec2(0, 0);
 	}
 	void Camera::DebugDisplay()
 	{
 		if (ImGui::TreeNode("Camera"))
 		{
-			ImGui::InputFloat3("Position", &mPosition[0]);
 			ImGui::InputFloat("Zoom", &mZoom);
 			ImGui::InputFloat("Yaw", &mYaw);
 			ImGui::InputFloat("Pitch", &mPitch);

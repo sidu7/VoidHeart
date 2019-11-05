@@ -104,66 +104,41 @@ namespace Hollow {
 				shadowmap.mpTextureID[0]);
 		}
 
-		for (unsigned int i = 0; i < mCameraData.size(); ++i)
+			// Draw Main Camera
+		glm::mat4& mProjectionMatrix = mMainCamera.mProjectionMatrix;
+		glm::mat4& mViewMatrix = mMainCamera.mViewMatrix;
+
+		GLCall(glViewport(0,0, mMainCamera.mViewPortSize.x, mMainCamera.mViewPortSize.y));
+		
+		// Deferred G-Buffer Pass
+		GBufferPass(mMainCamera);
+
+		// Bloom Capture Start
+		if (mBloomEnabled)
 		{
-			// Initialize transform matrices
-			CameraData& camera = mCameraData[i];
-			if (camera.mProjection == CameraProjection::PERSPECTIVE)
-			{
-				mProjectionMatrix = glm::perspective(camera.mZoom, (float)mpWindow->GetWidth() / mpWindow->GetHeight(), camera.mNearPlane, camera.mFarPlane);
-			}
-			else if (camera.mProjection == CameraProjection::ORTHOGRAPHIC)
-			{
-				//mProjectionMatrix = glm::ortho(0, mpWindow->GetWidth(), 0, mpWindow->GetHeight());
-				mProjectionMatrix = glm::perspective(camera.mZoom, camera.mScreenViewPort.x / (float)camera.mScreenViewPort.y, camera.mNearPlane, camera.mFarPlane);
-			}
-			mViewMatrix = camera.mViewMatrix;
-
-			if (camera.mType != CameraType::MAIN_CAMERA)
-			{
-				GLCall(glViewport(camera.mScreenPosition.x, camera.mScreenPosition.y, camera.mScreenViewPort.x, camera.mScreenViewPort.y));
-			}
-			else
-			{
-				GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
-			}			
-
-			// Deferred G-Buffer Pass
-			GBufferPass();
-
-			// Bloom Capture Start
-			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
-			{
-				mpBloomFrame->Bind();
-			}
-
-			for (unsigned int i = 0; i < mLightData.size(); ++i)
-			{
-				// Apply global lighting
-				GlobalLightingPass(mLightData[i]);
-			}
-
-			
-			if (ShowParticles)
-			{
-				DrawParticles();
-			}
-			
-			//Bloom capture End
-			if (camera.mType == CameraType::MAIN_CAMERA && mBloomEnabled)
-			{
-				mpBloomFrame->Unbind();
-				DrawSceneWithBloom();
-			}
-
-			if (camera.mType == CameraType::MAIN_CAMERA)
-			{
-				//Draw debug drawings
-				DrawDebugDrawings();
-			}
+			mpBloomFrame->Bind();
 		}
 
-		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
+		for (unsigned int i = 0; i < mLightData.size(); ++i)
+		{
+			// Apply global lighting
+			GlobalLightingPass(mLightData[i], mMainCamera.mEyePosition);
+		}
+				
+		if (ShowParticles)
+		{
+			DrawParticles(mMainCamera);
+		}
+		
+		//Bloom capture End
+		if (mBloomEnabled)
+		{
+			mpBloomFrame->Unbind();
+			DrawSceneWithBloom();
+		}
+
+		//Draw debug drawings
+		DrawDebugDrawings();
 
 		// Local lighting pass
 		LocalLightingPass();
@@ -174,7 +149,49 @@ namespace Hollow {
 			DrawShadowMap();
 		}
 
+		// Draw Secondary Cameras
+		for(unsigned i = 0; i < mSecondaryCameras.size(); ++i)
+		{
+			mProjectionMatrix = mSecondaryCameras[i].mProjectionMatrix;
+			mViewMatrix = mSecondaryCameras[i].mViewMatrix;
+
+			GLCall(glViewport(mSecondaryCameras[i].mViewPortPosition.x, mSecondaryCameras[i].mViewPortPosition.y,
+				mSecondaryCameras[i].mViewPortSize.x, mSecondaryCameras[i].mViewPortSize.y));
+
+			// Deferred G-Buffer Pass
+			GBufferPass(mSecondaryCameras[i]);
+
+			// Bloom Capture Start
+			if (mBloomEnabled)
+			{
+				mpBloomFrame->Bind();
+			}
+
+			for (unsigned int i = 0; i < mLightData.size(); ++i)
+			{
+				// Apply global lighting
+				GlobalLightingPass(mLightData[i], mSecondaryCameras[i].mEyePosition);
+			}
+
+			if (ShowParticles)
+			{
+				DrawParticles(mSecondaryCameras[i]);
+			}
+
+			//Bloom capture End
+			if (mBloomEnabled)
+			{
+				mpBloomFrame->Unbind();
+				DrawSceneWithBloom();
+			}
+		}
+
 		// UI camera stuff
+		mProjectionMatrix = mUICamera.mProjectionMatrix;
+		mViewMatrix = mUICamera.mViewMatrix;
+
+		GLCall(glViewport(0, 0, mUICamera.mViewPortSize.x, mUICamera.mViewPortSize.y));
+		
 		DrawUI();
 
 		// Update ImGui
@@ -186,7 +203,7 @@ namespace Hollow {
 		mParticleData.clear();
 		mLightData.clear();
 		mRenderData.clear();
-		mCameraData.clear();
+		mSecondaryCameras.clear();
 	}
 
 	inline glm::vec2 RenderManager::GetWindowSize()
@@ -332,7 +349,7 @@ namespace Hollow {
 		return weights;
 	}
 
-	void RenderManager::GBufferPass()
+	void RenderManager::GBufferPass(CameraData& cameraData)
 	{
 		GLCall(glEnable(GL_DEPTH_TEST));
 		mpGBuffer->Bind();
@@ -340,8 +357,8 @@ namespace Hollow {
 		mpGBufferShader->Use();
 
 		// Send view and projection matrix
-		mpGBufferShader->SetMat4("View", mViewMatrix);
-		mpGBufferShader->SetMat4("Projection", mProjectionMatrix);
+		mpGBufferShader->SetMat4("View", cameraData.mViewMatrix);
+		mpGBufferShader->SetMat4("Projection", cameraData.mProjectionMatrix);
 
 		// Draw all game objects
 		DrawAllRenderData(mpGBufferShader);
@@ -350,7 +367,7 @@ namespace Hollow {
 		mpGBuffer->Unbind();
 	}
 
-	void RenderManager::GlobalLightingPass(LightData& light)
+	void RenderManager::GlobalLightingPass(LightData& light, glm::vec3 eyePosition)
 	{
 		// Clear opengl
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -365,7 +382,7 @@ namespace Hollow {
 		mpDeferredShader->Use();
 
 		// Send light and view position
-		mpDeferredShader->SetVec3("viewPosition", mCameraData[0].mPosition);
+		mpDeferredShader->SetVec3("viewPosition", eyePosition);
 		mpDeferredShader->SetVec3("lightPosition", light.mPosition);
 
 		// Send ShadowMap texture and shadow matrix
@@ -412,9 +429,9 @@ namespace Hollow {
 			mpLocalLightShader->SetVec2("screenSize", glm::vec2((float)mpWindow->GetWidth(), (float)mpWindow->GetHeight()));
 
 			// Set projection and view matrix
-			mpLocalLightShader->SetMat4("Projection", mProjectionMatrix);
-			mpLocalLightShader->SetMat4("View", mViewMatrix);
-			mpLocalLightShader->SetVec3("viewPosition", mCameraData[0].mPosition);
+			mpLocalLightShader->SetMat4("Projection", mMainCamera.mProjectionMatrix);
+			mpLocalLightShader->SetMat4("View", mMainCamera.mViewMatrix);
+			mpLocalLightShader->SetVec3("viewPosition", mMainCamera.mEyePosition);
 
 			// Draw light volume
 			for (auto& light : mLightData)
@@ -671,7 +688,7 @@ namespace Hollow {
 		glBindVertexArray(0);
 	}
 
-	void RenderManager::DrawParticles()
+	void RenderManager::DrawParticles(CameraData& cameraData)
 	{
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, mpGBuffer->GetFrameBufferID());
 		if (mBloomEnabled)
@@ -689,8 +706,8 @@ namespace Hollow {
 		
 		// Draw Particles 
 		mpParticleShader->Use();
-		mpParticleShader->SetMat4("View", mViewMatrix);
-		mpParticleShader->SetMat4("Projection", mProjectionMatrix);
+		mpParticleShader->SetMat4("View", cameraData.mViewMatrix);
+		mpParticleShader->SetMat4("Projection", cameraData.mProjectionMatrix);
 				
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -756,8 +773,8 @@ namespace Hollow {
 	void RenderManager::DrawDebugDrawings()
 	{
 		mpDebugShader->Use();
-		mpDebugShader->SetMat4("View", mViewMatrix);
-		mpDebugShader->SetMat4("Projection", mProjectionMatrix);
+		mpDebugShader->SetMat4("View", mMainCamera.mViewMatrix);
+		mpDebugShader->SetMat4("Projection", mMainCamera.mProjectionMatrix);
 
 		for (unsigned int i = 0; i < mDebugRenderData.size(); ++i)
 		{
@@ -836,14 +853,14 @@ namespace Hollow {
 	void RenderManager::DrawUI()
 	{
 		glDisable(GL_DEPTH_TEST);
-		glm::mat4 UIProjectionMatrix = glm::ortho(0, mpWindow->GetWidth(), 0, mpWindow->GetHeight(),-1,10);
+		glm::mat4 UIProjectionMatrix = glm::ortho(0.0f, (float)mpWindow->GetWidth(), 0.0f, (float)mpWindow->GetHeight(),-1.0f,1.0f);
 
 		mpUIShader->Use();
 		Mesh* quad = ResourceManager::Instance().GetShape(Shapes::QUAD);
 
 		Texture* texture = ResourceManager::Instance().LoadTexture("Resources/Textures/star.png");
 		
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 10.0f, 0.0f));
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(400.0f, 400.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(100.0f));
 
 		mpUIShader->SetMat4("Projection", UIProjectionMatrix);
