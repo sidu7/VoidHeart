@@ -6,6 +6,13 @@
 
 namespace Hollow {
 	
+	void EventManager::Init()
+	{
+#define GAME_EVENT(name) mEventsEnumMap[#name] = GameEvent::GameEventType::name;
+#include "Hollow/Enums/GameEvents.enum"
+#undef GAME_EVENT
+	}
+
 	void EventManager::AddDelayedEvent(GameEvent* event, float delayTimer)
 	{
 		event->mTimer = delayTimer;
@@ -40,6 +47,7 @@ namespace Hollow {
 		mEventsMap.clear();
 		std::for_each(mDelayedEvents.begin(), mDelayedEvents.end(), [](GameEvent* event) {delete event; });
 		mDelayedEvents.clear();
+		mEventsEnumMap.clear();
 	}
 
 	void EventManager::BroadcastToSubscribers(GameEvent* event)

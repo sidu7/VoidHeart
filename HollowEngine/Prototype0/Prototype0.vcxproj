@@ -107,6 +107,7 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
     <ClCompile Include="src\PrototypeSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GameOver.h" />
     <ClInclude Include="src\PrototypeComponent.h" />
     <ClInclude Include="src\PrototypeSystem.h" />
   </ItemGroup>

@@ -9,6 +9,9 @@ namespace Hollow
 
 	void UIImage::Init()
 	{
+		mpTexture = nullptr;
+		mColor = glm::vec3(0.0f);
+		mpShapeData = nullptr;
 	}
 
 	void UIImage::Clear()

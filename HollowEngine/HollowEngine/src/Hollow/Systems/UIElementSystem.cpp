@@ -26,7 +26,7 @@ namespace Hollow
 			UITransform* uitransform = mGameObjects[i]->GetComponent<UITransform>();
 			UIImage* uiimage = mGameObjects[i]->GetComponent<UIImage>();
 
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(uitransform->mPosition, 1.0f));
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(uitransform->mPosition, 0.0f));
 			if (uitransform->mRotation != 0.0f)
 			{
 				model = glm::rotate(model, uitransform->mRotation, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -35,7 +35,7 @@ namespace Hollow
 			{
 				model = glm::rotate(model, uitransform->mTilt, glm::vec3(1.0f, 0.0f, 0.0f));
 			}
-			model = glm::scale(model, glm::vec3(uitransform->mScale, 0.0f));
+			model = glm::scale(model, glm::vec3(uitransform->mScale, 1.0f));
 
 			UIRenderData uidata;
 

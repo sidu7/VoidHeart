@@ -855,6 +855,9 @@ namespace Hollow {
 		mpUIShader->Use();
 		mpUIShader->SetMat4("Projection", mProjectionMatrix);
 
+		GLCall(glEnable(GL_BLEND));
+		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 		for (unsigned int i = 0; i < mUIRenderData.size(); ++i)
 		{
 			UIRenderData& uidata = mUIRenderData[i];
@@ -873,6 +876,8 @@ namespace Hollow {
 			shape->mpVBO->Unbind();
 			shape->mpVAO->Unbind();
 		}
+
+		GLCall(glDisable(GL_BLEND));
 
 		mpUIShader->Unbind();
 		mUIRenderData.clear();

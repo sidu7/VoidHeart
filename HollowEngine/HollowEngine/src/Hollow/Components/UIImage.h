@@ -19,6 +19,7 @@ namespace Hollow
 
 	public:
 		Texture* mpTexture;
+		glm::vec3 mColor;
 		Mesh* mpShapeData;
 		Shapes mShapeType;
 	};

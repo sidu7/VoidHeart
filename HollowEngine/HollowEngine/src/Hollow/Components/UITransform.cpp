@@ -7,6 +7,11 @@ namespace Hollow
 
 	void UITransform::Init()
 	{
+		mPosition = glm::vec2(0.0f);
+		mScale = glm::vec2(0.0f);
+		mRotation = 0.0f;
+		mTilt = 0.0f;
+		glm::mat4 mTransformationMatrix = glm::mat4(1.0f);
 	}
 
 	void UITransform::Clear()

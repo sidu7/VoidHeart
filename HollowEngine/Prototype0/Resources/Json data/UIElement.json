@@ -2,13 +2,13 @@
   "Components": [
     {
       "Type": "UITransform",
-      "Position": [ 100, 100 ],
-      "Scale": [ 50, 50 ]
+      "Position": [ 640, 360 ],
+      "Scale": [ 1280, 720 ]
     },
     {
       "Type": "UIImage",
       "Shape": 3,
-      "Image": "Resources/Textures/star.png"
+      "Image": "Resources/Textures/HUD.png"
     }
   ]
 }

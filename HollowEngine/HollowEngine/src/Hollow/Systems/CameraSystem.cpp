@@ -150,7 +150,7 @@ namespace Hollow {
 			else if (pCamera->mProjectionType == ORTHOGRAPHIC)
 			{
 				cameraData.mViewMatrix = glm::translate(glm::mat4(1.0f), pTransform->mPosition);
-				cameraData.mProjectionMatrix = glm::ortho(0, pCamera->mViewPortSize.x, 0, pCamera->mViewPortSize.y);
+				cameraData.mProjectionMatrix = glm::ortho(0.0f, static_cast<float>(pCamera->mViewPortSize.x), 0.0f, static_cast<float>(pCamera->mViewPortSize.y),-1.0f,1.0f);
 			}
 			
 			cameraData.mType = pCamera->mType;

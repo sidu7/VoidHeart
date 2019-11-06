@@ -23,7 +23,7 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 
-#include "Hollow/Events/CollisionEvent.h"
+#include "GameOver.h"
 
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
@@ -58,7 +58,7 @@ class UILayer : public Hollow::Layer
 			e.Handled = true;
 			
 			//Test Event
-			Hollow::CollisionEvent test;
+			Hollow::GameOverEvent test;
 			Hollow::EventManager::Instance().BroadcastToSubscribers(&test);
 			//Test Event
 		}

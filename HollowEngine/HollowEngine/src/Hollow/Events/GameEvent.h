@@ -12,6 +12,9 @@ namespace Hollow {
 		enum HOLLOW_API GameEventType
 		{
 			COLLISION_EVENT,
+#define GAME_EVENT(name) name,
+#include "Hollow/Enums/GameEvents.enum"
+#undef GAME_EVENT
 			NUM
 		};
 		GameEvent(GameEventType type) {
