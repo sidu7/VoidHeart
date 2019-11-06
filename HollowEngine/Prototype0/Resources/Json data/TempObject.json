@@ -31,8 +31,9 @@
         [ "Walking", "Resources/Models/Walking.fbx" ],
         [ "Idle", "Resources/Models/Idle.fbx" ],
         [ "Running", "Resources/Models/Running.fbx" ],
-        ["Jump","Resources/Models/Jump.fbx"]
-      ]
+        [ "Jump", "Resources/Models/Jump.fbx" ]
+      ],
+      "BlendFactor":  1.5
     },
     {
       "Type": "StateMachine",

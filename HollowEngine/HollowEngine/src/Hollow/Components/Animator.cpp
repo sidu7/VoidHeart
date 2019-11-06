@@ -10,6 +10,10 @@ namespace Hollow
 	void Animator::Init()
 	{
 		mLoopingAnimation = true;
+		mCurrentState = "";
+		mScaleFactor = 0.0f;
+		mCurrentRunTime = 0.0;
+		mBlendFactor = 1.0f;
 	}
 
 	void Animator::Clear()
@@ -17,9 +21,7 @@ namespace Hollow
 		mBones.clear();
 		mAnimations.clear();
 		mBoneTransformations.clear();
-		mRunningState = "";
-		mScaleFactor = 0.0f;
-		mRunTime = 0.0;
+		mSkeleton.clear();		
 	}
 
 	void Animator::Serialize(rapidjson::Value::Object data)
@@ -40,6 +42,10 @@ namespace Hollow
 				mAnimations[name] = ResourceManager::Instance().AddAnimationData(anim[1].GetString(),name,mBones,mScaleFactor);
 			}
 		}
+		if(data.HasMember("BlendFactor"))
+		{
+			mBlendFactor = data["BlendFactor"].GetFloat();
+		}
 	}
 
 	void Animator::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -48,5 +54,10 @@ namespace Hollow
 
 	void Animator::DebugDisplay()
 	{
+		if (ImGui::TreeNode("Animator"))
+		{
+			ImGui::InputFloat("BlendFactor", &mBlendFactor);
+			ImGui::TreePop();
+		}
 	}
 }

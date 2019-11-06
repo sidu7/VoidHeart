@@ -3,6 +3,8 @@
 
 namespace Hollow
 {
+	class Animator;
+	
 	class AnimationSystem : public System
 	{
 		REGISTERSYSTEM(AnimationSystem, 3);
@@ -13,6 +15,7 @@ namespace Hollow
 
 	private:
 		void Animate(unsigned int start, unsigned int end);
+		void CreateSkeleton(Animator* animator);
 		template<typename T>
 		inline std::pair<unsigned int, unsigned int> BinarySearch(unsigned int start, unsigned int end, double time, const std::vector<std::pair<double, T>>& list)
 		{

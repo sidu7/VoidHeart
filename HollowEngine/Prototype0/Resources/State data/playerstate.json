@@ -24,7 +24,7 @@
       "IsLoop": true,
       "Events": [],
       "Inputs": [ 82, 13 ],
-      "InputCondition": [ 2, 0 ],
+      "InputCondition": [ 0, 0 ],
       "EventStates": [],
       "InputStates": [ "Walking", "Jump" ]
     },
