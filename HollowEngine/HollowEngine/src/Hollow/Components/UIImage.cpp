@@ -29,6 +29,10 @@ namespace Hollow
 			mShapeType = (Shapes)data["Shape"].GetUint();
 			mpShapeData = ResourceManager::Instance().GetShape(mShapeType);
 		}
+		if (data.HasMember("Color"))
+		{
+			mColor = JSONHelper::GetVec3F(data["Color"].GetArray());
+		}
 	}
 
 	void UIImage::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)

@@ -6,6 +6,8 @@
 
 namespace Hollow
 {
+	UIButton UIButton::instance;
+
 	void UIButton::Init()
 	{
 		mButtonFunction = ButtonFunction::NUM;

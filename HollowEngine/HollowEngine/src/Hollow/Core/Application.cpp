@@ -14,12 +14,8 @@
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/ThreadManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
+#include "Hollow/Managers/UIManager.h"
 
-//#include "Hollow/Graphics/Camera.h"
-
-void apple() {
-	std::cout << "apple";
-}
 namespace Hollow {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -44,6 +40,7 @@ namespace Hollow {
 		ResourceManager::Instance().Init();
         AudioManager::Instance().Init();
 		ScriptingManager::Instance().Init();
+		UIManager::Instance().Init();
 
 
 		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
@@ -56,6 +53,8 @@ namespace Hollow {
 		RenderManager::Instance().CleanUp();
 		ImGuiManager::Instance().CleanUp();
 		ThreadManager::Instance().CleanUp();
+		UIManager::Instance().CleanUp();
+		MemoryManager::Instance().CleanUp();
 		delete mpWindow;
 	}
 

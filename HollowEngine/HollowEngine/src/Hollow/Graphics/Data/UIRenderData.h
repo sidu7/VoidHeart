@@ -10,5 +10,6 @@ namespace Hollow
 		glm::mat4 mModelTransform;
 		Texture* mpTexture;
 		Mesh* mpShape;
+		glm::vec3 mColor;
 	};
 }

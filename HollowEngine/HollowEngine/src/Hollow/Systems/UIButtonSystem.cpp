@@ -6,9 +6,12 @@
 #include "Hollow/Components/UIButton.h"
 
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/RenderManager.h"
 
 namespace Hollow
 {
+	UIButtonSystem UIButtonSystem::instance;
+
 	void UIButtonSystem::Init()
 	{
 	}
@@ -37,18 +40,31 @@ namespace Hollow
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			UITransform* transform = mGameObjects[i]->GetComponent<UITransform>();
-			UIImage* image = mGameObjects[i]->GetComponent<UIImage>();
 			UIButton* button = mGameObjects[i]->GetComponent<UIButton>();
+			UIImage* image = mGameObjects[i]->GetComponent<UIImage>();
+			
+			if (!button->mIsInteractible)
+			{
+				image->mpTexture = button->mpInactiveImage;
+				image->mColor = button->mInactiveColor;
+				continue;
+			}
+			UITransform* transform = mGameObjects[i]->GetComponent<UITransform>();
 			glm::vec2 mousePosition = InputManager::Instance().GetMousePosition();
-
+			mousePosition.y = RenderManager::Instance().GetWindowSize().y - mousePosition.y;
 			if (IsButtonClicked(mousePosition, transform->mPosition, transform->mScale))
 			{
-
+				image->mpTexture = button->mpReleasedImage;
+				image->mColor = button->mPressedColor;
+				for (auto function : button->mFunctions)
+				{
+					function();
+				}
 			}
 			else
 			{
 				image->mpTexture = button->mpReleasedImage;
+				image->mColor = button->mReleasedColor;
 			}
 		}
 	}

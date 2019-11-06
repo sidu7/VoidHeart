@@ -12,10 +12,19 @@
 
 #include "Utils/BSplineCurve.h"
 
+#include "Hollow/Managers/UIManager.h"
+
 namespace Hollow
 {
 	PathFollowSystem PathFollowSystem::instance;
 	
+	void PathFollowSystem::Init()
+	{
+		StopMoving = false;
+		UIManager::Instance().AddButtonFunction(UIButton::ButtonFunction::STOP_MOVING, BUTTON_FUNCTION(PathFollowSystem::StopPathMotion));
+		UIManager::Instance().AddButtonFunction(UIButton::ButtonFunction::START_MOVING, BUTTON_FUNCTION(PathFollowSystem::StartPathMotion));
+	}
+
 	void PathFollowSystem::AddGameObject(GameObject* pGameObject)
 	{
 		if(CheckAllComponents<PathFollow,Body>(pGameObject))
@@ -33,7 +42,7 @@ namespace Hollow
 		{
 			PathFollow* pathFollow = mGameObjects[i]->GetComponent<PathFollow>();
 
-			if(pathFollow->mMove)
+			if(pathFollow->mMove && !StopMoving)
 			{
 				pathFollow->mPathRunTime += FrameRateController::Instance().GetFrameTime();
 			}
@@ -178,6 +187,16 @@ namespace Hollow
 		
 		pathFollow->mCurvePointsCount = curvePoints.size();
 		pathFollow->mpCurveVAO = va;
+	}
+
+	void PathFollowSystem::StopPathMotion()
+	{
+		StopMoving = true;
+	}
+
+	void PathFollowSystem::StartPathMotion()
+	{
+		StopMoving = false;
 	}
 
 	std::pair<float, int> PathFollowSystem::SearchInArcTable(const float distance,PathFollow* pathFollow)

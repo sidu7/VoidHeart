@@ -732,22 +732,22 @@ namespace Hollow
 		//Quad
 		{
 			Vertex v;
-			v.position = glm::vec3(-1.0f, 1.0f, 0.0f);
+			v.position = glm::vec3(-0.5f, 0.5f, 0.0f);
 			v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 			v.tex = glm::vec2(0.0f, 0.0f);
 			vertices.push_back(v);
 
-			v.position = glm::vec3(1.0f, 1.0f, 0.0f);
+			v.position = glm::vec3(0.5f, 0.5f, 0.0f);
 			v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 			v.tex = glm::vec2(1.0f, 0.0f);
 			vertices.push_back(v);
 
-			v.position = glm::vec3(-1.0f, -1.0f, 0.0f);
+			v.position = glm::vec3(-0.5f, -0.5f, 0.0f);
 			v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 			v.tex = glm::vec2(0.0f, 1.0f);
 			vertices.push_back(v);
 
-			v.position = glm::vec3(1.0f, -1.0f, 0.0f);
+			v.position = glm::vec3(0.5f, -0.5f, 0.0f);
 			v.normal = glm::vec3(0.0f, 0.0f, 1.0f);
 			v.tex = glm::vec2(1.0f, 1.0f);
 			vertices.push_back(v);

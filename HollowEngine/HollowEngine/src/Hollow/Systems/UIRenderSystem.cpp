@@ -1,5 +1,5 @@
 #include <hollowpch.h>
-#include "UIElementSystem.h"
+#include "UIRenderSystem.h"
 
 #include "Hollow/Components/UITransform.h"
 #include "Hollow/Components/UIImage.h"
@@ -8,18 +8,18 @@
 
 namespace Hollow
 {
-	UIElementSystem UIElementSystem::instance;
+	UIRenderSystem UIRenderSystem::instance;
 
-	void UIElementSystem::Init()
+	void UIRenderSystem::Init()
 	{
 	}
 
-	void UIElementSystem::AddGameObject(GameObject* object)
+	void UIRenderSystem::AddGameObject(GameObject* object)
 	{
 		CheckAllComponents<UITransform, UIImage>(object);
 	}
 
-	void UIElementSystem::Update()
+	void UIRenderSystem::Update()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
@@ -42,6 +42,7 @@ namespace Hollow
 			uidata.mModelTransform = model;
 			uidata.mpTexture = uiimage->mpTexture;
 			uidata.mpShape = uiimage->mpShapeData;
+			uidata.mColor = uiimage->mColor;
 
 			RenderManager::Instance().mUIRenderData.emplace_back(uidata);
 		}

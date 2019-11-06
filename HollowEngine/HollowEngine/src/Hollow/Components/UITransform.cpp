@@ -24,9 +24,9 @@ namespace Hollow
 		{
 			mPosition = JSONHelper::GetVec2F(data["Position"].GetArray());
 		}
-		if (data.HasMember("Position"))
+		if (data.HasMember("Scale"))
 		{
-			mScale = JSONHelper::GetVec2F(data["Position"].GetArray());
+			mScale = JSONHelper::GetVec2F(data["Scale"].GetArray());
 		}
 		if (data.HasMember("Rotation"))
 		{

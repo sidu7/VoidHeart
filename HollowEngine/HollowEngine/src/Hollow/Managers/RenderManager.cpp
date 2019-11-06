@@ -65,6 +65,7 @@ namespace Hollow {
 		mpParticleShader = new Shader(data["ParticleShader"].GetArray()[0].GetString(), data["ParticleShader"].GetArray()[1].GetString());
 		mpParticlesPositionStorage = new ShaderStorageBuffer();
 		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
+		ShowParticles = true;
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 
 		// Init Bloom Shader and FrameBuffer
@@ -862,8 +863,17 @@ namespace Hollow {
 		{
 			UIRenderData& uidata = mUIRenderData[i];
 
-			uidata.mpTexture->Bind(1);
-			mpUIShader->SetInt("UITexture", 1);
+			if (uidata.mpTexture)
+			{
+				uidata.mpTexture->Bind(1);
+				mpUIShader->SetInt("UITexture", 1);
+				mpUIShader->SetInt("hasTexture", 1);
+			}
+			else
+			{
+				mpUIShader->SetVec3("UIColor", uidata.mColor);
+				mpUIShader->SetInt("hasTexture", 0);
+			}
 			mpUIShader->SetMat4("Model", uidata.mModelTransform);
 
 			Mesh* shape = uidata.mpShape;
@@ -875,6 +885,11 @@ namespace Hollow {
 			shape->mpEBO->Unbind();
 			shape->mpVBO->Unbind();
 			shape->mpVAO->Unbind();
+
+			if (uidata.mpTexture)
+			{
+				uidata.mpTexture->Unbind(1);
+			}
 		}
 
 		GLCall(glDisable(GL_BLEND));

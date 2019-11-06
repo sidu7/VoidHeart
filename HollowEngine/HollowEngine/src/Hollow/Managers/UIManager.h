@@ -3,6 +3,8 @@
 
 namespace Hollow
 {
+#define BUTTON_FUNCTION(x) std::bind(&x,this)
+
 	class HOLLOW_API UIManager
 	{
 		SINGLETON(UIManager);

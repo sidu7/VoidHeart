@@ -10,6 +10,27 @@ namespace Hollow
 		mComponents.push_back(std::make_pair(name, component));
 	}
 
+	void MemoryManager::CleanUp()
+	{
+		for (unsigned int i = 0; i < mComponents.size(); ++i)
+		{
+			auto& list = mComponentPool[mComponents[i].first];
+			for (unsigned int j = 0; j < list.size(); ++i)
+			{
+				Component* comp = list.front();
+				comp->Clear();
+				delete comp;
+				list.pop_front();
+			}
+		}
+
+		for (unsigned int i = 0; i < mGameObjectPool.size(); ++i)
+		{
+			delete mGameObjectPool.front();
+			mGameObjectPool.pop_front();
+		}
+	}
+
 	Component* MemoryManager::NewComponent(std::string name)
 	{
 		Component* comp = nullptr;
@@ -58,7 +79,7 @@ namespace Hollow
 			{
 				newlist.push_back(component->CreateComponent());
 			}
-			mComponentPool[component->mComponentName.c_str()] = newlist;
+			mComponentPool[component->mComponentName] = newlist;
 		}
 
 		//Create GameObjects Pool

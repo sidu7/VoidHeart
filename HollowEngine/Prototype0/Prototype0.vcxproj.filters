@@ -86,6 +86,9 @@
     <None Include="Resources\Json data\UICamera.json" />
     <None Include="Resources\Shaders\RainParticles.comp" />
     <None Include="Resources\Json data\UIElement.json" />
+    <None Include="Resources\Json data\UIButton.json" />
+    <None Include="Resources\Json data\StopMoveButton.json" />
+    <None Include="Resources\Json data\StartMoveButton.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\test.lua" />

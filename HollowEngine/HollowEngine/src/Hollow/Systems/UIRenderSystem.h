@@ -3,11 +3,11 @@
 
 namespace Hollow
 {
-	class UIElementSystem : public System
+	class UIRenderSystem : public System
 	{
-		REGISTERSYSTEM(UIElementSystem, 4);
+		REGISTERSYSTEM(UIRenderSystem, 4);
 	public:
-		virtual ~UIElementSystem() {}
+		virtual ~UIRenderSystem() {}
 		void Init();
 		void AddGameObject(GameObject* object);
 		void Update();

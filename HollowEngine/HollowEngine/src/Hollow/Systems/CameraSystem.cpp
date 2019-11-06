@@ -71,13 +71,13 @@ namespace Hollow {
 
 	void CameraSystem::HandleMouseInput(Camera* pCamera)
 	{
-		std::pair<float, float> mousePos = InputManager::Instance().GetMousePosition();
+		glm::vec2 mousePos = InputManager::Instance().GetMousePosition();
 
-		float xoffset = mousePos.first - mLastX;
-		float yoffset = mLastY - mousePos.second;
+		float xoffset = mousePos.x - mLastX;
+		float yoffset = mLastY - mousePos.y;
 
-		mLastX = mousePos.first;
-		mLastY = mousePos.second;
+		mLastX = mousePos.x;
+		mLastY = mousePos.y;
 
 		if (!InputManager::Instance().IsMouseButtonPressed(0) || ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
