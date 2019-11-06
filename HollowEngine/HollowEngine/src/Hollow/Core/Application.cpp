@@ -63,7 +63,6 @@ namespace Hollow {
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		
 		//RenderManager::Instance().GetCamera()->OnEvent(e);
 
 		//HW_CORE_TRACE("{0}", e);
@@ -102,6 +101,15 @@ namespace Hollow {
 			RenderManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
+
+			if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_ESCAPE))
+				mIsRunning = false;
+			
+			//HOTKEYS
+			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_H))
+				InputManager::Instance().HideMouseCursor();
+			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_U))
+				InputManager::Instance().ShowMouseCursor();
 		}		
 	}
 

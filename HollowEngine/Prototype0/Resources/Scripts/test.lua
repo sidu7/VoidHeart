@@ -1,14 +1,24 @@
 impulse = vec3.new()
 
+front = fpsCamera.frontDirection
+right = fpsCamera.rightDirection
+
+front.y = 0.0
+right.y = 0.0
+
 if isMoveForward then
-	impulse.z = 1;
+	impulse = impulse + front;
 end
 if isMoveBackward then
-	impulse.z = -1;	
+	impulse = impulse - front;	
 end
 if isStrafeLeft then
-	impulse.x = -1;
+	impulse = impulse - right;
 end
 if isStrafeRight then
-	impulse.x = 1;
+	impulse = impulse + right;
 end
+
+-- Damp Overall Velocity and Rotation
+player.velocity = player.velocity - 0.1 * player.velocity 
+player.angularVelocity = player.angularVelocity - 0.1 * player.angularVelocity 

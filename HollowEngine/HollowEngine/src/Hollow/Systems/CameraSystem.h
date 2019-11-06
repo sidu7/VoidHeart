@@ -17,6 +17,7 @@ namespace Hollow
 
 		void HandleKeyboardInput(Camera* pCamera, Transform* pTransform);
 		void HandleMouseInput(Camera* pCamera);
+		void HandleMouseMotion(Camera* pCamera);
 		bool HandleMouseScroll(MouseScrolledEvent& mse,Camera* pCamera);
 
 	private:
