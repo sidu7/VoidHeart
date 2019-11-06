@@ -2,7 +2,7 @@
     "Components": [
         {
             "Type": "Transform",
-            "Position": [ 0.0, 0.0, 0.0 ],
+            "Position": [ 1.0, 1.0, 1.0 ],
             "Scale": [ 200.0, 1.0, 200.0 ]
         },
         {
@@ -10,7 +10,8 @@
             "Mass":  1e39
         },
         {
-            "Type": "Collider"
+          "Type": "Collider",
+          "Shape": "BOX"
         },
         {
             "Type": "Model",

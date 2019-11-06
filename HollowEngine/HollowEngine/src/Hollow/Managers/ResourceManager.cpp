@@ -924,9 +924,9 @@ namespace Hollow
 			for (int j = 0; j <= n; j++)
 			{
 				float t = j * PI / float(n);
-				float x = cos(s) * sin(t);
-				float y = sin(s) * sin(t);
-				float z = cos(t);
+				float x = 0.5f*cos(s) * sin(t);
+				float y = 0.5f*sin(s) * sin(t);
+				float z = 0.5f*cos(t);
 				// Create vertex
 				Vertex v;
 				v.position = glm::vec3(x, y, z);

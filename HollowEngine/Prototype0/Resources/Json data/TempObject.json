@@ -10,7 +10,8 @@
             "Mass": 1.0
         },
         {
-            "Type": "Collider"
+          "Type": "Collider",
+          "Shape": "BOX"
         },
         {
             "Type": "Model",

@@ -72,31 +72,35 @@ public:
 		PushOverlay(new UILayer());
 
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
 		//for(int i = 0; i < 40; ++i)
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 	
 		int dim = 2;
 		int height = 5;
-		for (int i = 0; i < dim; ++i) {
-			for (int j = 0; j < dim; ++j) {
-				for (int k = 0; k < height; ++k) {
-					Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
-					Hollow::Body* pB = static_cast<Hollow::Body*>(go->GetComponent<Hollow::Body>());
-					pB->mPosition = glm::vec3(2.0f * i, 2.0f * (k+1), 2.0f * j);
-					pB->mPreviousPosition = glm::vec3(2.0f * i, 2.0f * (k+1), 2.0f * j);
+		//for (int i = 0; i < dim; ++i) {
+		//	for (int j = 0; j < dim; ++j) {
+		//		for (int k = 0; k < height; ++k) {
+		//			Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+		//			Hollow::Body* pB = static_cast<Hollow::Body*>(go->GetComponent<Hollow::Body>());
+		//			pB->mPosition = glm::vec3(2.0f * i, 2.0f * (k+1), 2.0f * j);
+		//			pB->mPreviousPosition = glm::vec3(2.0f * i, 2.0f * (k+1), 2.0f * j);
 
-					//physics->dAABBTree.AddCollider(static_cast<Collider*>(go->GetComponent(COLLIDER)));
-				}
-			}
-		}
+		//			//physics->dAABBTree.AddCollider(static_cast<Collider*>(go->GetComponent(COLLIDER)));
+		//		}
+		//	}
+		//}
 
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		//for(int i = 0; i < 100; ++i)
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Ball.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Ball2.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
 

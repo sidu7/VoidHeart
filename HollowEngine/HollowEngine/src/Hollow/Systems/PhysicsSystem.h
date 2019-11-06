@@ -27,8 +27,8 @@ namespace Hollow {
 		const int impulseIterations = 8;
 		const float maxPossibleDeltaTime = 1.0f/60.0f;
 		const float slop = -0.005f;
-		const float mu = 0.2f;
-		const float baumgarte = 0.1f;
+		const float mu = 0.005;
+		const float baumgarte = 0.15f;
 		const float bias = 1.0f;
 		const float proximityEpsilon = 0.00001f;
 		

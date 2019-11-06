@@ -7,7 +7,6 @@
 
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Components/Transform.h"
-#include "Hollow/Physics/Broadphase/Shape.h"
 
 #define epsilon 0.0001f
 namespace Hollow {
@@ -16,6 +15,10 @@ namespace Hollow {
 	{
 		mContacts = new std::list<ContactManifold*>();
 		mPrevContacts = new std::list<ContactManifold*>();
+		CollisionFunctions[ShapeType::BOX][ShapeType::BOX] = &SAT::TestIntersection3D;
+		CollisionFunctions[ShapeType::BOX][ShapeType::BALL] = &SAT::TestBoxBallIntersection;
+		CollisionFunctions[ShapeType::BALL][ShapeType::BOX] = &SAT::TestBallBoxIntersection;
+		CollisionFunctions[ShapeType::BALL][ShapeType::BALL] = &SAT::TestBallBallIntersection;
 	}
 
 	SAT::~SAT()
@@ -29,7 +32,10 @@ namespace Hollow {
 			delete c;
 
 		mPrevContacts->clear();
-
+		CollisionFunctions[ShapeType::BOX][ShapeType::BOX] = nullptr;
+		CollisionFunctions[ShapeType::BOX][ShapeType::BALL] = nullptr;
+		CollisionFunctions[ShapeType::BALL][ShapeType::BOX] = nullptr;
+		CollisionFunctions[ShapeType::BALL][ShapeType::BALL] = nullptr;
 	}
 
 	// from http://paulbourke.net/geometry/pointlineplane/
@@ -78,8 +84,8 @@ namespace Hollow {
 		return glm::distance(pa, pb);
 	}
 
-	// from Dirk Gregorius' Post on GameDev.net
-	std::vector<glm::vec3> ClipPolygon(const std::vector<glm::vec3>& polygon, glm::vec3 normal, glm::vec3 pointOnPlane) {
+	// from Orange Book!! To take into account the thickness of the plane
+	std::vector<glm::vec3> ClipPolygon(const std::vector<glm::vec3>& polygon, glm::vec3 normal, glm::vec3 pointOnPlane, float thickness = 0.0f) {
 		std::vector<glm::vec3> clipped;
 
 		glm::vec3 ver1 = polygon.back();
@@ -89,24 +95,36 @@ namespace Hollow {
 		for (int i = 0; i < polygon.size(); ++i) {
 			glm::vec3 ver2 = polygon[i];
 			float dist2 = glm::dot(normal, ver2 - pointOnPlane);
-
-			if (dist1 <= 0.0f && dist2 <= 0.0f) {
-				clipped.push_back(ver2);
-			}
-			else if (dist1 <= 0.0f && dist2 > 0.0f) {
+			if (dist1 < 0.0f - thickness && dist2 > 0.0f)
+			{
 				float frac = dist1 / (dist1 - dist2);
 				glm::vec3 intersectionPoint = ver1 + frac * (ver2 - ver1);
-
 				clipped.push_back(intersectionPoint);
 			}
-			else if (dist2 <= 0.0f && dist1 > 0.0f) {
+			else if (dist1 < 0.0f - thickness && ((dist2 <= 0.0f) && (dist2 >= 0.0f - thickness)))
+			{
+				clipped.push_back(ver2);
+			}
+			else if (dist1 > 0.0f && dist2 < 0.0f - thickness)
+			{
 				float frac = dist1 / (dist1 - dist2);
 				glm::vec3 intersectionPoint = ver1 + frac * (ver2 - ver1);
-
 				clipped.push_back(intersectionPoint);
 				clipped.push_back(ver2);
 			}
-
+			else if (((dist1 <= 0.0f) && (dist1 >= 0.0f - thickness)) && dist2 < 0.0f - thickness)
+			{
+				clipped.push_back(ver1);
+				clipped.push_back(ver2);
+			}
+			else if (dist1 < 0.0f - thickness && dist2 < 0.0f - thickness)
+			{
+				clipped.push_back(ver2);
+			}
+			else if (((dist1 <= 0.0f) && (dist1 >= 0.0f - thickness)) && ((dist2 <= 0.0f) && (dist2 >= 0.0f - thickness)))
+			{
+				clipped.push_back(ver2);
+			}
 			ver1 = ver2;
 			dist1 = dist2;
 		}
@@ -204,9 +222,9 @@ namespace Hollow {
 			glm::vec3 pointOnRef = refCollider->mpBody->mRotationMatrix * (referenceMeshData.GetPointOnFace(refIndex)
 				* refCollider->mpTr->mScale)
 				+ refCollider->mpBody->mPosition;
-			
+
 			if (!clippedPoly.empty())
-				clippedPoly = ClipPolygon(clippedPoly, refFaceNormal, pointOnRef);
+				clippedPoly = ClipPolygon(clippedPoly, refFaceNormal, pointOnRef, 0.005f); // This should be accessed from the physics system i.e how much slop we are giving
 
 			Contact deepest;
 			deepest.penetrationDepth = std::numeric_limits<float>::max();
@@ -347,7 +365,7 @@ namespace Hollow {
 
 			glm::vec3 Ea = col1->mpTr->mScale;
 			glm::vec3 Eb = col2->mpTr->mScale;
-			
+
 			// edge case
 			glm::vec3 pA1 = md1.vertices[md1.edges[md1.edges[edgeQuery.edgeA].prev].toVertex].point;
 			glm::vec3 pA2 = md1.vertices[md1.edges[edgeQuery.edgeA].toVertex].point;
@@ -401,6 +419,101 @@ namespace Hollow {
 
 		return true;
 	}
+	//From Christer ericsons book
+	glm::vec3 ClosestPtPointOBB(glm::vec3& centerOfBall, glm::vec3& centerOfBox,std::vector<glm::vec3>& faceNormal,std::vector<float>& extent)
+	{
+		glm::vec3 d = centerOfBall - centerOfBox;
+		// Start result at center of box; make steps from there
+		glm::vec3 q = centerOfBox;
+		// For each OBB axis...
+		for (int i = 0; i < 3; i++) {
+			// ...project d onto that axis to get the distance
+			// along the axis of d from the box center
+			float dist = glm::dot(d, faceNormal[i]);
+			// If distance farther than the box extents, clamp to the box
+			if (dist > extent[i]) dist = extent[i];
+			if (dist < -extent[i]) dist = -extent[i];
+			// Step that distance along the axis to get world coordinate
+			q += dist * faceNormal[i];
+		}
+		return q;
+	}
+
+
+	bool SAT::TestBallBoxIntersection(Collider* ball, Collider* box)
+	{
+		ShapeAABB* boxShape = static_cast<ShapeAABB*>(box->mpShape);
+		ShapeCircle* ballShape = static_cast<ShapeCircle*>(ball->mpShape);
+		int faceIndex;
+		MeshData& md1 = boxShape->mMeshData;
+		glm::vec3 contactNormal(0.0f);
+		glm::mat3& boxRotationMatrix = box->mpBody->mRotationMatrix;
+
+		glm::vec3 boxposition = box->mpBody->mPosition;
+		
+		std::vector<glm::vec3> basisVectors;
+		std::vector<float> extents;
+		extents.push_back(box->mpTr->mScale.x/2.0f);
+		extents.push_back(box->mpTr->mScale.y/2.0f);
+		extents.push_back(box->mpTr->mScale.z/2.0f);
+		basisVectors.push_back((boxRotationMatrix) * glm::vec3(1.0, 0.0, 0.0));
+		basisVectors.push_back((boxRotationMatrix) * glm::vec3(0.0, 1.0, 0.0));
+		basisVectors.push_back((boxRotationMatrix) * glm::vec3(0.0, 0.0, 1.0));
+		glm::vec3 pointOnBoxClosestToBall = ClosestPtPointOBB(ball->mpBody->mPosition, boxposition, basisVectors, extents);
+
+		float distanceToCenter = glm::distance(pointOnBoxClosestToBall, ball->mpBody->mPosition);
+
+		if (distanceToCenter > ballShape->mRadius )
+			return false;
+
+		ContactManifold* manifold = new ContactManifold();
+		Contact c;
+
+		c.rA = pointOnBoxClosestToBall - boxposition;
+		manifold->collisionNormal = glm::normalize(ball->mpBody->mPosition - pointOnBoxClosestToBall);
+		c.rB = (-manifold->collisionNormal) * ballShape->mRadius;
+		c.penetrationDepth = distanceToCenter - ballShape->mRadius;
+		c.point = pointOnBoxClosestToBall;
+		manifold->bodyA = box->mpBody;
+		manifold->bodyB = ball->mpBody;
+		manifold->contactPoints.push_back(c);
+		mContacts->push_back(manifold);
+		manifold->SetupGroundConstraint();
+		return true;
+	}
+
+	bool SAT::TestBoxBallIntersection(Collider* box, Collider* ball)
+	{
+		return TestBallBoxIntersection(ball, box);
+	}
+
+	bool SAT::TestBallBallIntersection(Collider* ball1, Collider* ball2)
+	{
+		ShapeCircle* ballShape1 = static_cast<ShapeCircle*>(ball1->mpShape);
+		ShapeCircle* ballShape2 = static_cast<ShapeCircle*>(ball2->mpShape);
+		float distanceBetweenCenter = glm::distance(ball1->mpBody->mPosition, ball2->mpBody->mPosition);
+		float penetration = distanceBetweenCenter - ballShape1->mRadius - ballShape2->mRadius;
+		if (penetration > 0.0f)
+			return false;
+		glm::vec3 contactNormal = (ball2->mpBody->mPosition - ball1->mpBody->mPosition)/ distanceBetweenCenter;
+		glm::vec3 ball1Ra = (contactNormal)* ballShape1->mRadius;
+		glm::vec3 ball2Rb = (-contactNormal) * ballShape2->mRadius;
+		ContactManifold* manifold = new ContactManifold();
+		Contact c;
+
+		c.penetrationDepth = penetration;
+		//c.point = ball1Ra;
+		c.rA = ball1Ra;
+		c.rB = ball2Rb;
+		manifold->collisionNormal = contactNormal;
+
+		manifold->bodyA = ball1->mpBody;
+		manifold->bodyB = ball2->mpBody;
+		manifold->contactPoints.push_back(c);
+		mContacts->push_back(manifold);
+		manifold->SetupGroundConstraint();
+		return true;
+	}
 
 	void SAT::ResetContacts()
 	{
@@ -419,6 +532,14 @@ namespace Hollow {
 		mContacts = new std::list<ContactManifold*>();
 	}
 
+	bool SAT::CheckCollsionAndGenerateContact(Collider* col1, Collider* col2)
+	{
+		if (col1 != NULL && col1 != NULL)
+			return (this->*CollisionFunctions[col1->mpShape->mType][col2->mpShape->mType])(col1, col2);
+		else
+			return false;
+	}
+
 
 	FaceQuery SAT::FaceIntersectionQuery(Collider* col1, Collider* col2) {
 		glm::mat3& Ra = col1->mpBody->mRotationMatrix;
@@ -426,7 +547,7 @@ namespace Hollow {
 
 		glm::vec3 Ea = col1->mpTr->mScale;
 		glm::vec3 Eb = col2->mpTr->mScale;
-		
+
 		// rotation matrix to convert from A's local to B's local
 		//glm::mat3 C = Rb * glm::transpose(Ra);
 		glm::mat3 C = RbTrans * Ra;
@@ -439,7 +560,7 @@ namespace Hollow {
 		MeshData& md2 = static_cast<ShapeAABB*>(col2->mpShape)->mMeshData;
 
 		glm::vec3 centerA = RbTrans * (col1->mpBody->mPosition - col2->mpBody->mPosition);
-		
+
 		for (int i = 0; i < md1.faces.size(); ++i) {
 			glm::vec3 normalInBSpace = C * md1.faces[i].normal;
 
@@ -492,7 +613,7 @@ namespace Hollow {
 
 		glm::vec3 Ea = col1->mpTr->mScale;
 		glm::vec3 Eb = col2->mpTr->mScale;
-		
+
 		// rotation matrix to convert from A's local to B's local
 		glm::mat3 C = RbTrans * Ra;
 
