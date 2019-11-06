@@ -18,6 +18,7 @@ namespace Hollow
 		virtual ~System() {}
 		virtual void Init() {}
 		virtual void Update() = 0;
+		virtual std::type_index GetIndex() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
 		virtual void HandleBroadcastEvent(GameEvent* event) { }
 		virtual void OnDeleteGameObject(GameObject* pGameObject) {}

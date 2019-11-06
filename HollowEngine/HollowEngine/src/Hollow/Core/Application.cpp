@@ -54,6 +54,7 @@ namespace Hollow {
 		ImGuiManager::Instance().CleanUp();
 		ThreadManager::Instance().CleanUp();
 		UIManager::Instance().CleanUp();
+		SystemManager::Instance().CleanUp();
 		MemoryManager::Instance().CleanUp();
 		delete mpWindow;
 	}

@@ -25,6 +25,16 @@ namespace Hollow
 		}
 	}
 
+	void SystemManager::CleanUp()
+	{
+		for (unsigned int i = 0; i < mSystems.size(); ++i)
+		{
+			delete mSystems[i];
+		}
+		mSystems.clear();
+		mSystemMap.clear();
+	}
+
 	void SystemManager::AddObjectToSystems(GameObject* GameObject)
 	{
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
