@@ -44,6 +44,7 @@ namespace Hollow
 				pCol->mpBody->mPosition = pCol->mpTr->mPosition;
 				pCol->mpBody->mPreviousPosition = pCol->mpTr->mPosition;
 				pCol->mpBody->mQuaternion = pCol->mpTr->mQuaternion;
+				pCol->mpBody->mPreviousQuaternion = pCol->mpTr->mQuaternion;
 				pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
 
 				// update local shape (0.5f because we are updating half extents)
@@ -281,18 +282,17 @@ namespace Hollow
 			Transform* pTr = static_cast<Transform*>(go->GetComponent<Transform>());
 
 			if (pBody != nullptr) {
-				pTr->mPosition.x = glm::mix(pBody->mPreviousPosition.x, pBody->mPosition.x, blendingFactor);
-				pTr->mPosition.y = glm::mix(pBody->mPreviousPosition.y, pBody->mPosition.y, blendingFactor);
-				pTr->mPosition.z = glm::mix(pBody->mPreviousPosition.z, pBody->mPosition.z, blendingFactor);
-
+				pTr->mPosition = glm::mix(pBody->mPreviousPosition, pBody->mPosition, blendingFactor);
 
 				// if there is a significant change in position or orientation only then update transformation matrix
-				if (glm::length2(pBody->mVelocity) > 0.0001f || glm::length2(pBody->mAngularVelocity) > 0.0001f) {
+				if (glm::length2(pBody->mPreviousPosition - pBody->mPosition) > 0.0001f) {
 					pTr->dirtyBit = true;
 				}
 
 				pBody->mQuaternion = glm::normalize(pBody->mQuaternion);
 				pTr->mQuaternion = glm::slerp(pBody->mPreviousQuaternion, pBody->mQuaternion, blendingFactor);
+				if (pBody->mPreviousQuaternion != pBody->mQuaternion)
+					pTr->dirtyBit = true;
 
 				pBody->mRotationMatrix = glm::toMat3(pBody->mQuaternion);
 				pBody->mWorldInertiaInverse =

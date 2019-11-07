@@ -14,6 +14,8 @@ namespace Hollow {
 		mUp = glm::vec3(0.0f, 1.0f, 0.0f);
 		mRight = glm::vec3(0.0f, 0.0f, 0.0f);
 
+		mOffsetFromAnchor = glm::vec3(0.0f);
+		
 		mYaw = -90.0f;
 		mPitch = 0.0f;
 
@@ -94,6 +96,10 @@ namespace Hollow {
 		{
 			mProjectionType = (CameraProjection)data["ProjectionType"].GetUint();
 		}
+		if (data.HasMember("PositionOffset"))
+		{
+			mOffsetFromAnchor = JSONHelper::GetVec3F(data["PositionOffset"].GetArray());
+		}
 		
 	}
 	void Camera::Clear()
@@ -108,6 +114,7 @@ namespace Hollow {
 			ImGui::InputFloat("Yaw", &mYaw);
 			ImGui::InputFloat("Pitch", &mPitch);
 			ImGui::InputFloat("Mouse Sensitivity", &mMouseSensitivity);
+			ImGui::InputFloat3("Offset", &mOffsetFromAnchor[0]);
 			ImGui::TreePop();
 		}
 	}

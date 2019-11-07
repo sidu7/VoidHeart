@@ -22,6 +22,8 @@ namespace Hollow
 		glm::vec3 mUp;			//Camera's Up Direction
 		glm::vec3 mRight;
 
+		glm::vec3 mOffsetFromAnchor;
+		
 		bool mIsActive;
 		
 		float mYaw;

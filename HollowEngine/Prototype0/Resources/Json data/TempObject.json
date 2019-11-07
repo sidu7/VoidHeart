@@ -1,44 +1,58 @@
 {
-  "Components": [
-    {
-      "Type": "Transform",
-      "Position": [ 0.0, 10.0, 0.0 ],
-      "Scale": [ 1.0, 1.0, 1.0 ]
-    },
-    {
-      "Type": "Body",
-      "Mass": 1.0,
-      "RigidbodyType": "KINEMATIC"
-
-    },
-    {
-      "Type": "Collider"
-    },
-    {
-      "Type": "Model",
-      "Model": "Resources/Models/Walking.fbx",
-      "CastShadow": true
-    },
-    {
-      "Type": "Material",
-      "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Walking.fbx"
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Walking.fbx",
-      "Animations": [
-        [ "Walking", "Resources/Models/Walking.fbx" ],
-        [ "Idle", "Resources/Models/Idle.fbx" ],
-        [ "Running", "Resources/Models/Running.fbx" ],
-        [ "Jump", "Resources/Models/Jump.fbx" ]
-      ],
-      "BlendFactor":  1.5
-    },
-    {
-      "Type": "StateMachine",
-      "StateFile": "Resources/State data/playerstate.json",
-      "StartState": "Walking"
-    }
-  ]
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.0, 10.0, 0.0 ],
+            "Scale": [ 1.0, 1.0, 1.0 ],
+            "Rotation": [ 0.0, 90.0, 0.0 ]
+        },
+        {
+            "Type": "Body",
+            "Mass": 1.0,
+            "IsFrictionLess": true
+        },
+        {
+            "Type": "Collider"
+        },
+        {
+            "Type": "Model",
+            "Model": "Resources/Models/Walking.fbx",
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Shininess": 1.0,
+            "MaterialData": "Resources/Models/Walking.fbx"
+        },
+        {
+            "Type": "Animator",
+            "BoneData": "Resources/Models/Walking.fbx",
+            "Animations": [
+                [ "Walking", "Resources/Models/Walking.fbx" ],
+                [ "Idle", "Resources/Models/Idle.fbx" ],
+                [ "Running", "Resources/Models/Running.fbx" ],
+                [ "Jump", "Resources/Models/Jump.fbx" ]
+            ]
+        },
+        {
+            "Type": "StateMachine",
+            "StateFile": "Resources/State data/playerstate.json",
+            "StartState": "Walking"
+        },
+        {
+            "Type": "Script",
+            "FilePath": "Resources/Scripts/test.lua"
+        },
+        {
+            "Type": "Camera",
+            "IsActive": false,
+            "Pitch": 0.0,
+            "Yaw": -90.0,
+            "Near": 0.1,
+            "CameraType": 0,
+            "ProjectionType": 0,
+            "MouseSensitivity": 1.6,
+            "PositionOffset": [ 0.0, 0.9, 0.3]
+        }
+    ]
 }

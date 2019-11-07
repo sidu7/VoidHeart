@@ -65,14 +65,12 @@ namespace Hollow {
 			if(bodyType == Body::STATIC)
 				mMass = 1e39;
 		}
-		if (data.HasMember("isFrictionLess"))
+		if (data.HasMember("IsFrictionLess"))
 		{
-			isFrictionLess = data["isFrictionLess"].GetBool();
+			isFrictionLess = data["IsFrictionLess"].GetBool();
 		}
 
 		mInverseMass = 1.0f / mMass;
-		
-		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 	
 }

@@ -38,8 +38,10 @@ namespace Hollow {
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
+		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_MOUSE_CAPTURE;
+		
 		// Create SDL window
-		mpWindow = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, SDL_WINDOW_OPENGL);
+		mpWindow = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, flags);
 
 		if (mpWindow == NULL)
 		{

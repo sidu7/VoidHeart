@@ -39,7 +39,7 @@ namespace Hollow {
 		float velocity = pCamera->mMovementSpeed * frameTime;
 		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W))
 		{
-			if (InputManager::Instance().IsMouseButtonPressed(2))
+			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT))
 			{
 				pTransform->mPosition += pCamera->mUp * velocity;
 			}
@@ -50,7 +50,7 @@ namespace Hollow {
 		}
 		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S))
 		{
-			if (InputManager::Instance().IsMouseButtonPressed(2))
+			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT))
 			{
 				pTransform->mPosition -= pCamera->mUp * velocity;
 			}
@@ -79,7 +79,8 @@ namespace Hollow {
 		mLastX = mousePos.x;
 		mLastY = mousePos.y;
 
-		if (!InputManager::Instance().IsMouseButtonPressed(0) || ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
+			ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
 			return;
 		}
@@ -101,6 +102,30 @@ namespace Hollow {
 		}
 
 		UpdateCamera(pCamera);
+	}
+
+	void CameraSystem::HandleMouseMotion(Camera* pCamera)
+	{
+		std::pair<float, float> mousePos = InputManager::Instance().GetMouseMotion();
+
+		float xoffset = pCamera->mMouseSensitivity * mousePos.first;
+		float yoffset = pCamera->mMouseSensitivity * mousePos.second;
+		
+		pCamera->mYaw += xoffset;
+		pCamera->mPitch += yoffset;
+
+		// Clamp pitch
+		if (pCamera->mPitch > 89.0f)
+		{
+			pCamera->mPitch = 89.0f;
+		}
+		if (pCamera->mPitch < -89.0f)
+		{
+			pCamera->mPitch = -89.0f;
+		}
+		
+		UpdateCamera(pCamera);
+		
 	}
 
 	bool CameraSystem::HandleMouseScroll(MouseScrolledEvent& mse, Camera* pCamera)
@@ -138,25 +163,29 @@ namespace Hollow {
 				HandleKeyboardInput(pCamera, pTransform);
 				HandleMouseInput(pCamera);
 			}
+			else if(pCamera->mType == MAIN_CAMERA)
+			{
+				HandleMouseMotion(pCamera);
+			}
 
 			CameraData cameraData;
+			cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) *  pCamera->mOffsetFromAnchor;
 
 			if (pCamera->mProjectionType == PERSPECTIVE) 
 			{
-				cameraData.mViewMatrix = glm::lookAt(pTransform->mPosition, pTransform->mPosition + pCamera->mFront, pCamera->mUp);;
+				cameraData.mViewMatrix = glm::lookAt(cameraData.mEyePosition, cameraData.mEyePosition + pCamera->mFront, pCamera->mUp);;
 				cameraData.mProjectionMatrix = glm::perspective(pCamera->mZoom, pCamera->mAspectRatio,
 					pCamera->mNearPlane, pCamera->mFarPlane);
 			}
 			else if (pCamera->mProjectionType == ORTHOGRAPHIC)
 			{
-				cameraData.mViewMatrix = glm::translate(glm::mat4(1.0f), pTransform->mPosition);
 				cameraData.mProjectionMatrix = glm::ortho(0.0f, static_cast<float>(pCamera->mViewPortSize.x), 0.0f, static_cast<float>(pCamera->mViewPortSize.y),-1.0f,1.0f);
+				cameraData.mViewMatrix = glm::translate(glm::mat4(1.0f), cameraData.mEyePosition);
 			}
 			
 			cameraData.mType = pCamera->mType;
 			cameraData.mViewPortPosition = pCamera->mViewPortPosition;
 			cameraData.mViewPortSize = pCamera->mViewPortSize;
-			cameraData.mEyePosition = pTransform->mPosition;
 			
 			switch (cameraData.mType)
 			{
