@@ -13,11 +13,7 @@ namespace Hollow
 	public:
 		~SystemManager();
 
-		void RegisterSystem(System* system)
-		{
-			mSystems.push_back(system);
-			mSystemMap[system->GetIndex()] = system;
-		}
+		void RegisterSystem(System* system, std::type_index index);
 
 		void Init();
 		void Update();

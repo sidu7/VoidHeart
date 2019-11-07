@@ -30,11 +30,6 @@
 					x() : GameEvent(#x) {}																								
 
 
-#define REGISTERSYSTEM(x,y)	public:									\
-							std::type_index GetIndex()				\
-							{										\
-								return std::type_index(typeid(x));	\
-							}										\
-							private:								\
+#define REGISTERSYSTEM(x,y)	private:								\
 							static x instance;						\
-							x() : System(this,y) { }
+							x() : System(this,y,std::type_index(typeid(x))) { }

@@ -93,85 +93,21 @@ namespace Hollow
 					auto rotIndex = FindT2inList<glm::quat>(timeFrame, anim.mKeyRotations);
 					auto sclIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyScalings);
 
-					glm::vec3 position, scale;
-					glm::quat rotation;
-					if (posIndex.second != -1)
-					{
-						double T2 = anim.mKeyPositions[posIndex.second].first;
-						double T1 = anim.mKeyPositions[posIndex.first].first;
-						double localT = (timeFrame - T1) / (T2 - T1);
-						position = glm::lerp(anim.mKeyPositions[posIndex.first].second, anim.mKeyPositions[posIndex.second].second, (float)localT);
-					}
-					else
-					{
-						position = anim.mKeyPositions[posIndex.first].second;
-					}
-					if (rotIndex.second != -1)
-					{
-						double T2 = anim.mKeyRotations[rotIndex.second].first;
-						double T1 = anim.mKeyRotations[rotIndex.first].first;
-						double localT = (timeFrame - T1) / (T2 - T1);
-						rotation = glm::slerp(anim.mKeyRotations[rotIndex.first].second, anim.mKeyRotations[rotIndex.second].second, (float)localT);
-					}
-					else
-					{
-						rotation = anim.mKeyRotations[rotIndex.first].second;
-					}
-					if (sclIndex.second != -1)
-					{
-						double T2 = anim.mKeyScalings[sclIndex.second].first;
-						double T1 = anim.mKeyScalings[sclIndex.first].first;
-						double localT = (timeFrame - T1) / (T2 - T1);
-						scale = glm::lerp(anim.mKeyScalings[sclIndex.first].second, anim.mKeyScalings[sclIndex.second].second, (float)localT);
-					}
-					else
-					{
-						scale = anim.mKeyScalings[sclIndex.first].second;
-					}
+					glm::vec3 position = Interpolate(posIndex, timeFrame, anim.mKeyPositions);
+					glm::vec3 scale = Interpolate(sclIndex, timeFrame, anim.mKeyScalings);
+					glm::quat rotation = SInterpolate(rotIndex, timeFrame, anim.mKeyRotations);
 										
 					if (animator->mBlending && bone->mIsAnimated[prevAnimationName])
 					{
-						glm::vec3 prevposition, prevscale;
-						glm::quat prevrotation;
 						AnimationData& prevAnim = bone->mAnimations[prevAnimationName];
 						auto prevposIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyPositions);
 						auto prevrotIndex = FindT2inList<glm::quat>(prevTimeFrame, prevAnim.mKeyRotations);
 						auto prevsclIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyScalings);
 
-						if (prevposIndex.second != -1)
-						{
-							double T2 = prevAnim.mKeyPositions[prevposIndex.second].first;
-							double T1 = prevAnim.mKeyPositions[prevposIndex.first].first;
-							double localT = (prevTimeFrame - T1) / (T2 - T1);
-							prevposition = glm::lerp(prevAnim.mKeyPositions[prevposIndex.first].second, prevAnim.mKeyPositions[prevposIndex.second].second, (float)localT);
-						}
-						else
-						{
-							prevposition = prevAnim.mKeyPositions[prevposIndex.first].second;
-						}
-						if (prevrotIndex.second != -1)
-						{
-							double T2 = prevAnim.mKeyRotations[prevrotIndex.second].first;
-							double T1 = prevAnim.mKeyRotations[prevrotIndex.first].first;
-							double localT = (prevTimeFrame - T1) / (T2 - T1);
-							prevrotation = glm::slerp(prevAnim.mKeyRotations[prevrotIndex.first].second, prevAnim.mKeyRotations[prevrotIndex.second].second, (float)localT);
-						}
-						else
-						{
-							prevrotation = prevAnim.mKeyRotations[prevrotIndex.first].second;
-						}
-						if (prevsclIndex.second != -1)
-						{
-							double T2 = prevAnim.mKeyScalings[prevsclIndex.second].first;
-							double T1 = prevAnim.mKeyScalings[prevsclIndex.first].first;
-							double localT = (prevTimeFrame - T1) / (T2 - T1);
-							prevscale = glm::lerp(prevAnim.mKeyScalings[prevsclIndex.first].second, prevAnim.mKeyScalings[prevsclIndex.second].second, (float)localT);
-						}
-						else
-						{
-							prevscale = prevAnim.mKeyScalings[prevsclIndex.first].second;
-						}
-
+						glm::vec3 prevposition = Interpolate(prevposIndex, prevTimeFrame, prevAnim.mKeyPositions);
+						glm::vec3 prevscale = Interpolate(prevsclIndex, prevTimeFrame, prevAnim.mKeyScalings);
+						glm::quat prevrotation = SInterpolate(prevrotIndex, prevTimeFrame, prevAnim.mKeyRotations);
+						
 						float factor = animator->mBlendTime / animator->mBlendFactor;
 						position = glm::lerp(position, prevposition, factor);
 						rotation = glm::slerp(rotation, prevrotation,factor);
@@ -185,7 +121,35 @@ namespace Hollow
 				}
 				else
 				{
-					trans = bone->mTransformation;
+					if(animator->mBlending && bone->mIsAnimated[prevAnimationName])
+					{
+						AnimationData& prevAnim = bone->mAnimations[prevAnimationName];
+						auto prevposIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyPositions);
+						auto prevrotIndex = FindT2inList<glm::quat>(prevTimeFrame, prevAnim.mKeyRotations);
+						auto prevsclIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyScalings);
+
+						glm::vec3 prevposition = Interpolate(prevposIndex, prevTimeFrame, prevAnim.mKeyPositions);
+						glm::vec3 prevscale = Interpolate(prevsclIndex, prevTimeFrame, prevAnim.mKeyScalings);
+						glm::quat prevrotation = SInterpolate(prevrotIndex, prevTimeFrame, prevAnim.mKeyRotations);
+
+						float factor = animator->mBlendTime / animator->mBlendFactor;
+						glm::vec3 position = GraphicsMath::TranslateFromMatrix(bone->mTransformation);
+						auto sclrot = GraphicsMath::ScaleRotationFromMatrix(bone->mTransformation);
+						glm::vec3 scale = sclrot.first;
+						glm::quat rotation = sclrot.second;
+						position = glm::lerp(position, prevposition, factor);
+						rotation = glm::slerp(rotation, prevrotation, factor);
+						scale = glm::lerp(scale, prevscale, factor);
+
+						glm::mat4 translate = glm::translate(glm::mat4(1.0f), position);
+						glm::mat4 rot = glm::toMat4(rotation);
+						glm::mat4 scaling = glm::scale(glm::mat4(1.0f), scale);
+						trans = translate * rot * scaling;
+					}
+					else
+					{
+						trans = bone->mTransformation;						
+					}
 				}
 				unsigned int parent = bone->mParentIndex;
 				if (parent != -1)
@@ -211,6 +175,38 @@ namespace Hollow
 		for(auto bone : animator->mBones)
 		{
 			skeleton[bone->mName] = glm::mat4(1.0f);
+		}
+	}
+
+	glm::vec3 AnimationSystem::Interpolate(std::pair<unsigned, unsigned>& index, double timeFrame,
+		std::vector<std::pair<double, glm::vec3>>& list)
+	{
+		if (index.second != -1)
+		{
+			double T2 = list[index.second].first;
+			double T1 = list[index.first].first;
+			double localT = (timeFrame - T1) / (T2 - T1);
+			return glm::lerp(list[index.first].second, list[index.second].second, (float)localT);
+		}
+		else
+		{
+			return list[index.first].second;
+		}
+	}
+
+	glm::quat AnimationSystem::SInterpolate(std::pair<unsigned, unsigned>& index, double timeFrame,
+		std::vector<std::pair<double, glm::quat>>& list)
+	{
+		if (index.second != -1)
+		{
+			double T2 = list[index.second].first;
+			double T1 = list[index.first].first;
+			double localT = (timeFrame - T1) / (T2 - T1);
+			return glm::slerp(list[index.first].second, list[index.second].second, (float)localT);
+		}
+		else
+		{
+			return list[index.first].second;
 		}
 	}
 

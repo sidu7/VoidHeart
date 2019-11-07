@@ -11,6 +11,12 @@ namespace Hollow
 		mSystems.clear();
 	}
 
+	void SystemManager::RegisterSystem(System* system,std::type_index index)
+	{
+		mSystems.push_back(system);
+		mSystemMap[index] = system;
+	}
+
 	void SystemManager::Init()
 	{
 		std::sort(mSystems.begin(), mSystems.end(), [](System* x, System* y) { return x->mTier < y->mTier; });
@@ -27,10 +33,6 @@ namespace Hollow
 
 	void SystemManager::CleanUp()
 	{
-		for (unsigned int i = 0; i < mSystems.size(); ++i)
-		{
-			delete mSystems[i];
-		}
 		mSystems.clear();
 		mSystemMap.clear();
 	}

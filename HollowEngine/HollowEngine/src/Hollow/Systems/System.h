@@ -11,14 +11,13 @@ namespace Hollow
 	class HOLLOW_API System
 	{
 	public:
-		System(System* instance,int tier) {
-			SystemManager::Instance().RegisterSystem(instance);
+		System(System* instance,int tier, std::type_index index) {
+			SystemManager::Instance().RegisterSystem(instance,index);
 			this->mTier = tier;
 		}
 		virtual ~System() {}
 		virtual void Init() {}
 		virtual void Update() = 0;
-		virtual std::type_index GetIndex() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
 		virtual void HandleBroadcastEvent(GameEvent* event) { }
 		virtual void OnDeleteGameObject(GameObject* pGameObject) {}

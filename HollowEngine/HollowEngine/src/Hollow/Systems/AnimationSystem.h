@@ -9,13 +9,15 @@ namespace Hollow
 	{
 		REGISTERSYSTEM(AnimationSystem, 3);
 	public:
-		virtual ~AnimationSystem() {}
-		void Update();
-		void AddGameObject(GameObject* object);
+		~AnimationSystem() override {}									
+		void Update() override;
+		void AddGameObject(GameObject* object) override;
 
 	private:
 		void Animate(unsigned int start, unsigned int end);
 		void CreateSkeleton(Animator* animator);
+		glm::vec3 Interpolate(std::pair<unsigned, unsigned>& index, double timeFrame, std::vector<std::pair<double, glm::vec3>>& list);
+		glm::quat SInterpolate(std::pair<unsigned, unsigned>& index, double timeFrame, std::vector<std::pair<double, glm::quat>>& list);
 		template<typename T>
 		inline std::pair<unsigned int, unsigned int> BinarySearch(unsigned int start, unsigned int end, double time, const std::vector<std::pair<double, T>>& list)
 		{
