@@ -28,7 +28,7 @@ namespace Hollow {
 			}
 			else
 			{
-				pCamera->mAspectRatio = (pCamera->mViewPortSize.x / pCamera->mViewPortSize.y);
+				pCamera->mAspectRatio = ((float)pCamera->mViewPortSize.x / pCamera->mViewPortSize.y);
 			}
 		}
 	}

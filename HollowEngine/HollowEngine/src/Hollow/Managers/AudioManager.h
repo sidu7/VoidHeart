@@ -10,24 +10,24 @@ namespace Hollow {
 		SOUND_NUM
 	};
 
-	class HOLLOW_API AudioManager 
+	class AudioManager 
 	{
 		SINGLETON(AudioManager)
 		public:
-			void Init();
-			void CleanUp();
-			void Update();
-
-			void PlaySong(const std::string& songName);
-			void PlayEffect(const std::string& effectName);
-
-			void Mute();
-			void MuteChannel(SOUND_TYPE channel);
-
-			void SetVolume();
-			void SetChannelVolume(SOUND_TYPE channel);
-
-			void DebugDisplay();
+			HOLLOW_API void Init();
+			HOLLOW_API void CleanUp();
+			HOLLOW_API void Update();
+			 
+			HOLLOW_API void PlaySong(const std::string& songName);
+			HOLLOW_API void PlayEffect(const std::string& effectName);
+			 
+			HOLLOW_API void Mute();
+			HOLLOW_API void MuteChannel(SOUND_TYPE channel);
+			 
+			HOLLOW_API void SetVolume();
+			HOLLOW_API void SetChannelVolume(SOUND_TYPE channel);
+			 
+			HOLLOW_API void DebugDisplay();
 		
 		public:
 			FMOD::System* mpSystem;

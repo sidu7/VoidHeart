@@ -9,7 +9,7 @@
 
 namespace Hollow
 {
-	class HOLLOW_API JSONHelper
+	class JSONHelper
 	{
 	public:
 
@@ -21,7 +21,7 @@ namespace Hollow
 		if(!root.IsObject()) { HW_CORE_ERROR("Error reading JSON file {0}",x); }
 
 		//JSON parsing
-		inline static rapidjson::Value::Object GetSettings(rapidjson::Value::Object& data, const char* setting)
+		HOLLOW_API static rapidjson::Value::Object GetSettings(rapidjson::Value::Object& data, const char* setting)
 		{
 			if (!data.HasMember(setting))
 			{
@@ -30,28 +30,28 @@ namespace Hollow
 			return data[setting].GetArray()[0].GetObject();
 		}
 
-		inline static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)
+		HOLLOW_API static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec3(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat());
 		}
 
-		inline static glm::vec2 GetVec2F(const rapidjson::Value::Array& arr)
+		HOLLOW_API static glm::vec2 GetVec2F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec2(arr[0].GetFloat(), arr[1].GetFloat());
 		}
 
-		inline static glm::vec4 GetVec4F(const rapidjson::Value::Array& arr)
+		HOLLOW_API static glm::vec4 GetVec4F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec4(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat(), arr[3].GetFloat());
 		}
 
-		inline static glm::ivec2 GetIVec2(const rapidjson::Value::Array& arr)
+		HOLLOW_API static glm::ivec2 GetIVec2(const rapidjson::Value::Array& arr)
 		{
 			return glm::ivec2(arr[0].GetInt(), arr[1].GetInt());
 		}
 
 		template<typename T>
-		inline static std::vector<T> GetArray(const rapidjson::Value::Array& arr)
+		static std::vector<T> GetArray(const rapidjson::Value::Array& arr)
 		{
 			std::vector<T> data;
 			data.reserve(arr.Size());
@@ -63,7 +63,7 @@ namespace Hollow
 		}
 
 		template<>
-		inline static std::vector<std::string> GetArray(const rapidjson::Value::Array& arr)
+		HOLLOW_API static std::vector<std::string> GetArray(const rapidjson::Value::Array& arr)
 		{
 			std::vector<std::string> data;
 			data.reserve(arr.Size());
@@ -75,7 +75,7 @@ namespace Hollow
 		}
 
 		template<>
-		inline static std::vector<unsigned int> GetArray(const rapidjson::Value::Array& arr)
+		HOLLOW_API static std::vector<unsigned int> GetArray(const rapidjson::Value::Array& arr)
 		{
 			std::vector<unsigned int> data;
 			data.reserve(arr.Size());
@@ -88,55 +88,55 @@ namespace Hollow
 
 		//JSON deserialization
 		template<typename T>
-		inline static void Write(const char* key, const T& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		static void Write(const char* key, const T& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			HW_CORE_ERROR("No specialized template for this value type");
 		}
 
 		template<>
-		inline static void Write(const char* key, const int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.Int(value);
 		}
 
 		template<>
-		inline static void Write(const char* key, const unsigned int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const unsigned int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.Uint(value);
 		}
 
 		template<>
-		inline static void Write(const char* key, const bool& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const bool& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.Bool(value);
 		}
 
 		template<>
-		inline static void Write(const char* key, const float& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const float& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.Double(value);
 		}
 
 		template<>
-		inline static void Write(const char* key, const double& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const double& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.Double(value);
 		}
 
 		template<>
-		inline static void Write(const char* key, const std::string& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const std::string& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.String(value.c_str());
 		}
 
 		template<>
-		inline static void Write(const char* key, const glm::vec4& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const glm::vec4& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.StartArray();
@@ -148,7 +148,7 @@ namespace Hollow
 		}
 
 		template<>
-		inline static void Write(const char* key, const glm::vec3& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const glm::vec3& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.StartArray();
@@ -159,7 +159,7 @@ namespace Hollow
 		}
 
 		template<>
-		inline static void Write(const char* key, const glm::vec2& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		HOLLOW_API static void Write(const char* key, const glm::vec2& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			writer.Key(key);
 			writer.StartArray();

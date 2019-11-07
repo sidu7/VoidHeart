@@ -39,7 +39,7 @@ namespace Hollow
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)
 	{
-		mCount = data["Count"].GetFloat();
+		mCount = static_cast<unsigned long>(data["Count"].GetFloat());
 		if (data.HasMember("Shape"))
 		{
 			//mpParticle.push_back(ResourceManager::Instance().GetShape((Shapes)data["Shape"].GetUint()));

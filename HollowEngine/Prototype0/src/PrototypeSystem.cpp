@@ -5,11 +5,13 @@
 
 #include "Hollow/Managers/EventManager.h"
 
+#include "Hollow/Components/Animator.h"
+
 PrototypeSystem PrototypeSystem::instance;
 
 void PrototypeSystem::AddGameObject(Hollow::GameObject* object)
 {
-	CheckAllComponents<PrototypeComponent>(object);
+	CheckAllComponents<Hollow::Animator>(object);
 }
 
 void PrototypeSystem::TestEventHandling(Hollow::GameEvent* event)
@@ -29,6 +31,7 @@ void PrototypeSystem::HandleBroadcastEvent(Hollow::GameEvent*)
 
 void PrototypeSystem::Update()
 {
-	//HW_TRACE("Prototype system has {0} gameobjects", mGameObjects.size());
+	Hollow::Animator* anim = mGameObjects[0]->GetComponent<Hollow::Animator>();
+	HW_TRACE("Animator state {0}", anim->mCurrentState);
 }
 

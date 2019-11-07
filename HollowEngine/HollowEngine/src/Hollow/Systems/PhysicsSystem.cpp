@@ -211,7 +211,7 @@ namespace Hollow
 			for (auto c : *mSAT.mContacts) {
 
 				//std::cout << c->contactPoints[0]->normalImpulseSum << std::endl;
-				int pointCount = c->contactPoints.size();
+				int pointCount = static_cast<int>(c->contactPoints.size());
 
 				for (int j = 0; j < pointCount; ++j) {
 

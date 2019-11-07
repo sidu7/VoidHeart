@@ -4,14 +4,14 @@ namespace Hollow {
 	class GameWindow;
 	class GameObject;
 
-	class HOLLOW_API ImGuiManager{
+	class ImGuiManager{
 		SINGLETON(ImGuiManager)
 	public:
-		void Init(GameWindow* pWindow);
-		void CleanUp();
-		void Update();
+		HOLLOW_API void Init(GameWindow* pWindow);
+		HOLLOW_API void CleanUp();
+		HOLLOW_API void Update();
 		// TODO: Write cleanup function
-		void StartFrame();
+		HOLLOW_API void StartFrame();
 	private:
 		void Render();
 	private:

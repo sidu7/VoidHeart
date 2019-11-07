@@ -8,14 +8,14 @@ namespace Hollow
 
 	class VertexArray;
 	
-	class HOLLOW_API PathFollow : public Component
+	class PathFollow : public Component
 	{
 		REGISTERCOMPONENT(PathFollow);
 	public:
-		void Init();
-		void Clear();
-		void Serialize(rapidjson::Value::Object data);
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		std::vector<glm::vec4> mControlPoints;

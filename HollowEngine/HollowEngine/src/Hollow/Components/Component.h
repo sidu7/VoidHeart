@@ -3,7 +3,7 @@
 
 namespace Hollow
 {
-	class HOLLOW_API Component
+	class Component
 	{
 		friend class MemoryManager;
 	public:
@@ -15,13 +15,13 @@ namespace Hollow
 			mComponentName = name;
 		}
 
-		virtual void Init() = 0;
-		virtual std::type_index GetIndex() = 0;
-		virtual void Serialize(rapidjson::Value::Object data) = 0;
-		virtual void Clear() = 0;
-		virtual ~Component() {}
-		virtual void DebugDisplay() = 0;
-		virtual void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) { }
+		HOLLOW_API virtual void Init() = 0;
+		HOLLOW_API virtual std::type_index GetIndex() = 0;
+		HOLLOW_API virtual void Serialize(rapidjson::Value::Object data) = 0;
+		HOLLOW_API virtual void Clear() = 0;
+		HOLLOW_API virtual ~Component() {}
+		HOLLOW_API virtual void DebugDisplay() = 0;
+		HOLLOW_API virtual void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) { }
 
 		std::string mComponentName;
 

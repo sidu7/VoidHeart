@@ -5,13 +5,13 @@ namespace Hollow
 {
 #define BUTTON_FUNCTION(x) std::bind(&x,this)
 
-	class HOLLOW_API UIManager
+	class UIManager
 	{
 		SINGLETON(UIManager);
 	public:
-		void Init();
-		void AddButtonFunction(UIButton::ButtonFunction buttonType, std::function<void()> callbackFunction);
-		void CleanUp();
+		HOLLOW_API  void Init();
+		HOLLOW_API  void AddButtonFunction(UIButton::ButtonFunction buttonType, std::function<void()> callbackFunction);
+		HOLLOW_API  void CleanUp();
 
 		friend class UIButton;
 	private:

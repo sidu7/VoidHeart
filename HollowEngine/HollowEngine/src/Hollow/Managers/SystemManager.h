@@ -13,15 +13,15 @@ namespace Hollow
 	public:
 		~SystemManager();
 
-		void RegisterSystem(System* system, std::type_index index);
-
-		void Init();
-		void Update();
-		void CleanUp();
-		void AddObjectToSystems(GameObject* GameObject);
-		void BroadcastEventToSystems(GameEvent* event);
-		void DeleteGameObejectInSystems(GameObject* GameObject);
-		void DeleteAllGameObjectsInSystems();
+		HOLLOW_API  void RegisterSystem(System* system, std::type_index index);
+		  
+		HOLLOW_API  void Init();
+		HOLLOW_API  void Update();
+		HOLLOW_API  void CleanUp();
+		HOLLOW_API  void AddObjectToSystems(GameObject* GameObject);
+		HOLLOW_API  void BroadcastEventToSystems(GameEvent* event);
+		HOLLOW_API  void DeleteGameObejectInSystems(GameObject* GameObject);
+		HOLLOW_API  void DeleteAllGameObjectsInSystems();
 
 		template<typename T>
 		System* GetSystem()

@@ -31,11 +31,11 @@ namespace Hollow {
 			GLCall(glEnableVertexAttribArray(mIndex));
 			if (c.mType == GL_INT)
 			{
-				GLCall(glVertexAttribIPointer(mIndex, c.mCount, c.mType, mStride, (const void*)mOffset));
+				GLCall(glVertexAttribIPointer(mIndex, c.mCount, c.mType, mStride, (const void*)(intptr_t)mOffset));
 			}
 			else
 			{
-				GLCall(glVertexAttribPointer(mIndex, c.mCount, c.mType, GL_FALSE, mStride, (const void*)mOffset));
+				GLCall(glVertexAttribPointer(mIndex, c.mCount, c.mType, GL_FALSE, mStride, (const void*)(intptr_t)mOffset));
 			}
 			mOffset += c.mSize * c.mCount;
 			mIndex++;
@@ -55,16 +55,16 @@ namespace Hollow {
 	void VertexArray::PushMatrix(unsigned int count, unsigned int type, unsigned int size, unsigned int vecsize)
 	{
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)0));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(intptr_t)0));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(vecsize)));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(intptr_t)(vecsize)));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(2 * vecsize)));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(intptr_t)(2 * vecsize)));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
 		GLCall(glEnableVertexAttribArray(mIndex));
-		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(3 * vecsize)));
+		GLCall(glVertexAttribPointer(mIndex, count, type, GL_FALSE, size, (const void*)(intptr_t)(3 * vecsize)));
 		GLCall(glVertexAttribDivisor(mIndex++, 1));
 	}
 

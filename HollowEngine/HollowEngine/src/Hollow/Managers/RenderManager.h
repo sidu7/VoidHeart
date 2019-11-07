@@ -19,20 +19,20 @@ namespace Hollow {
 	class FrameBuffer;
 	class UniformBuffer;
 
-	class HOLLOW_API RenderManager
+	class RenderManager
 	{
 		SINGLETON(RenderManager)
 	public:
-		void Init(rapidjson::Value::Object& data, GameWindow* pWindow = nullptr);
-		void CleanUp();
-		void Update();
-		inline glm::vec2 GetWindowSize();
-		void DebugDisplay();
+		HOLLOW_API void Init(rapidjson::Value::Object& data, GameWindow* pWindow = nullptr);
+		HOLLOW_API void CleanUp();
+		HOLLOW_API void Update();
+		HOLLOW_API inline glm::vec2 GetWindowSize();
+		HOLLOW_API void DebugDisplay();
 
 	private:
 		// Initialization Functions
 		void InitializeSkydome();
-		void InitializeHammersley(unsigned int n);
+		void InitializeHammersley(int n);
 
 		void CreateAmbientShader();
 		void CreateLocalLightShader(rapidjson::Value::Object& data);

@@ -10,15 +10,15 @@ namespace Hollow
 		std::queue<T> mDataQueue;    
 		std::condition_variable mDataCondition; 
 	public:    
-		ThreadSafeQueue() {}
-		void Push(T new_value) 
+		HOLLOW_API ThreadSafeQueue() {}
+		HOLLOW_API void Push(T new_value)
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
 			mDataQueue.push(std::move(new_value));        
 			mDataCondition.notify_one(); 
 		}   
 
-		bool TryPop(T& value) 
+		HOLLOW_API bool TryPop(T& value)
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
 			if (mDataQueue.empty())            
@@ -28,7 +28,7 @@ namespace Hollow
 			return true; 
 		}    
 		
-		std::shared_ptr<T> TryPop()
+		HOLLOW_API std::shared_ptr<T> TryPop()
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
 			if (mDataQueue.empty())            
@@ -38,7 +38,7 @@ namespace Hollow
 			return res; 
 		}    
 		
-		bool Empty() const 
+		HOLLOW_API bool Empty() const
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
 			return mDataQueue.empty(); 

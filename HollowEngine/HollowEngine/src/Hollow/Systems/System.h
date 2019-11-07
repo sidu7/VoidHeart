@@ -8,27 +8,27 @@ namespace Hollow
 {
 	class GameEvent;
 	
-	class HOLLOW_API System
+	class System
 	{
 	public:
-		System(System* instance,int tier, std::type_index index) {
+		HOLLOW_API System(System* instance,int tier, std::type_index index) {
 			SystemManager::Instance().RegisterSystem(instance,index);
 			this->mTier = tier;
 		}
-		virtual ~System() {}
-		virtual void Init() {}
-		virtual void Update() = 0;
-		virtual void AddGameObject(GameObject* pGameObject) = 0;
-		virtual void HandleBroadcastEvent(GameEvent* event) { }
-		virtual void OnDeleteGameObject(GameObject* pGameObject) {}
+		HOLLOW_API virtual ~System() {}
+		HOLLOW_API virtual void Init() {}
+		HOLLOW_API virtual void Update() = 0;
+		HOLLOW_API virtual void AddGameObject(GameObject* pGameObject) = 0;
+		HOLLOW_API virtual void HandleBroadcastEvent(GameEvent* event) { }
+		HOLLOW_API virtual void OnDeleteGameObject(GameObject* pGameObject) {}
 
-		void DeleteGameObject(GameObject* pGameObject)
+		HOLLOW_API void DeleteGameObject(GameObject* pGameObject)
 		{
 			mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject));
 			OnDeleteGameObject(pGameObject);
 		}
 
-		void DeleteAllGameObjects() 
+		HOLLOW_API void DeleteAllGameObjects()
 		{
 			mGameObjects.clear();
 		}

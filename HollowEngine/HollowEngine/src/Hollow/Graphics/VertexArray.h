@@ -12,7 +12,7 @@ namespace Hollow {
 
 	class VertexBuffer;
 
-	class HOLLOW_API VertexElements
+	class VertexElements
 	{
 	public:
 		unsigned int mCount;
@@ -20,11 +20,11 @@ namespace Hollow {
 		unsigned int mSize;
 
 	public:
-		VertexElements(unsigned int count, unsigned int type, unsigned int size);
+		HOLLOW_API VertexElements(unsigned int count, unsigned int type, unsigned int size);
 
 	};
 
-	class HOLLOW_API VertexArray
+	class VertexArray
 	{
 	private:
 		unsigned int mRendererID;
@@ -34,15 +34,15 @@ namespace Hollow {
 		std::list<VertexElements> mElements;
 
 	public:
-		VertexArray();
-		~VertexArray();
-
-		void AddLayout();
-		void AddBuffer(const VertexBuffer& vb) const;
-		void Push(unsigned int count, unsigned int type, unsigned int size);
-		void PushMatrix(unsigned int count, unsigned int type, unsigned int size, unsigned int vecsize);
-		void Bind() const;
-		void Unbind() const;
-		void Delete() const;
+		HOLLOW_API VertexArray();
+		HOLLOW_API ~VertexArray();
+		 
+		HOLLOW_API void AddLayout();
+		HOLLOW_API void AddBuffer(const VertexBuffer& vb) const;
+		HOLLOW_API void Push(unsigned int count, unsigned int type, unsigned int size);
+		HOLLOW_API void PushMatrix(unsigned int count, unsigned int type, unsigned int size, unsigned int vecsize);
+		HOLLOW_API void Bind() const;
+		HOLLOW_API void Unbind() const;
+		HOLLOW_API void Delete() const;
 	};
 }

@@ -2,7 +2,7 @@
 
 namespace Hollow
 {
-	class HOLLOW_API Texture
+	class Texture
 	{
 	private:
 		unsigned int mRendererID;
@@ -11,19 +11,19 @@ namespace Hollow
 
 	public:
 		std::string mFilePath;
-		Texture(const std::string& FilePath);
-		Texture(void* buffer, int size);
-		Texture(int channels, int width, int height);
-		Texture() {}
-		~Texture();
-
-		void Bind(unsigned int slot = 0) const;
-		void Unbind(unsigned int slot = 0) const;
-		void EnableTiling() const;
-		unsigned int GetWidth() const { return mWidth; }
-		unsigned int GetHeight() const { return mHeight; }
-		unsigned int GetChannels() const { return mChannels; }
-		unsigned int GetTextureID() const { return mRendererID; }
+		HOLLOW_API Texture(const std::string& FilePath);
+		HOLLOW_API Texture(void* buffer, int size);
+		HOLLOW_API Texture(int channels, int width, int height);
+		HOLLOW_API Texture() {}
+		HOLLOW_API ~Texture();
+		 
+		HOLLOW_API void Bind(unsigned int slot = 0) const;
+		HOLLOW_API void Unbind(unsigned int slot = 0) const;
+		HOLLOW_API void EnableTiling() const;
+		HOLLOW_API unsigned int GetWidth() const { return mWidth; }
+		HOLLOW_API unsigned int GetHeight() const { return mHeight; }
+		HOLLOW_API unsigned int GetChannels() const { return mChannels; }
+		HOLLOW_API unsigned int GetTextureID() const { return mRendererID; }
 
 	private:
 		void ReadBufferToTexture();

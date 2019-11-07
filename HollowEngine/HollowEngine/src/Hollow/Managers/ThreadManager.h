@@ -6,18 +6,18 @@ namespace Hollow
 {
 #define THREAD_FUNCTION(x,y,z) std::bind(&x,this,y,z)
 	
-	class HOLLOW_API ThreadManager
+	class ThreadManager
 	{
 		SINGLETON(ThreadManager);
 	public:
-		~ThreadManager() {}
+		HOLLOW_API  ~ThreadManager() {}
 
-		void Init();
-		void CleanUp();
+		HOLLOW_API  void Init();
+		HOLLOW_API  void CleanUp();
 		
 		// Takes only functions with start and end index 
 		template<typename FunctionType>
-		std::future<void> Push(const FunctionType& function)
+		HOLLOW_API  std::future<void> Push(const FunctionType& function)
 		{
 			std::packaged_task<void(unsigned int, unsigned int)> task(std::move(function));
 			std::future<void> res(task.get_future());
@@ -25,7 +25,7 @@ namespace Hollow
 			return res;
 		}
 
-		unsigned int GetThreadCount() const { return mThreads.size(); }
+		HOLLOW_API  size_t GetThreadCount() const { return mThreads.size(); }
 
 	private:
 		void WaitForTask();

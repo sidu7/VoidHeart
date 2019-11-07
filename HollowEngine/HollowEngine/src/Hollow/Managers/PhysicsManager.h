@@ -10,7 +10,7 @@ namespace Hollow
 	class Camera;
 	class Collider;
 	
-	class HOLLOW_API PhysicsManager
+	class PhysicsManager
 	{
 		SINGLETON(PhysicsManager)
 	public:
@@ -22,7 +22,7 @@ namespace Hollow
 		SAT mSAT;
 
 
-		void ApplyImpulse(GameObject* object, glm::vec3 impulse);
-		Collider* castRay();
+		HOLLOW_API  void ApplyImpulse(GameObject* object, glm::vec3 impulse);
+		HOLLOW_API  Collider* castRay();
 	};
 }

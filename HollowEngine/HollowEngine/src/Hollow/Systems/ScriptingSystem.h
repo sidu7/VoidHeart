@@ -8,7 +8,7 @@ namespace Hollow {
 	{
 		REGISTERSYSTEM(ScriptingSystem, 2)
 	public:
-		void Update() override;
-		void AddGameObject(GameObject* pGameObject) override;
+		HOLLOW_API void Update() override;
+		HOLLOW_API void AddGameObject(GameObject* pGameObject) override;
 	};
 }

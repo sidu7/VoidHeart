@@ -6,15 +6,15 @@ namespace Hollow
 	class Mesh;
 	class Shader;
 
-	class HOLLOW_API Model : public Component
+	class Model : public Component
 	{
 		REGISTERCOMPONENT(Model);
 	public:
-		void Init();
-		void Clear();
-		void Serialize(rapidjson::Value::Object object);
-		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void Serialize(rapidjson::Value::Object object);
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
+		HOLLOW_API void DebugDisplay();
 
 		std::vector<Mesh*> mMeshes;
 		Shader* mpShader;

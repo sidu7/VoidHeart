@@ -7,8 +7,8 @@ namespace Hollow
 	{
 		REGISTERSYSTEM(LightSystem,3)
 	public:
-		virtual ~LightSystem() {}
-		void Update();
-		void AddGameObject(GameObject* object);
+		HOLLOW_API virtual ~LightSystem() {}
+		HOLLOW_API void Update();
+		HOLLOW_API void AddGameObject(GameObject* object);
 	};
 }

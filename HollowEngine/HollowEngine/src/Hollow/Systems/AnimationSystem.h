@@ -9,9 +9,9 @@ namespace Hollow
 	{
 		REGISTERSYSTEM(AnimationSystem, 3);
 	public:
-		~AnimationSystem() override {}									
-		void Update() override;
-		void AddGameObject(GameObject* object) override;
+		HOLLOW_API ~AnimationSystem() override {}
+		HOLLOW_API void Update() override;
+		HOLLOW_API void AddGameObject(GameObject* object) override;
 
 	private:
 		void Animate(unsigned int start, unsigned int end);
@@ -42,12 +42,13 @@ namespace Hollow
 			{
 				return BinarySearch(mid + 1, end, time, list);
 			}
+			return std::make_pair(-1, -1);
 		}
 
 		template<typename T>
 		inline std::pair<unsigned int,unsigned int> FindT2inList(double time, const std::vector<std::pair<double, T>>& list)
 		{
-			return BinarySearch(0, list.size() - 1, time, list);
+			return BinarySearch(0, static_cast<unsigned int>(list.size()) - 1, time, list);
 		}
 	};
 }

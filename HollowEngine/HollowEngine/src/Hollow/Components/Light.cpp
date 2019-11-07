@@ -25,7 +25,7 @@ namespace Hollow
 				if (data.HasMember("ShadowMapSize"))
 				{
 					mShadowMapSize = JSONHelper::GetVec2F(data["ShadowMapSize"].GetArray());
-					mpShadowMap = new FrameBuffer(mShadowMapSize.x, mShadowMapSize.y, 1, true);
+					mpShadowMap = new FrameBuffer(static_cast<int>(mShadowMapSize.x), static_cast<int>(mShadowMapSize.y), 1, true);
 				}
 				if (data.HasMember("ShadowMapNearPlane"))
 				{

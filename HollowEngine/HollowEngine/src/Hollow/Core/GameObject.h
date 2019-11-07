@@ -2,21 +2,21 @@
 
 namespace Hollow {
 	class Component;
-	class HOLLOW_API GameObject
+	class GameObject
 	{
 	public:
-		GameObject();
-		~GameObject();
+		HOLLOW_API GameObject();
+		HOLLOW_API ~GameObject();
 
 		template <typename T>
 		T* GetComponent();
 
-		void AddComponent(Component* component);
-		void Destroy();
+		HOLLOW_API void AddComponent(Component* component);
+		HOLLOW_API void Destroy();
 
-		void DebugDisplay();
+		HOLLOW_API void DebugDisplay();
 
-		void Deserialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
+		HOLLOW_API void Deserialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
 	
 	public:
 		std::unordered_map<std::type_index, Component*> mComponents;

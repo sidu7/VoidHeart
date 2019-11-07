@@ -6,6 +6,6 @@ namespace Hollow {
 	{
 		SINGLETON(GameObjectFactory)
 	public:
-		GameObject* LoadObject(rapidjson::Value::Object root);
+		HOLLOW_API GameObject* LoadObject(rapidjson::Value::Object root);
 	};
 }
