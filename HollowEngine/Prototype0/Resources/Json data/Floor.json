@@ -7,7 +7,7 @@
         },
         {
             "Type": "Body",
-            "Mass":  1e39
+            "RigidbodyType": "STATIC"
         },
         {
           "Type": "Collider",

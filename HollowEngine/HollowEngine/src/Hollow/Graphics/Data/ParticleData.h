@@ -45,5 +45,6 @@ namespace Hollow
 		glm::vec2 mSpeedRange;
 		glm::vec2 mLifeRange;
 		glm::vec3 mCenter;
+		Shader* mpComputeShader;
 	};
 }

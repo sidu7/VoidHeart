@@ -21,6 +21,7 @@ namespace Hollow {
 		glm::vec3 mDiffuseColor;
 		glm::vec3 mSpecularColor;
 		float mShininess;
+		float mHeightScale;
 		Texture* mpTexture;
 		std::vector<MaterialData*> mMaterials;
 	};

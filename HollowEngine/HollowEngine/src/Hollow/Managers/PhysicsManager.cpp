@@ -11,30 +11,37 @@
 
 #include "Utils/RayCast.h"
 #include <stack>
+#include "RenderManager.h"
 
 namespace Hollow {
 
+	void PhysicsManager::ApplyImpulse(GameObject* object, glm::vec3 impulse)
+	{
+		Body* pBody = object->GetComponent<Body>();
+
+		pBody->mVelocity += impulse / pBody->mMass;
+		// TODO should also have some angular component to it
+		// depending on the axis the impulse was applied on
+	}
+	
 	Collider* PhysicsManager::castRay()
 	{
-		std::pair<float, float> mouseXY = InputManager::Instance().GetMousePosition();
-		float x = 2.0f * (mouseXY.first + 0.5f) / 1280.0f - 1.0f,
-			y = 1.0f - 2.0f * (mouseXY.second + 0.5f) / 720.0f;
+		glm::vec2 mouseXY = InputManager::Instance().GetMousePosition();
+		float x = 2.0f * (mouseXY.x + 0.5f) / 1280.0f - 1.0f,
+			y = 1.0f - 2.0f * (mouseXY.y + 0.5f) / 720.0f;
 
+		auto& camera = RenderManager::Instance().mMainCamera;
+		
 		Ray r;
-		r.origin = mRayCastCamera->mPosition; // -mRayCastCamera->mFront;
-		//r.direction = mRayCastCamera->mFront + x * mRayCastCamera->mRight + y * mRayCastCamera->mUp;
-
-		glm::mat4 persp = glm::perspective(glm::radians(mRayCastCamera->mZoom), 16.0f / 9.0f, mRayCastCamera->mNearPlane, mRayCastCamera->mFarPlane);
-		//glm::mat4 ortho = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, mRayCastCamera->mNear, mRayCastCamera->mFar);
-		glm::mat4 view = glm::lookAt(mRayCastCamera->mPosition, mRayCastCamera->mPosition + mRayCastCamera->mFront, mRayCastCamera->mUp);
+		r.origin = camera.mEyePosition; // -mRayCastCamera->mFront;
 
 		// NDC to camera space
 		glm::vec4 ray_clip = glm::vec4(x, y, -1.0f, 1.0f);
-		glm::vec4 ray_eye = glm::inverse(persp) * ray_clip;
+		glm::vec4 ray_eye = glm::inverse(camera.mProjectionMatrix) * ray_clip;
 
 		// camera to world space
 		ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
-		glm::vec3 direction = glm::vec3(glm::inverse(view) * ray_eye);
+		glm::vec3 direction = glm::vec3(glm::inverse(camera.mViewMatrix) * ray_eye);
 
 		direction = glm::normalize(direction);
 

@@ -13,7 +13,7 @@ namespace Hollow {
 	{
 		//SINGLETON(Application)
 	public:
-		Application();
+		Application(const std::string& settingsFilePath);
 		virtual ~Application();
 
 		//inline static Application& Instance() { return *instance; }
@@ -25,12 +25,9 @@ namespace Hollow {
 		
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
-		void ThreadLoop();
 
 		GameWindow* mpWindow;
 		bool mIsRunning;
-		bool shouldGoIn = true;
-		bool shoudlMainThreadSleep = true;
 		LayerStack mLayerStack;
 		//static Application* instance;
 	};

@@ -25,33 +25,40 @@ namespace Hollow {
 		return mCurrentState[keycode] && !mPreviousState[keycode];
 	}
 
+	bool InputManager::IsMouseButtonTriggered(unsigned int keycode)
+	{
+		return mCurrentMouseState[keycode] && !mPrevMouseState[keycode];
+	}
+	
 	bool InputManager::IsMouseButtonPressed(unsigned int button)
 	{
 		return mCurrentMouseState[button];
 	}
 
+	glm::vec2 InputManager::GetMouseMotion()
+	{
+		return glm::vec2(xRel, yRel);
+	}
 
 
-	std::pair<float, float> InputManager::GetMousePosition()
+	glm::ivec2 InputManager::GetMousePosition()
 	{
 		int xpos, ypos;
 		SDL_GetMouseState(&xpos, &ypos);
 		
-		return { (float)xpos, (float)ypos };
+		return glm::ivec2(xpos,ypos);
 	}
 
 	float InputManager::GetMouseX()
 	{
 		auto pos = GetMousePosition();
-		return pos.first;
+		return pos.x;
 	}
-
-
 
 	float InputManager::GetMouseY()
 	{
 		auto pos = GetMousePosition();
-		return pos.second;
+		return pos.y;
 	}
 
 	void InputManager::SetEventCallback(const EventCallbackFn& callback)
@@ -63,8 +70,8 @@ namespace Hollow {
 	{
 		SDL_memset(mCurrentState, 0, 512 * sizeof(Uint8));
 		SDL_memset(mPreviousState, 0, 512 * sizeof(Uint8));
-		SDL_memset(mPrevMouseState, 0, 3 * sizeof(bool));
-		SDL_memset(mCurrentMouseState, 0, 3 * sizeof(bool));
+		SDL_memset(mPrevMouseState, 0, 6 * sizeof(bool));
+		SDL_memset(mCurrentMouseState, 0, 6 * sizeof(bool));
 	}
 
 	void InputManager::HandleWindowEvents(const SDL_Event& e)
@@ -120,7 +127,7 @@ namespace Hollow {
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			// ... handle mouse clicks ...
-			mCurrentMouseState[event.button.button - 1] = true;
+			mCurrentMouseState[event.button.button] = true;
 
 			MouseButtonPressedEvent mpe(event.button.button);
 			EventCallback(mpe);
@@ -128,19 +135,37 @@ namespace Hollow {
 		}
 		else if(event.type == SDL_MOUSEBUTTONUP)
 		{
-			mCurrentMouseState[event.button.button - 1] = false;
+			mCurrentMouseState[event.button.button] = false;
 			
 			MouseButtonReleasedEvent mre(event.button.button);
 			EventCallback(mre);
 		}
+		else if(event.type == SDL_MOUSEMOTION)
+		{
+			xRel = event.motion.xrel;
+			yRel = -event.motion.yrel;
+		}
 	}
 
-	
+	void InputManager::HideMouseCursor()
+	{
+		SDL_ShowCursor(0);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+	}
 
+	void InputManager::ShowMouseCursor()
+	{
+		SDL_ShowCursor(1);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+	}
 
 	void InputManager::Update()
 	{
 		SDL_Event e;
+		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 6 * sizeof(bool));
+
+		xRel = 0.0f; yRel = 0.0f;
+		
 		while (SDL_PollEvent(&e) != 0)
 		{
 			ImGui_ImplSDL2_ProcessEvent(&e);
@@ -162,7 +187,6 @@ namespace Hollow {
 		
 		SDL_memcpy(mPreviousState, mCurrentState, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
-		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 3 * sizeof(bool));
 	}
 
 

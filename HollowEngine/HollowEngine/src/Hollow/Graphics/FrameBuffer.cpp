@@ -78,6 +78,11 @@ namespace Hollow {
 		Clear();
 	}
 
+	void FrameBuffer::BindRead()
+	{
+		GLCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, mRendererID));
+	}
+
 	void FrameBuffer::Unbind() const
 	{
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));

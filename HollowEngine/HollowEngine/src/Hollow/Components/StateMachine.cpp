@@ -13,6 +13,7 @@ namespace Hollow
 	{
 		mCurrentState = nullptr;
 		mPreviousState = nullptr;
+		mNeedChangeState = false;
 	}
 
 	void StateMachine::Clear()

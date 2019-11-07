@@ -46,12 +46,43 @@ namespace Hollow {
 		{
 			mShininess = data["Shininess"].GetFloat();
 		}
+		if (data.HasMember("MaterialTextures"))
+		{
+			MaterialData* materials = new MaterialData();
+			if (data.HasMember("DiffuseTexture"))
+			{
+				std::string path = data["DiffuseTexture"].GetString();
+				materials->mpDiffuse = ResourceManager::Instance().LoadTexture(path);
+			}
+			if (data.HasMember("SpecularTexture"))
+			{
+				std::string path = data["SpecularTexture"].GetString();
+				materials->mpSpecular = ResourceManager::Instance().LoadTexture(path);
+			}
+			if (data.HasMember("NormalTexture"))
+			{
+				std::string path = data["NormalTexture"].GetString();
+				materials->mpNormal = ResourceManager::Instance().LoadTexture(path);
+			}
+			if (data.HasMember("HeightTexture"))
+			{
+				std::string path = data["HeightTexture"].GetString();
+				materials->mpHeight = ResourceManager::Instance().LoadTexture(path);
+			}
+			if (data.HasMember("HeightScale"))
+			{
+				mHeightScale = data["HeightScale"].GetFloat();
+			}
+
+			mMaterials.push_back(materials);
+		}
 		if (data.HasMember("MaterialData"))
 		{
 			std::string path = data["MaterialData"].GetString();
 			mMaterials = ResourceManager::Instance().LoadMaterials(path);
 		}
 	}
+
 	void Material::DebugDisplay()
 	{
 		if (ImGui::TreeNode("Material"))
@@ -65,30 +96,38 @@ namespace Hollow {
 			// Show the shininess
 			ImGui::InputFloat("Shininess", &mShininess);
 
-			// Show the texture ID value
-			//ImGui::texture
+			// Show parallax map height scale
+			ImGui::InputFloat("Height Scale", &mHeightScale);
+
+			// Show the texture if there is only one
+			if (mpTexture)
+			{
+				ImGui::Image((void*)mpTexture->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			}
 			 // Show a small version of the currently selected texture
 			for (MaterialData* material : mMaterials)
 			{
 				if (material->mpDiffuse)
 				{
-					ImGui::Image((void*)material->mpDiffuse->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Text("Diffuse texture");
+					ImGui::Image((void*)material->mpDiffuse->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 				if (material->mpSpecular)
 				{
-					ImGui::Image((void*)material->mpSpecular->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Text("Specular texture");
+					ImGui::Image((void*)material->mpSpecular->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 				if (material->mpNormal)
 				{
-					ImGui::Image((void*)material->mpNormal->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Text("Normal texture");
+					ImGui::Image((void*)material->mpNormal->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 				if (material->mpHeight)
 				{
-					ImGui::Image((void*)material->mpHeight->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()));
+					ImGui::Text("Height texture");
+					ImGui::Image((void*)material->mpHeight->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 			}
-			
-			//ImGui::InputScalar("Texture", ImGuiDataType_U32, &mTexture);
 
 			ImGui::TreePop();
 		}

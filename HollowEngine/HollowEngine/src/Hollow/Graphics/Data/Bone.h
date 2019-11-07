@@ -8,7 +8,6 @@ namespace Hollow
 		unsigned int mIndex;
 		unsigned int mParentIndex;
 		glm::mat4 mTransformation;
-		glm::mat4 mCurrentTransformation;
 		glm::mat4 mOffset;
 		std::unordered_map<std::string, bool> mIsAnimated;
 		std::string mName;

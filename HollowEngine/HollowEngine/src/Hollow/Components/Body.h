@@ -2,10 +2,20 @@
 #include "Component.h"
 
 namespace Hollow {
+
+
 	class HOLLOW_API Body : public Component
 	{
+
 		REGISTERCOMPONENT(Body);
 	public:
+		enum RigidbodyType
+		{
+	#define RIGIDBODY_TYPE(name) name,
+	#include "RigidbodyTypes.enum"
+	#undef RIGIDBODY_TYPE
+			NUM
+		};
 		void Init();
 		void Clear();
 		void DebugDisplay();
@@ -25,5 +35,12 @@ namespace Hollow {
 		glm::mat3 mRotationMatrix; // TODO dont need to store this... being used in a hack in SAT in place of Transformation matrix
 		glm::mat3 mLocalInertiaInverse;
 		glm::mat3 mWorldInertiaInverse;
+
+		RigidbodyType bodyType;
+
+		bool isFrictionLess;
+
+	private:
+		static std::unordered_map<std::string, RigidbodyType> mapOfTypesToStrings;
 	};
 }

@@ -19,11 +19,13 @@ namespace Hollow {
 		~FrameBuffer();
 
 		void Bind();
+		void BindRead();
 		void Unbind() const;
 		void TexBind(unsigned int index = 0, unsigned int slot = 0);
 		void TexUnbind(unsigned int slot = 0);
 		void Clear() const;
 		void Delete() const;
 		void ChangeSize(unsigned int width, unsigned int height);
+		unsigned int GetFrameBufferID() const { return mRendererID; }
 	};
 }

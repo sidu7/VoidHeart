@@ -12,44 +12,50 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/ThreadManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
+#include "Hollow/Managers/UIManager.h"
 
-#define SOL_ALL_SAFETIES_ON 1
-#include <sol/sol.hpp> // or #include "sol.hpp", whichever suits your needs
-
-//#include "Hollow/Graphics/Camera.h"
-
-void apple() {
-	std::cout << "apple";
-}
 namespace Hollow {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 	
-	Application::Application()
+	Application::Application(const std::string& settingsFilePath)
 	{
-		//instance = this;
-		mpWindow = new GameWindow("Hollow Engine", 1280, 720);
+		PARSE_JSON_FILE(settingsFilePath);
+		
+		rapidjson::Value::Object data = root.GetObject();
+		mpWindow = new GameWindow(JSONHelper::GetSettings(data,"Window"));
 
 		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
 		
 		mIsRunning = true;
 		// Initalize managers
-		MemoryManager::Instance().Init();
-		RenderManager::Instance().Init(mpWindow);
+		ThreadManager::Instance().Init();
+		MemoryManager::Instance().Init(JSONHelper::GetSettings(data,"Memory"));
+		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
+		EventManager::Instance().Init();
 		ResourceManager::Instance().Init();
         AudioManager::Instance().Init();
+		ScriptingManager::Instance().Init();
+		UIManager::Instance().Init();
 
 
-		FrameRateController::Instance().SetMaxFrameRate(60);
+		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
 	}
 
 	Application::~Application()
 	{
 		ResourceManager::Instance().CleanUp();
+		EventManager::Instance().CleanUp();
 		RenderManager::Instance().CleanUp();
 		ImGuiManager::Instance().CleanUp();
+		ThreadManager::Instance().CleanUp();
+		UIManager::Instance().CleanUp();
+		SystemManager::Instance().CleanUp();
+		MemoryManager::Instance().CleanUp();
 		delete mpWindow;
 	}
 
@@ -58,7 +64,6 @@ namespace Hollow {
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		
 		//RenderManager::Instance().GetCamera()->OnEvent(e);
 
 		//HW_CORE_TRACE("{0}", e);
@@ -74,12 +79,6 @@ namespace Hollow {
 
 	void Application::Run()
 	{
-		
-		sol::state lua;
-		lua.open_libraries(sol::lib::base);
-
-		lua.script("print('bark bark bark!')");
-
 		while (mIsRunning)
 		{			
 			FrameRateController::Instance().FrameStart();
@@ -93,9 +92,9 @@ namespace Hollow {
 			}
 			InputManager::Instance().Update();
 
-			SystemManager::Instance().Update();
+			EventManager::Instance().Update();
 
-			EventManager::Instance().HandleEvents();
+			SystemManager::Instance().Update();
 
 			AudioManager::Instance().Update();
 
@@ -103,25 +102,10 @@ namespace Hollow {
 			RenderManager::Instance().Update();
 
 			FrameRateController::Instance().FrameEnd();
-		}
 
-		// Attempt at multithreading
-		/*std::thread systemThread (std::bind(&Application::ThreadLoop, this)) ;
-
-		while (mIsRunning)
-		{
-			shouldGoIn = true;
-			// Start frame functions
-			ImGuiManager::Instance().StartFrame();
-			InputManager::Instance().Update();
-			RenderManager::Instance().Update();		
-			while (shoudlMainThreadSleep) {}
-
-			FrameRateController::Instance().FrameEnd();
-			shoudlMainThreadSleep = true;
-		}
-		shouldGoIn = true;
-		systemThread.join();*/
+			if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_ESCAPE))
+				mIsRunning = false;
+		}		
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -138,28 +122,5 @@ namespace Hollow {
 	{
 		mIsRunning = false;
 		return true;
-	}
-
-	// Attempt at multithreading
-	void Application::ThreadLoop() {
-
-		while (mIsRunning)
-		{
-			while (!shouldGoIn) {}
-			
-			FrameRateController::Instance().FrameStart();
-
-			// Update functions
-			for (Layer* layer : mLayerStack)
-			{
-				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
-			}
-			
-			SystemManager::Instance().Update();
-			AudioManager::Instance().Update();
-			
-			shoudlMainThreadSleep = false;
-			shouldGoIn = false;
-		}
 	}
 }
