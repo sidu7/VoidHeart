@@ -18,5 +18,5 @@ void main()
 {
 	//float depthValue = texture(shadowMap, texCoords).r;
 	//color = vec4(vec3(LinearizeDepth(depthValue) / farPlane), 1.0);
-	color = vec4(texture(shadowMap, texCoords).r);
+	color = vec4(texture(shadowMap, texCoords).r/128.0);
 }

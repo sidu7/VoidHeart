@@ -9,10 +9,10 @@
       "Color": [ 1.0, 1.0, 1.0 ],
       "CastShadow": true,
       "ShadowMapSize": [ 2048, 2048 ],
-      "ShadowMapNearPlane": 6.0,
+      "ShadowMapNearPlane": 0.01,
       "ShadowMapFarPlane": 128.0,
       "BlurDistance": 1,
-      "Alpha": 0.0001,
+      "Alpha": 0.01,
       "MD": 0.5
     }
   ]

@@ -33,6 +33,7 @@ namespace Hollow {
 		void InitializeSkydome();
 		void InitializeHammersley(unsigned int n);
 
+		void CreateAmbientShader();
 		void CreateDeferredShader();
 		void CreateLocalLightShader();
 		void CreateSkydomeShader();
@@ -42,6 +43,7 @@ namespace Hollow {
 		std::vector<float> CreateBlurKernel(unsigned int distance);
 
 		void GBufferPass();
+		void AmbientPass();
 		void GlobalLightingPass(LightData& light);
 		void LocalLightingPass();
 
@@ -91,6 +93,9 @@ namespace Hollow {
 		Texture* mpSkydomeTexture;
 		Texture* mpSkydomeIrradianceMap;
 		SkydomeData mSkydomeData;
+
+		// Ambient lighting pass
+		Shader* mpAmbientShader;
 
 		// Image based lighting
 		float mExposure;

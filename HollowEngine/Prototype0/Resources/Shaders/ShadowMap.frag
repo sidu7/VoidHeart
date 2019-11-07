@@ -6,6 +6,6 @@ in vec4 position;
 
 void main()
 {
-	float depth = position.z / position.w;
+	float depth = position.w;
 	FragColor = vec4(depth, depth*depth, depth*depth*depth, depth*depth*depth*depth);
 }

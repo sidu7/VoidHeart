@@ -44,6 +44,9 @@ namespace Hollow {
 		// Initialize G-Buffer
 		InitializeGBuffer();
 
+		// Initialize ambient light shader
+		CreateAmbientShader();
+
 		// Initialize local light shader
 		CreateLocalLightShader();
 
@@ -127,6 +130,9 @@ namespace Hollow {
 
 			// Deferred G-Buffer Pass
 			GBufferPass();
+
+			// Ambient lighting pass
+			AmbientPass();
 
 			for (unsigned int i = 0; i < mLightData.size(); ++i)
 			{
@@ -278,11 +284,27 @@ namespace Hollow {
 		// Attach buffer to shader
 		int loc = glGetUniformBlockIndex(mpDeferredShader->mProgram, "HammersleyBlock");
 		glUniformBlockBinding(mpDeferredShader->mProgram, loc, bindpoint);
+
+		loc = glGetUniformBlockIndex(mpAmbientShader->mProgram, "HammersleyBlock");
+		glUniformBlockBinding(mpAmbientShader->mProgram, loc, bindpoint);
+	}
+
+	void RenderManager::CreateAmbientShader()
+	{
+		mpAmbientShader = new Shader("Resources/Shaders/Ambient.vert", "Resources/Shaders/Ambient.frag");
+		mpAmbientShader->Use();
+		mpAmbientShader->SetInt("gPosition", 0);
+		mpAmbientShader->SetInt("gNormal", 1);
+		mpAmbientShader->SetInt("gDiffuse", 2);
+		mpAmbientShader->SetInt("gSpecular", 3);
+		mpAmbientShader->SetInt("irradianceMap", 4);
+		mpAmbientShader->SetInt("hdrMap", 5);
+		mpAmbientShader->Unbind();
 	}
 
 	void RenderManager::CreateDeferredShader()
 	{
-		mpDeferredShader = new Shader("Resources/Shaders/Deferred.vert", "Resources/Shaders/Deferred.frag");
+		mpDeferredShader = new Shader("Resources/Shaders/Global.vert", "Resources/Shaders/Global.frag");
 		mpDeferredShader->Use();
 		mpDeferredShader->SetInt("gPosition", 0);
 		mpDeferredShader->SetInt("gNormal", 1);
@@ -291,7 +313,7 @@ namespace Hollow {
 		mpDeferredShader->SetInt("shadowMap", 4);
 		mpDeferredShader->SetInt("irradianceMap", 5);
 		mpDeferredShader->SetInt("hdrMap", 6);
-		mpSkydomeShader->Unbind();
+		mpDeferredShader->Unbind();
 	}
 
 	void RenderManager::CreateLocalLightShader()
@@ -302,7 +324,7 @@ namespace Hollow {
 		mpLocalLightShader->SetInt("gNormal", 1);
 		mpLocalLightShader->SetInt("gDiffuse", 2);
 		mpLocalLightShader->SetInt("gSpecular", 3);
-		mpSkydomeShader->Unbind();
+		mpLocalLightShader->Unbind();
 	}
 
 	void RenderManager::CreateSkydomeShader()
@@ -337,8 +359,8 @@ namespace Hollow {
 		mpShadowMapShader->SetMat4("Projection", LightProj);
 		mpShadowMapShader->SetMat4("View", LightLookAt);
 
-		//light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
-		light.mShadowMatrix = LightProj * LightLookAt;
+		light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
+		//light.mShadowMatrix = LightProj * LightLookAt;
 
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_FRONT);
@@ -481,11 +503,45 @@ namespace Hollow {
 		mpGBuffer->Unbind();
 	}
 
+	void RenderManager::AmbientPass()
+	{
+		// Bind G-Buffer textures
+		mpGBuffer->TexBind(0, 0);
+		mpGBuffer->TexBind(1, 1);
+		mpGBuffer->TexBind(2, 2);
+		mpGBuffer->TexBind(3, 3);
+
+		glDisable(GL_DEPTH_TEST);
+		mpAmbientShader->Use();
+
+		mpAmbientShader->SetVec3("viewPosition", mCameraPosition);
+
+		// Bind IBL texutres
+		mpSkydomeIrradianceMap->Bind(4);
+		mpSkydomeTexture->Bind(5);
+
+		// Send IBL parameters
+		mpAmbientShader->SetFloat("exposure", mExposure);
+		mpAmbientShader->SetFloat("contrast", mContrast);
+		mpAmbientShader->SetFloat("hdrWidth", (float)mpSkydomeTexture->GetWidth());
+		mpAmbientShader->SetFloat("hdrHeight", (float)mpSkydomeTexture->GetHeight());
+
+		// Render FSQ
+		DrawFSQ();
+
+		mpGBuffer->TexUnbind(0);
+		mpGBuffer->TexUnbind(1);
+		mpGBuffer->TexUnbind(2);
+		mpGBuffer->TexUnbind(3);
+		mpSkydomeIrradianceMap->Unbind(4);
+		mpSkydomeTexture->Unbind(5);
+	}
+
 	void RenderManager::GlobalLightingPass(LightData& light)
 	{
 		// Clear opengl
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		glEnable(GL_BLEND);
 		// Bind G-Buffer textures
 		mpGBuffer->TexBind(0, 0);
 		mpGBuffer->TexBind(1, 1);
@@ -496,8 +552,9 @@ namespace Hollow {
 		mpDeferredShader->Use();
 
 		// Send light and view position
-		mpDeferredShader->SetVec3("viewPosition", mCameraData[0].mPosition);
+		mpDeferredShader->SetVec3("viewPosition", mCameraPosition);
 		mpDeferredShader->SetVec3("lightPosition", light.mPosition);
+		mpDeferredShader->SetVec3("lightColor", light.mColor);
 
 		// Send ShadowMap texture and shadow matrix
 		light.mpShadowMap->TexBind(0, 4);
@@ -506,16 +563,6 @@ namespace Hollow {
 		mpDeferredShader->SetInt("shadowMode", mShadowMapMode);
 		mpDeferredShader->SetFloat("alpha", light.mAlpha);
 		mpDeferredShader->SetFloat("md", light.mMD);
-
-		// Bind IBL texutres
-		mpSkydomeIrradianceMap->Bind(5);
-		mpSkydomeTexture->Bind(6);
-
-		// Send IBL parameters
-		mpDeferredShader->SetFloat("exposure", mExposure);
-		mpDeferredShader->SetFloat("contrast", mContrast);
-		mpDeferredShader->SetFloat("hdrWidth", (float)mpSkydomeTexture->GetWidth());
-		mpDeferredShader->SetFloat("hdrHeight", (float)mpSkydomeTexture->GetHeight());
 
 		// Send debug information
 		mpDeferredShader->SetInt("displayMode", mGBufferDisplayMode);
@@ -528,8 +575,6 @@ namespace Hollow {
 		mpGBuffer->TexUnbind(2);
 		mpGBuffer->TexUnbind(3);
 		light.mpShadowMap->TexUnbind(4);
-		mpSkydomeIrradianceMap->Unbind(5);
-		mpSkydomeTexture->Unbind(6);
 	}
 
 	void RenderManager::LocalLightingPass()
