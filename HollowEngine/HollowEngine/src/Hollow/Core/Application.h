@@ -16,7 +16,7 @@ namespace Hollow {
 		HOLLOW_API Application(const std::string& settingsFilePath);
 		HOLLOW_API virtual ~Application();
 		 
-		HOLLOW_API //inline static Application& Instance() { return *instance; }
+		//inline static Application& Instance() { return *instance; }
 		HOLLOW_API void OnEvent(Event& e);
 		HOLLOW_API void Run();
 		 
