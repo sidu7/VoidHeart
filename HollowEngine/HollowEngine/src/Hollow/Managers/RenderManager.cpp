@@ -69,6 +69,7 @@ namespace Hollow {
 		mpHorizontalBlurShader = new Shader(data["BlurComputeShaders"].GetArray()[0].GetString());
 		mpVerticalBlurShader = new Shader(data["BlurComputeShaders"].GetArray()[1].GetString());
 		mpWeights = new UniformBuffer(101 * sizeof(float));
+		horizontalBlurred = new Texture(4, 1024, 1024);
 
 		// Init Debug Shader
 		mpDebugShader = new Shader(data["DebugShader"].GetArray()[0].GetString(), data["DebugShader"].GetArray()[1].GetString());
@@ -101,6 +102,7 @@ namespace Hollow {
 		delete mpGBufferShader;
 		delete mpGBuffer;
 		delete mpWeights;
+		delete horizontalBlurred;
 	}
 	//TODO: Remove before finishing the game
 	void DebugContacts()
@@ -481,12 +483,9 @@ namespace Hollow {
 		mpWeights->Bind(2);
 		mpWeights->SubData(static_cast<unsigned>(sizeof(float) * weights.size()), &weights[0]);
 
-		// Intermediate Texture
-		Texture horizontalBlurred(channels, width, height);
-
 		// Send texture to shader
 		mpHorizontalBlurShader->SetInputUniformImage("src", inputTextureID, 0, channels);
-		mpHorizontalBlurShader->SetOutputUniformImage("dst", horizontalBlurred.GetTextureID(), 1, channels);
+		mpHorizontalBlurShader->SetOutputUniformImage("dst", horizontalBlurred->GetTextureID(), 1, channels);
 		// Send blur distance to shader
 		mpHorizontalBlurShader->SetUInt("blurDistance", blurWidth);
 		mpHorizontalBlurShader->SetUniformBlock("blurKernel", 2);
@@ -499,7 +498,7 @@ namespace Hollow {
 		mpVerticalBlurShader->Use();
 
 		// Send texture to shader
-		mpVerticalBlurShader->SetInputUniformImage("src", horizontalBlurred.GetTextureID(), 0, channels);
+		mpVerticalBlurShader->SetInputUniformImage("src", horizontalBlurred->GetTextureID(), 0, channels);
 		mpVerticalBlurShader->SetOutputUniformImage("dst", outputTextureID, 1, channels);
 		// Send blur distance to shader
 		mpVerticalBlurShader->SetUInt("blurDistance", blurWidth);

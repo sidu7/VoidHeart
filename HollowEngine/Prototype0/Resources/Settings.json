@@ -28,7 +28,7 @@
   "Memory": [
     {
       "GameobjectsPool": 2000,
-      "ComponentsPool": 1000
+      "ComponentsPool": 2000
     }
   ]
 }

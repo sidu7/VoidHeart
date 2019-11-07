@@ -11,12 +11,11 @@ PrototypeSystem PrototypeSystem::instance;
 
 void PrototypeSystem::AddGameObject(Hollow::GameObject* object)
 {
-	CheckAllComponents<Hollow::Animator>(object);
 }
 
 void PrototypeSystem::TestEventHandling(Hollow::GameEvent* event)
 {
-	HW_TRACE("Event Collision");
+	//HW_TRACE("Event Collision");
 }
 
 void PrototypeSystem::Init()
@@ -26,12 +25,10 @@ void PrototypeSystem::Init()
 
 void PrototypeSystem::HandleBroadcastEvent(Hollow::GameEvent*)
 {
-	HW_TRACE("Broadcast EVENT TEST");
+	//HW_TRACE("Broadcast EVENT TEST");
 }
 
 void PrototypeSystem::Update()
 {
-	Hollow::Animator* anim = mGameObjects[0]->GetComponent<Hollow::Animator>();
-	HW_TRACE("Animator state {0}", anim->mCurrentState);
 }
 

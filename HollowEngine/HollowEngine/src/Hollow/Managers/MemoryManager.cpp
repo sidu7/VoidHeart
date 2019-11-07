@@ -55,10 +55,18 @@ namespace Hollow
 
 	GameObject* MemoryManager::NewGameObject()
 	{
-		GameObject* object = mGameObjectPool.front();
-		object->mActive = true;
-		mGameObjectPool.pop_front();
-		return object;
+		if (mGameObjectPool.size() > 0)
+		{
+			GameObject* object = mGameObjectPool.front();
+			object->mActive = true;
+			mGameObjectPool.pop_front();
+			return object;
+		}
+		else
+		{
+			HW_CORE_ERROR("All GameObjects used");
+			return nullptr;
+		}
 	}
 
 	void MemoryManager::DeleteGameObject(GameObject* gameobject)

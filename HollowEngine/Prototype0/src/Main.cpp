@@ -73,34 +73,50 @@ public:
 	{
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());
-
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
+
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UICamera.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
+
+		for (int j = 0; j < 32; ++j)
+		{
+			for (int i = 0; i < 32; ++i)
+			{
+				Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/LocalLight.json");
+				Hollow::Transform* pB = static_cast<Hollow::Transform*>(go->GetComponent<Hollow::Transform>());
+				pB->mPosition = glm::vec3(i-8.0, 0.70, j-8.0);
+			}
+		}
+
+		int dim = 6;
+		int height = 4;
+		for (int i = 0; i < dim; ++i) {
+			for (int j = 0; j < dim; ++j) {
+				for (int k = 0; k < height; ++k) {
+					Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+					Hollow::Body* pB = static_cast<Hollow::Body*>(go->GetComponent<Hollow::Body>());
+					pB->mPosition = glm::vec3(2.0f * i, 2.2f * (k+2), 2.0f * j);
+					pB->mPreviousPosition = glm::vec3(2.0f * i, 2.2f * (k+2), 2.0f * j);
+					//physics->dAABBTree.AddCollider(static_cast<Collider*>(go->GetComponent(COLLIDER)));
+				}
+			}
+		}
+
+		
 		//for(int i = 0; i < 10; ++i)
 		
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UIElement.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StartMoveButton.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StopMoveButton.json");
 	
-		//int dim = 2;
-		//int height = 5;
-		//for (int i = 0; i < dim; ++i) {
-		//	for (int j = 0; j < dim; ++j) {
-		//		for (int k = 0; k < height; ++k) {
-		//			Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
-		//			Hollow::Body* pB = static_cast<Hollow::Body*>(go->GetComponent<Hollow::Body>());
-		//			pB->mPosition = glm::vec3(2.0f * i, 2.0f * (k+1), 2.0f * j);
-		//			pB->mPreviousPosition = glm::vec3(2.0f * i, 2.0f * (k+1), 2.0f * j);
-		//			//physics->dAABBTree.AddCollider(static_cast<Collider*>(go->GetComponent(COLLIDER)));
-		//		}
-		//	}
-		//}
 
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
@@ -109,12 +125,6 @@ public:
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
-
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
-	
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/LocalLight.json");
 
 		//Hollow::ScriptingManager::Instance().lua.script_file("Resources/Scripts/test.lua");
 		//TODO: Remove test json deserialize
