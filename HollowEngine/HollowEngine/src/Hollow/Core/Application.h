@@ -9,19 +9,19 @@ namespace Hollow {
 
 	class RenderManager;
 
-	class HOLLOW_API Application
+	class Application
 	{
 		//SINGLETON(Application)
 	public:
-		Application(const std::string& settingsFilePath);
-		virtual ~Application();
-
-		//inline static Application& Instance() { return *instance; }
-		void OnEvent(Event& e);
-		void Run();
-
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* layer);
+		HOLLOW_API Application(const std::string& settingsFilePath);
+		HOLLOW_API virtual ~Application();
+		 
+		HOLLOW_API //inline static Application& Instance() { return *instance; }
+		HOLLOW_API void OnEvent(Event& e);
+		HOLLOW_API void Run();
+		 
+		HOLLOW_API void PushLayer(Layer* layer);
+		HOLLOW_API void PushOverlay(Layer* layer);
 		
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);

@@ -2,14 +2,14 @@
 
 namespace Hollow{
 	class GameObject;
-	class HOLLOW_API GameObjectManager 
+	class GameObjectManager 
 	{
 		SINGLETON(GameObjectManager);
 	public:
-		void AddGameObject(GameObject* GameObject);
-		void DeleteGameObject(GameObject* GameObject);
-		void DeleteAllGameObjects();
-		const std::vector<GameObject*>& GetGameObjects() { return mGameObjects; }
+		HOLLOW_API void AddGameObject(GameObject* GameObject);
+		HOLLOW_API void DeleteGameObject(GameObject* GameObject);
+		HOLLOW_API void DeleteAllGameObjects();
+		HOLLOW_API const std::vector<GameObject*>& GetGameObjects() { return mGameObjects; }
 
 	private:
 		std::vector<GameObject*> mGameObjects;

@@ -1,16 +1,16 @@
 #pragma once
 
 namespace Hollow {
-	class HOLLOW_API GameWindow
+	class GameWindow
 	{
 	public:
-		GameWindow(rapidjson::Value::Object& data);
-		~GameWindow();
-
-		inline SDL_Window* GetWindow() { return mpWindow; }
-		inline SDL_GLContext GetContext() { return mContext; }
-		inline int GetWidth() { return mWidth; }
-		inline int GetHeight() { return mHeight; }
+		HOLLOW_API GameWindow(rapidjson::Value::Object& data);
+		HOLLOW_API ~GameWindow();
+		 
+		HOLLOW_API inline SDL_Window* GetWindow() { return mpWindow; }
+		HOLLOW_API inline SDL_GLContext GetContext() { return mContext; }
+		HOLLOW_API inline int GetWidth() { return mWidth; }
+		HOLLOW_API inline int GetHeight() { return mHeight; }
 
 	private:
 		void Initialize(rapidjson::Value::Object& data);

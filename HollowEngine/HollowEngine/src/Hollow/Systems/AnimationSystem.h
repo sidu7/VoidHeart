@@ -9,9 +9,9 @@ namespace Hollow
 	{
 		REGISTERSYSTEM(AnimationSystem, 3);
 	public:
-		~AnimationSystem() override {}									
-		void Update() override;
-		void AddGameObject(GameObject* object) override;
+		HOLLOW_API ~AnimationSystem() override {}
+		HOLLOW_API void Update() override;
+		HOLLOW_API void AddGameObject(GameObject* object) override;
 
 	private:
 		void Animate(unsigned int start, unsigned int end);

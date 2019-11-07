@@ -8,9 +8,9 @@ namespace Hollow {
 	{
 		REGISTERSYSTEM(PhysicsSystem, 2)
 	public:
-		void Update();
-		void AddGameObject(GameObject* object);
-		void DebugContacts();
+		HOLLOW_API void Update();
+		HOLLOW_API void AddGameObject(GameObject* object);
+		HOLLOW_API void DebugContacts();
 		
 	private:
 		void Step(float);

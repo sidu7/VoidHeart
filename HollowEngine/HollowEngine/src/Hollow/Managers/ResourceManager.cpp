@@ -23,10 +23,12 @@ namespace Hollow
 	void ResourceManager::Init()
 	{
 		InitializeShapes();
+		importer = new Assimp::Importer();
 	}
 
 	void ResourceManager::CleanUp()
 	{
+		delete importer;
 		std::for_each(mTextureCache.begin(), mTextureCache.end(), [](std::pair<std::string, Texture*> value) { delete value.second; });
 		std::for_each(mModelCache.begin(), mModelCache.end(), [](std::pair<std::string, std::vector<Mesh*>> value) { for (Mesh* mesh : value.second) delete mesh; });
 		std::for_each(mShapes.begin(), mShapes.end(), [](std::pair<Shapes, Mesh*> value) { delete value.second; });
@@ -316,8 +318,8 @@ namespace Hollow
 	{
 		if (mModelRootsCache.find(path) == mModelRootsCache.end())
 		{
-			const aiScene* scene = importer.ReadFile(path,flags);
-			importer.GetOrphanedScene();
+			const aiScene* scene = importer->ReadFile(path,flags);
+			importer->GetOrphanedScene();
 			if (!scene || !scene->mRootNode)
 			{
 				HW_CORE_ERROR("Model file {0} could not be loaded", path);

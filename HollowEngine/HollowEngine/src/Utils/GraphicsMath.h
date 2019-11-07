@@ -5,10 +5,10 @@
 
 namespace Hollow
 {
-	class HOLLOW_API GraphicsMath
+	class GraphicsMath
 	{
 	public:
-		inline static glm::mat4 RotationFromDirection(const glm::vec3& direction)
+		HOLLOW_API static glm::mat4 RotationFromDirection(const glm::vec3& direction)
 		{
 			float angle = std::atan2(direction.y, direction.x);
 			glm::mat4 glmrotXY = glm::rotate(angle, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -20,12 +20,12 @@ namespace Hollow
 			return glmrotXY * glmrotZ;
 		}
 
-		inline static glm::vec3 TranslateFromMatrix(const glm::mat4& matrix)
+		HOLLOW_API static glm::vec3 TranslateFromMatrix(const glm::mat4& matrix)
 		{
 			return xyz(matrix[3]);
 		}
 
-		inline static glm::vec3 ScaleFromMatrix(const glm::mat4& matrix)
+		HOLLOW_API static glm::vec3 ScaleFromMatrix(const glm::mat4& matrix)
 		{
 			glm::vec3 a = xyz(matrix[0]);
 			glm::vec3 b = xyz(matrix[1]);
@@ -34,7 +34,7 @@ namespace Hollow
 			return glm::vec3(glm::length(a), glm::length(b), glm::length(c));
 		}
 
-		inline static glm::quat RotationFromMatrix(glm::mat4 matrix)
+		HOLLOW_API static glm::quat RotationFromMatrix(glm::mat4 matrix)
 		{
 			matrix[3].x = 0.0f; matrix[3].y = 0.0f; matrix[3].z = 0.0f;
 
@@ -51,7 +51,7 @@ namespace Hollow
 			return glm::toQuat(matrix);
 		}
 
-		inline static std::pair<glm::vec3, glm::quat> ScaleRotationFromMatrix(glm::mat4 matrix)
+		HOLLOW_API static std::pair<glm::vec3, glm::quat> ScaleRotationFromMatrix(glm::mat4 matrix)
 		{
 			matrix[3].x = 0.0f; matrix[3].y = 0.0f; matrix[3].z = 0.0f;
 

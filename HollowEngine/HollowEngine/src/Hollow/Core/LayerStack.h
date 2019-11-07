@@ -7,19 +7,19 @@
 
 namespace Hollow {
 
-	class HOLLOW_API LayerStack
+	class LayerStack
 	{
 	public:
-		LayerStack();
-		~LayerStack();
-
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
-		void PopLayer(Layer* layer);
-		void PopOverlay(Layer* overlay);
-
-		std::vector<Layer*>::iterator begin() { return mLayers.begin(); }
-		std::vector<Layer*>::iterator end() { return mLayers.end(); }
+		HOLLOW_API LayerStack();
+		HOLLOW_API ~LayerStack();
+		 
+		HOLLOW_API void PushLayer(Layer* layer);
+		HOLLOW_API void PushOverlay(Layer* overlay);
+		HOLLOW_API void PopLayer(Layer* layer);
+		HOLLOW_API void PopOverlay(Layer* overlay);
+		 
+		HOLLOW_API std::vector<Layer*>::iterator begin() { return mLayers.begin(); }
+		HOLLOW_API std::vector<Layer*>::iterator end() { return mLayers.end(); }
 	private:
 		std::vector<Layer*> mLayers;
 		unsigned int mLayerInsertIndex = 0;

@@ -5,13 +5,13 @@ namespace Hollow
 {
 	class PathFollow;
 	
-	class HOLLOW_API PathFollowSystem : public System
+	class PathFollowSystem : public System
 	{
 		REGISTERSYSTEM(PathFollowSystem, 1);
 	public:
-		void Init();
-		void AddGameObject(GameObject* pGameObject) override;
-		void Update() override;
+		HOLLOW_API void Init();
+		HOLLOW_API void AddGameObject(GameObject* pGameObject) override;
+		HOLLOW_API void Update() override;
 
 	private:
 		void CalculateControlPointMatrices(PathFollow* pathFollow);

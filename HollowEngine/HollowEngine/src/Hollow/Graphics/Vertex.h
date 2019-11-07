@@ -4,8 +4,6 @@
 
 namespace Hollow
 {
-#ifndef VERTEX
-#define VERTEX
 	struct Vertex
 	{
 		glm::vec3 position;
@@ -13,5 +11,4 @@ namespace Hollow
 		glm::vec2 tex;
 		glm::vec3 tangent;
 	};
-#endif
 }

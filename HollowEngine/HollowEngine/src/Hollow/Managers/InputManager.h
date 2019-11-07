@@ -3,31 +3,31 @@
 
 namespace Hollow {
 
-	class HOLLOW_API InputManager
+	class InputManager
 	{
 		SINGLETON(InputManager)		
 	public:
-		bool IsKeyPressed(unsigned int keycode);
-		bool IsKeyReleased(unsigned int keycode);
-		bool IsKeyTriggered(unsigned int keycode);
-		bool IsMouseButtonPressed(unsigned int button);
-		bool IsMouseButtonTriggered(unsigned int button);
+		HOLLOW_API bool IsKeyPressed(unsigned int keycode);
+		HOLLOW_API bool IsKeyReleased(unsigned int keycode);
+		HOLLOW_API bool IsKeyTriggered(unsigned int keycode);
+		HOLLOW_API bool IsMouseButtonPressed(unsigned int button);
+		HOLLOW_API bool IsMouseButtonTriggered(unsigned int button);
 
-		glm::vec2 GetMouseMotion();
+		HOLLOW_API glm::vec2 GetMouseMotion();
 		
-		glm::ivec2 GetMousePosition();
+		HOLLOW_API glm::ivec2 GetMousePosition();
     
-		float GetMouseX();
-		float GetMouseY();
+		HOLLOW_API float GetMouseX();
+		HOLLOW_API float GetMouseY();
 
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		void SetEventCallback(const EventCallbackFn& callback);
+		HOLLOW_API void SetEventCallback(const EventCallbackFn& callback);
 		
-		void Init();
-		void Update();
-		void HideMouseCursor();
-		void ShowMouseCursor();
+		HOLLOW_API void Init();
+		HOLLOW_API void Update();
+		HOLLOW_API void HideMouseCursor();
+		HOLLOW_API void ShowMouseCursor();
 		
 	private:
 		EventCallbackFn EventCallback;

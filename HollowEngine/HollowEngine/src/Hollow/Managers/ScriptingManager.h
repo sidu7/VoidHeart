@@ -6,10 +6,10 @@
 #include <sol/sol.hpp>
 
 namespace Hollow {
-	class HOLLOW_API ScriptingManager {
+	class ScriptingManager {
 		SINGLETON(ScriptingManager)
 	public:
-		void Init();
+		HOLLOW_API  void Init();
 
 		sol::state lua;
 	};

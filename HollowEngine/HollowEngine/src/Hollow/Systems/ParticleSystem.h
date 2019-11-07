@@ -9,9 +9,9 @@ namespace Hollow
 	{
 		REGISTERSYSTEM(ParticleSystem,3)
 	public:
-		virtual ~ParticleSystem() {}
-		void Update();
-		void AddGameObject(GameObject* object);
+		HOLLOW_API virtual ~ParticleSystem() {}
+		HOLLOW_API void Update();
+		HOLLOW_API void AddGameObject(GameObject* object);
 
 	private:
 		void CalculateParticleMatrices(ParticleEmitter* emitter);

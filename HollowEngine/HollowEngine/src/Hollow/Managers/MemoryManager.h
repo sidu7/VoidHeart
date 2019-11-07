@@ -5,19 +5,19 @@ namespace Hollow
 {
 	class Component;
 
-	class HOLLOW_API MemoryManager
+	class MemoryManager
 	{
 		SINGLETON(MemoryManager)
 	public:
-		void Init(rapidjson::Value::Object& data);
-		void RegisterComponent(std::string name, Component* component);
-		void CleanUp();
+		HOLLOW_API void Init(rapidjson::Value::Object& data);
+		HOLLOW_API void RegisterComponent(std::string name, Component* component);
+		HOLLOW_API void CleanUp();
 	
-		Component* NewComponent(std::string name);
-		void DeleteComponent(Component* component);
+		HOLLOW_API Component* NewComponent(std::string name);
+		HOLLOW_API void DeleteComponent(Component* component);
 
-		GameObject* NewGameObject();
-		void DeleteGameObject(GameObject* gameobject);
+		HOLLOW_API GameObject* NewGameObject();
+		HOLLOW_API void DeleteGameObject(GameObject* gameobject);
 
 	private:
 		std::unordered_map<std::string,std::list<Component*>> mComponentPool;

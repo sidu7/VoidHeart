@@ -26,25 +26,25 @@ namespace Hollow
 		DIRECTION_LINE
 	};
 
-	class HOLLOW_API ResourceManager
+	class ResourceManager
 	{
 		SINGLETON(ResourceManager)
 	public:
-		~ResourceManager() {}
-
-		void Init();
-		void CleanUp();
-		void LoadLevelFromFile(std::string path);
-		GameObject* LoadGameObjectFromFile(std::string path);
-		Texture* LoadTexture(std::string path);
-		std::vector<Mesh*> LoadModel(std::string path);
-		std::vector<MaterialData*> LoadMaterials(std::string path);
-		std::pair<float, std::vector<Bone*>> LoadBoneData(std::string path);
-		std::pair<double, double> AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, float factor);
-		Mesh* GetShape(Shapes shape);
-		FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
-		std::vector<State*> ReadStateMachineFile(std::string path);
-		Shader* LoadShader(std::string path);
+		HOLLOW_API  ~ResourceManager() {}
+		  
+		HOLLOW_API  void Init();
+		HOLLOW_API  void CleanUp();
+		HOLLOW_API  void LoadLevelFromFile(std::string path);
+		HOLLOW_API  GameObject* LoadGameObjectFromFile(std::string path);
+		HOLLOW_API  Texture* LoadTexture(std::string path);
+		HOLLOW_API  std::vector<Mesh*> LoadModel(std::string path);
+		HOLLOW_API  std::vector<MaterialData*> LoadMaterials(std::string path);
+		HOLLOW_API  std::pair<float, std::vector<Bone*>> LoadBoneData(std::string path);
+		HOLLOW_API  std::pair<double, double> AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, float factor);
+		HOLLOW_API  Mesh* GetShape(Shapes shape);
+		HOLLOW_API  FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
+		HOLLOW_API  std::vector<State*> ReadStateMachineFile(std::string path);
+		HOLLOW_API  Shader* LoadShader(std::string path);
 
 	private:
 		void InitializeShapes();
@@ -72,6 +72,6 @@ namespace Hollow
 		std::unordered_map<std::string, FMOD::Sound*> mSoundCache;
 
 		//Model Loader
-		Assimp::Importer importer;
+		Assimp::Importer* importer;
 	};
 }

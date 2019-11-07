@@ -13,7 +13,7 @@ namespace Hollow {
 
 		SINGLETON(FrameRateController)
 	public:
-		void SetMaxFrameRate(Uint32 MaxFramerate)
+		HOLLOW_API void SetMaxFrameRate(Uint32 MaxFramerate)
 		{
 			mMaxFrameRate = MaxFramerate;
 			if (mMaxFrameRate != 0)
@@ -23,27 +23,27 @@ namespace Hollow {
 		}
 
 
-		void Init()
+		HOLLOW_API void Init()
 		{
 			mTickStart = mTickEnd = mFrameTime = 0;
 		}
 
 
-		void Close()
+		HOLLOW_API void Close()
 		{
 			
 		}
 
-		float GetFrameTime() {
+		HOLLOW_API float GetFrameTime() {
 			return mFrameTime * 1.0f / 1000.0f;
 		}
 
-		void FrameStart()
+		HOLLOW_API void FrameStart()
 		{
 			mTickStart = SDL_GetPerformanceCounter();
 		}
 
-		void FrameEnd()
+		HOLLOW_API void FrameEnd()
 		{
 			mTickEnd = SDL_GetPerformanceCounter();
 			while (((mTickEnd - mTickStart) * 1000.0) / SDL_GetPerformanceFrequency() < mNeededTicksPerFrame)

@@ -7,9 +7,9 @@ namespace Hollow
 	{
 		REGISTERSYSTEM(UIRenderSystem, 4);
 	public:
-		virtual ~UIRenderSystem() {}
-		void Init();
-		void AddGameObject(GameObject* object);
-		void Update();
+		HOLLOW_API virtual ~UIRenderSystem() {}
+		HOLLOW_API void Init();
+		HOLLOW_API void AddGameObject(GameObject* object);
+		HOLLOW_API void Update();
 	};
 }
