@@ -91,6 +91,11 @@
     <None Include="Resources\Json data\UIButton.json" />
     <None Include="Resources\Json data\StopMoveButton.json" />
     <None Include="Resources\Json data\StartMoveButton.json" />
+    <None Include="Resources\Shaders\Ambient.frag" />
+    <None Include="Resources\Shaders\Ambient.vert" />
+    <None Include="Resources\Shaders\fxaa.frag" />
+    <None Include="Resources\Shaders\Global.frag" />
+    <None Include="Resources\Shaders\Global.vert" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\test.lua" />
