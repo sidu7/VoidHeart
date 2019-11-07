@@ -26,7 +26,7 @@ namespace Hollow {
 	
 	Collider* PhysicsManager::castRay()
 	{
-		glm::vec2 mouseXY = InputManager::Instance().GetMousePosition();
+		glm::ivec2 mouseXY = InputManager::Instance().GetMousePosition();
 		float x = 2.0f * (mouseXY.x + 0.5f) / 1280.0f - 1.0f,
 			y = 1.0f - 2.0f * (mouseXY.y + 0.5f) / 720.0f;
 

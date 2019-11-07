@@ -14,7 +14,7 @@
   "Renderer": [
     {
       "GBufferShader": [ "Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag" ],
-      "DeferredShader": [ "Resources/Shaders/Deferred.vert", "Resources/Shaders/Deferred.frag" ],
+      "DeferredShader": [ "Resources/Shaders/Global.vert", "Resources/Shaders/Global.frag" ],
       "ShadowMapShader": [ "Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag" ],
       "DebugShader": [ "Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag" ],
       "ParticleShader": [ "Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag" ],

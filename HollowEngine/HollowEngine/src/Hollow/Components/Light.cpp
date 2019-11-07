@@ -75,6 +75,7 @@ namespace Hollow
 	{
 		if (ImGui::TreeNode("Light"))
 		{
+			ImGui::ColorPicker3("Color", &mColor[0]);
 			ImGui::InputFloat("Radius", &mRadius);
 			ImGui::InputFloat3("Position", &mPosition[0]);
 

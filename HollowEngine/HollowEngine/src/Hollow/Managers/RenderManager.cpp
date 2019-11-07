@@ -44,9 +44,12 @@ namespace Hollow {
 		HW_CORE_INFO("Opengl version {0}.{1}", mj, mn);
 
 		mpWindow = pWindow;
-		
+
 		// Initialize G-Buffer
 		InitializeGBuffer(data);
+
+		// Initialize ambient light shader
+		CreateAmbientShader();
 
 		// Initialize local light shader
 		CreateLocalLightShader(data);
@@ -77,14 +80,13 @@ namespace Hollow {
 		ShowParticles = true;
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 
-
 		// Init AA Shader
 		mpAAShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/fxaa.frag");
 		mpFinalBuffer = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 1);
 
 		// Init Bloom Shader and FrameBuffer
 		mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
-		mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2,true);
+		mpBloomFrame = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 2, true);
 
 		// Init UI Shader
 		mpUIShader = new Shader(data["UIShader"].GetArray()[0].GetString(), data["UIShader"].GetArray()[1].GetString());
@@ -123,26 +125,27 @@ namespace Hollow {
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
-		{	
+		{
 			// ShadowMap Pass
 			CreateShadowMap(mLightData[i]);
 			// Blur ShadowMap
 			FrameBuffer& shadowmap = *mLightData[i].mpShadowMap;
 			BlurTexture(shadowmap.mpTextureID[0],
 				shadowmap.mWidth,
-				shadowmap.mHeight,4,
+				shadowmap.mHeight, 4,
 				mLightData[i].mBlurDistance,
 				shadowmap.mpTextureID[0]);
 		}
 
-			// Draw Main Camera
-		glm::mat4& mProjectionMatrix = mMainCamera.mProjectionMatrix;
-		glm::mat4& mViewMatrix = mMainCamera.mViewMatrix;
+		// Draw Main Camera
+		mProjectionMatrix = mMainCamera.mProjectionMatrix;
+		mViewMatrix = mMainCamera.mViewMatrix;
+		mCameraPosition = mMainCamera.mEyePosition;
 
-		GLCall(glViewport(0,0, mMainCamera.mViewPortSize.x, mMainCamera.mViewPortSize.y));
-		
+		GLCall(glViewport(0, 0, mMainCamera.mViewPortSize.x, mMainCamera.mViewPortSize.y));
+
 		// Deferred G-Buffer Pass
-		GBufferPass(mMainCamera);
+		GBufferPass();// mMainCamera);
 
 		// Bloom Capture Start
 		if (mBloomEnabled)
@@ -150,17 +153,37 @@ namespace Hollow {
 			mpBloomFrame->Bind();
 		}
 
+		// Ambient lighting pass
+		AmbientPass();
+
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
 		{
 			// Apply global lighting
-			GlobalLightingPass(mLightData[i], mMainCamera.mEyePosition);
+			GlobalLightingPass(mLightData[i]);// , mMainCamera.mEyePosition);
 		}
-				
+
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, mpGBuffer->GetFrameBufferID());
+		if (mBloomEnabled)
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpBloomFrame->GetFrameBufferID());
+		}
+		else
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);// write to default framebuffer
+		}
+		glBlitFramebuffer(0, 0, mpGBuffer->mWidth, mpGBuffer->mHeight,
+			0, 0, mpGBuffer->mWidth, mpGBuffer->mHeight, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+		glEnable(GL_DEPTH_TEST);
+
+		// Draw skydome from each camera angle
+		DrawSkydome();
+
 		if (ShowParticles)
 		{
 			DrawParticles(mMainCamera);
 		}
-		
+
 		//Bloom capture End
 		if (mBloomEnabled)
 		{
@@ -168,11 +191,56 @@ namespace Hollow {
 			DrawSceneWithBloom();
 		}
 
-		//Draw debug drawings
-		DrawDebugDrawings();
+		// Draw Secondary Cameras
+		//for (unsigned i = 0; i < mSecondaryCameras.size(); ++i)
+		//{
+		//	mProjectionMatrix = mSecondaryCameras[i].mProjectionMatrix;
+		//	mViewMatrix = mSecondaryCameras[i].mViewMatrix;
+
+		//	GLCall(glViewport(mSecondaryCameras[i].mViewPortPosition.x, mSecondaryCameras[i].mViewPortPosition.y,
+		//		mSecondaryCameras[i].mViewPortSize.x, mSecondaryCameras[i].mViewPortSize.y));
+
+		//	// Deferred G-Buffer Pass
+		//	GBufferPass();// mSecondaryCameras[i]);
+
+		//	// Ambient lighting pass
+		//	AmbientPass();
+
+		//	// Bloom Capture Start
+		//	if (mBloomEnabled)
+		//	{
+		//		mpBloomFrame->Bind();
+		//	}
+
+		//	for (unsigned int i = 0; i < mLightData.size(); ++i)
+		//	{
+		//		// Apply global lighting
+		//		GlobalLightingPass(mLightData[i]);// , mSecondaryCameras[i].mEyePosition);
+		//	}
+
+		//	if (ShowParticles)
+		//	{
+		//		DrawParticles(mSecondaryCameras[i]);
+		//	}
+
+		//	//Bloom capture End
+		//	if (mBloomEnabled)
+		//	{
+		//		mpBloomFrame->Unbind();
+		//		DrawSceneWithBloom();
+		//	}
+		//}
+		// Copy depth information from GBuffer
+		mpGBuffer->BindRead();
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// Local lighting pass
 		LocalLightingPass();
+
+		//Draw debug drawings
+		DrawDebugDrawings();
 
 		// Render ShadowMap as FSQ if a debug mode is set
 		if (mShadowMapDebugMode > 0)
@@ -180,75 +248,27 @@ namespace Hollow {
 			DrawShadowMap();
 		}
 
-		// Draw Secondary Cameras
-		for(unsigned i = 0; i < mSecondaryCameras.size(); ++i)
+		// Post processing effects
+		if (mFXAA == 1)
 		{
-			mProjectionMatrix = mSecondaryCameras[i].mProjectionMatrix;
-			mViewMatrix = mSecondaryCameras[i].mViewMatrix;
+			glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+			glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+			glReadBuffer(GL_COLOR_ATTACHMENT0);
 
-			GLCall(glViewport(mSecondaryCameras[i].mViewPortPosition.x, mSecondaryCameras[i].mViewPortPosition.y,
-				mSecondaryCameras[i].mViewPortSize.x, mSecondaryCameras[i].mViewPortSize.y));
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpFinalBuffer->GetFrameBufferID());
+			glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mpFinalBuffer->mpTextureID[0], 0);
+			glDrawBuffer(GL_COLOR_ATTACHMENT1);
 
-			// Deferred G-Buffer Pass
-			GBufferPass(mSecondaryCameras[i]);
+			glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-			// Bloom Capture Start
-			if (mBloomEnabled)
-			{
-				mpBloomFrame->Bind();
-			}
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, 0, 0);
 
-			for (unsigned int i = 0; i < mLightData.size(); ++i)
-			{
-				// Apply global lighting
-				GlobalLightingPass(mLightData[i], mSecondaryCameras[i].mEyePosition);
-			}
-
-			if (ShowParticles)
-			{
-				DrawParticles(mSecondaryCameras[i]);
-			}
-
-			//Bloom capture End
-			if (mBloomEnabled)
-			{
-				mpBloomFrame->Unbind();
-				DrawSceneWithBloom();
-			}
-    }
-			// Copy depth information from GBuffer
-			mpGBuffer->BindRead();
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-			glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			
-			// Local lighting pass
-			LocalLightingPass();
-
-			// Draw skydome from each camera angle
-			DrawSkydome();
-
-			// Post processing effects
-			if (mFXAA == 1)
-			{
-				glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-				glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
-				glReadBuffer(GL_COLOR_ATTACHMENT0);
-
-				glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpFinalBuffer->GetRendererID());
-				glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mpFinalBuffer->mpTextureID[0], 0);
-				glDrawBuffer(GL_COLOR_ATTACHMENT1);
-				
-				glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
-
-				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
-				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, 0, 0);
-
-				mpFinalBuffer->Bind();
-				ApplyFXAA();
-				mpFinalBuffer->Unbind();
-			}
+			mpFinalBuffer->Bind();
+			ApplyFXAA();
+			mpFinalBuffer->Unbind();
 		}
+
 
 		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
 
@@ -304,7 +324,7 @@ namespace Hollow {
 		// Set exposure and contrast
 		mExposure = 1.0f;
 		mContrast = 1.0f;
-		
+
 		// TODO: Add skydome to game init file
 		// Load HDR skydome texture and irradiance map
 		mpSkydomeTexture = new Texture("Resources/Skydomes/Newport_Loft_Ref.hdr");
@@ -353,6 +373,22 @@ namespace Hollow {
 		// Attach buffer to shader
 		int loc = glGetUniformBlockIndex(mpDeferredShader->mProgram, "HammersleyBlock");
 		glUniformBlockBinding(mpDeferredShader->mProgram, loc, bindpoint);
+
+		loc = glGetUniformBlockIndex(mpAmbientShader->mProgram, "HammersleyBlock");
+		glUniformBlockBinding(mpAmbientShader->mProgram, loc, bindpoint);
+	}
+
+	void RenderManager::CreateAmbientShader()
+	{
+		mpAmbientShader = new Shader("Resources/Shaders/Ambient.vert", "Resources/Shaders/Ambient.frag");
+		mpAmbientShader->Use();
+		mpAmbientShader->SetInt("gPosition", 0);
+		mpAmbientShader->SetInt("gNormal", 1);
+		mpAmbientShader->SetInt("gDiffuse", 2);
+		mpAmbientShader->SetInt("gSpecular", 3);
+		mpAmbientShader->SetInt("irradianceMap", 4);
+		mpAmbientShader->SetInt("hdrMap", 5);
+		mpAmbientShader->Unbind();
 	}
 
 
@@ -365,9 +401,7 @@ namespace Hollow {
 		mpDeferredShader->SetInt("gDiffuse", 2);
 		mpDeferredShader->SetInt("gSpecular", 3);
 		mpDeferredShader->SetInt("shadowMap", 4);
-		mpDeferredShader->SetInt("irradianceMap", 5);
-		mpDeferredShader->SetInt("hdrMap", 6);
-		mpSkydomeShader->Unbind();
+		mpDeferredShader->Unbind();
 	}
 
 	void RenderManager::CreateLocalLightShader(rapidjson::Value::Object& data)
@@ -378,7 +412,7 @@ namespace Hollow {
 		mpLocalLightShader->SetInt("gNormal", 1);
 		mpLocalLightShader->SetInt("gDiffuse", 2);
 		mpLocalLightShader->SetInt("gSpecular", 3);
-		mpSkydomeShader->Unbind();
+		mpLocalLightShader->Unbind();
 	}
 
 	void RenderManager::CreateSkydomeShader()
@@ -413,8 +447,8 @@ namespace Hollow {
 		mpShadowMapShader->SetMat4("Projection", LightProj);
 		mpShadowMapShader->SetMat4("View", LightLookAt);
 
-		//light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
-		light.mShadowMatrix = LightProj * LightLookAt;
+		light.mShadowMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)) * LightProj * LightLookAt;
+		//light.mShadowMatrix = LightProj * LightLookAt;
 
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_FRONT);
@@ -441,11 +475,11 @@ namespace Hollow {
 		mpWeights->SubData(sizeof(float) * weights.size(), &weights[0]);
 
 		// Intermediate Texture
-		Texture horizontalBlurred(channels,width, height);
+		Texture horizontalBlurred(channels, width, height);
 
 		// Send texture to shader
 		mpHorizontalBlurShader->SetInputUniformImage("src", inputTextureID, 0, channels);
-		mpHorizontalBlurShader->SetOutputUniformImage("dst", horizontalBlurred.GetTextureID(), 1, horizontalBlurred.mChannels);
+		mpHorizontalBlurShader->SetOutputUniformImage("dst", horizontalBlurred.GetTextureID(), 1, channels);
 		// Send blur distance to shader
 		mpHorizontalBlurShader->SetUInt("blurDistance", blurWidth);
 		mpHorizontalBlurShader->SetUniformBlock("blurKernel", 2);
@@ -456,10 +490,10 @@ namespace Hollow {
 		// Apply vertical blur
 		// Make vertical blur shader current
 		mpVerticalBlurShader->Use();
-				
+
 		// Send texture to shader
-		mpVerticalBlurShader->SetInputUniformImage("src", horizontalBlurred.GetTextureID(), 0, horizontalBlurred.mChannels);
-		mpVerticalBlurShader->SetOutputUniformImage("dst", outputTextureID, 1, horizontalBlurred.mChannels);
+		mpVerticalBlurShader->SetInputUniformImage("src", horizontalBlurred.GetTextureID(), 0, channels);
+		mpVerticalBlurShader->SetOutputUniformImage("dst", outputTextureID, 1, channels);
 		// Send blur distance to shader
 		mpVerticalBlurShader->SetUInt("blurDistance", blurWidth);
 		// Send block of weights to shader as uniform block
@@ -500,7 +534,7 @@ namespace Hollow {
 		return weights;
 	}
 
-	void RenderManager::GBufferPass(CameraData& cameraData)
+	void RenderManager::GBufferPass()//CameraData& cameraData)
 	{
 		GLCall(glEnable(GL_DEPTH_TEST));
 		mpGBuffer->Bind();
@@ -508,8 +542,10 @@ namespace Hollow {
 		mpGBufferShader->Use();
 
 		// Send view and projection matrix
-		mpGBufferShader->SetMat4("View", cameraData.mViewMatrix);
-		mpGBufferShader->SetMat4("Projection", cameraData.mProjectionMatrix);
+		//mpGBufferShader->SetMat4("View", cameraData.mViewMatrix);
+		//mpGBufferShader->SetMat4("Projection", cameraData.mProjectionMatrix);
+		mpGBufferShader->SetMat4("View", mViewMatrix);
+		mpGBufferShader->SetMat4("Projection", mProjectionMatrix);
 
 		// Draw all game objects
 		DrawAllRenderData(mpGBufferShader);
@@ -518,23 +554,59 @@ namespace Hollow {
 		mpGBuffer->Unbind();
 	}
 
-	void RenderManager::GlobalLightingPass(LightData& light, glm::vec3 eyePosition)
+	void RenderManager::AmbientPass()
 	{
-		// Clear opengl
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		// Bind G-Buffer textures
 		mpGBuffer->TexBind(0, 0);
 		mpGBuffer->TexBind(1, 1);
 		mpGBuffer->TexBind(2, 2);
 		mpGBuffer->TexBind(3, 3);
-		
+
+		glDisable(GL_DEPTH_TEST);
+		mpAmbientShader->Use();
+
+		mpAmbientShader->SetVec3("viewPosition", mCameraPosition);
+
+		// Bind IBL texutres
+		mpSkydomeIrradianceMap->Bind(4);
+		mpSkydomeTexture->Bind(5);
+
+		// Send IBL parameters
+		mpAmbientShader->SetFloat("exposure", mExposure);
+		mpAmbientShader->SetFloat("contrast", mContrast);
+		mpAmbientShader->SetFloat("hdrWidth", (float)mpSkydomeTexture->GetWidth());
+		mpAmbientShader->SetFloat("hdrHeight", (float)mpSkydomeTexture->GetHeight());
+
+		// Render FSQ
+		DrawFSQ();
+
+		mpGBuffer->TexUnbind(0);
+		mpGBuffer->TexUnbind(1);
+		mpGBuffer->TexUnbind(2);
+		mpGBuffer->TexUnbind(3);
+		mpSkydomeIrradianceMap->Unbind(4);
+		mpSkydomeTexture->Unbind(5);
+	}
+
+	void RenderManager::GlobalLightingPass(LightData& light)
+	{
+		// Clear opengl
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE);
+		// Bind G-Buffer textures
+		mpGBuffer->TexBind(0, 0);
+		mpGBuffer->TexBind(1, 1);
+		mpGBuffer->TexBind(2, 2);
+		mpGBuffer->TexBind(3, 3);
+
 		glDisable(GL_DEPTH_TEST);
 		mpDeferredShader->Use();
 
 		// Send light and view position
-		mpDeferredShader->SetVec3("viewPosition", eyePosition);
+		mpDeferredShader->SetVec3("viewPosition", mCameraPosition);
 		mpDeferredShader->SetVec3("lightPosition", light.mPosition);
+		mpDeferredShader->SetVec3("lightColor", light.mColor);
 
 		// Send ShadowMap texture and shadow matrix
 		light.mpShadowMap->TexBind(0, 4);
@@ -544,16 +616,6 @@ namespace Hollow {
 		mpDeferredShader->SetFloat("alpha", light.mAlpha);
 		mpDeferredShader->SetFloat("md", light.mMD);
 		mpDeferredShader->SetInt("bloomEnabled", mBloomEnabled);
-
-		// Bind IBL texutres
-		mpSkydomeIrradianceMap->Bind(5);
-		mpSkydomeTexture->Bind(6);
-
-		// Send IBL parameters
-		mpDeferredShader->SetFloat("exposure", mExposure);
-		mpDeferredShader->SetFloat("contrast", mContrast);
-		mpDeferredShader->SetFloat("hdrWidth", (float)mpSkydomeTexture->GetWidth());
-		mpDeferredShader->SetFloat("hdrHeight", (float)mpSkydomeTexture->GetHeight());
 
 		// Send debug information
 		mpDeferredShader->SetInt("displayMode", mGBufferDisplayMode);
@@ -566,8 +628,6 @@ namespace Hollow {
 		mpGBuffer->TexUnbind(2);
 		mpGBuffer->TexUnbind(3);
 		light.mpShadowMap->TexUnbind(4);
-		mpSkydomeIrradianceMap->Unbind(5);
-		mpSkydomeTexture->Unbind(6);
 	}
 
 	void RenderManager::LocalLightingPass()
@@ -609,7 +669,7 @@ namespace Hollow {
 				lightTransform = glm::scale(lightTransform, glm::vec3(light.mRadius));
 
 				mpLocalLightShader->SetMat4("Model", lightTransform);
-				
+
 				DrawSphere();
 			}
 			glDisable(GL_BLEND);
@@ -728,7 +788,7 @@ namespace Hollow {
 			{
 				continue;
 			}
-			
+
 			pShader->SetMat4("Model", data.mpModel);
 
 			pShader->SetInt("isAnimated", data.mIsAnimated);
@@ -858,25 +918,13 @@ namespace Hollow {
 
 	void RenderManager::DrawParticles(CameraData& cameraData)
 	{
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, mpGBuffer->GetFrameBufferID());
-		if (mBloomEnabled)
-		{
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpBloomFrame->GetFrameBufferID());
-		}
-		else
-		{
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);// write to default framebuffer
-		}
-		glBlitFramebuffer(0, 0, mpGBuffer->mWidth, mpGBuffer->mHeight, 
-			0, 0, mpGBuffer->mWidth, mpGBuffer->mHeight, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-
-		glEnable(GL_DEPTH_TEST);
 		
+
 		// Draw Particles 
 		mpParticleShader->Use();
 		mpParticleShader->SetMat4("View", cameraData.mViewMatrix);
 		mpParticleShader->SetMat4("Projection", cameraData.mProjectionMatrix);
-				
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -898,23 +946,23 @@ namespace Hollow {
 				particle.mpComputeShader->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
 				ShaderStorageBuffer::PutMemoryBarrier();
 				particle.mpComputeShader->Unbind();
-				particle.mpParticleDataStorage->Unbind(2);	
+				particle.mpParticleDataStorage->Unbind(2);
 
 				mpParticleShader->Use();
 				mpParticleShader->SetMat4("Model", particle.mModel);
 				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
 				mpParticleShader->SetFloat("SpriteSize", 0.2f);
-								
+
 				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
 				particle.mpParticleVAO->Bind();
-				
+
 				GLCall(glDrawArrays(GL_POINTS, 0, particle.mParticlesCount));
 				particle.mTex->Unbind(4);
 				mpParticlesPositionStorage->Unbind(3);
 				particle.mpParticleVAO->Unbind();
 			}
-			else if(particle.mType == MODEL)
+			else if (particle.mType == MODEL)
 			{
 				particle.mpParticleVBO->AddSubData(
 					&particle.mParticleModelMatrices[0], // data
@@ -1004,8 +1052,8 @@ namespace Hollow {
 
 		mpDebugShader->SetMat4("Model", glm::mat4(1.0f));
 		mpDebugShader->SetVec3("Color", COLOR_BLUE);
-		
-		for(unsigned int i = 0; i < mDebugPathData.size(); ++i)
+
+		for (unsigned int i = 0; i < mDebugPathData.size(); ++i)
 		{
 			DebugPathData& path = mDebugPathData[i];
 			path.mCurveVAO->Bind();
@@ -1048,7 +1096,7 @@ namespace Hollow {
 		DrawFSQ();
 		mpFinalBuffer->TexUnbind(1);
 		mpAAShader->Unbind();
-  }
+	}
 
 	void RenderManager::DrawSceneWithBloom()
 	{
@@ -1116,15 +1164,15 @@ namespace Hollow {
 
 		mpUIShader->Unbind();
 		mUIRenderData.clear();
-  }
+	}
 
 	void RenderManager::DebugDisplay()
 	{
 		DebugDisplayGBuffer();
 		DebugDisplayShadow();
 		DebugDisplayIBL();
-		DebugDisplayAA();
-		ImGui::Checkbox("Particle System",&ShowParticles);
+		DebugDisplayPostProcessing();
+		ImGui::Checkbox("Particle System", &ShowParticles);
 	}
 
 	void RenderManager::DebugDisplayGBuffer()
@@ -1144,7 +1192,7 @@ namespace Hollow {
 			ImGui::InputScalar("Shadow Map Light", ImGuiDataType_U32, &mShadowMapDebugLightIndex);
 			if (mShadowMapDebugLightIndex >= mLightData.size())
 			{
-				mShadowMapDebugLightIndex = mLightData.size()-1;
+				mShadowMapDebugLightIndex = mLightData.size() - 1;
 			}
 		}
 	}
@@ -1155,14 +1203,15 @@ namespace Hollow {
 		{
 			ImGui::InputFloat("Exposure", &mExposure);
 			ImGui::InputFloat("Contrast", &mContrast);
-			ImGui::Image((void*)mpSkydomeTexture->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
-			ImGui::Image((void*)mpSkydomeIrradianceMap->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			ImGui::Image((void*)mpSkydomeTexture->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			ImGui::Image((void*)mpSkydomeIrradianceMap->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 		}
 	}
-	void RenderManager::DebugDisplayAA()
- {
-		if (ImGui::CollapsingHeader("AA"))
+	void RenderManager::DebugDisplayPostProcessing()
+	{
+		if (ImGui::CollapsingHeader("PostProcessing"))
 		{
+			ImGui::Checkbox("Bloom", &mBloomEnabled);
 			ImGui::InputInt("FXAA On", &mFXAA);
 			ImGui::InputFloat("FXAA Span", &mFXAASpan);
 		}

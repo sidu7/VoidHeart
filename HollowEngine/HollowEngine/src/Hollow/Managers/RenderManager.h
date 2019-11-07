@@ -34,19 +34,21 @@ namespace Hollow {
 		void InitializeSkydome();
 		void InitializeHammersley(unsigned int n);
 
+		void CreateAmbientShader();
+		void CreateLocalLightShader(rapidjson::Value::Object& data);
+		void CreateDeferredShader(rapidjson::Value::Object& data);
 		void CreateSkydomeShader();
 
 		void InitializeGBuffer(rapidjson::Value::Object& data);
 
-		void CreateLocalLightShader(rapidjson::Value::Object& data);
-		void CreateDeferredShader(rapidjson::Value::Object& data);
 
 		void CreateShadowMap(LightData& light);
 		void BlurTexture(unsigned int inputTextureID, unsigned int width, unsigned int height, unsigned int channels, unsigned int blurWidth, unsigned int& outputTextureID);
 		std::vector<float> CreateBlurKernel(unsigned int distance);
 
-		void GBufferPass(CameraData& cameraData);
-		void GlobalLightingPass(LightData& light, glm::vec3 eyePosition);
+		void GBufferPass();
+		void AmbientPass();
+		void GlobalLightingPass(LightData& light);
 		void LocalLightingPass();
 
 		void DrawAllRenderData(Shader* pShader);
@@ -71,7 +73,7 @@ namespace Hollow {
 		void DebugDisplayGBuffer();
 		void DebugDisplayShadow();
 		void DebugDisplayIBL();
-		void DebugDisplayAA();
+		void DebugDisplayPostProcessing();
 
 	public:
 		std::vector<RenderData> mRenderData;
@@ -86,6 +88,9 @@ namespace Hollow {
 		std::vector<CameraData> mSecondaryCameras;
 
 	private:
+		// Transformation matricies
+		glm::mat4 mProjectionMatrix;
+		glm::mat4 mViewMatrix;
 
 		GameWindow* mpWindow;
 		//Camera* mpCamera;
@@ -100,6 +105,9 @@ namespace Hollow {
 		Texture* mpSkydomeTexture;
 		Texture* mpSkydomeIrradianceMap;
 		SkydomeData mSkydomeData;
+
+		// Ambient lighting pass
+		Shader* mpAmbientShader;
 
 		// Image based lighting
 		float mExposure;

@@ -16,7 +16,7 @@
         },
         {
             "Type": "Model",
-            "Shape" :  1,
+            "Shape" :  2,
             "CastShadow": true
         },
         {
