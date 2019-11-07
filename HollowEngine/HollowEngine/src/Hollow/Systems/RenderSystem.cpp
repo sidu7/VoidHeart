@@ -29,12 +29,12 @@ void Hollow::RenderSystem::Update()
 
 		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
 
-		if (trans->dirtyBit) {
+		//if (trans->dirtyBit) {
 			trans->mTransformationMatrix = glm::translate(glm::mat4(1.0f), trans->mPosition);
 			trans->mTransformationMatrix *= glm::toMat4(trans->mQuaternion);
 			trans->mTransformationMatrix = glm::scale(trans->mTransformationMatrix, trans->mScale);
 			trans->dirtyBit = false;
-		}
+		//}
 		data.mpModel = trans->mTransformationMatrix;
 
 		//DebugDrawManager::Instance().DebugSphere(trans->GetPosition(), glm::vec3(5.0f));

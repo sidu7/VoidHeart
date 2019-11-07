@@ -8,6 +8,9 @@
 
 #include "Hollow/Core/GameObject.h"
 
+#include "Hollow/Managers/RenderManager.h"
+#include "Hollow/Managers/AudioManager.h"
+
 namespace Hollow {
 
 	void ImGuiManager::Init(GameWindow* pWindow)
@@ -75,6 +78,24 @@ namespace Hollow {
 		ImGui::EndChild();
 		ImGui::EndGroup();
 
+		ImGui::End();
+
+		// Tabs for larger sytems
+		ImGui::Begin("Managers");
+		if (ImGui::BeginTabBar("Manager Tab Bar"))
+		{
+			if(ImGui::BeginTabItem("Renderer"))
+			{
+				RenderManager::Instance().DebugDisplay();
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Audio"))
+			{
+				AudioManager::Instance().DebugDisplay();
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();
+		}
 		ImGui::End();
 
 		// Show demo window for now

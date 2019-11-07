@@ -18,6 +18,7 @@ uniform vec3 lightPosition;
 // Shadow maps
 uniform sampler2D shadowMap;
 uniform mat4 shadowMatrix;
+uniform int shadowMode;
 uniform float alpha;
 uniform float md;
 
@@ -53,6 +54,26 @@ vec3 MSMDecomposition(vec4 A, vec3 b)
 
 	float c0 = 1.0 - X*c1 - Y*c2;
 	return vec3(c0, c1, c2);
+}
+
+vec3 Cholesky(float m11, float m12, float m13, float m22, float m23, float m33, float z1, float z2, float z3)
+{
+    float a = sqrt(m11);
+    float b = m12 / a;
+    float c = m13 / a;
+    float d = sqrt(m22 - (b*b));
+    float e = (m23 - b*c) / d;
+    float f = sqrt(m33 - c*c - e*e);
+
+    float c1p = z1 / a;
+    float c2p = (z2 - b*c1p) / d;
+    float c3p = (z3 - c*c1p - e*c2p) / f;
+
+    float c3 = c3p / f;
+    float c2 = (c2p - e*c3) / d;
+    float c1 = (c1p - b*c2 - c*c3) / a;
+
+    return vec3(c1,c2,c3);
 }
 
 // Distribution term for BRDF
@@ -161,10 +182,17 @@ void main()
 	vec4 shadowCoord = shadowMatrix * fragmentPosition;
 
 	// Put into NDC
+	float G = 0.0;
+	if(shadowCoord.w > 0)
+	{
+
 	shadowCoord /= shadowCoord.w;
 
 	// Get texture coordinate 0 .. 1, apply bias
 	vec2 uv = shadowCoord.xy*vec2(0.5) + vec2(0.5);
+	if(uv.x >= 0.0 && uv.x <= 1.0 && uv.y >= 0.0 && uv.y <= 1.0)
+	{
+	
 
 	// Use texture coordinate to get shadow depth
 	float shadowDepth = texture(shadowMap, uv).r;
@@ -176,13 +204,16 @@ void main()
 	{
 		shadow = 1.0;
 	}
+	
 
 	float zf = pointDepth;
 	vec4 b = texture(shadowMap, uv);
 	vec4 bP = (1.0 - alpha)*b + alpha*vec4(md, md, md, md);
 	vec3 Z = vec3(1.0, zf, zf*zf);
 
-	vec3 c = MSMDecomposition(bP, Z);
+	//vec3 c = MSMDecomposition(bP, Z);
+	//1.0,bprime.x, bprime.y, bprime.y,prime.z,bprime.w,1.0,
+	vec3 c = Cholesky(1.0, bP.x, bP.y, bP.y, bP.z, bP.w, 1.0, zf, zf*zf);
 
 	float c1 = c.x;
 	float c2 = c.y;
@@ -204,8 +235,7 @@ void main()
 		z2 = t;
 	}
 
-	float G = 0.0;
-	//zf = 0.0f;
+	//float G = 0.0;
 
 	if(zf <= z2)
 	{
@@ -220,7 +250,12 @@ void main()
 		G = 1.0 - ((z2*z3 - bP.x*(z2+z3)+bP.y)/((zf-z2)*(zf-z3)));
 	}
 
-	//G = shadow;
+	if(shadowMode == 1)
+	{
+		G = shadow;
+	}
+	}
+	}
 
 	//result = (1.0 - G)*result;
 

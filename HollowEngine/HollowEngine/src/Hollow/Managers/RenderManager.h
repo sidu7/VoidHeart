@@ -25,6 +25,7 @@ namespace Hollow {
 		void CleanUp();
 		void Update();
 		inline glm::vec2 GetWindowSize();
+		void DebugDisplay();
 
 	private:
 		// Initialization Functions
@@ -51,17 +52,19 @@ namespace Hollow {
 
 		void DrawParticles();
 
-		void DrawSkydome(const CameraData& camera);
+		void DrawSkydome();
 
 		void DrawDebugDrawings();
 
 		void DrawShadowMap();
 
+		void ApplyFXAA();
+
 		// ImGui Debug functions
-		void DebugDisplay();
 		void DebugDisplayGBuffer();
 		void DebugDisplayShadow();
 		void DebugDisplayIBL();
+		void DebugDisplayAA();
 
 	public:
 		std::vector<RenderData> mRenderData;
@@ -105,6 +108,7 @@ namespace Hollow {
 		Shader* mpShadowMapShader;
 		Shader* mpShadowDebugShader;
 		bool mShadowMapDebugMode;
+		int mShadowMapMode;
 		unsigned int mShadowMapDebugLightIndex;
 
 		// Blur
@@ -116,5 +120,11 @@ namespace Hollow {
 		Shader* mpParticleCompute;
 		ShaderStorageBuffer* mpParticlesPositionStorage;
 		bool ShowParticles;
+
+		// Post-Processing
+		Shader* mpAAShader;
+		FrameBuffer* mpFinalBuffer;
+		int mFXAA;
+		float mFXAASpan;
 	};
 }
