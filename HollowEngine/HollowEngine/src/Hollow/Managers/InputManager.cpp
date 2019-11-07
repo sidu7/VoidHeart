@@ -29,7 +29,17 @@ namespace Hollow {
 	{
 		return mCurrentMouseState[keycode] && !mPrevMouseState[keycode];
 	}
-	
+
+	bool InputManager::IsPressed(SDL_GameControllerButton button)
+	{
+		return SDL_GameControllerGetButton(mpController, button);
+	}
+
+	Sint16 InputManager::GetAxisValue(SDL_GameControllerAxis axis)
+	{
+		return SDL_GameControllerGetAxis(mpController, axis);
+	}
+
 	bool InputManager::IsMouseButtonPressed(unsigned int button)
 	{
 		return mCurrentMouseState[button];
@@ -45,8 +55,8 @@ namespace Hollow {
 	{
 		int xpos, ypos;
 		SDL_GetMouseState(&xpos, &ypos);
-		
-		return glm::ivec2(xpos,ypos);
+
+		return glm::ivec2(xpos, ypos);
 	}
 
 	float InputManager::GetMouseX()
@@ -72,26 +82,28 @@ namespace Hollow {
 		SDL_memset(mPreviousState, 0, 512 * sizeof(Uint8));
 		SDL_memset(mPrevMouseState, 0, 6 * sizeof(bool));
 		SDL_memset(mCurrentMouseState, 0, 6 * sizeof(bool));
+		mpController = SDL_GameControllerOpen(0);
+		HW_TRACE("It doesnt make sense", SDL_IsGameController(0));
 	}
 
 	void InputManager::HandleWindowEvents(const SDL_Event& e)
 	{
-		if(e.type == SDL_WINDOWEVENT)
+		if (e.type == SDL_WINDOWEVENT)
 		{
-			switch(e.window.event)
+			switch (e.window.event)
 			{
 			case SDL_WINDOWEVENT_RESIZED:
-				{
-					WindowResizeEvent wre(e.window.data1, e.window.data2);
-					EventCallback(wre);
-					break;
-				}
+			{
+				WindowResizeEvent wre(e.window.data1, e.window.data2);
+				EventCallback(wre);
+				break;
+			}
 			case SDL_WINDOWEVENT_CLOSE:
-				{
-					WindowCloseEvent wce;
-					EventCallback(wce);
-					break;
-				}
+			{
+				WindowCloseEvent wce;
+				EventCallback(wce);
+				break;
+			}
 			}
 		}
 	}
@@ -114,10 +126,10 @@ namespace Hollow {
 			break;
 		}
 		}
-		
+
 	}
 
-	void InputManager::HandleMouseEvents(const SDL_Event & event)
+	void InputManager::HandleMouseEvents(const SDL_Event& event)
 	{
 		if (event.type == SDL_MOUSEWHEEL)
 		{
@@ -133,14 +145,14 @@ namespace Hollow {
 			EventCallback(mpe);
 
 		}
-		else if(event.type == SDL_MOUSEBUTTONUP)
+		else if (event.type == SDL_MOUSEBUTTONUP)
 		{
 			mCurrentMouseState[event.button.button] = false;
-			
+
 			MouseButtonReleasedEvent mre(event.button.button);
 			EventCallback(mre);
 		}
-		else if(event.type == SDL_MOUSEMOTION)
+		else if (event.type == SDL_MOUSEMOTION)
 		{
 			xRel = static_cast<float>(event.motion.xrel);
 			yRel = -static_cast<float>(event.motion.yrel);
@@ -165,17 +177,17 @@ namespace Hollow {
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 6 * sizeof(bool));
 
 		xRel = 0.0f; yRel = 0.0f;
-		
+
 		while (SDL_PollEvent(&e) != 0)
 		{
 			ImGui_ImplSDL2_ProcessEvent(&e);
-			
+
 			HandleWindowEvents(e);
 			HandleKeyboardEvents(e);
 			HandleMouseEvents(e);
 			// TODO add controller support here
 		}
-		
+
 		//fetch keyboard state
 		int numberOfFetchedKeys = 0;
 		const Uint8* pCurrentKeyStates = SDL_GetKeyboardState(&numberOfFetchedKeys);
@@ -184,7 +196,7 @@ namespace Hollow {
 		{
 			numberOfFetchedKeys = 512;
 		}
-		
+
 		SDL_memcpy(mPreviousState, mCurrentState, numberOfFetchedKeys * sizeof(Uint8));
 		SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOfFetchedKeys * sizeof(Uint8));
 	}

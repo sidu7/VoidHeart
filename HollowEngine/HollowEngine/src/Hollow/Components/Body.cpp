@@ -63,7 +63,7 @@ namespace Hollow {
 			bodyType = mapOfTypesToStrings[data["RigidbodyType"].GetString()];
 
 			if(bodyType == Body::STATIC)
-				mMass = std::numeric_limits<float>::max();
+				mMass = std::numeric_limits<float>::infinity();
 		}
 		if (data.HasMember("IsFrictionLess"))
 		{

@@ -56,15 +56,27 @@ namespace Hollow
 
 	GameObject* ResourceManager::LoadGameObjectFromFile(std::string path)
 	{
-		PARSE_JSON_FILE(path);
+		if (mCachedGameObjectsMap.find(path) == mCachedGameObjectsMap.end())
+		{
+			std::ifstream file(path); 
+			std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>()); 
+			file.close();
+
+			mCachedGameObjectsMap[path] = contents;
+		}
+			
+		rapidjson::Document root; 
+		root.Parse(mCachedGameObjectsMap[path].c_str());
+		if (!root.IsObject()) { HW_CORE_ERROR("Error reading JSON file {0}", path); }
 
 		GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(root.GetObject());
-			
+
 		if (pNewGameObject)
 		{
 			GameObjectManager::Instance().AddGameObject(pNewGameObject);
 			return pNewGameObject;
-		}	
+		}
+		
 		return nullptr;
 	}
 

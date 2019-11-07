@@ -67,6 +67,7 @@ namespace Hollow
 		std::unordered_map<std::string, const aiScene*> mModelRootsCache;
 		std::unordered_map<std::string, std::vector<State*>> mStateFileCache;
 		std::unordered_map<std::string, Shader*> mShaderCache;
+		std::unordered_map<std::string, std::string> mCachedGameObjectsMap;
 
 		// Sounds cache, maybe split into SFX and Songs
 		std::unordered_map<std::string, FMOD::Sound*> mSoundCache;

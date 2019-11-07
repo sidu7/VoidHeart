@@ -216,5 +216,6 @@ namespace Hollow
 		auto res2 = ThreadManager::Instance().Push(THREAD_FUNCTION(AnimationSystem::Animate, mGameObjects.size() / 2, mGameObjects.size()));
 		res1.get();
 		res2.get();
+		//Animate(0, mGameObjects.size());
 	}
 }

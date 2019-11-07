@@ -2,14 +2,14 @@
     "Components": [
         {
             "Type": "Transform",
-            "Position": [ 0.0, 10.0, 0.0 ],
+            "Position": [ 0.0, 5.0, 10.0 ],
             "Scale": [ 1.0, 1.0, 1.0 ],
             "Rotation": [ 0.0, 90.0, 0.0 ]
         },
         {
             "Type": "Body",
             "Mass": 1.0,
-            "IsFrictionLess": true
+            "IsFrictionLess": false
         },
         {
           "Type": "Collider",

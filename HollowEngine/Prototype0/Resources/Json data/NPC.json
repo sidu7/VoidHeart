@@ -9,10 +9,11 @@
       "Type": "Body",
       "Mass": 1000000.0,
       "isFrictionLess": true,
-      "Velocity": [ 0.0, 0.0, 2.0 ]
+      "Velocity": [ 0.0, 0.0, 4.0 ]
     },
     {
-      "Type": "Collider"
+      "Type": "Collider",
+      "Shape": "BOX" 
     },
     {
       "Type": "Model",
@@ -28,7 +29,7 @@
     {
       "Type": "Animator",
       "BoneData": "Resources/Models/Walking.fbx",
-      "Animations": [ [ "Walking", "Resources/Models/Walking.fbx" ] ]
+      "Animations": [ [ "Walking", "Resources/Models/NarutoRun.fbx" ] ]
     },
     {
       "Type": "StateMachine",

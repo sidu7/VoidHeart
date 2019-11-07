@@ -31,6 +31,7 @@ namespace Hollow {
 		
 		mIsRunning = true;
 		// Initalize managers
+		InputManager::Instance().Init();
 		ThreadManager::Instance().Init();
 		MemoryManager::Instance().Init(JSONHelper::GetSettings(data,"Memory"));
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);

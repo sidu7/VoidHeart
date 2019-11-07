@@ -12,7 +12,8 @@ namespace Hollow {
 		HOLLOW_API bool IsKeyTriggered(unsigned int keycode);
 		HOLLOW_API bool IsMouseButtonPressed(unsigned int button);
 		HOLLOW_API bool IsMouseButtonTriggered(unsigned int button);
-
+		HOLLOW_API bool IsPressed(SDL_GameControllerButton button);
+		HOLLOW_API Sint16 GetAxisValue(SDL_GameControllerAxis axis);
 		HOLLOW_API glm::vec2 GetMouseMotion();
 		
 		HOLLOW_API glm::ivec2 GetMousePosition();
@@ -28,7 +29,7 @@ namespace Hollow {
 		HOLLOW_API void Update();
 		HOLLOW_API void HideMouseCursor();
 		HOLLOW_API void ShowMouseCursor();
-		
+		SDL_GameController* mpController;
 	private:
 		EventCallbackFn EventCallback;
 		

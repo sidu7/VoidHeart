@@ -127,6 +127,7 @@ namespace Hollow {
 		bool mShadowMapDebugMode;
 		int mShadowMapMode;
 		unsigned int mShadowMapDebugLightIndex;
+		Texture* horizontalBlurred;
 
 		// Blur
 		UniformBuffer* mpWeights;
