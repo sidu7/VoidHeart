@@ -2,17 +2,18 @@
     "Components": [
         {
             "Type": "Transform",
-          "Position": [ 0.0, 0.0, 0.0 ],
-          "Scale" :  [1.0, 1.0, 1.0]
+          "Position": [ 0.5, 10.0, 0.0 ],
+          "Scale": [ 4.0, 0.5, 1.0 ]
         },
-      {
-        "Type": "Body",
-        "Mass": 1.0,
-        "RigidbodyType": "DYNAMIC"
-      },
-      {
-        "Type": "Collider"
-      },
+        {
+            "Type": "Body",
+            "Mass": 1.0,
+            "RigidbodyType": "DYNAMIC"
+        },
+        {
+          "Type": "Collider",
+          "Shape": "BOX"
+        },
         {
             "Type": "Model",
             "Shape" :  1,
