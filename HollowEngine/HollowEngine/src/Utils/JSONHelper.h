@@ -23,10 +23,11 @@ namespace Hollow
 		//JSON parsing
 		inline static rapidjson::Value::Object GetSettings(rapidjson::Value::Object& data, const char* setting)
 		{
-			if (data.HasMember(setting))
+			if (!data.HasMember(setting))
 			{
-				return data[setting].GetArray()[0].GetObject();
+				HW_CORE_ERROR("Setting {0} not found", setting);
 			}
+			return data[setting].GetArray()[0].GetObject();
 		}
 
 		inline static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)

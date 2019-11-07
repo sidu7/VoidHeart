@@ -72,6 +72,12 @@
     <ClCompile Include="src\Hollow\Managers\ScriptingManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Script.cpp" />
     <ClCompile Include="src\Hollow\Systems\ScriptingSystem.cpp" />
+    <ClCompile Include="src\Hollow\Components\UITransform.cpp" />
+    <ClCompile Include="src\Hollow\Components\UIImage.cpp" />
+    <ClCompile Include="src\Hollow\Components\UIButton.cpp" />
+    <ClCompile Include="src\Hollow\Managers\UIManager.cpp" />
+    <ClCompile Include="src\Hollow\Systems\UIButtonSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\UIRenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -236,8 +242,19 @@
     <ClInclude Include="src\Hollow\Managers\ScriptingManager.h" />
     <ClInclude Include="src\Hollow\Components\Script.h" />
     <ClInclude Include="src\Hollow\Systems\ScriptingSystem.h" />
+    <ClInclude Include="src\Hollow\Events\EventData.h" />
+    <ClInclude Include="src\Hollow\Components\UITransform.h" />
+    <ClInclude Include="src\Hollow\Components\UIImage.h" />
+    <ClInclude Include="src\Hollow\Components\UIButton.h" />
+    <ClInclude Include="src\Hollow\Managers\UIManager.h" />
+    <ClInclude Include="src\Hollow\Systems\UIButtonSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\UIRenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Hollow\Enums\GameEvents.enum" />
+    <None Include="src\Hollow\Enums\Buttons.enum" />
   </ItemGroup>
 </Project>

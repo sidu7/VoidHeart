@@ -9,7 +9,7 @@ PrototypeSystem PrototypeSystem::instance;
 
 void PrototypeSystem::AddGameObject(Hollow::GameObject* object)
 {
-	CheckComponents<PrototypeComponent>(object);
+	CheckAllComponents<PrototypeComponent>(object);
 }
 
 void PrototypeSystem::TestEventHandling(Hollow::GameEvent* event)
@@ -19,7 +19,7 @@ void PrototypeSystem::TestEventHandling(Hollow::GameEvent* event)
 
 void PrototypeSystem::Init()
 {
-	Hollow::EventManager::Instance().SubscribeEvent(Hollow::GameEvent::COLLISION_EVENT,EVENT_CALLBACK(PrototypeSystem::TestEventHandling));
+	Hollow::EventManager::Instance().SubscribeEvent(Hollow::GameEvent::GAME_OVER,EVENT_CALLBACK(PrototypeSystem::TestEventHandling));
 }
 
 void PrototypeSystem::HandleBroadcastEvent(Hollow::GameEvent*)

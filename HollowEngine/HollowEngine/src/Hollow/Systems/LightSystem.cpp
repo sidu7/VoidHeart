@@ -14,7 +14,7 @@ namespace Hollow
 
 	void LightSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<Transform, Light>(object);
+		CheckAllComponents<Transform, Light>(object);
 	}
 
 	void LightSystem::Update()

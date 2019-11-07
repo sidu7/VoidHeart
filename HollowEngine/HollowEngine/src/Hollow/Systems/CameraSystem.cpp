@@ -15,7 +15,7 @@ namespace Hollow {
 	CameraSystem CameraSystem::instance;
 	void CameraSystem::AddGameObject(GameObject* object)
 	{
-		if (CheckComponents<Transform, Camera>(object))
+		if (CheckAllComponents<Transform, Camera>(object))
 		{
 			Camera* pCamera = object->GetComponent<Camera>();
 			UpdateCamera(pCamera);
@@ -71,13 +71,13 @@ namespace Hollow {
 
 	void CameraSystem::HandleMouseInput(Camera* pCamera)
 	{
-		std::pair<float, float> mousePos = InputManager::Instance().GetMousePosition();
+		glm::vec2 mousePos = InputManager::Instance().GetMousePosition();
 
-		float xoffset = mousePos.first - mLastX;
-		float yoffset = mLastY - mousePos.second;
+		float xoffset = mousePos.x - mLastX;
+		float yoffset = mLastY - mousePos.y;
 
-		mLastX = mousePos.first;
-		mLastY = mousePos.second;
+		mLastX = mousePos.x;
+		mLastY = mousePos.y;
 
 		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
 			ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
@@ -179,8 +179,8 @@ namespace Hollow {
 			}
 			else if (pCamera->mProjectionType == ORTHOGRAPHIC)
 			{
+				cameraData.mProjectionMatrix = glm::ortho(0.0f, static_cast<float>(pCamera->mViewPortSize.x), 0.0f, static_cast<float>(pCamera->mViewPortSize.y),-1.0f,1.0f);
 				cameraData.mViewMatrix = glm::translate(glm::mat4(1.0f), cameraData.mEyePosition);
-				cameraData.mProjectionMatrix = glm::ortho(0, pCamera->mViewPortSize.x, 0, pCamera->mViewPortSize.y);
 			}
 			
 			cameraData.mType = pCamera->mType;

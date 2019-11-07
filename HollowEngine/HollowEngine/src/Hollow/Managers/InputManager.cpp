@@ -41,18 +41,18 @@ namespace Hollow {
 	}
 
 
-	std::pair<float, float> InputManager::GetMousePosition()
+	glm::ivec2 InputManager::GetMousePosition()
 	{
 		int xpos, ypos;
 		SDL_GetMouseState(&xpos, &ypos);
 		
-		return { (float)xpos, (float)ypos };
+		return glm::ivec2(xpos,ypos);
 	}
 
 	float InputManager::GetMouseX()
 	{
 		auto pos = GetMousePosition();
-		return pos.first;
+		return pos.x;
 	}
 
 
@@ -60,7 +60,7 @@ namespace Hollow {
 	float InputManager::GetMouseY()
 	{
 		auto pos = GetMousePosition();
-		return pos.second;
+		return pos.y;
 	}
 
 	void InputManager::SetEventCallback(const EventCallbackFn& callback)

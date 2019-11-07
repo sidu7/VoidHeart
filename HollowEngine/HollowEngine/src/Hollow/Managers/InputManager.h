@@ -16,6 +16,7 @@ namespace Hollow {
 		std::pair<float, float> GetMouseMotion();
 		
 		std::pair<float, float> GetMousePosition();
+    
 		float GetMouseX();
 		float GetMouseY();
 

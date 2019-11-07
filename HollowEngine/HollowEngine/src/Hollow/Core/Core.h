@@ -32,4 +32,4 @@
 
 #define REGISTERSYSTEM(x,y)	private:								\
 							static x instance;						\
-							x() : System(this,y) { }
+							x() : System(this,y,std::type_index(typeid(x))) { }

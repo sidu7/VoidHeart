@@ -9,6 +9,7 @@ namespace Hollow
 	{
 		REGISTERSYSTEM(PathFollowSystem, 1);
 	public:
+		void Init();
 		void AddGameObject(GameObject* pGameObject) override;
 		void Update() override;
 
@@ -16,7 +17,12 @@ namespace Hollow
 		void CalculateControlPointMatrices(PathFollow* pathFollow);
 		void CreateArcLengthTable(PathFollow* pathFollow);
 		void CreateDebugVAO(PathFollow* pathFollow);
+		void StopPathMotion();
+		void StartPathMotion();
 		inline std::pair<float, int> SearchInArcTable(const float distance, PathFollow* pathFollow);
 		int BinarySearch(unsigned int start, unsigned int end, float distance, std::vector<std::pair<float, std::pair<float, int>>>& list);
+
+	private:
+		bool StopMoving;
 	};
 }

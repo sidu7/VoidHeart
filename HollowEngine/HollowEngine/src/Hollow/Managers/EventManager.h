@@ -9,6 +9,7 @@ namespace Hollow
 	{
 		SINGLETON(EventManager)
 	public:
+		void Init();
 		void BroadcastToSubscribers(GameEvent* event);
 		void BroadcastEvent(GameEvent*);
 		void AddDelayedEvent(GameEvent*, float);
@@ -18,5 +19,6 @@ namespace Hollow
 	private:
 		std::vector<GameEvent*> mDelayedEvents;
 		std::unordered_map<GameEvent::GameEventType, std::vector<std::function<void(GameEvent*)>>> mEventsMap;
+		std::unordered_map<std::string, GameEvent::GameEventType> mEventsEnumMap;
 	};
 }

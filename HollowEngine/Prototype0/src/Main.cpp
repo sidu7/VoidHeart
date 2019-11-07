@@ -23,7 +23,7 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 
-#include "Hollow/Events/CollisionEvent.h"
+#include "GameOver.h"
 
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
@@ -58,7 +58,7 @@ class UILayer : public Hollow::Layer
 			e.Handled = true;
 			
 			//Test Event
-			Hollow::CollisionEvent test;
+			Hollow::GameOverEvent test;
 			Hollow::EventManager::Instance().BroadcastToSubscribers(&test);
 			//Test Event
 		}
@@ -84,6 +84,9 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UIElement.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StartMoveButton.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StopMoveButton.json");
 	
 		//int dim = 2;
 		//int height = 5;

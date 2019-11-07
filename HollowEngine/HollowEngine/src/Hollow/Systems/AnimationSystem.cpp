@@ -16,7 +16,13 @@ namespace Hollow
 	
 	void AnimationSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<Animator,StateMachine>(object);
+		if(CheckAllComponents<Animator,StateMachine>(object))
+		{
+			Animator* animator = object->GetComponent<Animator>();
+			CreateSkeleton(animator);
+			StateMachine* stateMachine = object->GetComponent<StateMachine>();
+			animator->mCurrentState = stateMachine->mCurrentState->mName;
+		}
 	}
 
 	void AnimationSystem::Animate(unsigned int start, unsigned int end)
@@ -26,18 +32,41 @@ namespace Hollow
 			GameObject* gameobject = mGameObjects[i];
 			Animator* animator = gameobject->GetComponent<Animator>();
 			StateMachine* state = gameobject->GetComponent<StateMachine>();
-			if (animator->mRunningState != state->mCurrentState->mName)
+			float deltaTime = FrameRateController::Instance().GetFrameTime();
+			if (animator->mCurrentState != state->mCurrentState->mName)
 			{
-				animator->mRunningState = state->mCurrentState->mName;
+				animator->mPreviousState = animator->mCurrentState;
+				animator->mCurrentState = state->mCurrentState->mName;
 				animator->mLoopingAnimation = state->mCurrentState->mIsLoop;
-				animator->mRunTime = FrameRateController::Instance().GetFrameTime();
+				animator->mCurrentRunTime = 0.0f;
+				if (state->mCurrentState->mIsLoop && state->mPreviousState->mIsLoop)
+				{
+					animator->mPreviousRunTime = animator->mCurrentRunTime;
+					animator->mBlending = true;
+					animator->mBlendTime = animator->mBlendFactor;
+				}
 			}
-			animator->mRunTime += FrameRateController::Instance().GetFrameTime();
 			
-			auto ticks_duration = animator->mAnimations[animator->mRunningState];
-			double TimeinTicks = animator->mRunTime * ticks_duration.first;
+			double prevTimeFrame = 0.0f;
+			if(animator->mBlending)
+			{
+				animator->mPreviousRunTime += deltaTime;
+				auto prev_ticks_duration = animator->mAnimations[animator->mPreviousState];
+				double PrevTimeinTicks = animator->mPreviousRunTime * prev_ticks_duration.first;
+				prevTimeFrame = fmod(PrevTimeinTicks, prev_ticks_duration.second);
+				animator->mBlendTime -= deltaTime;
+				if(animator->mBlendTime <= 0.0f)
+				{
+					animator->mBlending = false;
+				}
+			}
+			
+			animator->mCurrentRunTime += deltaTime;			
+			auto ticks_duration = animator->mAnimations[animator->mCurrentState];
+			double TimeinTicks = animator->mCurrentRunTime * ticks_duration.first;
 			double animationTime = TimeinTicks / ticks_duration.second;
-			
+
+			// For Non looping animations
 			if (animationTime > 1.0 && !animator->mLoopingAnimation)
 			{
 				state->mNeedChangeState = true;
@@ -46,9 +75,11 @@ namespace Hollow
 			
 			double timeFrame = fmod(TimeinTicks, ticks_duration.second);
 			animator->mBoneTransformations.clear();
-			std::string animationName = animator->mRunningState;
+			std::string animationName = animator->mCurrentState;
+			std::string prevAnimationName = animator->mPreviousState;
 			std::vector<glm::mat4> currentTransformations;
 			currentTransformations.reserve(animator->mBones.size());
+			auto& skeleton = animator->mSkeleton;
 			for (unsigned int j = 0; j < animator->mBones.size(); ++j)
 			{
 				Bone* bone = animator->mBones[j];
@@ -62,50 +93,63 @@ namespace Hollow
 					auto rotIndex = FindT2inList<glm::quat>(timeFrame, anim.mKeyRotations);
 					auto sclIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyScalings);
 
-					glm::vec3 position, scale;
-					glm::quat rotation;
-					glm::mat4 rot = glm::mat4(1.0f);
-					if (posIndex.second != -1)
+					glm::vec3 position = Interpolate(posIndex, timeFrame, anim.mKeyPositions);
+					glm::vec3 scale = Interpolate(sclIndex, timeFrame, anim.mKeyScalings);
+					glm::quat rotation = SInterpolate(rotIndex, timeFrame, anim.mKeyRotations);
+										
+					if (animator->mBlending && bone->mIsAnimated[prevAnimationName])
 					{
-						double T2 = anim.mKeyPositions[posIndex.second].first;
-						double T1 = anim.mKeyPositions[posIndex.first].first;
-						double localT = (timeFrame - T1) / (T2 - T1);
-						position = glm::lerp(anim.mKeyPositions[posIndex.first].second, anim.mKeyPositions[posIndex.second].second, (float)localT);
+						AnimationData& prevAnim = bone->mAnimations[prevAnimationName];
+						auto prevposIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyPositions);
+						auto prevrotIndex = FindT2inList<glm::quat>(prevTimeFrame, prevAnim.mKeyRotations);
+						auto prevsclIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyScalings);
+
+						glm::vec3 prevposition = Interpolate(prevposIndex, prevTimeFrame, prevAnim.mKeyPositions);
+						glm::vec3 prevscale = Interpolate(prevsclIndex, prevTimeFrame, prevAnim.mKeyScalings);
+						glm::quat prevrotation = SInterpolate(prevrotIndex, prevTimeFrame, prevAnim.mKeyRotations);
+						
+						float factor = animator->mBlendTime / animator->mBlendFactor;
+						position = glm::lerp(position, prevposition, factor);
+						rotation = glm::slerp(rotation, prevrotation,factor);
+						scale = glm::lerp(scale, prevscale, factor);
 					}
-					else
-					{
-						position = anim.mKeyPositions[posIndex.first].second;
-					}
-					if (rotIndex.second != -1)
-					{
-						double T2 = anim.mKeyRotations[rotIndex.second].first;
-						double T1 = anim.mKeyRotations[rotIndex.first].first;
-						double localT = (timeFrame - T1) / (T2 - T1);
-						rotation = glm::slerp(anim.mKeyRotations[rotIndex.first].second, anim.mKeyRotations[rotIndex.second].second, (float)localT);
-						rot = glm::toMat4(rotation);
-					}
-					else
-					{
-						rotation = anim.mKeyRotations[rotIndex.first].second;
-					}
-					if (sclIndex.second != -1)
-					{
-						double T2 = anim.mKeyScalings[sclIndex.second].first;
-						double T1 = anim.mKeyScalings[sclIndex.first].first;
-						double localT = (timeFrame - T1) / (T2 - T1);
-						scale = glm::lerp(anim.mKeyScalings[sclIndex.first].second, anim.mKeyScalings[sclIndex.second].second, (float)localT);
-					}
-					else
-					{
-						scale = anim.mKeyScalings[sclIndex.first].second;
-					}
+					
 					glm::mat4 translate = glm::translate(glm::mat4(1.0f), position);
+					glm::mat4 rot = glm::toMat4(rotation);
 					glm::mat4 scaling = glm::scale(glm::mat4(1.0f), scale);
 					trans = translate * rot * scaling;
 				}
 				else
 				{
-					trans = bone->mTransformation;
+					if(animator->mBlending && bone->mIsAnimated[prevAnimationName])
+					{
+						AnimationData& prevAnim = bone->mAnimations[prevAnimationName];
+						auto prevposIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyPositions);
+						auto prevrotIndex = FindT2inList<glm::quat>(prevTimeFrame, prevAnim.mKeyRotations);
+						auto prevsclIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyScalings);
+
+						glm::vec3 prevposition = Interpolate(prevposIndex, prevTimeFrame, prevAnim.mKeyPositions);
+						glm::vec3 prevscale = Interpolate(prevsclIndex, prevTimeFrame, prevAnim.mKeyScalings);
+						glm::quat prevrotation = SInterpolate(prevrotIndex, prevTimeFrame, prevAnim.mKeyRotations);
+
+						float factor = animator->mBlendTime / animator->mBlendFactor;
+						glm::vec3 position = GraphicsMath::TranslateFromMatrix(bone->mTransformation);
+						auto sclrot = GraphicsMath::ScaleRotationFromMatrix(bone->mTransformation);
+						glm::vec3 scale = sclrot.first;
+						glm::quat rotation = sclrot.second;
+						position = glm::lerp(position, prevposition, factor);
+						rotation = glm::slerp(rotation, prevrotation, factor);
+						scale = glm::lerp(scale, prevscale, factor);
+
+						glm::mat4 translate = glm::translate(glm::mat4(1.0f), position);
+						glm::mat4 rot = glm::toMat4(rotation);
+						glm::mat4 scaling = glm::scale(glm::mat4(1.0f), scale);
+						trans = translate * rot * scaling;
+					}
+					else
+					{
+						trans = bone->mTransformation;						
+					}
 				}
 				unsigned int parent = bone->mParentIndex;
 				if (parent != -1)
@@ -117,9 +161,52 @@ namespace Hollow
 					currentTransformations.emplace_back(trans);
 				}
 
+				skeleton[bone->mName] = currentTransformations[currentTransformations.size() - 1];
 				animator->mBoneTransformations.push_back(currentTransformations[currentTransformations.size() - 1] * bone->mOffset);
 			}
 			currentTransformations.clear();
+		}
+	}
+
+	void AnimationSystem::CreateSkeleton(Animator* animator)
+	{
+		auto& skeleton = animator->mSkeleton;
+
+		for(auto bone : animator->mBones)
+		{
+			skeleton[bone->mName] = glm::mat4(1.0f);
+		}
+	}
+
+	glm::vec3 AnimationSystem::Interpolate(std::pair<unsigned, unsigned>& index, double timeFrame,
+		std::vector<std::pair<double, glm::vec3>>& list)
+	{
+		if (index.second != -1)
+		{
+			double T2 = list[index.second].first;
+			double T1 = list[index.first].first;
+			double localT = (timeFrame - T1) / (T2 - T1);
+			return glm::lerp(list[index.first].second, list[index.second].second, (float)localT);
+		}
+		else
+		{
+			return list[index.first].second;
+		}
+	}
+
+	glm::quat AnimationSystem::SInterpolate(std::pair<unsigned, unsigned>& index, double timeFrame,
+		std::vector<std::pair<double, glm::quat>>& list)
+	{
+		if (index.second != -1)
+		{
+			double T2 = list[index.second].first;
+			double T1 = list[index.first].first;
+			double localT = (timeFrame - T1) / (T2 - T1);
+			return glm::slerp(list[index.first].second, list[index.second].second, (float)localT);
+		}
+		else
+		{
+			return list[index.first].second;
 		}
 	}
 

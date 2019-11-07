@@ -18,7 +18,7 @@ Hollow::RenderSystem Hollow::RenderSystem::instance;
 
 void Hollow::RenderSystem::AddGameObject(GameObject* object)
 {
-	CheckComponents<Transform,Model>(object);
+	CheckAllComponents<Transform,Model>(object);
 }
 
 void Hollow::RenderSystem::Update()

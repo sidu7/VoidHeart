@@ -65,6 +65,7 @@ namespace Hollow {
 		mpParticleShader = new Shader(data["ParticleShader"].GetArray()[0].GetString(), data["ParticleShader"].GetArray()[1].GetString());
 		mpParticlesPositionStorage = new ShaderStorageBuffer();
 		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
+		ShowParticles = true;
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 
 		// Init Bloom Shader and FrameBuffer
@@ -187,11 +188,6 @@ namespace Hollow {
 		}
 
 		// UI camera stuff
-		mProjectionMatrix = mUICamera.mProjectionMatrix;
-		mViewMatrix = mUICamera.mViewMatrix;
-
-		GLCall(glViewport(0, 0, mUICamera.mViewPortSize.x, mUICamera.mViewPortSize.y));
-		
 		DrawUI();
 
 		// Update ImGui
@@ -852,35 +848,54 @@ namespace Hollow {
 
 	void RenderManager::DrawUI()
 	{
-		glDisable(GL_DEPTH_TEST);
-		glm::mat4 UIProjectionMatrix = glm::ortho(0.0f, (float)mpWindow->GetWidth(), 0.0f, (float)mpWindow->GetHeight(),-1.0f,1.0f);
+		glm::mat4& mProjectionMatrix = mUICamera.mProjectionMatrix;
+		glm::mat4& mViewMatrix = mUICamera.mViewMatrix;
+
+		GLCall(glViewport(0, 0, mUICamera.mViewPortSize.x, mUICamera.mViewPortSize.y));
 
 		mpUIShader->Use();
-		Mesh* quad = ResourceManager::Instance().GetShape(Shapes::QUAD);
+		mpUIShader->SetMat4("Projection", mProjectionMatrix);
 
-		Texture* texture = ResourceManager::Instance().LoadTexture("Resources/Textures/star.png");
-		
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(400.0f, 400.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(100.0f));
+		GLCall(glEnable(GL_BLEND));
+		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-		mpUIShader->SetMat4("Projection", UIProjectionMatrix);
-		mpUIShader->SetMat4("Model", model);
-		texture->Bind(1);
-		mpUIShader->SetInt("UITexture", 1);
+		for (unsigned int i = 0; i < mUIRenderData.size(); ++i)
+		{
+			UIRenderData& uidata = mUIRenderData[i];
 
-		quad->mpVAO->Bind();
-		quad->mpEBO->Bind();
-		quad->mpVBO->Bind();
-		GLCall(glDrawElements(GL_TRIANGLES, quad->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
-		quad->mpEBO->Unbind();
-		quad->mpVBO->Unbind();
-		quad->mpVAO->Unbind();
-		
+			if (uidata.mpTexture)
+			{
+				uidata.mpTexture->Bind(1);
+				mpUIShader->SetInt("UITexture", 1);
+				mpUIShader->SetInt("hasTexture", 1);
+			}
+			else
+			{
+				mpUIShader->SetVec3("UIColor", uidata.mColor);
+				mpUIShader->SetInt("hasTexture", 0);
+			}
+			mpUIShader->SetMat4("Model", uidata.mModelTransform);
+
+			Mesh* shape = uidata.mpShape;
+
+			shape->mpVAO->Bind();
+			shape->mpEBO->Bind();
+			shape->mpVBO->Bind();
+			GLCall(glDrawElements(GL_TRIANGLES, shape->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+			shape->mpEBO->Unbind();
+			shape->mpVBO->Unbind();
+			shape->mpVAO->Unbind();
+
+			if (uidata.mpTexture)
+			{
+				uidata.mpTexture->Unbind(1);
+			}
+		}
+
+		GLCall(glDisable(GL_BLEND));
+
 		mpUIShader->Unbind();
-		//for (unsigned int i = 0; i < mUIData.size(); ++i)
-		//{
-		//	
-		//}
+		mUIRenderData.clear();
 	}
 
 	void RenderManager::DebugDisplay()
