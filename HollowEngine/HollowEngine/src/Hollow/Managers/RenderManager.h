@@ -7,6 +7,7 @@
 #include "Hollow/Graphics/Data/DebugRenderData.h"
 #include "Hollow/Graphics/Data/CameraData.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
+#include "Hollow/Graphics/Data/SkydomeData.h"
 #include "Hollow/Graphics/Data/UIRenderData.h"
 #include <GL/glew.h>
 
@@ -26,9 +27,15 @@ namespace Hollow {
 		void CleanUp();
 		void Update();
 		inline glm::vec2 GetWindowSize();
+		void DebugDisplay();
 
 	private:
 		// Initialization Functions
+		void InitializeSkydome();
+		void InitializeHammersley(unsigned int n);
+
+		void CreateSkydomeShader();
+
 		void InitializeGBuffer(rapidjson::Value::Object& data);
 
 		void CreateLocalLightShader(rapidjson::Value::Object& data);
@@ -49,18 +56,22 @@ namespace Hollow {
 
 		void DrawParticles(CameraData& cameraData);
 
+		void DrawSkydome();
+
 		void DrawDebugDrawings();
 
 		void DrawShadowMap();
 
+		void ApplyFXAA();
 		void DrawSceneWithBloom();
 
 		void DrawUI();
 
 		// ImGui Debug functions
-		void DebugDisplay();
 		void DebugDisplayGBuffer();
-		void DebugDisplayLighting();
+		void DebugDisplayShadow();
+		void DebugDisplayIBL();
+		void DebugDisplayAA();
 
 	public:
 		std::vector<RenderData> mRenderData;
@@ -78,10 +89,21 @@ namespace Hollow {
 
 		GameWindow* mpWindow;
 		//Camera* mpCamera;
+		glm::vec3 mCameraPosition;
 
 		// Lighting
 		Shader* mpDeferredShader;
 		Shader* mpLocalLightShader;
+
+		// Skydome
+		Shader* mpSkydomeShader;
+		Texture* mpSkydomeTexture;
+		Texture* mpSkydomeIrradianceMap;
+		SkydomeData mSkydomeData;
+
+		// Image based lighting
+		float mExposure;
+		float mContrast;
 
 		// Debug drawing Shader
 		Shader* mpDebugShader;
@@ -95,6 +117,7 @@ namespace Hollow {
 		Shader* mpShadowMapShader;
 		Shader* mpShadowDebugShader;
 		bool mShadowMapDebugMode;
+		int mShadowMapMode;
 		unsigned int mShadowMapDebugLightIndex;
 
 		// Blur
@@ -106,6 +129,12 @@ namespace Hollow {
 		Shader* mpParticleShader;
 		ShaderStorageBuffer* mpParticlesPositionStorage;
 		bool ShowParticles;
+
+		// Post-Processing
+		Shader* mpAAShader;
+		FrameBuffer* mpFinalBuffer;
+		int mFXAA;
+		float mFXAASpan;
 
 		// Bloom
 		Shader* mpBloomShader;

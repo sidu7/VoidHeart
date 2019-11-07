@@ -53,11 +53,17 @@ namespace Hollow {
 
 	void AudioManager::Update()
 	{
-
 		if (mpCurrentSong == nullptr)
 		{
-			//PlaySong("Resources/Audio/Songs/test.wav");
+			PlaySong("Resources/Audio/Songs/test.wav");
 		}
+
+		// Check if channels should be muted
+		Mute();
+
+		// Adjust channel volume
+		SetVolume();
+
 		// Update FMOD audio system
 		mpSystem->update();
 	}
@@ -70,12 +76,69 @@ namespace Hollow {
 			HW_CORE_WARN("Unable to load song {0}", songName);
 		}
 		// Set current song
-		//mCurrentSongName = songName;
+		mCurrentSongPath = songName;
 		mpSystem->playSound(song, 0, true, &mpCurrentSong);
 		mpCurrentSong->setChannelGroup(mpChannelGroups[SOUND_BACKGROUND]);
-		mpCurrentSong->setVolume(0.0f);
 		mpCurrentSong->setPaused(false);
-		//mFadeStatus = FADE_IN;
+	}
+
+	void AudioManager::PlayEffect(const std::string& effectName)
+	{
+		FMOD::Sound* pSound = ResourceManager::Instance().LoadSound(effectName, mModes[SOUND_EFFECT]);
+		FMOD::Channel* pChannel = nullptr;
+		FMOD_RESULT result = mpSystem->playSound(pSound, 0, false, &pChannel);
+
+		// Set the audio channel
+		pChannel->setChannelGroup(mpChannelGroups[SOUND_EFFECT]);
+		pChannel->setPaused(false);
+	}
+
+	void AudioManager::Mute()
+	{
+		MuteChannel(SOUND_BACKGROUND);
+		MuteChannel(SOUND_EFFECT);
+		MuteChannel(SOUND_UI);
+	}
+
+	void AudioManager::MuteChannel(SOUND_TYPE channel)
+	{
+		mpChannelGroups[channel]->setMute(mMute[channel]);
+	}
+
+	void AudioManager::SetVolume()
+	{
+		SetChannelVolume(SOUND_BACKGROUND);
+		SetChannelVolume(SOUND_EFFECT);
+		SetChannelVolume(SOUND_UI);
+	}
+
+	void AudioManager::SetChannelVolume(SOUND_TYPE channel)
+	{
+		mpChannelGroups[channel]->setVolume(mVolume[channel]);
+	}
+
+	void AudioManager::DebugDisplay()
+	{
+		ImGui::SliderFloat("Master Volume", &mMasterVolume, 0.0f, 1.0f);
+		mpMasterChannel->setVolume(mMasterVolume);
+		DebugDisplaySongs();
+		DebugDisplaySFX();
+	}
+
+	void AudioManager::DebugDisplaySongs()
+	{
+		ImGui::Checkbox("Mute Songs", &mMute[SOUND_BACKGROUND]);
+		ImGui::SliderFloat("Song Volume", &mVolume[SOUND_BACKGROUND], 0.0f, 1.0f);
+	}
+
+	void AudioManager::DebugDisplaySFX()
+	{
+		ImGui::Checkbox("Mute SFX", &mMute[SOUND_EFFECT]);
+		ImGui::SliderFloat("SFX Volume", &mVolume[SOUND_EFFECT], 0.0f, 1.0f);
+		if (ImGui::Button("Test SFX"))
+		{
+			PlayEffect("Resources/Audio/SFX/1UP.wav");
+		}
 	}
 
 }  // namespace Hollow

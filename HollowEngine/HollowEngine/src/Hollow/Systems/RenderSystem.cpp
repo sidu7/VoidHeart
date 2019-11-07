@@ -30,7 +30,8 @@ void Hollow::RenderSystem::Update()
 		Transform* trans = mGameObjects[i]->GetComponent<Transform>();
 		Model* pModel = mGameObjects[i]->GetComponent<Model>();
 
-		if (trans->dirtyBit) {
+		if (trans->dirtyBit) 
+    {
 			glm::vec3 position = trans->mPosition;
 			if(pModel->mModelHasOffset)
 			{

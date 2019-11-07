@@ -34,9 +34,9 @@ namespace Hollow {
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 		// Enable AntiAliasiing (Don't know what does this do)
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+		//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+		//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+		//SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_MOUSE_CAPTURE;
 		

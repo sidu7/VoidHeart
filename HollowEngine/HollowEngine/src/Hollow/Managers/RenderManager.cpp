@@ -52,6 +52,13 @@ namespace Hollow {
 		// Init ShadowMap shader
 		mpShadowMapShader = new Shader(data["ShadowMapShader"].GetArray()[0].GetString(), data["ShadowMapShader"].GetArray()[1].GetString());
 		mpShadowDebugShader = new Shader(data["DebugShadowMapShader"].GetArray()[0].GetString(), data["DebugShadowMapShader"].GetArray()[1].GetString());
+		mShadowMapMode = 0;
+
+		// Init skydome
+		InitializeSkydome();
+
+		// Init Hammersley block
+		InitializeHammersley(20);
 
 		// Init blur shader
 		mpHorizontalBlurShader = new Shader(data["BlurComputeShaders"].GetArray()[0].GetString());
@@ -67,6 +74,11 @@ namespace Hollow {
 		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
 		ShowParticles = true;
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
+
+
+		// Init AA Shader
+		mpAAShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/fxaa.frag");
+		mpFinalBuffer = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 1);
 
 		// Init Bloom Shader and FrameBuffer
 		mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
@@ -185,13 +197,54 @@ namespace Hollow {
 				mpBloomFrame->Unbind();
 				DrawSceneWithBloom();
 			}
+    }
+			// Copy depth information from GBuffer
+			mpGBuffer->BindRead();
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+			glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			
+			// Local lighting pass
+			LocalLightingPass();
+
+			// Draw skydome from each camera angle
+			DrawSkydome();
+
+			// Post processing effects
+			if (mFXAA == 1)
+			{
+				glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+				glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+				glReadBuffer(GL_COLOR_ATTACHMENT0);
+
+				glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpFinalBuffer->GetRendererID());
+				glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mpFinalBuffer->mpTextureID[0], 0);
+				glDrawBuffer(GL_COLOR_ATTACHMENT1);
+				
+				glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, 0, 0);
+
+				mpFinalBuffer->Bind();
+				ApplyFXAA();
+				mpFinalBuffer->Unbind();
+			}
+		}
+
+		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
+
+		// Render ShadowMap as FSQ if a debug mode is set
+		if (mShadowMapDebugMode > 0)
+		{
+			DrawShadowMap();
 		}
 
 		// UI camera stuff
 		DrawUI();
 
 		// Update ImGui
-		DebugDisplay();
+		//DebugDisplay();
 		ImGuiManager::Instance().Update();
 
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
@@ -220,6 +273,71 @@ namespace Hollow {
 		mGBufferDisplayMode = 0;
 	}
 
+
+	void RenderManager::InitializeSkydome()
+	{
+		// Create skydome shader
+		CreateSkydomeShader();
+
+		// Set skydome size and angles
+		mSkydomeData.mRadius = 100.0f;
+		mSkydomeData.mAngles = glm::vec3(0.0f, 0.0f, 0.0f);
+
+		// Set exposure and contrast
+		mExposure = 1.0f;
+		mContrast = 1.0f;
+		
+		// TODO: Add skydome to game init file
+		// Load HDR skydome texture and irradiance map
+		mpSkydomeTexture = new Texture("Resources/Skydomes/Newport_Loft_Ref.hdr");
+		mpSkydomeIrradianceMap = new Texture("Resources/Skydomes/Newport_Loft_Ref.irr.hdr");
+	}
+
+	void RenderManager::InitializeHammersley(unsigned int n)
+	{
+		const unsigned int maxNumPoints = 100;
+
+		// Create struct to sent to GPU
+		struct
+		{
+			float N;
+			float hammersley[2 * maxNumPoints];
+		} block;
+		block.N = n;
+
+		int kk = 0;
+		int pos = 0;
+
+		for (int k = 0; k < n; ++k)
+		{
+			float p = 0.5f;
+			float u = 0.0f;
+			for (kk = k; kk; p *= 0.5f)
+			{
+				if (kk & 1)
+				{
+					u += p;
+				}
+				kk = kk >> 1;
+			}
+			float v = (k + 0.5f) / n;
+			block.hammersley[pos++] = u;
+			block.hammersley[pos++] = v;
+		}
+
+		// Send Hammersley block
+		unsigned int id, bindpoint;
+		glGenBuffers(1, &id);
+		bindpoint = 1;
+		glBindBufferBase(GL_UNIFORM_BUFFER, bindpoint, id);
+		glBufferData(GL_UNIFORM_BUFFER, sizeof(block), &block, GL_STATIC_DRAW);
+
+		// Attach buffer to shader
+		int loc = glGetUniformBlockIndex(mpDeferredShader->mProgram, "HammersleyBlock");
+		glUniformBlockBinding(mpDeferredShader->mProgram, loc, bindpoint);
+	}
+
+
 	void RenderManager::CreateDeferredShader(rapidjson::Value::Object& data)
 	{
 		mpDeferredShader = new Shader(data["DeferredShader"].GetArray()[0].GetString(), data["DeferredShader"].GetArray()[1].GetString());
@@ -228,6 +346,10 @@ namespace Hollow {
 		mpDeferredShader->SetInt("gNormal", 1);
 		mpDeferredShader->SetInt("gDiffuse", 2);
 		mpDeferredShader->SetInt("gSpecular", 3);
+		mpDeferredShader->SetInt("shadowMap", 4);
+		mpDeferredShader->SetInt("irradianceMap", 5);
+		mpDeferredShader->SetInt("hdrMap", 6);
+		mpSkydomeShader->Unbind();
 	}
 
 	void RenderManager::CreateLocalLightShader(rapidjson::Value::Object& data)
@@ -238,6 +360,15 @@ namespace Hollow {
 		mpLocalLightShader->SetInt("gNormal", 1);
 		mpLocalLightShader->SetInt("gDiffuse", 2);
 		mpLocalLightShader->SetInt("gSpecular", 3);
+		mpSkydomeShader->Unbind();
+	}
+
+	void RenderManager::CreateSkydomeShader()
+	{
+		mpSkydomeShader = new Shader("Resources/Shaders/Skydome.vert", "Resources/Shaders/Skydome.frag");
+		mpSkydomeShader->Use();
+		mpSkydomeShader->SetInt("skydome", 0);
+		mpSkydomeShader->Unbind();
 	}
 
 	void RenderManager::CreateShadowMap(LightData& light)
@@ -247,8 +378,13 @@ namespace Hollow {
 			return;
 		}
 
-		light.mpShadowMap->Bind();
+		GLCall(glEnable(GL_DEPTH_TEST));
+		GLCall(glDisable(GL_BLEND));
+		GLCall(glEnable(GL_CULL_FACE));
+		GLCall(glCullFace(GL_FRONT));
+
 		mpShadowMapShader->Use();
+		light.mpShadowMap->Bind();
 
 		glm::mat4 LightLookAt, LightProj;
 		// Calculate light up vector
@@ -267,9 +403,10 @@ namespace Hollow {
 
 		DrawShadowCastingObjects(mpShadowMapShader);
 
-		//glDisable(GL_CULL_FACE);
+		glDisable(GL_CULL_FACE);
 
 		light.mpShadowMap->Unbind();
+		GLCall(glDisable(GL_DEPTH_TEST));
 	}
 
 	void RenderManager::BlurTexture(unsigned int inputTextureID, unsigned int width, unsigned int height, unsigned int channels, unsigned int blurWidth, unsigned int& outputTextureID)
@@ -385,9 +522,20 @@ namespace Hollow {
 		light.mpShadowMap->TexBind(0, 4);
 		mpDeferredShader->SetInt("shadowMap", 4);
 		mpDeferredShader->SetMat4("shadowMatrix", light.mShadowMatrix);
+		mpDeferredShader->SetInt("shadowMode", mShadowMapMode);
 		mpDeferredShader->SetFloat("alpha", light.mAlpha);
 		mpDeferredShader->SetFloat("md", light.mMD);
 		mpDeferredShader->SetInt("bloomEnabled", mBloomEnabled);
+
+		// Bind IBL texutres
+		mpSkydomeIrradianceMap->Bind(5);
+		mpSkydomeTexture->Bind(6);
+
+		// Send IBL parameters
+		mpDeferredShader->SetFloat("exposure", mExposure);
+		mpDeferredShader->SetFloat("contrast", mContrast);
+		mpDeferredShader->SetFloat("hdrWidth", (float)mpSkydomeTexture->GetWidth());
+		mpDeferredShader->SetFloat("hdrHeight", (float)mpSkydomeTexture->GetHeight());
 
 		// Send debug information
 		mpDeferredShader->SetInt("displayMode", mGBufferDisplayMode);
@@ -400,6 +548,8 @@ namespace Hollow {
 		mpGBuffer->TexUnbind(2);
 		mpGBuffer->TexUnbind(3);
 		light.mpShadowMap->TexUnbind(4);
+		mpSkydomeIrradianceMap->Unbind(5);
+		mpSkydomeTexture->Unbind(6);
 	}
 
 	void RenderManager::LocalLightingPass()
@@ -441,7 +591,7 @@ namespace Hollow {
 				lightTransform = glm::scale(lightTransform, glm::vec3(light.mRadius));
 
 				mpLocalLightShader->SetMat4("Model", lightTransform);
-				//DrawLight(light);
+				
 				DrawSphere();
 			}
 			glDisable(GL_BLEND);
@@ -456,7 +606,7 @@ namespace Hollow {
 		for (RenderData& data : mRenderData)
 		{
 			pShader->SetMat4("Model", data.mpModel);
-			pShader->SetMat4("NormalTr", glm::transpose(glm::inverse(data.mpModel)));
+			pShader->SetMat4("NormalTr", /*glm::transpose*/(glm::inverse(data.mpModel)));
 
 			pShader->SetInt("isAnimated", data.mIsAnimated);
 			if (data.mIsAnimated)
@@ -481,6 +631,10 @@ namespace Hollow {
 				pShader->SetInt("diffuseTexture", 1);
 			}
 
+			pShader->SetInt("hasNormalMap", 0);
+			pShader->SetInt("hasHeightMap", 0);
+			pShader->SetFloat("heightScale", 0.0f);
+
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
 			{
@@ -501,11 +655,14 @@ namespace Hollow {
 					{
 						materialdata->mpNormal->Bind(3);
 						pShader->SetInt("normalTexture", 3);
+						pShader->SetInt("hasNormalMap", 1);
 					}
 					if (materialdata->mpHeight)
 					{
 						materialdata->mpHeight->Bind(4);
 						pShader->SetInt("heightTexture", 4);
+						pShader->SetInt("hasHeightMap", 1);
+						pShader->SetFloat("heightScale", pMaterial->mHeightScale);
 					}
 				}
 				mesh->mpVAO->Bind();
@@ -547,15 +704,13 @@ namespace Hollow {
 
 	void RenderManager::DrawShadowCastingObjects(Shader* pShader)
 	{
-		GLCall(glEnable(GL_CULL_FACE));
-		GLCall(glCullFace(GL_FRONT));
 		for (RenderData& data : mRenderData)
 		{
 			if (!data.mCastShadow)
 			{
 				continue;
 			}
-
+			
 			pShader->SetMat4("Model", data.mpModel);
 
 			pShader->SetInt("isAnimated", data.mIsAnimated);
@@ -579,7 +734,6 @@ namespace Hollow {
 				mesh->mpVAO->Unbind();
 			}
 		}
-		GLCall(glDisable(GL_CULL_FACE));
 	}
 
 	void RenderManager::DrawFSQ()
@@ -766,6 +920,37 @@ namespace Hollow {
 		glDisable(GL_DEPTH_TEST);
 	}
 
+	void RenderManager::DrawSkydome()
+	{
+		glEnable(GL_DEPTH_TEST);
+		// Forward render skydome with diffuse only
+		mpSkydomeShader->Use();
+
+		// Send MVP matrices
+		mpSkydomeShader->SetMat4("Projection", mProjectionMatrix);
+		mpSkydomeShader->SetMat4("View", mViewMatrix);
+
+		// Set skydome model matrix
+		glm::mat4 skydomeModelMatrix(1.0f);
+		skydomeModelMatrix = glm::translate(skydomeModelMatrix, mCameraPosition);
+		skydomeModelMatrix = glm::rotate(skydomeModelMatrix, glm::radians(mSkydomeData.mAngles.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		skydomeModelMatrix = glm::rotate(skydomeModelMatrix, glm::radians(mSkydomeData.mAngles.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		skydomeModelMatrix = glm::rotate(skydomeModelMatrix, glm::radians(mSkydomeData.mAngles.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		skydomeModelMatrix = glm::scale(skydomeModelMatrix, glm::vec3(mSkydomeData.mRadius));
+		mpSkydomeShader->SetMat4("Model", skydomeModelMatrix);
+
+		mpSkydomeShader->SetFloat("exposure", mExposure);
+		mpSkydomeShader->SetFloat("contrast", mContrast);
+
+		mpSkydomeTexture->Bind();
+
+		// Draw a sphere as the skydome
+		DrawSphere();
+
+		mpSkydomeTexture->Unbind();
+		//glDisable(GL_DEPTH_TEST);
+	}
+
 	void RenderManager::DrawDebugDrawings()
 	{
 		mpDebugShader->Use();
@@ -822,13 +1007,29 @@ namespace Hollow {
 			// Clear OpenGL for now
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			LightData& light = mLightData[mShadowMapDebugLightIndex];
 			mpShadowDebugShader->Use();
 			mpShadowDebugShader->SetInt("shadowMap", 0);
-			mLightData[mShadowMapDebugLightIndex].mpShadowMap->TexBind(0, 0);
+			mpShadowDebugShader->SetFloat("nearPlane", light.mShadowMapNearPlane);
+			mpShadowDebugShader->SetFloat("farPlane", light.mShadowMapFarPlane);
+			light.mpShadowMap->TexBind(0, 0);
 
 			DrawFSQ();
 		}
 	}
+
+	void RenderManager::ApplyFXAA()
+	{
+		mpAAShader->Use();
+		mpAAShader->SetInt("fxaaON", mFXAA);
+		mpAAShader->SetFloat("fxaaSpan", mFXAASpan);
+		mpAAShader->SetVec2("screenSize", glm::vec2((float)mpWindow->GetWidth(), (float)mpWindow->GetHeight()));
+		mpFinalBuffer->TexBind(0, 10);
+		mpAAShader->SetInt("finalImage", 10);
+		DrawFSQ();
+		mpFinalBuffer->TexUnbind(1);
+		mpAAShader->Unbind();
+  }
 
 	void RenderManager::DrawSceneWithBloom()
 	{
@@ -896,18 +1097,15 @@ namespace Hollow {
 
 		mpUIShader->Unbind();
 		mUIRenderData.clear();
-	}
+  }
 
 	void RenderManager::DebugDisplay()
 	{
-		if(ImGui::Begin("Renderer"))
-		{
-			DebugDisplayGBuffer();
-			DebugDisplayLighting();
-			ImGui::Checkbox("Particle System",&ShowParticles);
-			ImGui::Checkbox("Bloom", &mBloomEnabled);
-		}
-		ImGui::End();
+		DebugDisplayGBuffer();
+		DebugDisplayShadow();
+		DebugDisplayIBL();
+		DebugDisplayAA();
+		ImGui::Checkbox("Particle System",&ShowParticles);
 	}
 
 	void RenderManager::DebugDisplayGBuffer()
@@ -918,17 +1116,36 @@ namespace Hollow {
 		}
 	}
 
-	void RenderManager::DebugDisplayLighting()
+	void RenderManager::DebugDisplayShadow()
 	{
-		if (ImGui::CollapsingHeader("Lighting"))
+		if (ImGui::CollapsingHeader("Shadows"))
 		{
-			//ImGui::InputInt("Shadow Map Debug", &mShadowMapDebugMode);
+			ImGui::InputInt("Shadow Map Mode", &mShadowMapMode);
 			ImGui::Checkbox("Shadow Map Debug", &mShadowMapDebugMode);
 			ImGui::InputScalar("Shadow Map Light", ImGuiDataType_U32, &mShadowMapDebugLightIndex);
 			if (mShadowMapDebugLightIndex >= mLightData.size())
 			{
 				mShadowMapDebugLightIndex = mLightData.size()-1;
 			}
+		}
+	}
+
+	void RenderManager::DebugDisplayIBL()
+	{
+		if (ImGui::CollapsingHeader("IBL"))
+		{
+			ImGui::InputFloat("Exposure", &mExposure);
+			ImGui::InputFloat("Contrast", &mContrast);
+			ImGui::Image((void*)mpSkydomeTexture->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			ImGui::Image((void*)mpSkydomeIrradianceMap->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+		}
+	}
+	void RenderManager::DebugDisplayAA()
+ {
+		if (ImGui::CollapsingHeader("AA"))
+		{
+			ImGui::InputInt("FXAA On", &mFXAA);
+			ImGui::InputFloat("FXAA Span", &mFXAASpan);
 		}
 	}
 }

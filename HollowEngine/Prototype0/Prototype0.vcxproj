@@ -115,6 +115,8 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Shaders\Skydome.frag" />
+    <None Include="Resources\Shaders\Skydome.vert" />
     <None Include="Resources\Json data\Box.json" />
     <None Include="Resources\Json data\box2.json" />
     <None Include="Resources\Json data\box4.json" />

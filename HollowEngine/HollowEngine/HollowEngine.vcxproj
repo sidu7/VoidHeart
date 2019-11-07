@@ -102,6 +102,7 @@
     <ClCompile Include="vendor\Include\stbi_image\stbi_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hollow\Graphics\Data\SkydomeData.h" />
     <ClInclude Include="src\Hollow\Components\Script.h" />
     <ClInclude Include="src\Hollow\Components\PathFollow.h" />
     <ClInclude Include="src\Hollow\Components\UIButton.h" />
@@ -121,7 +122,6 @@
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
     <ClInclude Include="src\Hollow\Events\CollisionEvent.h" />
-    <ClInclude Include="src\Hollow\Events\EventData.h" />
     <ClInclude Include="src\Hollow\Events\GameEvent.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
