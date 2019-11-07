@@ -13,14 +13,14 @@ namespace Hollow
 	struct Particle;
 	class Shader;
 
-	class HOLLOW_API ParticleEmitter : public Component
+	class ParticleEmitter : public Component
 	{
 		REGISTERCOMPONENT(ParticleEmitter)
 	public:
-		void Init();
-		void Clear();
-		void Serialize(rapidjson::Value::Object data);
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		unsigned long mCount;

@@ -8,15 +8,14 @@ namespace Hollow {
 	class Body;
 
 
-	class HOLLOW_API Collider : public Component
+	class Collider : public Component
 	{
 		REGISTERCOMPONENT(Collider);
 	public:
-		void Init();
-		void Clear();
-		void DebugDisplay() override;
-
-		void Serialize(rapidjson::Value::Object);
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void DebugDisplay() override;
+		HOLLOW_API void Serialize(rapidjson::Value::Object);
 	public:
 		Shape* mpShape;
 		Shape* mpLocalShape;

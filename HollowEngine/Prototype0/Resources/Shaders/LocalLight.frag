@@ -11,6 +11,7 @@ uniform sampler2D gSpecular;
 
 uniform vec3 viewPosition;
 uniform vec3 lightPosition;
+uniform vec3 lightColor;
 
 uniform float lightRadius;
 //uniform float lightLinear;
@@ -58,7 +59,7 @@ void main()
 		attenuation *= attenuation;
 
 		// Result
-		result = diffuse + specular;
+		result = lightColor * (diffuse + specular);
 		result *= attenuation; 
 	}
 	color = vec4(result, 1.0);

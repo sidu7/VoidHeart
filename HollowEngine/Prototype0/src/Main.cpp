@@ -83,7 +83,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UIElement.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StartMoveButton.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StopMoveButton.json");
@@ -113,7 +113,9 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 	
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/LocalLight.json");
+
 		//Hollow::ScriptingManager::Instance().lua.script_file("Resources/Scripts/test.lua");
 		//TODO: Remove test json deserialize
 		/*std::ofstream file("Resources/Json data/test.json");

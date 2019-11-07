@@ -5,14 +5,14 @@ namespace Hollow
 {
 	struct State;
 
-	class HOLLOW_API StateMachine : public Component
+	class StateMachine : public Component
 	{
 		REGISTERCOMPONENT(StateMachine);
 	public:
-		void Init();
-		void Clear();
-		void Serialize(rapidjson::Value::Object data);
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		std::vector<State*> mStates;

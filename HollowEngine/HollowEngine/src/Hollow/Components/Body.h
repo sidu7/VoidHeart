@@ -4,7 +4,7 @@
 namespace Hollow {
 
 
-	class HOLLOW_API Body : public Component
+	class Body : public Component
 	{
 
 		REGISTERCOMPONENT(Body);
@@ -16,10 +16,10 @@ namespace Hollow {
 	#undef RIGIDBODY_TYPE
 			NUM
 		};
-		void Init();
-		void Clear();
-		void DebugDisplay();
-		void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void DebugDisplay();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
 
 		float mMass, mInverseMass;
 		glm::vec3 mPosition;
