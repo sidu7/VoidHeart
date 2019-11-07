@@ -2,21 +2,20 @@
   "Components": [
     {
       "Type": "Transform",
-      "Position": [ -2.0, 10.0, 0.0 ],
-      "Scale": [ 4.0, 1.0, 1.0 ],
-      "Rotation": [ 0.0, 0.0, 30.0 ]
+      "Position": [ -1.0, 4.0, 0.0 ],
+      "Scale": [ 2.0, 2.0, 2.0 ]
     },
     {
       "Type": "Body",
-      "Mass": 1.0
+      "Mass": 1e39
     },
     {
       "Type": "Collider",
-      "Shape": "BOX"
+      "Shape": "BALL"
     },
     {
       "Type": "Model",
-      "Shape": 1,
+      "Shape": 0,
       "CastShadow": true
     },
     {

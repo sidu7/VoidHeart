@@ -17,6 +17,8 @@
 #include "Hollow/Graphics/UniformBuffer.h"
 
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/DebugDrawManager.h"
 
 #include "Utils/GLCall.h"
 #include "ResourceManager.h"
@@ -100,7 +102,23 @@ namespace Hollow {
 		delete mpGBuffer;
 		delete mpWeights;
 	}
-
+	//TODO: Remove before finishing the game
+	void DebugContacts()
+	{
+		ImGui::Begin("Contacts");
+		{
+			for (auto points : *PhysicsManager::Instance().mSAT.mPrevContacts)
+			{
+				for (int i = 0; i < points->contactPoints.size(); i++)
+				{
+					DebugDrawManager::Instance().DebugCube(points->contactPoints[i].point, glm::vec3(0.05f), glm::vec3(1.0f));
+					ImGui::Text("Point location- %f , %f , %f ", points->contactPoints[i].point.x, points->contactPoints[i].point.y, points->contactPoints[i].point.z);
+					ImGui::Text("Penetration depth - %f", points->contactPoints[i].penetrationDepth);
+				}
+			}
+		}
+		ImGui::End();
+	}
 	void RenderManager::Update()
 	{
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
@@ -1001,6 +1019,7 @@ namespace Hollow {
 
 	void RenderManager::DrawDebugDrawings()
 	{
+		DebugContacts();
 		mpDebugShader->Use();
 		mpDebugShader->SetMat4("View", mMainCamera.mViewMatrix);
 		mpDebugShader->SetMat4("Projection", mMainCamera.mProjectionMatrix);

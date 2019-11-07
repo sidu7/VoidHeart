@@ -51,7 +51,34 @@ namespace Hollow
 				static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f * (pCol->mpTr->mScale);
 				static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
 			}
-
+			else if (pCol->mpShape->mType == ShapeType::BALL)
+			{
+				inertia[0][0] = (2.0f / 5.0f) * pCol->mpBody->mMass * (pCol->mpTr->mScale.x * pCol->mpTr->mScale.x);
+				inertia[1][1] = (2.0f / 5.0f) * pCol->mpBody->mMass * (pCol->mpTr->mScale.x * pCol->mpTr->mScale.x);
+				inertia[2][2] = (2.0f / 5.0f) * pCol->mpBody->mMass * (pCol->mpTr->mScale.x * pCol->mpTr->mScale.x);
+			}
+			if (pCol->mpBody->mInverseMass == 0.0f)
+				pCol->mpBody->mLocalInertiaInverse = glm::mat3(0);
+			else
+				pCol->mpBody->mLocalInertiaInverse = glm::inverse(inertia);
+			
+			
+			pCol->mpBody->mPosition = pCol->mpTr->mPosition;
+			pCol->mpBody->mPreviousPosition = pCol->mpTr->mPosition;
+			pCol->mpBody->mQuaternion = pCol->mpTr->mQuaternion;
+			pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
+			
+			if (pCol->mpShape->mType == ShapeType::BOX)
+			{
+				// update local shape (0.5f because we are updating half extents)
+				static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f * (pCol->mpTr->mScale);
+				static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
+			}
+			else if (pCol->mpShape->mType == ShapeType::BALL)
+			{
+				static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpTr->mPosition;
+				static_cast<ShapeCircle*>(pCol->mpShape)->mRadius = pCol->mpTr->mScale.x/2.0f; // this will only be (x||y||z) as its a sphere!
+			}
 			// Collider added to Dynamic BVH
 			PhysicsManager::Instance().mTree.AddCollider(pCol);
 		}
@@ -78,20 +105,27 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			Collider* pCol = mGameObjects[i]->GetComponent<Collider>();
+      if(!pCol->isTrigger)
+      {
+          if (pCol->mpShape->mType == BOX)
+          {
+            glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
+            glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
+            glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
+            glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
+            glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
+              abs((pCol->mpBody->mRotationMatrix) * y) +
+              abs((pCol->mpBody->mRotationMatrix) * z);
 
-			if (!pCol->isTrigger) {
-				glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
-				glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
-				glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
-				glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-				glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
-					abs((pCol->mpBody->mRotationMatrix) * y) +
-					abs((pCol->mpBody->mRotationMatrix) * z);
-
-				// based on normalized body vertices
-				static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
-				static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
-			}
+            // based on normalized body vertices
+            static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
+            static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
+          }
+          else if (pCol->mpShape->mType == BALL)
+          {
+            static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpBody->mPosition;
+          }
+      }
 			else 
 			{
 				static_cast<ShapeAABB*>(pCol->mpShape)->mMin = -static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
@@ -109,14 +143,17 @@ namespace Hollow
 
 		SAT& mSAT = PhysicsManager::Instance().mSAT;
 		
-		for (auto& pair : pairs) {
-			if (pair.first->isTrigger || pair.second->isTrigger) {
+		for (auto& pair : pairs) 
+    {
+			
+			if (pair.first->isTrigger || pair.second->isTrigger) 
+      {
 				// TODO create event that an object entered a trigger
 
 				continue;
 			}
-			// perform the SAT intersection test
-			mSAT.TestIntersection3D(pair.first, pair.second);
+      // perform the SAT intersection test for cubes/cubes, spheres/cubes, and sphere/sphere
+			mSAT.CheckCollsionAndGenerateContact(pair.first, pair.second);
 		}
 
 		//HW_TRACE("{0}", mSAT.mContacts->size());
@@ -183,7 +220,7 @@ namespace Hollow
 			}
 		}
 
-		//DebugContacts();
+		/*DebugContacts();*/
 		
 		for (int i = 0; i < impulseIterations; ++i) {
 			for (auto c : *mSAT.mContacts) {

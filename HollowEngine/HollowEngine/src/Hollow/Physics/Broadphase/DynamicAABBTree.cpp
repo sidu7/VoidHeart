@@ -117,10 +117,9 @@ namespace Hollow {
 	void FindUnfitNodes(Node* node, std::vector<Node*>& nodeList) {
 		if (node->IsLeaf()) {
 			Collider* col = static_cast<Collider*>(node->mClientData);
-			if (!node->aabb->Contains(*static_cast<ShapeAABB*>(col->mpShape))) {
+			if (!node->aabb->Contains(col)) {
 				nodeList.push_back(node);
 			}
-
 		}
 		else {
 			FindUnfitNodes(node->left, nodeList);

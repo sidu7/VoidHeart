@@ -37,10 +37,7 @@ namespace Hollow {
 		void UpdateAABB(float fat) {
 			if (IsLeaf()) {
 				glm::vec3 fatMargin = glm::vec3(fat, fat, fat);
-				aabb->mMin = static_cast<ShapeAABB*>(static_cast<Collider*>(mClientData)->mpShape)->mMin
-					- fatMargin;
-				aabb->mMax = static_cast<ShapeAABB*>(static_cast<Collider*>(mClientData)->mpShape)->mMax
-					+ fatMargin;
+				aabb->fatten(static_cast<Collider*>(mClientData)->mpShape, fatMargin);
 			}
 			else {
 				aabb->Merge(*left->aabb, *right->aabb);
