@@ -82,7 +82,7 @@ namespace Hollow {
 
 		// Init AA Shader
 		mpAAShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/fxaa.frag");
-		mpFinalBuffer = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 1);
+		mpFinalBuffer = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 1, true);
 
 		// Init Bloom Shader and FrameBuffer
 		mpBloomShader = new Shader(data["BloomShader"].GetArray()[0].GetString(), data["BloomShader"].GetArray()[1].GetString());
@@ -126,6 +126,9 @@ namespace Hollow {
 
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
 		{
+			if (mLightData[i].mCastShadow)
+			{
+
 			// ShadowMap Pass
 			CreateShadowMap(mLightData[i]);
 			// Blur ShadowMap
@@ -135,6 +138,7 @@ namespace Hollow {
 				shadowmap.mHeight, 4,
 				mLightData[i].mBlurDistance,
 				shadowmap.mpTextureID[0]);
+			}
 		}
 
 		// Draw Main Camera
@@ -152,20 +156,32 @@ namespace Hollow {
 		{
 			mpBloomFrame->Bind();
 		}
+		else if (mFXAA == 1)
+		{
+			mpFinalBuffer->Bind();
+		}
 
 		// Ambient lighting pass
 		AmbientPass();
 
 		for (unsigned int i = 0; i < mLightData.size(); ++i)
 		{
+			if (mLightData[i].mCastShadow)
+			{
+
 			// Apply global lighting
 			GlobalLightingPass(mLightData[i]);// , mMainCamera.mEyePosition);
+			}
 		}
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, mpGBuffer->GetFrameBufferID());
 		if (mBloomEnabled)
 		{
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpBloomFrame->GetFrameBufferID());
+		}
+		else if (mFXAA == 1)
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpFinalBuffer->GetFrameBufferID());
 		}
 		else
 		{
@@ -188,6 +204,10 @@ namespace Hollow {
 		if (mBloomEnabled)
 		{
 			mpBloomFrame->Unbind();
+			if (mFXAA == 1)
+			{
+				mpFinalBuffer->Bind();
+			}
 			DrawSceneWithBloom();
 		}
 
@@ -232,43 +252,30 @@ namespace Hollow {
 		//}
 		// Copy depth information from GBuffer
 		mpGBuffer->BindRead();
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		if (mFXAA == 1)
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpFinalBuffer->GetFrameBufferID());
+		}
+		else
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		}
 		glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// Local lighting pass
 		LocalLightingPass();
 
 		//Draw debug drawings
-		DrawDebugDrawings();
-
-		// Render ShadowMap as FSQ if a debug mode is set
-		if (mShadowMapDebugMode > 0)
-		{
-			DrawShadowMap();
-		}
+		//DrawDebugDrawings();
 
 		// Post processing effects
 		if (mFXAA == 1)
 		{
-			glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-			glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
-			glReadBuffer(GL_COLOR_ATTACHMENT0);
-
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mpFinalBuffer->GetFrameBufferID());
-			glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mpFinalBuffer->mpTextureID[0], 0);
-			glDrawBuffer(GL_COLOR_ATTACHMENT1);
-
-			glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
-
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, 0, 0);
-
-			mpFinalBuffer->Bind();
-			ApplyFXAA();
 			mpFinalBuffer->Unbind();
+			
+			ApplyFXAA();
 		}
-
 
 		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
 
@@ -282,7 +289,7 @@ namespace Hollow {
 		DrawUI();
 
 		// Update ImGui
-		//DebugDisplay();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		ImGuiManager::Instance().Update();
 
 		SDL_GL_SwapWindow(mpWindow->GetWindow());
@@ -662,6 +669,7 @@ namespace Hollow {
 			{
 				mpLocalLightShader->SetFloat("lightRadius", light.mRadius);
 				mpLocalLightShader->SetVec3("lightPosition", light.mPosition);
+				mpLocalLightShader->SetVec3("lightColor", light.mColor);
 
 				// Get the light transform
 				glm::mat4 lightTransform(1.0f);
@@ -989,6 +997,7 @@ namespace Hollow {
 	void RenderManager::DrawSkydome()
 	{
 		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 		// Forward render skydome with diffuse only
 		mpSkydomeShader->Use();
 
@@ -1091,15 +1100,17 @@ namespace Hollow {
 		mpAAShader->SetInt("fxaaON", mFXAA);
 		mpAAShader->SetFloat("fxaaSpan", mFXAASpan);
 		mpAAShader->SetVec2("screenSize", glm::vec2((float)mpWindow->GetWidth(), (float)mpWindow->GetHeight()));
-		mpFinalBuffer->TexBind(0, 10);
-		mpAAShader->SetInt("finalImage", 10);
+		mpFinalBuffer->TexBind(0, 0);
+		mpAAShader->SetInt("finalImage", 0);
 		DrawFSQ();
-		mpFinalBuffer->TexUnbind(1);
+		mpFinalBuffer->TexUnbind(0);
 		mpAAShader->Unbind();
 	}
 
 	void RenderManager::DrawSceneWithBloom()
 	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE);
 		BlurTexture(mpBloomFrame->mpTextureID[1],
 			mpBloomFrame->mWidth,
 			mpBloomFrame->mHeight,
@@ -1112,6 +1123,7 @@ namespace Hollow {
 		mpBloomShader->SetInt("blur", 2);
 		DrawFSQ();
 		mpBloomShader->Unbind();
+		glDisable(GL_BLEND);
 	}
 
 	void RenderManager::DrawUI()

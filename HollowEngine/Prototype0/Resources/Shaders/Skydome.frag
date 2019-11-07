@@ -9,6 +9,7 @@ uniform float exposure;
 uniform float contrast;
 
 layout (location = 0) out vec4 color;
+layout (location = 1) out vec4 bloom;
 
 void main()
 {
@@ -21,4 +22,6 @@ void main()
 	vec4 eC = exposure*color;
 	color = eC / (eC + vec4(1.0));
 	color = pow(color, vec4(contrast/2.2));
+
+	bloom = vec4(0.0, 0.0, 0.0, 0.0);
 }
