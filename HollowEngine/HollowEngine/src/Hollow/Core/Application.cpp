@@ -104,12 +104,6 @@ namespace Hollow {
 
 			if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_ESCAPE))
 				mIsRunning = false;
-			
-			//HOTKEYS
-			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_H))
-				InputManager::Instance().HideMouseCursor();
-			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_U))
-				InputManager::Instance().ShowMouseCursor();
 		}		
 	}
 

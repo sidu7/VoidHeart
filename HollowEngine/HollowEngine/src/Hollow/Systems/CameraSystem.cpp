@@ -79,6 +79,12 @@ namespace Hollow {
 		mLastX = mousePos.first;
 		mLastY = mousePos.second;
 
+		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
+			ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		{
+			return;
+		}
+
 		xoffset *= pCamera->mMouseSensitivity;
 		yoffset *= pCamera->mMouseSensitivity;
 
@@ -155,11 +161,7 @@ namespace Hollow {
 			if (pCamera->mType == SCENE_CAMERA)
 			{
 				HandleKeyboardInput(pCamera, pTransform);
-				if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT) || 
-					ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
-				{
-					HandleMouseInput(pCamera);
-				}
+				HandleMouseInput(pCamera);
 			}
 			else if(pCamera->mType == MAIN_CAMERA)
 			{

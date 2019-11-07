@@ -35,6 +35,18 @@ namespace Hollow
 			lua["isMoveBackward"] = InputManager::Instance().IsKeyPressed(SDL_SCANCODE_DOWN);
 			lua["isStrafeLeft"] = InputManager::Instance().IsKeyPressed(SDL_SCANCODE_LEFT);
 			lua["isStrafeRight"] = InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT);
+			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_C))
+			{
+				pCam->mIsActive = !pCam->mIsActive;
+				if (pCam->mIsActive)
+				{
+					InputManager::Instance().HideMouseCursor();
+				}
+				else
+				{
+					InputManager::Instance().ShowMouseCursor();
+				}
+			}
 			
 			lua.script_file(script->scriptPath);
 
