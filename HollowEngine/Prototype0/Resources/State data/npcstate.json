@@ -1,8 +1,8 @@
 {
-  "States": [ "Walking" ],
+  "States": [ "NarutoRun" ],
   "Conditions": [
     {
-      "State": "Walking",
+      "State": "NarutoRun",
       "IsLoop":  true,
       "Events": [ ],
       "Inputs": [ ],

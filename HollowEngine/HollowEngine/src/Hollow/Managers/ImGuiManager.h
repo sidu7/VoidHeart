@@ -14,6 +14,8 @@ namespace Hollow {
 		HOLLOW_API void StartFrame();
 	private:
 		void Render();
+		void TestingDisplay();
+
 	private:
 		GameWindow* mpWindow;
 		GameObject* mpSelectedGameObject;

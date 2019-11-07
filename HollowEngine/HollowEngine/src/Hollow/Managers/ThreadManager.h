@@ -1,6 +1,6 @@
 #pragma once
 
-#define MAX_THREADS 4
+#define MAX_THREADS 2
 
 namespace Hollow
 {

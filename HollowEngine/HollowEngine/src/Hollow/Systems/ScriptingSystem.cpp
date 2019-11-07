@@ -39,6 +39,8 @@ namespace Hollow
 
 			lua["isStrafeRight"] = (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 16000);
 
+			lua["jump"] = (InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_B));
+
 			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_C) || InputManager::Instance().IsPressed((SDL_CONTROLLER_BUTTON_A)))
 			{
 				pCam->mIsActive = !pCam->mIsActive;

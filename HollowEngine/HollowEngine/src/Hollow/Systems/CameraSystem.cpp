@@ -84,12 +84,12 @@ namespace Hollow {
 		{
 			return;
 		}
-		if (InputManager::Instance().mpController != nullptr)
+		if (InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 1000)
 		{
 			xoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX) / 16000;
 			yoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY) / -16000;
 		}
-		else
+		else if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT))
 		{
 			xoffset *= pCamera->mMouseSensitivity;
 			yoffset *= pCamera->mMouseSensitivity;
@@ -115,7 +115,7 @@ namespace Hollow {
 		glm::vec2 mousePos = InputManager::Instance().GetMouseMotion();
 		float xoffset, yoffset;
 		
-		if (InputManager::Instance().mpController != nullptr)
+		if (abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX)) > 10000)
 		{
 			xoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX)/16000;
 			yoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY)/-16000;

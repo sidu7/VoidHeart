@@ -2,9 +2,9 @@
     "Components": [
       {
         "Type": "Transform",
-        "Position": [ 5.0, 5.0, 5.0 ],
-        "Scale": [ 2.0, 2.0, 2.0 ],
-        "Rotation": [ -90.0, 0.0, 0.0 ]
+        "Position": [ 5.0, 5.0, -15.0 ],
+        "Scale": [ 30.0, 10.0, 2.0 ],
+        "Rotation": [ 0.0, 0.0, 0.0 ]
       },
         {
             "Type": "Model",
@@ -14,8 +14,8 @@
       {
         "Type": "Material",
         "Diffuse": [ 0.0, 0.0, 0.0 ],
-        "Specular": [ 0.0, 0.0, 0.0 ],
-        "Shininess": 1.0,
+        "Specular": [ 3.0, 3.0, 0.0 ],
+        "Shininess": 1000000.0,
         "MaterialTextures": 1,
         "DiffuseTexture": "Resources/Textures/bricks2.jpg",
         "NormalTexture": "Resources/Textures/bricks2_normal.jpg",
