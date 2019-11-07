@@ -17,7 +17,7 @@ namespace Hollow {
 		HOLLOW_API VertexBuffer();
 		HOLLOW_API ~VertexBuffer();
 		 
-		HOLLOW_API void AddData(const void* data, unsigned int count, unsigned int size);
+		HOLLOW_API void AddData(const void* data, size_t count, size_t size);
 		HOLLOW_API void AddStreamingData(unsigned int size) const;
 		HOLLOW_API void AddSubData(const void* data, unsigned int count, unsigned int size);
 		HOLLOW_API void Bind() const;

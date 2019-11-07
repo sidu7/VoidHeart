@@ -280,7 +280,7 @@ namespace Hollow {
 		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
 
 		// Render ShadowMap as FSQ if a debug mode is set
-		if (mShadowMapDebugMode > 0)
+		if (mShadowMapDebugMode)
 		{
 			DrawShadowMap();
 		}
@@ -338,7 +338,7 @@ namespace Hollow {
 		mpSkydomeIrradianceMap = new Texture("Resources/Skydomes/Newport_Loft_Ref.irr.hdr");
 	}
 
-	void RenderManager::InitializeHammersley(unsigned int n)
+	void RenderManager::InitializeHammersley(int n)
 	{
 		const unsigned int maxNumPoints = 100;
 
@@ -348,7 +348,7 @@ namespace Hollow {
 			float N;
 			float hammersley[2 * maxNumPoints];
 		} block;
-		block.N = n;
+		block.N = static_cast<float>(n);
 
 		int kk = 0;
 		int pos = 0;
@@ -479,7 +479,7 @@ namespace Hollow {
 
 		// Send block of weights to shader as uniform block
 		mpWeights->Bind(2);
-		mpWeights->SubData(sizeof(float) * weights.size(), &weights[0]);
+		mpWeights->SubData(static_cast<unsigned>(sizeof(float) * weights.size()), &weights[0]);
 
 		// Intermediate Texture
 		Texture horizontalBlurred(channels, width, height);
@@ -975,7 +975,7 @@ namespace Hollow {
 			{
 				particle.mpParticleVBO->AddSubData(
 					&particle.mParticleModelMatrices[0], // data
-					particle.mParticleModelMatrices.size(), sizeof(glm::mat4)); // size of data to be sent
+					static_cast<unsigned>(particle.mParticleModelMatrices.size()), static_cast<unsigned>(sizeof(glm::mat4))); // size of data to be sent
 
 				for (Mesh* mesh : particle.mParticleModel)
 				{
@@ -1210,7 +1210,7 @@ namespace Hollow {
 			ImGui::InputScalar("Shadow Map Light", ImGuiDataType_U32, &mShadowMapDebugLightIndex);
 			if (mShadowMapDebugLightIndex >= mLightData.size())
 			{
-				mShadowMapDebugLightIndex = mLightData.size() - 1;
+				mShadowMapDebugLightIndex = static_cast<unsigned>(mLightData.size() - 1);
 			}
 		}
 	}
@@ -1221,8 +1221,8 @@ namespace Hollow {
 		{
 			ImGui::InputFloat("Exposure", &mExposure);
 			ImGui::InputFloat("Contrast", &mContrast);
-			ImGui::Image((void*)mpSkydomeTexture->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
-			ImGui::Image((void*)mpSkydomeIrradianceMap->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			ImGui::Image((void*)(intptr_t)mpSkydomeTexture->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			ImGui::Image((void*)(intptr_t)mpSkydomeIrradianceMap->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 		}
 	}
 	void RenderManager::DebugDisplayPostProcessing()

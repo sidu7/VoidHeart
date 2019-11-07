@@ -45,7 +45,7 @@ namespace Hollow {
 			return sum;
 		}
 		
-		VelocityJacobian& JacobianScalarMult(VelocityJacobian& j, float val)
+		VelocityJacobian JacobianScalarMult(VelocityJacobian& j, float val)
 		{
 			VelocityJacobian result;
 			result.velocityA = j.velocityA* val;

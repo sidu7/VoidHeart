@@ -1,5 +1,6 @@
 #include <hollowpch.h>
 #include "PathFollow.h"
+#include "Hollow/Graphics/VertexArray.h"
 
 namespace Hollow
 {
