@@ -16,12 +16,9 @@ namespace Hollow {
 		void Step(float);
 		void InterpolateState(float);
 
-		// TODO temp function
-		void CheckCameraComponentAndAdd(GameObject* object);
-
 		bool isPaused;
 		bool nextStep;
-		bool isApplyFriction = true;
+		bool isApplyFriction = false;
 		float accumulator;
 
 		const int impulseIterations = 8;

@@ -3,9 +3,9 @@
 #include "GameWindow.h"
 
 namespace Hollow {
-	GameWindow::GameWindow(std::string title, int width, int height) : mTitle(title), mWidth(width), mHeight(height)
+	GameWindow::GameWindow(rapidjson::Value::Object& data) : mTitle(data["Name"].GetString()), mWidth(data["Width"].GetInt()), mHeight(data["Height"].GetInt())
 	{
-		Initialize();
+		Initialize(data);
 	}
 
 	GameWindow::~GameWindow()
@@ -15,7 +15,7 @@ namespace Hollow {
 		SDL_Quit();
 	}
 
-	void GameWindow::Initialize()
+	void GameWindow::Initialize(rapidjson::Value::Object& data)
 	{
 		HW_CORE_INFO("Creating SDL window");
 		static bool initSDL = true;
@@ -28,8 +28,8 @@ namespace Hollow {
 		}
 
 		//SDL Opengl settings
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, data["OpenglMajorVersion"].GetInt());
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, data["OpenglMinorVersion"].GetInt());
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -38,8 +38,10 @@ namespace Hollow {
 		//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 		//SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
+		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_MOUSE_CAPTURE;
+		
 		// Create SDL window
-		mpWindow = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, SDL_WINDOW_OPENGL);
+		mpWindow = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, flags);
 
 		if (mpWindow == NULL)
 		{
@@ -50,6 +52,6 @@ namespace Hollow {
 		mContext = SDL_GL_CreateContext(mpWindow);
 		
 		// Set this flag if Vysnc is wanted
-		SDL_GL_SetSwapInterval(0);
+		SDL_GL_SetSwapInterval(data["VSync"].GetBool());
 	}
 }

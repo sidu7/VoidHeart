@@ -15,17 +15,14 @@ namespace Hollow
 		PERSPECTIVE,
 		ORTHOGRAPHIC
 	};
-
+	
 	struct CameraData
 	{
-		glm::mat4 mViewMatrix;
-		glm::vec3 mPosition;
-		float mZoom;
-		float mNearPlane;
-		float mFarPlane;
-		glm::ivec2 mScreenPosition;
-		glm::ivec2 mScreenViewPort;
-		CameraProjection mProjection;
 		CameraType mType;
+		glm::mat4 mViewMatrix;
+		glm::mat4 mProjectionMatrix;
+		glm::ivec2 mViewPortPosition;
+		glm::ivec2 mViewPortSize;
+		glm::vec3 mEyePosition;
 	};
 }

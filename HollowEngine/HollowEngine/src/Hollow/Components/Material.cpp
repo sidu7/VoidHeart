@@ -102,7 +102,7 @@ namespace Hollow {
 			// Show the texture if there is only one
 			if (mpTexture)
 			{
-				ImGui::Image((void*)mpTexture->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+				ImGui::Image((void*)mpTexture->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 			}
 			 // Show a small version of the currently selected texture
 			for (MaterialData* material : mMaterials)
@@ -110,22 +110,22 @@ namespace Hollow {
 				if (material->mpDiffuse)
 				{
 					ImGui::Text("Diffuse texture");
-					ImGui::Image((void*)material->mpDiffuse->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+					ImGui::Image((void*)material->mpDiffuse->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 				if (material->mpSpecular)
 				{
 					ImGui::Text("Specular texture");
-					ImGui::Image((void*)material->mpSpecular->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+					ImGui::Image((void*)material->mpSpecular->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 				if (material->mpNormal)
 				{
 					ImGui::Text("Normal texture");
-					ImGui::Image((void*)material->mpNormal->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+					ImGui::Image((void*)material->mpNormal->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 				if (material->mpHeight)
 				{
 					ImGui::Text("Height texture");
-					ImGui::Image((void*)material->mpHeight->GetRendererID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+					ImGui::Image((void*)material->mpHeight->GetTextureID(), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 				}
 			}
 

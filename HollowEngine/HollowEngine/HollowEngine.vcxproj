@@ -11,6 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Hollow\Components\Script.cpp" />
+    <ClCompile Include="src\Hollow\Components\PathFollow.cpp" />
+    <ClCompile Include="src\Hollow\Components\UIButton.cpp" />
+    <ClCompile Include="src\Hollow\Components\UIImage.cpp" />
+    <ClCompile Include="src\Hollow\Components\UITransform.cpp" />
+    <ClCompile Include="src\Hollow\Graphics\UniformBuffer.cpp" />
     <ClCompile Include="src\Hollow\Managers\PhysicsManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Animator.cpp" />
     <ClCompile Include="src\Hollow\Components\Collider.cpp" />
@@ -44,15 +50,23 @@
     <ClCompile Include="src\Hollow\Managers\InputManager.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
     <ClCompile Include="src\Hollow\Managers\ResourceManager.cpp" />
+    <ClCompile Include="src\Hollow\Managers\ScriptingManager.cpp" />
+    <ClCompile Include="src\Hollow\Managers\ThreadManager.cpp" />
+    <ClCompile Include="src\Hollow\Managers\UIManager.cpp" />
     <ClCompile Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.cpp" />
     <ClCompile Include="src\Hollow\Physics\NarrowPhase\SAT.cpp" />
     <ClCompile Include="src\Hollow\Systems\AnimationSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\CameraSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\LightSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\PathFollowSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\RenderSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\ScriptingSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\StateMachineSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\UIButtonSystem.cpp" />
+    <ClCompile Include="src\Hollow\Systems\UIRenderSystem.cpp" />
+    <ClCompile Include="src\Utils\BSplineCurve.cpp" />
     <ClCompile Include="src\Utils\GLCall.cpp" />
     <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Hollow\Core\Application.cpp" />
@@ -89,9 +103,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Hollow\Graphics\Data\SkydomeData.h" />
+    <ClInclude Include="src\Hollow\Components\Script.h" />
+    <ClInclude Include="src\Hollow\Components\PathFollow.h" />
+    <ClInclude Include="src\Hollow\Components\UIButton.h" />
+    <ClInclude Include="src\Hollow\Components\UIImage.h" />
+    <ClInclude Include="src\Hollow\Components\UITransform.h" />
+    <ClInclude Include="src\Hollow\Graphics\Data\UIRenderData.h" />
+    <ClInclude Include="src\Hollow\Graphics\UniformBuffer.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />
     <ClInclude Include="src\Hollow\Components\Collider.h" />
+    <ClInclude Include="src\Hollow\Managers\ScriptingManager.h" />
+    <ClInclude Include="src\Hollow\Managers\UIManager.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Shape.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
     <ClInclude Include="src\Hollow\Components\Light.h" />
@@ -99,7 +122,7 @@
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
     <ClInclude Include="src\Hollow\Events\CollisionEvent.h" />
-    <ClInclude Include="src\Hollow\Events\EventData.h" />
+    <ClInclude Include="src\Hollow\Events\GameEvent.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\AnimationData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\Bone.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\CameraData.h" />
@@ -136,6 +159,7 @@
     <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
     <ClInclude Include="src\Hollow\Managers\ImGuiManager.h" />
     <ClInclude Include="src\Hollow\Managers\ResourceManager.h" />
+    <ClInclude Include="src\Hollow\Managers\ThreadManager.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Broadphase.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\DynamicAABBTree.h" />
     <ClInclude Include="src\Hollow\Physics\NarrowPhase\Contact.h" />
@@ -148,9 +172,14 @@
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
     <ClInclude Include="src\Hollow\Systems\ParticleSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\PathFollowSystem.h" />
     <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Hollow\Systems\RenderSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\ScriptingSystem.h" />
     <ClInclude Include="src\Hollow\Systems\StateMachineSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\UIButtonSystem.h" />
+    <ClInclude Include="src\Hollow\Systems\UIRenderSystem.h" />
+    <ClInclude Include="src\Utils\BSplineCurve.h" />
     <ClInclude Include="src\Utils\GLCall.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
@@ -170,6 +199,7 @@
     <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="src\Hollow\Core\Data\StateData.h" />
+    <ClInclude Include="src\Utils\ThreadSafeQueue.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui_impl_opengl3.h" />
@@ -183,6 +213,10 @@
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Hollow\Enums\Buttons.enum" />
+    <None Include="src\Hollow\Enums\GameEvents.enum" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

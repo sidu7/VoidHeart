@@ -19,6 +19,7 @@ namespace Hollow
 		std::vector<Mesh*> mMeshes;
 		Shader* mpShader;
 		bool mCastShadow;
+		bool mModelHasOffset;
 
 		// variables for deserialization... can be private
 		unsigned int mShape;

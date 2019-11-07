@@ -8,6 +8,7 @@
 #include "Hollow/Graphics/Data/CameraData.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
 #include "Hollow/Graphics/Data/SkydomeData.h"
+#include "Hollow/Graphics/Data/UIRenderData.h"
 #include <GL/glew.h>
 
 namespace Hollow {
@@ -16,12 +17,13 @@ namespace Hollow {
 	//class Camera;
 	class Shader;
 	class FrameBuffer;
+	class UniformBuffer;
 
 	class HOLLOW_API RenderManager
 	{
 		SINGLETON(RenderManager)
 	public:
-		void Init(GameWindow* pWindow = nullptr);
+		void Init(rapidjson::Value::Object& data, GameWindow* pWindow = nullptr);
 		void CleanUp();
 		void Update();
 		inline glm::vec2 GetWindowSize();
@@ -29,17 +31,19 @@ namespace Hollow {
 
 	private:
 		// Initialization Functions
-		void InitializeGBuffer();
 		void InitializeSkydome();
 		void InitializeHammersley(unsigned int n);
 
 		void CreateAmbientShader();
-		void CreateDeferredShader();
-		void CreateLocalLightShader();
+		void CreateLocalLightShader(rapidjson::Value::Object& data);
+		void CreateDeferredShader(rapidjson::Value::Object& data);
 		void CreateSkydomeShader();
 
+		void InitializeGBuffer(rapidjson::Value::Object& data);
+
+
 		void CreateShadowMap(LightData& light);
-		void BlurShadowMap(LightData& light);
+		void BlurTexture(unsigned int inputTextureID, unsigned int width, unsigned int height, unsigned int channels, unsigned int blurWidth, unsigned int& outputTextureID);
 		std::vector<float> CreateBlurKernel(unsigned int distance);
 
 		void GBufferPass();
@@ -52,7 +56,7 @@ namespace Hollow {
 		void DrawFSQ();
 		void DrawSphere();
 
-		void DrawParticles();
+		void DrawParticles(CameraData& cameraData);
 
 		void DrawSkydome();
 
@@ -61,19 +65,27 @@ namespace Hollow {
 		void DrawShadowMap();
 
 		void ApplyFXAA();
+		void DrawSceneWithBloom();
+
+		void DrawUI();
 
 		// ImGui Debug functions
 		void DebugDisplayGBuffer();
 		void DebugDisplayShadow();
 		void DebugDisplayIBL();
-		void DebugDisplayAA();
+		void DebugDisplayPostProcessing();
 
 	public:
 		std::vector<RenderData> mRenderData;
 		std::vector<DebugRenderData> mDebugRenderData;
 		std::vector<LightData> mLightData;
 		std::vector<ParticleData> mParticleData;
-		std::vector<CameraData> mCameraData;
+		std::vector<DebugPathData> mDebugPathData;
+		std::vector<UIRenderData> mUIRenderData;
+		
+		CameraData mMainCamera;
+		CameraData mUICamera;
+		std::vector<CameraData> mSecondaryCameras;
 
 	private:
 		// Transformation matricies
@@ -117,12 +129,12 @@ namespace Hollow {
 		unsigned int mShadowMapDebugLightIndex;
 
 		// Blur
+		UniformBuffer* mpWeights;
 		Shader* mpHorizontalBlurShader;
 		Shader* mpVerticalBlurShader;
 
 		// ParticleSystem
 		Shader* mpParticleShader;
-		Shader* mpParticleCompute;
 		ShaderStorageBuffer* mpParticlesPositionStorage;
 		bool ShowParticles;
 
@@ -131,5 +143,13 @@ namespace Hollow {
 		FrameBuffer* mpFinalBuffer;
 		int mFXAA;
 		float mFXAASpan;
+
+		// Bloom
+		Shader* mpBloomShader;
+		FrameBuffer* mpBloomFrame;
+		bool mBloomEnabled;
+
+		// UI Shader
+		Shader* mpUIShader;
 	};
 }

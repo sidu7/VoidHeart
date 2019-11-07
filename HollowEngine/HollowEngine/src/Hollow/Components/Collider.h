@@ -1,11 +1,12 @@
 #pragma once
 #include "Component.h"
-#include<map>
+#include<unordered_map>
 
 namespace Hollow {
 	class Shape;
 	class Transform;
 	class Body;
+
 
 	class HOLLOW_API Collider : public Component
 	{
@@ -29,5 +30,5 @@ namespace Hollow {
 
 		bool isColliding;
 	};
-};
+}
 

@@ -17,10 +17,17 @@ namespace Hollow
 
 	public:
 		std::vector<Bone*> mBones;
-		std::vector<std::string> mAnimations;
+		std::unordered_map<std::string,std::pair<double,double>> mAnimations; // Animation Name -> {ticks per sec,animation duration}
 		std::vector<glm::mat4> mBoneTransformations;
-		std::string mRunningState;
-		float mScaleFactor;
-		double mRunTime;
+		std::unordered_map<std::string, glm::mat4> mSkeleton; // Stores current transformation matrix for each bone
+		std::string mCurrentState;
+		std::string mPreviousState;
+		float mScaleFactor; // Used to scale the model to unit length
+		double mCurrentRunTime;
+		double mPreviousRunTime;
+		bool mLoopingAnimation;
+		bool mBlending;
+		float mBlendTime;
+		float mBlendFactor;
 	};
 }
