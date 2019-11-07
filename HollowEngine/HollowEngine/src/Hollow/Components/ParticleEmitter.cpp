@@ -73,6 +73,10 @@ namespace Hollow
 		{
 			mCenterOffset = JSONHelper::GetVec3F(data["CenterOffset"].GetArray());
 		}
+		if (data.HasMember("PixelSize"))
+		{
+			mPixelSize = data["PixelSize"].GetFloat();
+		}
 	}
 
 	void ParticleEmitter::DebugDisplay()

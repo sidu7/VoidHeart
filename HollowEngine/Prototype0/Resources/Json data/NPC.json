@@ -29,12 +29,12 @@
     {
       "Type": "Animator",
       "BoneData": "Resources/Models/Walking.fbx",
-      "Animations": [ [ "Walking", "Resources/Models/NarutoRun.fbx" ] ]
+      "Animations": [ [ "NarutoRun", "Resources/Models/NarutoRun.fbx" ] ]
     },
     {
       "Type": "StateMachine",
       "StateFile": "Resources/State data/npcstate.json",
-      "StartState": "Walking"
+      "StartState": "NarutoRun"
     },
     {
       "Type": "PathFollow",

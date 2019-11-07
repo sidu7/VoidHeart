@@ -1,6 +1,7 @@
 #include <Hollow.h>
 
 #include "PrototypeComponent.h"
+#include "Utils/Random.h"
 
 #include "Hollow/Core/EntryPoint.h"
 #include "Hollow/Core/GameObject.h"
@@ -14,6 +15,7 @@
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Body.h"
+#include "Hollow/Components/Light.h"
 
 #define NUM_VERT 1000000000
 #define PI 3.14159f
@@ -92,11 +94,14 @@ public:
 				Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/LocalLight.json");
 				Hollow::Transform* pB = static_cast<Hollow::Transform*>(go->GetComponent<Hollow::Transform>());
 				pB->mPosition = glm::vec3(i-8.0, 0.70, j-8.0);
+				Hollow::Light* pL = go->GetComponent<Hollow::Light>();
+				auto randomizer = Random::Range(0.0f, 1.0f);
+				pL->mColor = glm::vec3(randomizer(), randomizer(), randomizer());
 			}
 		}
 
-		int dim = 6;
-		int height = 4;
+		int dim = 10;
+		int height = 5;
 		for (int i = 0; i < dim; ++i) {
 			for (int j = 0; j < dim; ++j) {
 				for (int k = 0; k < height; ++k) {

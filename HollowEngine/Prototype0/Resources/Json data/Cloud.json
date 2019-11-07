@@ -19,12 +19,13 @@
             "Type": "ParticleEmitter",
             "Shape": 0,
             "Texture": "Resources/Textures/star.png",
-            "Count": 10000.0,
+            "Count": 100000.0,
             "Area": [ 3.0, 1.0, 1.8 ],
             "Life": [4.0,9.0],
             "Speed": [1.5,2.0],
             "ComputeShader": "Resources/Shaders/RainParticles.comp",
-            "CenterOffset":[0.0,0.5,0.8]
+          "CenterOffset": [ 0.0, 0.5, 0.8 ],
+          "PixelSize": 0.2
         }  
     ]
 }

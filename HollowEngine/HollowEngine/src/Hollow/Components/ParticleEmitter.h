@@ -46,6 +46,6 @@ namespace Hollow
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
 		//TODO: direction data and scales
-
+		float mPixelSize;
 	};
 }

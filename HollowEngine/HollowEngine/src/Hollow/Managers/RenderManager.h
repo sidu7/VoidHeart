@@ -152,5 +152,7 @@ namespace Hollow {
 
 		// UI Shader
 		Shader* mpUIShader;
+
+		bool mShowDebugDrawing;
 	};
 }

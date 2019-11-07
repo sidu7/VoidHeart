@@ -46,5 +46,6 @@ namespace Hollow
 		glm::vec2 mLifeRange;
 		glm::vec3 mCenter;
 		Shader* mpComputeShader;
+		float mPixelSize;
 	};
 }

@@ -265,12 +265,6 @@ namespace Hollow {
 		glBlitFramebuffer(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), 0, 0, mpWindow->GetWidth(), mpWindow->GetHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// Local lighting pass
-		LocalLightingPass();
-
-		//Draw debug drawings
-		//DrawDebugDrawings();
-
 		// Post processing effects
 		if (mFXAA == 1)
 		{
@@ -278,6 +272,16 @@ namespace Hollow {
 			
 			ApplyFXAA();
 		}
+
+		// Local lighting pass
+		LocalLightingPass();
+
+		//Draw debug drawings
+		if (mShowDebugDrawing)
+		{
+			DrawDebugDrawings();
+		}
+
 
 		GLCall(glViewport(0, 0, mpWindow->GetWidth(), mpWindow->GetHeight()));
 
@@ -709,17 +713,20 @@ namespace Hollow {
 			pShader->SetVec3("diffuseColor", pMaterial->mDiffuseColor);
 			pShader->SetVec3("specularColor", pMaterial->mSpecularColor);
 			pShader->SetFloat("shininess", pMaterial->mShininess);
+			pShader->SetInt("hasDiffuseTexture", 0);
 
 			// Send diffuse texture information
 			if (pMaterial->mpTexture)
 			{
 				pMaterial->mpTexture->Bind(1);
 				pShader->SetInt("diffuseTexture", 1);
+				pShader->SetInt("hasDiffuseTexture", 1);
 			}
 
 			pShader->SetInt("hasNormalMap", 0);
 			pShader->SetInt("hasHeightMap", 0);
 			pShader->SetFloat("heightScale", 0.0f);
+			pShader->SetInt("hasSpecularTexture", 0);
 
 			// Draw object
 			for (Mesh* mesh : data.mpMeshes)
@@ -731,11 +738,13 @@ namespace Hollow {
 					{
 						materialdata->mpDiffuse->Bind(1);
 						pShader->SetInt("diffuseTexture", 1);
+						pShader->SetInt("hasDiffuseTexture", 1);
 					}
 					if (materialdata->mpSpecular)
 					{
 						materialdata->mpSpecular->Bind(2);
 						pShader->SetInt("specularTexture", 2);
+						pShader->SetInt("hasSpecularTexture", 1);
 					}
 					if (materialdata->mpNormal)
 					{
@@ -959,7 +968,7 @@ namespace Hollow {
 				mpParticleShader->Use();
 				mpParticleShader->SetMat4("Model", particle.mModel);
 				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
-				mpParticleShader->SetFloat("SpriteSize", 0.2f);
+				mpParticleShader->SetFloat("SpriteSize", particle.mPixelSize);
 
 				particle.mTex->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
@@ -1190,6 +1199,7 @@ namespace Hollow {
 		DebugDisplayIBL();
 		DebugDisplayPostProcessing();
 		ImGui::Checkbox("Particle System", &ShowParticles);
+		ImGui::Checkbox("Show Debug", &mShowDebugDrawing);
 	}
 
 	void RenderManager::DebugDisplayGBuffer()

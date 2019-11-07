@@ -18,6 +18,8 @@ uniform vec3 specularColor;
 uniform sampler2D specularTexture;
 uniform float shininess;
 
+uniform int hasDiffuseTexture;
+uniform int hasSpecularTexture;
 uniform int hasNormalMap;
 uniform int hasHeightMap;
 uniform float heightScale;
@@ -96,8 +98,8 @@ void main()
 	}
 	
 	// Store diffuse color in the G-Buffer
-	gDiffuse = diffuseColor + texture(diffuseTexture, texCoords).rgb;
+	gDiffuse = diffuseColor + hasDiffuseTexture*texture(diffuseTexture, texCoords).rgb;
 
 	// Store specular color in the G-Buffer
-	gSpecular = vec4(specularColor, shininess);
+	gSpecular = vec4(specularColor, shininess) + vec4(hasSpecularTexture*texture(specularTexture, texCoords).rgb, 0.0);
 }

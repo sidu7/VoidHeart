@@ -8,7 +8,7 @@
         },
         {
             "Type": "Body",
-            "Mass": 1.0,
+            "Mass": 3.0,
             "IsFrictionLess": false
         },
         {

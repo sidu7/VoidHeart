@@ -10,6 +10,8 @@
 
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/AudioManager.h"
+#include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/InputManager.h"
 
 namespace Hollow {
 
@@ -51,6 +53,7 @@ namespace Hollow {
 		}
 
 		ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
+		ImGui::Text("Number Of Active Objects: %i", GameObjectManager::Instance().GetGameObjects().size());
 		// Get selected object 
 		ImGui::BeginChild("Left Side", ImVec2(150, 0), true);
 		for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
@@ -94,12 +97,17 @@ namespace Hollow {
 				AudioManager::Instance().DebugDisplay();
 				ImGui::EndTabItem();
 			}
+			if (ImGui::BeginTabItem("Testing"))
+			{
+				TestingDisplay();
+				ImGui::EndTabItem();
+			}
 			ImGui::EndTabBar();
 		}
 		ImGui::End();
 
 		// Show demo window for now
-		ImGui::ShowDemoWindow();
+		//ImGui::ShowDemoWindow();
 
 		Render();
 	}
@@ -115,5 +123,13 @@ namespace Hollow {
 	{
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+	void ImGuiManager::TestingDisplay()
+	{
+		if (ImGui::Button("Drop Sphere") || InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_Y))
+		{
+
+			Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Sphere.json");
+		}
 	}
 }

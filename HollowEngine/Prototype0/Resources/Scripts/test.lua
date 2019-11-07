@@ -18,6 +18,9 @@ end
 if isStrafeRight then
 	impulse = impulse + right;
 end
+if jump then
+	impulse = impulse + vec3.new(0.0, 20.0, 0.0);
+end
 
 -- Damp Overall Velocity and Rotation
 player.velocity = player.velocity - 0.1 * player.velocity 
