@@ -2,22 +2,24 @@
 #include <vector>
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Core/GameObject.h"
-#include "Hollow/Events/EventData.h"
 
 
 namespace Hollow
 {
+	class GameEvent;
+	
 	class HOLLOW_API System
 	{
 	public:
-		System(System* instance,int tier) {
-			SystemManager::Instance().RegisterSystem(instance);
+		System(System* instance,int tier, std::type_index index) {
+			SystemManager::Instance().RegisterSystem(instance,index);
 			this->mTier = tier;
 		}
 		virtual ~System() {}
+		virtual void Init() {}
 		virtual void Update() = 0;
 		virtual void AddGameObject(GameObject* pGameObject) = 0;
-		virtual bool HandleEvent(GameEvent* event) { return false; }
+		virtual void HandleBroadcastEvent(GameEvent* event) { }
 		virtual void OnDeleteGameObject(GameObject* pGameObject) {}
 
 		void DeleteGameObject(GameObject* pGameObject)
@@ -32,7 +34,7 @@ namespace Hollow
 		}
 	protected:
 		template<typename First> // 1 template parameter
-		bool CheckComponents(GameObject* pGameObject)
+		bool CheckAllComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
@@ -44,15 +46,36 @@ namespace Hollow
 		}
 
 		template<typename First, typename Second, typename ... Rest> // >=2 template parameters
-		bool CheckComponents(GameObject* pGameObject)
+		bool CheckAllComponents(GameObject* pGameObject)
 		{
 			if (pGameObject->GetComponent<First>())
 			{
-				CheckComponents<Second, Rest...>(pGameObject);
-				return true;
+				return CheckAllComponents<Second, Rest...>(pGameObject);
 			}
 
 			return false;
+		}
+
+		template<typename First> // 1 template parameter
+		bool CheckAnyComponents(GameObject* pGameObject)
+		{
+			if (pGameObject->GetComponent<First>())
+			{
+				mGameObjects.push_back(pGameObject);
+				return true;
+			}
+			return false;
+		}
+
+		template<typename First, typename Second, typename ... Rest> // >=2 template parameters
+		bool CheckAnyComponents(GameObject* pGameObject)
+		{
+			if (pGameObject->GetComponent<First>())
+			{
+				mGameObjects.push_back(pGameObject);
+				return true;
+			}
+			return CheckAnyComponents<Second, Rest...>(pGameObject);
 		}
 
 	public:

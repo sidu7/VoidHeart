@@ -60,6 +60,6 @@ void main()
 	}
 
 	each_particle[gid].mPos = pos;
-	mPos[gid].xyz = pos;
+	mPos[gid] = vec4(pos,1.0);
 	mPos[gid].w = each_particle[gid].currentlife / each_particle[gid].life;
 }

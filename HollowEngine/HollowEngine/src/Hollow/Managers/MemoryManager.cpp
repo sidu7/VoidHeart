@@ -10,6 +10,27 @@ namespace Hollow
 		mComponents.push_back(std::make_pair(name, component));
 	}
 
+	void MemoryManager::CleanUp()
+	{
+		for (unsigned int i = 0; i < mComponents.size(); ++i)
+		{
+			auto& list = mComponentPool[mComponents[i].first];
+			for (unsigned int j = 0; j < list.size(); ++i)
+			{
+				Component* comp = list.front();
+				comp->Clear();
+				delete comp;
+				list.pop_front();
+			}
+		}
+
+		for (unsigned int i = 0; i < mGameObjectPool.size(); ++i)
+		{
+			delete mGameObjectPool.front();
+			mGameObjectPool.pop_front();
+		}
+	}
+
 	Component* MemoryManager::NewComponent(std::string name)
 	{
 		Component* comp = nullptr;
@@ -46,22 +67,24 @@ namespace Hollow
 		mGameObjectPool.push_back(gameobject);
 	}
 
-	void MemoryManager::Init()
+	void MemoryManager::Init(rapidjson::Value::Object& data)
 	{
 		// Create Components Pool
+		unsigned int maxComponents = data["ComponentsPool"].GetUint();
 		for (unsigned int i = 0; i < mComponents.size(); ++i)
 		{
 			Component* component = mComponents[i].second->CreateComponent();
 			std::list<Component*> newlist;
-			for (unsigned int i = 0; i < MAX_OBJECTS; ++i)
+			for (unsigned int i = 0; i < maxComponents; ++i)
 			{
 				newlist.push_back(component->CreateComponent());
 			}
-			mComponentPool[component->mComponentName.c_str()] = newlist;
+			mComponentPool[component->mComponentName] = newlist;
 		}
 
 		//Create GameObjects Pool
-		for (unsigned int i = 0; i < MAX_OBJECTS; ++i)
+		unsigned int maxObjects = data["GameobjectsPool"].GetUint();
+		for (unsigned int i = 0; i < maxObjects; ++i)
 		{
 			mGameObjectPool.push_back(new GameObject());
 		}

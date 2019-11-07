@@ -25,6 +25,8 @@ namespace Hollow {
 		void SetVec3(const std::string& name, float x, float y, float z) const;
 		void SetMat4(const std::string& name, const glm::mat4& mat) const;
 		void SetUniformBlock(const std::string& name, const int bindPoint) const;
+		void SetInputUniformImage(std::string name, unsigned int textureId, unsigned int imageUnit, unsigned int channels) const;
+		void SetOutputUniformImage(std::string name, unsigned int textureId, unsigned int imageUnit, unsigned int channels) const;
 
 	public:
 		GLuint mProgram;

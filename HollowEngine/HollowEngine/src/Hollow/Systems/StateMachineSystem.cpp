@@ -17,7 +17,7 @@ namespace Hollow
 
 	void StateMachineSystem::AddGameObject(GameObject* object)
 	{
-		CheckComponents<StateMachine>(object);
+		CheckAllComponents<StateMachine>(object);
 	}
 
 	void StateMachineSystem::Update()
@@ -25,10 +25,21 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			StateMachine* state = mGameObjects[i]->GetComponent<StateMachine>();
+
+			if (state->mNeedChangeState)
+			{
+				State* temp = state->mCurrentState;
+				state->mCurrentState = state->mPreviousState;
+				state->mPreviousState = temp;
+				state->mNeedChangeState = false;
+				continue;
+			}
+
+			// Check for state change by inputs
 			std::vector<unsigned int>& inputs = state->mCurrentState->mInputs;
 			std::vector<State::StateInputCondition>& inputconditions = state->mCurrentState->mInputConditions;
 			for (unsigned int i = 0; i < inputs.size(); ++i)
-			{
+			{	
 				bool stateChanged = false;
 				switch (inputconditions[i])
 				{
@@ -55,7 +66,7 @@ namespace Hollow
 				{
 					state->mPreviousState = state->mCurrentState;
 					state->mCurrentState = state->mStates[state->mCurrentState->mInputStates[i]];
-					HW_CORE_TRACE("State changed from {0} to {1}", state->mPreviousState->mName, state->mCurrentState->mName);
+					//HW_CORE_TRACE("State changed from {0} to {1}", state->mPreviousState->mName, state->mCurrentState->mName);
 					break;
 				}
 			}

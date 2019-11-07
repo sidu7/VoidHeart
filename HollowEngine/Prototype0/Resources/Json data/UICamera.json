@@ -1,0 +1,14 @@
+{
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0, 0, 0 ]
+        },
+        {
+            "Type": "Camera",
+            "IsActive": true,
+            "CameraType": 1,
+            "ProjectionType": 1
+        }
+    ]
+}

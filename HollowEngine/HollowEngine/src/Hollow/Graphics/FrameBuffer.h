@@ -26,6 +26,6 @@ namespace Hollow {
 		void Clear() const;
 		void Delete() const;
 		void ChangeSize(unsigned int width, unsigned int height);
-		inline int GetRendererID() { return mRendererID; }
+		unsigned int GetFrameBufferID() const { return mRendererID; }
 	};
 }

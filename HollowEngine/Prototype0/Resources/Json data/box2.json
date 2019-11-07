@@ -5,13 +5,14 @@
           "Position": [ 0.0, 0.0, 0.0 ],
           "Scale" :  [1.0, 1.0, 1.0]
         },
-        {
-            "Type": "Body",
-            "Mass": 1.0
-        },
-        {
-            "Type": "Collider"
-        },
+      {
+        "Type": "Body",
+        "Mass": 1.0,
+        "RigidbodyType": "DYNAMIC"
+      },
+      {
+        "Type": "Collider"
+      },
         {
             "Type": "Model",
             "Shape" :  1,

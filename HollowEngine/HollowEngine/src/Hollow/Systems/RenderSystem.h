@@ -6,7 +6,7 @@ namespace Hollow
 {
 	class RenderSystem : public System
 	{
-		REGISTERSYSTEM(RenderSystem,3)
+		REGISTERSYSTEM(RenderSystem,4)
 	public:
 		virtual ~RenderSystem() {}
 		void Update();

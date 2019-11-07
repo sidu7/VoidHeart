@@ -2,7 +2,8 @@
 
 #define PI 3.14159265
 
-out vec4 color;
+layout (location = 0) out vec4 color;
+layout (location = 1) out vec4 bloom;
 
 in vec2 texCoords;
 
@@ -21,6 +22,8 @@ uniform mat4 shadowMatrix;
 uniform int shadowMode;
 uniform float alpha;
 uniform float md;
+uniform bool bloomEnabled;
+uniform bool bloomObject;
 
 // IBL
 uniform sampler2D irradianceMap;
@@ -277,6 +280,7 @@ void main()
 	result = (1.0 - G)*result;
 
 	color = vec4(result, 1.0);
+	bloom = vec4(0.0);
 
 	if(displayMode == 1)
 	{

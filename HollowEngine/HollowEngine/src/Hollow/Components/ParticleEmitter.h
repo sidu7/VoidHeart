@@ -11,7 +11,7 @@ namespace Hollow
 	enum ParticleType;
 	class ShaderStorageBuffer;
 	struct Particle;
-	
+	class Shader;
 
 	class HOLLOW_API ParticleEmitter : public Component
 	{
@@ -33,6 +33,7 @@ namespace Hollow
 		Texture* mTexture;
 		glm::mat4 mModelMatrix;
 		ShaderStorageBuffer* mpParticleStorage;
+		Shader* mpComputeShader;
 
 		// For Mesh particles
 		std::vector<Mesh*> mpParticle;
