@@ -5,7 +5,7 @@ namespace Hollow
 {
 	class Texture;
 
-	class HOLLOW_API UIButton : public Component
+	class UIButton : public Component
 	{
 		REGISTERCOMPONENT(UIButton);
 	public:
@@ -18,11 +18,11 @@ namespace Hollow
 		};
 
 	public:
-		void Init();
-		void Clear();
-		void Serialize(rapidjson::Value::Object data);
-		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		std::vector<std::function<void()>> mFunctions;

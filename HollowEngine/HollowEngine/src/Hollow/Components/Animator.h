@@ -5,15 +5,15 @@ namespace Hollow
 {
 	struct Bone;
 
-	class HOLLOW_API Animator : public Component
+	class Animator : public Component
 	{
 		REGISTERCOMPONENT(Animator);
 	public:
-		void Init();
-		void Clear();
-		void Serialize(rapidjson::Value::Object data);
-		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		std::vector<Bone*> mBones;

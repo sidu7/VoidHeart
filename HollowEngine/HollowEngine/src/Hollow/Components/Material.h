@@ -5,17 +5,14 @@ namespace Hollow {
 	class Texture;
 	struct MaterialData;
 		
-	class HOLLOW_API Material : public Component
+	class Material : public Component
 	{
 		REGISTERCOMPONENT(Material);
 	public:
-		void Init();
-
-		void Clear();
-		
-		void Serialize(rapidjson::Value::Object data);
-
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Clear();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		glm::vec3 mDiffuseColor;
