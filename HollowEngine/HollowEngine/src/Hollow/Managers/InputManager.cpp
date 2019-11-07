@@ -55,8 +55,6 @@ namespace Hollow {
 		return pos.x;
 	}
 
-
-
 	float InputManager::GetMouseY()
 	{
 		auto pos = GetMousePosition();

@@ -8,14 +8,10 @@ namespace Hollow
 
 	void Collider::Init()
 	{
-		mpShape = new ShapeAABB(glm::vec3(0), glm::vec3(0));
-		mpShape->mpOwnerCollider = this;
-
-		mpLocalShape = new ShapeAABB(glm::vec3(0), glm::vec3(0));
-
 		coeffRestitution = 0.2f; // bounce
 		coeffStaticFriction = 0.9f; // to start sliding
 		coeffDynamicFriction = 0.75f; // while sliding
+		mpLocalShape = nullptr;
 	}
 
 	void Collider::Clear()
@@ -45,9 +41,21 @@ namespace Hollow
 		{
 			coeffDynamicFriction = data["kFriction"].GetFloat();
 		}
+		if (data.HasMember("Shape"))
+		{
+			std::string Shape = data["Shape"].GetString();
+			if ( Shape == "BALL")
+			{
+				mpShape = new ShapeCircle(0.0f, glm::vec3(0.0f));
+				mpLocalShape = new ShapeCircle(0.0f, glm::vec3(0.0f));
+				mpShape->mpOwnerCollider = this;
+			}
+			if (Shape == "BOX")
+			{
+				mpShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
+				mpLocalShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
+				mpShape->mpOwnerCollider = this;
+			}
+		}
 	}
-
-
-	
-
 }

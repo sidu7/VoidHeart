@@ -12,7 +12,8 @@
             "IsFrictionLess": true
         },
         {
-            "Type": "Collider"
+          "Type": "Collider",
+          "Shape": "BOX"
         },
         {
             "Type": "Model",

@@ -2,6 +2,7 @@
 
 #include "Hollow/Physics/NarrowPhase/MeshData.h"
 #include "Utils/RayCast.h"
+#include "Hollow/Components/Collider.h"
 
 namespace Hollow {
 	class Collider;
@@ -34,9 +35,14 @@ namespace Hollow {
 	class ShapeCircle : public Shape
 	{
 	public:
-		ShapeCircle(float radius) : Shape(ShapeType::BALL)
+		bool TestRay(const Ray& r, IntersectionData& id, glm::mat3& rot, glm::vec3& extents)
+		{
+			return true;
+		}
+		ShapeCircle(float radius,glm::vec3 center) : Shape(ShapeType::BALL)
 		{
 			mRadius = radius;
+			mCenter = center;
 		}
 		bool TestRay(const Ray& r, IntersectionData& id)
 		{
@@ -49,6 +55,7 @@ namespace Hollow {
 		}
 
 		float mRadius;
+		glm::vec3 mCenter;
 	};
 
 	class ShapeAABB : public Shape
@@ -158,7 +165,7 @@ namespace Hollow {
 
 			return false;
 		}
-		
+		//This is the AABB of the rotated boxes!!!!!!!!!!!!!!!(this is not the exact scales- use mptr scale)
 		glm::vec3 GetHalfExtents() {
 			glm::vec3 extents;
 			extents = glm::vec3((mMax.x - mMin.x) * 0.5f, (mMax.y - mMin.y) * 0.5f, (mMax.z - mMin.z) * 0.5f);
@@ -196,12 +203,45 @@ namespace Hollow {
 			mMax.z = std::max(first.mMax.z, second.mMax.z);
 		}
 
-		bool Contains(ShapeAABB& other) {
-			if (other.mMin.x < mMin.x || other.mMin.y < mMin.y || other.mMin.z < mMin.z) {
-				return false;
+		void fatten(Shape* shape, glm::vec3 fatMargin)
+		{
+			if (shape->mType == BOX)
+			{
+				this->mMin = static_cast<ShapeAABB*>(shape)->mMin
+					- fatMargin;
+				this->mMax = static_cast<ShapeAABB*>(shape)->mMax
+					+ fatMargin;
 			}
-			if (other.mMax.x > mMax.x || other.mMax.y > mMax.y || other.mMax.z > mMax.z) {
-				return false;
+			else if (shape->mType == BALL)
+			{
+				this->mMin = (static_cast<ShapeCircle*>(shape)->mCenter - glm::vec3(static_cast<ShapeCircle*>(shape)->mRadius)) - fatMargin;
+				this->mMax = (static_cast<ShapeCircle*>(shape)->mCenter + glm::vec3(static_cast<ShapeCircle*>(shape)->mRadius)) + fatMargin;
+			}
+		}
+
+		bool Contains(Collider* col) {
+			if (col->mpShape->mType == BOX)
+			{
+				ShapeAABB* other = static_cast<ShapeAABB*>(col->mpShape);
+				if (other->mMin.x < mMin.x || other->mMin.y < mMin.y || other->mMin.z < mMin.z) {
+					return false;
+				}
+				if (other->mMax.x > mMax.x || other->mMax.y > mMax.y || other->mMax.z > mMax.z) {
+					return false;
+				}
+			}
+			else if (col->mpShape->mType == BALL)
+			{
+				ShapeCircle* other = static_cast<ShapeCircle*>(col->mpShape);
+				glm::vec3 min, max;
+				min = other->mCenter - other->mRadius;
+				max = other->mCenter + other->mRadius;
+				if (min.x < mMin.x || min.y < mMin.y || min.z < mMin.z) {
+					return false;
+				}
+				if (max.x > mMax.x || max.y > mMax.y || max.z > mMax.z) {
+					return false;
+				}
 			}
 			return true;
 		}
