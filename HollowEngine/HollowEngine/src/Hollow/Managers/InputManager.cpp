@@ -35,9 +35,9 @@ namespace Hollow {
 		return mCurrentMouseState[button];
 	}
 
-	std::pair<float, float> InputManager::GetMouseMotion()
+	glm::vec2 InputManager::GetMouseMotion()
 	{
-		return std::pair<float, float>(xRel, yRel);
+		return glm::vec2(xRel, yRel);
 	}
 
 
@@ -54,8 +54,6 @@ namespace Hollow {
 		auto pos = GetMousePosition();
 		return pos.x;
 	}
-
-
 
 	float InputManager::GetMouseY()
 	{

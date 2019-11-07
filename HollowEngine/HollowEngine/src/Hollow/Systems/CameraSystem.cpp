@@ -106,10 +106,10 @@ namespace Hollow {
 
 	void CameraSystem::HandleMouseMotion(Camera* pCamera)
 	{
-		std::pair<float, float> mousePos = InputManager::Instance().GetMouseMotion();
+		glm::vec2 mousePos = InputManager::Instance().GetMouseMotion();
 
-		float xoffset = pCamera->mMouseSensitivity * mousePos.first;
-		float yoffset = pCamera->mMouseSensitivity * mousePos.second;
+		float xoffset = pCamera->mMouseSensitivity * mousePos.x;
+		float yoffset = pCamera->mMouseSensitivity * mousePos.y;
 		
 		pCamera->mYaw += xoffset;
 		pCamera->mPitch += yoffset;

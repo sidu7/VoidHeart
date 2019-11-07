@@ -20,9 +20,10 @@ namespace Hollow
 		void Bind(unsigned int slot = 0) const;
 		void Unbind(unsigned int slot = 0) const;
 		void EnableTiling() const;
-		inline unsigned int GetWidth() { return mWidth; }
-		inline unsigned int GetHeight() { return mHeight; }
-		inline unsigned int GetTextureID() { return mRendererID; }
+		unsigned int GetWidth() const { return mWidth; }
+		unsigned int GetHeight() const { return mHeight; }
+		unsigned int GetChannels() const { return mChannels; }
+		unsigned int GetTextureID() const { return mRendererID; }
 
 	private:
 		void ReadBufferToTexture();

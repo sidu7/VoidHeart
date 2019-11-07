@@ -13,9 +13,9 @@ namespace Hollow {
 		bool IsMouseButtonPressed(unsigned int button);
 		bool IsMouseButtonTriggered(unsigned int button);
 
-		std::pair<float, float> GetMouseMotion();
+		glm::vec2 GetMouseMotion();
 		
-		std::pair<float, float> GetMousePosition();
+		glm::ivec2 GetMousePosition();
     
 		float GetMouseX();
 		float GetMouseY();
