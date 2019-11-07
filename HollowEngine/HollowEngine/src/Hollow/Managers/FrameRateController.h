@@ -13,19 +13,20 @@ namespace Hollow {
 
 		SINGLETON(FrameRateController)
 	public:
-		HOLLOW_API void SetMaxFrameRate(Uint32 MaxFramerate)
+		HOLLOW_API void SetMaxFrameRate(Uint64 MaxFramerate)
 		{
 			mMaxFrameRate = MaxFramerate;
 			if (mMaxFrameRate != 0)
-				mNeededTicksPerFrame = 1000.0 / mMaxFrameRate;
+				mNeededTicksPerFrame = 1000.0f / mMaxFrameRate;
 			else
-				mNeededTicksPerFrame = 0;
+				mNeededTicksPerFrame = 0.0f;
 		}
 
 
 		HOLLOW_API void Init()
 		{
-			mTickStart = mTickEnd = mFrameTime = 0;
+			mTickStart = mTickEnd = 0;
+			mFrameTime = 0.0f;
 		}
 
 
@@ -35,7 +36,7 @@ namespace Hollow {
 		}
 
 		HOLLOW_API float GetFrameTime() {
-			return mFrameTime * 1.0f / 1000.0f;
+			return static_cast<float>(mFrameTime * 1.0f / 1000.0f);
 		}
 
 		HOLLOW_API void FrameStart()
@@ -46,14 +47,16 @@ namespace Hollow {
 		HOLLOW_API void FrameEnd()
 		{
 			mTickEnd = SDL_GetPerformanceCounter();
-			while (((mTickEnd - mTickStart) * 1000.0) / SDL_GetPerformanceFrequency() < mNeededTicksPerFrame)
+			while (((mTickEnd - mTickStart) * 1000.0f) / SDL_GetPerformanceFrequency() < mNeededTicksPerFrame)
 			{
 				mTickEnd = SDL_GetPerformanceCounter();
 			}			
-			mFrameTime = ((mTickEnd - mTickStart) * 1000.0) / SDL_GetPerformanceFrequency();
+			mFrameTime = ((mTickEnd - mTickStart) * 1000.0f) / SDL_GetPerformanceFrequency();
 		}
 
 	private:
-		double mTickEnd = 0.0, mTickStart = 0.0, mNeededTicksPerFrame = 0.0, mFrameTime = 0.0, mMaxFrameRate = 0.0;
+		UINT64 mTickEnd = 0, mTickStart = 0, mMaxFrameRate = 0;
+		float  mNeededTicksPerFrame = 0.0f, mFrameTime = 0.0f;
+		
 	};
 }

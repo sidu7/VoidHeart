@@ -25,7 +25,7 @@ namespace Hollow
 			return res;
 		}
 
-		HOLLOW_API  unsigned int GetThreadCount() const { return mThreads.size(); }
+		HOLLOW_API  size_t GetThreadCount() const { return mThreads.size(); }
 
 	private:
 		void WaitForTask();

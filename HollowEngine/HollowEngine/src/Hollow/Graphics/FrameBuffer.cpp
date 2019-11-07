@@ -37,7 +37,6 @@ namespace Hollow {
 		// create and attach depth buffer (renderbuffer)
 		if (attachDepth)
 		{
-			unsigned int rboDepth;
 			GLCall(glGenRenderbuffers(1, &mDepthBuffer));
 			GLCall(glBindRenderbuffer(GL_RENDERBUFFER, mDepthBuffer));
 			GLCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, mWidth, mHeight));

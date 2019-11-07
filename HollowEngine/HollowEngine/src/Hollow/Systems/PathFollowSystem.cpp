@@ -65,7 +65,7 @@ namespace Hollow
 				RenderManager::Instance().mDebugPathData.push_back(pathData);
 			}
 			
-			const double distance = pBody->mVelocity.z * pathFollow->mPathRunTime;
+			const float distance = pBody->mVelocity.z * pathFollow->mPathRunTime;
 			const std::pair<float, int> searchedValue = SearchInArcTable(distance,pathFollow);
 			glm::vec3 position = BSplineCurve::GetPointOnCurve(searchedValue.first, pathFollow->mControlPointsMatrices[searchedValue.second]);
 
@@ -126,9 +126,9 @@ namespace Hollow
 				adaptiveStack.pop();
 
 				int index = topValue.second.second;
-				double sa = topValue.first;
-				double sb = topValue.second.first;
-				double sm = (sa + sb) / 2;
+				float sa = topValue.first;
+				float sb = topValue.second.first;
+				float sm = (sa + sb) / 2;
 
 				glm::vec4 Psm = BSplineCurve::GetPointOnCurve(sm, pathFollow->mControlPointsMatrices[index]);
 				glm::vec4 Psa = BSplineCurve::GetPointOnCurve(sa, pathFollow->mControlPointsMatrices[index]);
@@ -145,7 +145,7 @@ namespace Hollow
 				}
 				else
 				{
-					unsigned int prevIndex = pathFollow->mArcLengthTable.size();
+					size_t prevIndex = pathFollow->mArcLengthTable.size();
 					float distance = pathFollow->mArcLengthTable[prevIndex - 1].first;
 					pathFollow->mArcLengthTable.emplace_back(MAKE_ARCTABLE_ENTRY(distance + A, sm, index));
 					pathFollow->mArcLengthTable.emplace_back(MAKE_ARCTABLE_ENTRY(distance + A + B, sb, index));
@@ -185,7 +185,7 @@ namespace Hollow
 		vb.Unbind();
 		va->Unbind();
 		
-		pathFollow->mCurvePointsCount = curvePoints.size();
+		pathFollow->mCurvePointsCount = static_cast<unsigned int>(curvePoints.size());
 		pathFollow->mpCurveVAO = va;
 	}
 
@@ -202,7 +202,7 @@ namespace Hollow
 	std::pair<float, int> PathFollowSystem::SearchInArcTable(const float distance,PathFollow* pathFollow)
 	{
 		auto& table = pathFollow->mArcLengthTable;
-		int index = BinarySearch(0, table.size(), distance, table);
+		int index = BinarySearch(0, static_cast<unsigned int>(table.size()), distance, table);
 
 		if(index > 0)
 		{
@@ -257,5 +257,7 @@ namespace Hollow
 			}
 			return BinarySearch(start, mid - 1, distance, list);
 		}
+
+		return -1;
 	}
 }

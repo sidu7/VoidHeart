@@ -71,12 +71,12 @@ namespace Hollow {
 		double mua = numer / denom;
 		double mub = (d1343 + d4321 * (mua)) / d4343;
 
-		pa.x = p1.x + mua * p21.x;
-		pa.y = p1.y + mua * p21.y;
-		pa.z = p1.z + mua * p21.z;
-		pb.x = p3.x + mub * p43.x;
-		pb.y = p3.y + mub * p43.y;
-		pb.z = p3.z + mub * p43.z;
+		pa.x = static_cast<float>(p1.x + mua * p21.x);
+		pa.y = static_cast<float>(p1.y + mua * p21.y);
+		pa.z = static_cast<float>(p1.z + mua * p21.z);
+		pb.x = static_cast<float>(p3.x + mub * p43.x);
+		pb.y = static_cast<float>(p3.y + mub * p43.y);
+		pb.z = static_cast<float>(p3.z + mub * p43.z);
 
 		*poA = pa;
 		*poB = pb;
@@ -334,7 +334,7 @@ namespace Hollow {
 
 
 			// project points onto reference face to calculate rA and rB
-			int size = manifold->contactPoints.size();
+			size_t size = manifold->contactPoints.size();
 			for (int i = 0; i < size; ++i) {
 				glm::vec3 projected = manifold->contactPoints[i].point - refFaceNormal * manifold->contactPoints[i].penetrationDepth;
 
@@ -444,7 +444,6 @@ namespace Hollow {
 	{
 		ShapeAABB* boxShape = static_cast<ShapeAABB*>(box->mpShape);
 		ShapeCircle* ballShape = static_cast<ShapeCircle*>(ball->mpShape);
-		int faceIndex;
 		MeshData& md1 = boxShape->mMeshData;
 		glm::vec3 contactNormal(0.0f);
 		glm::mat3& boxRotationMatrix = box->mpBody->mRotationMatrix;

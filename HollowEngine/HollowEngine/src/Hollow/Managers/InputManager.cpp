@@ -51,14 +51,14 @@ namespace Hollow {
 
 	float InputManager::GetMouseX()
 	{
-		auto pos = GetMousePosition();
-		return pos.x;
+		glm::ivec2 pos = GetMousePosition();
+		return static_cast<float>(pos.x);
 	}
 
 	float InputManager::GetMouseY()
 	{
-		auto pos = GetMousePosition();
-		return pos.y;
+		glm::ivec2 pos = GetMousePosition();
+		return static_cast<float>(pos.y);
 	}
 
 	void InputManager::SetEventCallback(const EventCallbackFn& callback)
@@ -121,7 +121,7 @@ namespace Hollow {
 	{
 		if (event.type == SDL_MOUSEWHEEL)
 		{
-			MouseScrolledEvent mse(event.wheel.x, event.wheel.y);
+			MouseScrolledEvent mse(static_cast<float>(event.wheel.x), static_cast<float>(event.wheel.y));
 			EventCallback(mse);
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
@@ -142,8 +142,8 @@ namespace Hollow {
 		}
 		else if(event.type == SDL_MOUSEMOTION)
 		{
-			xRel = event.motion.xrel;
-			yRel = -event.motion.yrel;
+			xRel = static_cast<float>(event.motion.xrel);
+			yRel = -static_cast<float>(event.motion.yrel);
 		}
 	}
 

@@ -20,10 +20,10 @@ namespace Hollow {
 		GLCall(glDeleteBuffers(1, &mRendererID));
 	}
 
-	void VertexBuffer::AddData(const void* data, unsigned int count, unsigned int size)
+	void VertexBuffer::AddData(const void* data, size_t count, size_t size)
 	{
 		Bind();
-		mCount = count;
+		mCount = static_cast<unsigned>(count);
 		GLCall(glBufferData(GL_ARRAY_BUFFER, count * size, data, GL_STATIC_DRAW));
 	}
 

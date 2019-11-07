@@ -31,6 +31,7 @@ namespace Hollow
 					return i;
 				}
 			}
+			return -1;
 		}
 	};
 }

@@ -147,7 +147,7 @@ namespace Hollow
 		}
 
 		Bone* child = new Bone();
-		child->mIndex = boneList.size();
+		child->mIndex = static_cast<unsigned int>(boneList.size());
 		glm::mat4 tt = *(glm::mat4*)(&node->mTransformation.Transpose());
 		tt[3].x /= maxm;
 		tt[3].y /= maxm;
