@@ -11,6 +11,10 @@ namespace Hollow {
 		bool IsKeyReleased(unsigned int keycode);
 		bool IsKeyTriggered(unsigned int keycode);
 		bool IsMouseButtonPressed(unsigned int button);
+		bool IsMouseButtonTriggered(unsigned int button);
+
+		std::pair<float, float> GetMouseMotion();
+		
 		std::pair<float, float> GetMousePosition();
 		float GetMouseX();
 		float GetMouseY();
@@ -21,7 +25,8 @@ namespace Hollow {
 		
 		void Init();
 		void Update();
-	
+		void HideMouseCursor();
+		void ShowMouseCursor();
 		
 	private:
 		EventCallbackFn EventCallback;
@@ -30,11 +35,12 @@ namespace Hollow {
 		void HandleMouseEvents(const SDL_Event& e);
 		void HandleWindowEvents(const SDL_Event& e);
 
+		float xRel, yRel;
 		
 		Uint8 mCurrentState[512];
 		Uint8 mPreviousState[512];
-		bool mPrevMouseState[3];
-		bool mCurrentMouseState[3];
+		bool mPrevMouseState[6];
+		bool mCurrentMouseState[6];
 	};
 
 }
