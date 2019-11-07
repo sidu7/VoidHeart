@@ -22,6 +22,7 @@ uniform float exposure;
 uniform float contrast;
 uniform float hdrWidth;
 uniform float hdrHeight;
+uniform bool bloomEnabled;
 
 uniform HammersleyBlock{
 	float NumDirections;
@@ -121,11 +122,13 @@ void main()
 	vec3 BRDF = diffuse + specular;
 	vec3 result = BRDF;
 
-	// Convert back to sRGB color space
-	vec3 eC = exposure*result;
-	result = eC / (eC + vec3(1.0));
-	result = pow(result, vec3(contrast/2.2));
-
+	if(!bloomEnabled)
+	{
+		// Convert back to sRGB color space
+		vec3 eC = exposure*result;
+		result = eC / (eC + vec3(1.0));
+		result = pow(result, vec3(contrast/2.2));
+	}
 	color = vec4(result, 1.0);
 	bloom = vec4(0.0, 0.0, 0.0, 0.0);
 }

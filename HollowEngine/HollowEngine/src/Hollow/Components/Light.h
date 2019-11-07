@@ -12,15 +12,15 @@ namespace Hollow
 		LIGHT_NUM
 	};
 
-	class HOLLOW_API Light : public Component
+	class Light : public Component
 	{
 		REGISTERCOMPONENT(Light);
 	public:
-		void Init();
-		void Serialize(rapidjson::Value::Object data);
-		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
-		void Clear();
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
+		HOLLOW_API void Clear();
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		glm::vec3 mPosition; // Position of light or offset from the objects center position ?

@@ -7,6 +7,7 @@ in vec3 fragmentPosition;
 uniform sampler2D skydome;
 uniform float exposure;
 uniform float contrast;
+uniform bool bloomEnabled;
 
 layout (location = 0) out vec4 color;
 layout (location = 1) out vec4 bloom;
@@ -19,6 +20,7 @@ void main()
 	
 	// Tone map and gamma correction
 	color = textureLod(skydome, uv, 0.0);
+
 	vec4 eC = exposure*color;
 	color = eC / (eC + vec4(1.0));
 	color = pow(color, vec4(contrast/2.2));

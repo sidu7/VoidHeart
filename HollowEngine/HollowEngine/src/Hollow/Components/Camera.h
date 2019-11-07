@@ -10,10 +10,10 @@ namespace Hollow
 	{
 		REGISTERCOMPONENT(Camera);
 	public:
-		void Init();
-		void Serialize(rapidjson::Value::Object data);
-		void Clear();
-		void DebugDisplay();
+		HOLLOW_API void Init();
+		HOLLOW_API void Serialize(rapidjson::Value::Object data);
+		HOLLOW_API void Clear();
+		HOLLOW_API void DebugDisplay();
 
 	public:
 		CameraType mType;

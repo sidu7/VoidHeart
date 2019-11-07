@@ -583,6 +583,7 @@ namespace Hollow {
 		mpAmbientShader->SetFloat("contrast", mContrast);
 		mpAmbientShader->SetFloat("hdrWidth", (float)mpSkydomeTexture->GetWidth());
 		mpAmbientShader->SetFloat("hdrHeight", (float)mpSkydomeTexture->GetHeight());
+		mpAmbientShader->SetInt("bloomEnabled", mBloomEnabled);
 
 		// Render FSQ
 		DrawFSQ();
@@ -1016,6 +1017,7 @@ namespace Hollow {
 
 		mpSkydomeShader->SetFloat("exposure", mExposure);
 		mpSkydomeShader->SetFloat("contrast", mContrast);
+		mpSkydomeShader->SetInt("bloomEnabled", mBloomEnabled);
 
 		mpSkydomeTexture->Bind();
 
@@ -1116,11 +1118,15 @@ namespace Hollow {
 			mpBloomFrame->mHeight,
 			4, 5, mpBloomFrame->mpTextureID[1]);
 
+		GLCall(glClear(GL_COLOR_BUFFER_BIT));
+		
 		mpBloomShader->Use();
 		mpBloomFrame->TexBind(0, 1);
 		mpBloomShader->SetInt("scene", 1);
 		mpBloomFrame->TexBind(1, 2);
 		mpBloomShader->SetInt("blur", 2);
+		mpBloomShader->SetFloat("exposure", mExposure);
+		mpBloomShader->SetFloat("contrast", mContrast);
 		DrawFSQ();
 		mpBloomShader->Unbind();
 		glDisable(GL_BLEND);
