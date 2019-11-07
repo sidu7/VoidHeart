@@ -12,6 +12,8 @@ namespace Hollow {
 		bool IsKeyTriggered(unsigned int keycode);
 		bool IsMouseButtonPressed(unsigned int button);
 		bool IsMouseButtonTriggered(unsigned int button);
+		bool IsPressed(SDL_GameControllerButton button);
+		Sint16 GetAxisValue(SDL_GameControllerAxis axis);
 
 		glm::vec2 GetMouseMotion();
 		
@@ -28,6 +30,7 @@ namespace Hollow {
 		void Update();
 		void HideMouseCursor();
 		void ShowMouseCursor();
+		SDL_GameController* mpController;
 		
 	private:
 		EventCallbackFn EventCallback;

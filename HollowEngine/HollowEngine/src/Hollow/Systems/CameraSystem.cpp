@@ -37,9 +37,9 @@ namespace Hollow {
 	{
 		float frameTime = FrameRateController::Instance().GetFrameTime();
 		float velocity = pCamera->mMovementSpeed * frameTime;
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W)||InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_UP))
 		{
-			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT))
+			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT)|| InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT)>20)
 			{
 				pTransform->mPosition += pCamera->mUp * velocity;
 			}
@@ -48,9 +48,9 @@ namespace Hollow {
 				pTransform->mPosition += pCamera->mFront * velocity;
 			}
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S)||InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 		{
-			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT))
+			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20)
 			{
 				pTransform->mPosition -= pCamera->mUp * velocity;
 			}
@@ -59,11 +59,11 @@ namespace Hollow {
 				pTransform->mPosition -= pCamera->mFront * velocity;
 			}
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_A))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_A)||InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
 		{
 			pTransform->mPosition -= pCamera->mRight * velocity;
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_D))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_D) || InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
 		{
 			pTransform->mPosition += pCamera->mRight * velocity;
 		}
@@ -79,15 +79,21 @@ namespace Hollow {
 		mLastX = mousePos.x;
 		mLastY = mousePos.y;
 
-		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
+		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT)&&InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT)<20 ||
 			ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
 			return;
 		}
-
-		xoffset *= pCamera->mMouseSensitivity;
-		yoffset *= pCamera->mMouseSensitivity;
-
+		if (InputManager::Instance().mpController != nullptr)
+		{
+			xoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX) / 16000;
+			yoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY) / -16000;
+		}
+		else
+		{
+			xoffset *= pCamera->mMouseSensitivity;
+			yoffset *= pCamera->mMouseSensitivity;
+		}
 		pCamera->mYaw += xoffset;
 		pCamera->mPitch += yoffset;
 
@@ -107,10 +113,18 @@ namespace Hollow {
 	void CameraSystem::HandleMouseMotion(Camera* pCamera)
 	{
 		glm::vec2 mousePos = InputManager::Instance().GetMouseMotion();
-
-		float xoffset = pCamera->mMouseSensitivity * mousePos.x;
-		float yoffset = pCamera->mMouseSensitivity * mousePos.y;
+		float xoffset, yoffset;
 		
+		if (InputManager::Instance().mpController != nullptr)
+		{
+			xoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX)/16000;
+			yoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY)/-16000;
+		}
+		else
+		{
+			xoffset = pCamera->mMouseSensitivity * mousePos.x;
+			yoffset = pCamera->mMouseSensitivity * mousePos.y;
+		}
 		pCamera->mYaw += xoffset;
 		pCamera->mPitch += yoffset;
 

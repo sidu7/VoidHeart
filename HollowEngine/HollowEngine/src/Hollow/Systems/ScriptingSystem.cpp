@@ -13,7 +13,7 @@
 namespace Hollow
 {
 	ScriptingSystem ScriptingSystem::instance;
-	
+
 	void ScriptingSystem::Update()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
@@ -23,19 +23,23 @@ namespace Hollow
 			Camera* pCam = mGameObjects[i]->GetComponent<Camera>();
 
 			// setting body rotation to match camera rotation about y
-			pBody->mQuaternion = glm::toQuat(glm::rotate(glm::mat4(1.0f), 
+			pBody->mQuaternion = glm::toQuat(glm::rotate(glm::mat4(1.0f),
 				glm::radians(-pCam->mYaw + 90), glm::vec3(0.0f, 1.0f, 0.0f)));
-			
+
 			auto& lua = ScriptingManager::Instance().lua;
 
 			lua["fpsCamera"] = pCam;
 			lua["player"] = pBody;
-			
-			lua["isMoveForward"] = InputManager::Instance().IsKeyPressed(SDL_SCANCODE_UP);
-			lua["isMoveBackward"] = InputManager::Instance().IsKeyPressed(SDL_SCANCODE_DOWN);
-			lua["isStrafeLeft"] = InputManager::Instance().IsKeyPressed(SDL_SCANCODE_LEFT);
-			lua["isStrafeRight"] = InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT);
-			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_C))
+
+			lua["isMoveForward"] = (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_UP) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) < -16000);
+
+			lua["isMoveBackward"] = (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_DOWN) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) > 16000);
+
+			lua["isStrafeLeft"] = (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_LEFT) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) < -16000);
+
+			lua["isStrafeRight"] = (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 16000);
+
+			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_C) || InputManager::Instance().IsPressed((SDL_CONTROLLER_BUTTON_A)))
 			{
 				pCam->mIsActive = !pCam->mIsActive;
 				if (pCam->mIsActive)
@@ -47,11 +51,11 @@ namespace Hollow
 					InputManager::Instance().ShowMouseCursor();
 				}
 			}
-			
+
 			lua.script_file(script->scriptPath);
 
 			PhysicsManager::Instance().ApplyImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
-			
+
 		}
 	}
 
