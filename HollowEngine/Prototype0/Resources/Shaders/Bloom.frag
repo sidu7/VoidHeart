@@ -17,9 +17,5 @@ void main()
     vec3 bloomColor = texture(blur, TexCoords).rgb;
 	sceneColor += bloomColor.rgb; // additive blending
 
-	vec3 eC = exposure*sceneColor;
-	vec3 result = eC / (eC + vec3(1.0));
-	result = pow(result, vec3(contrast/2.2));
-
-	FragColor = vec4(result, 1.0);
+	FragColor = vec4(sceneColor, 1.0);
 }
