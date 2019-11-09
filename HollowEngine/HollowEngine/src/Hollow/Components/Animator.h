@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Hollow/Graphics/Data/AnimationData.h"
 
 namespace Hollow
 {
@@ -17,6 +18,7 @@ namespace Hollow
 
 	public:
 		std::vector<Bone*> mBones;
+		std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>> mAnimationData;
 		std::unordered_map<std::string,std::pair<double,double>> mAnimations; // Animation Name -> {ticks per sec,animation duration}
 		std::vector<glm::mat4> mBoneTransformations;
 		std::unordered_map<std::string, glm::mat4> mSkeleton; // Stores current transformation matrix for each bone

@@ -1,14 +1,14 @@
 {
-  "States": [ "NarutoRun" ],
+  "States": [ "Walking" ],
   "Conditions": [
     {
-      "State": "NarutoRun",
-      "IsLoop":  true,
-      "Events": [ ],
-      "Inputs": [ ],
-      "InputCondition": [ ],
-      "EventStates": [ ],
-      "InputStates": [ ]
+      "State": "Walking",
+      "IsLoop": true,
+      "Events": [],
+      "Inputs": [],
+      "InputCondition": [],
+      "EventStates": [],
+      "InputStates": []
     }
   ]
 }

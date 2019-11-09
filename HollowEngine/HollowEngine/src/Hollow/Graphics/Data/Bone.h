@@ -9,9 +9,7 @@ namespace Hollow
 		unsigned int mParentIndex;
 		glm::mat4 mTransformation;
 		glm::mat4 mOffset;
-		std::unordered_map<std::string, bool> mIsAnimated;
 		std::string mName;
-		std::unordered_map<std::string, AnimationData> mAnimations;
 	};
 
 	struct BoneData

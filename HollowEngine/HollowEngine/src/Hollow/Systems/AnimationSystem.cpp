@@ -83,11 +83,12 @@ namespace Hollow
 			for (unsigned int j = 0; j < animator->mBones.size(); ++j)
 			{
 				Bone* bone = animator->mBones[j];
+				auto& animData = animator->mAnimationData[j];
 				glm::mat4 trans = glm::mat4(1.0f);
-				if (bone->mIsAnimated[animationName])
+				if (animData[animationName].first)
 				{
 					//interpolate for timeframe
-					AnimationData& anim = bone->mAnimations[animationName];					
+					AnimationData& anim = animData[animationName].second;					
 					
 					auto posIndex = FindT2inList<glm::vec3>(timeFrame, anim.mKeyPositions);
 					auto rotIndex = FindT2inList<glm::quat>(timeFrame, anim.mKeyRotations);
@@ -97,9 +98,9 @@ namespace Hollow
 					glm::vec3 scale = Interpolate(sclIndex, timeFrame, anim.mKeyScalings);
 					glm::quat rotation = SInterpolate(rotIndex, timeFrame, anim.mKeyRotations);
 										
-					if (animator->mBlending && bone->mIsAnimated[prevAnimationName])
+					if (animator->mBlending && animData[prevAnimationName].first)
 					{
-						AnimationData& prevAnim = bone->mAnimations[prevAnimationName];
+						AnimationData& prevAnim = animData[prevAnimationName].second;
 						auto prevposIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyPositions);
 						auto prevrotIndex = FindT2inList<glm::quat>(prevTimeFrame, prevAnim.mKeyRotations);
 						auto prevsclIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyScalings);
@@ -121,9 +122,9 @@ namespace Hollow
 				}
 				else
 				{
-					if(animator->mBlending && bone->mIsAnimated[prevAnimationName])
+					if(animator->mBlending && animData[prevAnimationName].first)
 					{
-						AnimationData& prevAnim = bone->mAnimations[prevAnimationName];
+						AnimationData& prevAnim = animData[prevAnimationName].second;
 						auto prevposIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyPositions);
 						auto prevrotIndex = FindT2inList<glm::quat>(prevTimeFrame, prevAnim.mKeyRotations);
 						auto prevsclIndex = FindT2inList<glm::vec3>(prevTimeFrame, prevAnim.mKeyScalings);

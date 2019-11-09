@@ -1,4 +1,5 @@
 #pragma once
+#include "Hollow/Graphics/Data/AnimationData.h"
 
 namespace Hollow
 {
@@ -40,7 +41,8 @@ namespace Hollow
 		HOLLOW_API  std::vector<Mesh*> LoadModel(std::string path);
 		HOLLOW_API  std::vector<MaterialData*> LoadMaterials(std::string path);
 		HOLLOW_API  std::pair<float, std::vector<Bone*>> LoadBoneData(std::string path);
-		HOLLOW_API  std::pair<double, double> AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, float factor);
+		HOLLOW_API  std::pair<double, double> AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, 
+			std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>>& animationList, float factor);
 		HOLLOW_API  Mesh* GetShape(Shapes shape);
 		HOLLOW_API  FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
 		HOLLOW_API  std::vector<State*> ReadStateMachineFile(std::string path);
@@ -55,7 +57,8 @@ namespace Hollow
 		Texture* LoadMaterialTexture(aiMaterial* material, unsigned int textureType, const aiScene* scene, std::string directory);
 		inline unsigned int GetBoneIndex(std::string name, std::vector<Bone*>& boneList);
 		const aiScene* GetModelRootNodeFromFile(std::string path, unsigned int flags);
-		std::pair<double, double> ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm, std::string name);
+		std::pair<double, double> ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, 
+			std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>>& animationList, float maxm, std::string name);
 
 	private:
 		//Texture and Model cache

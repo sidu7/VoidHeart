@@ -31,6 +31,10 @@ namespace Hollow
 			std::pair<float, std::vector<Bone*>> value = ResourceManager::Instance().LoadBoneData(data["BoneData"].GetString());
 			mBones = value.second;
 			mScaleFactor = value.first;
+			for(auto bone: mBones)
+			{
+				mAnimationData.emplace_back(std::unordered_map<std::string, std::pair<bool, AnimationData>>());
+			}
 		}
 		if (data.HasMember("Animations"))
 		{
@@ -39,7 +43,7 @@ namespace Hollow
 			{
 				auto anim = arr[i].GetArray();
 				std::string name = anim[0].GetString();
-				mAnimations[name] = ResourceManager::Instance().AddAnimationData(anim[1].GetString(),name,mBones,mScaleFactor);
+				mAnimations[name] = ResourceManager::Instance().AddAnimationData(anim[1].GetString(),name,mBones,mAnimationData,mScaleFactor);
 			}
 		}
 		if(data.HasMember("BlendFactor"))

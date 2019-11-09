@@ -87,7 +87,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
 
-		for (int j = 0; j < 32; ++j)
+		/*for (int j = 0; j < 32; ++j)
 		{
 			for (int i = 0; i < 32; ++i)
 			{
@@ -112,7 +112,7 @@ public:
 					//physics->dAABBTree.AddCollider(static_cast<Collider*>(go->GetComponent(COLLIDER)));
 				}
 			}
-		}
+		}*/
 
 		
 		//for(int i = 0; i < 10; ++i)

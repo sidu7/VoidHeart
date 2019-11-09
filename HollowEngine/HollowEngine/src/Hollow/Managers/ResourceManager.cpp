@@ -143,11 +143,11 @@ namespace Hollow
 		return mBoneCache[path];
 	}
 
-	std::pair<double, double> ResourceManager::AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, float factor)
+	std::pair<double, double> ResourceManager::AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>>& animationList, float factor)
 	{
 		const aiScene* scene = GetModelRootNodeFromFile(path,Animation_Flags);
 		
-		return ProcessAnimationData(scene, boneList, factor, name);
+		return ProcessAnimationData(scene, boneList, animationList, factor, name);
 	}
 
 	void ResourceManager::ProcessMeshNode(aiNode* node, const aiScene* scene, const Bone* parent, std::vector<Mesh*>& meshlist, std::vector<Bone*>& boneList, float maxm)
@@ -343,11 +343,13 @@ namespace Hollow
 		return mModelRootsCache[path];
 	}
 
-	std::pair<double, double> ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, float maxm, std::string name)
+	std::pair<double, double> ResourceManager::ProcessAnimationData(const aiScene* scene, std::vector<Bone*>& boneList, 
+		std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>>& animationList, float maxm, std::string name)
 	{
 		for (unsigned int i = 0; i < boneList.size(); ++i)
 		{
-			boneList[i]->mIsAnimated[name] = false;
+			auto& map = animationList[i];
+			map[name] = std::make_pair(false, AnimationData());
 		}
 
 		std::pair<double, double> ticks_duration;
@@ -381,9 +383,7 @@ namespace Hollow
 				{
 					animData.mKeyScalings.push_back(std::make_pair(animation->mChannels[j]->mScalingKeys[k].mTime, *(glm::vec3*) & (animation->mChannels[j]->mScalingKeys[k].mValue)));
 				}
-
-				boneList[index]->mAnimations[name] = animData;
-				boneList[index]->mIsAnimated[name] = true;
+				animationList[index][name] = std::make_pair(true, animData);
 			}
 		}
 		return ticks_duration;
