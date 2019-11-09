@@ -85,7 +85,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UICamera.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
 
 		/*for (int j = 0; j < 32; ++j)
 		{

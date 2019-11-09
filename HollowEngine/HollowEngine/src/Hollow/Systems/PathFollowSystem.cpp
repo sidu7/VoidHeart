@@ -209,17 +209,13 @@ namespace Hollow
 			float tableDistance = table[index].first;
 			float factor = (distance - table[index - 1].first) / (tableDistance - table[index - 1].first);
 			float s;
+			float T2 = table[index].second.first;
+			float T1 = 0.0f;
 			if (table[index - 1].second.second == table[index].second.second)
 			{
-				float T2 = table[index].second.first;
-				float T1 = table[index - 1].second.first;
-				s = glm::lerp(T1, T2, factor);
+				 T1 = table[index - 1].second.first;
 			}
-			else
-			{
-				s = table[index - 1].second.first;
-				index = index - 1;
-			}
+			s = glm::lerp(T1, T2, factor);
 			return std::make_pair(s, table[index].second.second);
 		}
 		else
