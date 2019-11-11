@@ -79,12 +79,12 @@ namespace Hollow {
 		mLastX = mousePos.x;
 		mLastY = mousePos.y;
 
-		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT)&&InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT)<20 ||
-			ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT)&&abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT))<20)// ||
+			//ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
 			return;
 		}
-		if (InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 1000)
+		if (abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX)) > 8000|| abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY)) > 8000)
 		{
 			xoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX) / 16000;
 			yoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY) / -16000;
@@ -115,7 +115,7 @@ namespace Hollow {
 		glm::vec2 mousePos = InputManager::Instance().GetMouseMotion();
 		float xoffset, yoffset;
 		
-		if (abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX)) > 10000)
+		if (abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX)) > 8000 || abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY)) > 8000)
 		{
 			xoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX)/16000;
 			yoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY)/-16000;
