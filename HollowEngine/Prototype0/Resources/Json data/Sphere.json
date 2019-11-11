@@ -29,7 +29,7 @@
       "Type": "ParticleEmitter",
       "Shape": 0,
       "Texture": "Resources/Textures/cracks.png",
-      "Count": 1000000.0,
+      "Count": 100000.0,
       "Area": [ 1.0, 1.0, 1.0 ],
       "Life": [ 1.0, 3.0 ],
       "Speed": [ 1.5, 2.0 ],
