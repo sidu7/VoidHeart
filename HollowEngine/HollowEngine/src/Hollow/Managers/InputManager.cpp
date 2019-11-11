@@ -83,7 +83,6 @@ namespace Hollow {
 		SDL_memset(mPrevMouseState, 0, 6 * sizeof(bool));
 		SDL_memset(mCurrentMouseState, 0, 6 * sizeof(bool));
 		mpController = SDL_GameControllerOpen(0);
-		HW_TRACE("It doesnt make sense", SDL_IsGameController(0));
 	}
 
 	void InputManager::HandleWindowEvents(const SDL_Event& e)
