@@ -85,70 +85,34 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UICamera.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
 
-		/*for (int j = 0; j < 32; ++j)
+		auto randomizer = Random::Range(0.0f, 1.0f);
+		for (int j = 0; j < 32; ++j)
 		{
 			for (int i = 0; i < 32; ++i)
 			{
 				Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/LocalLight.json");
 				Hollow::Transform* pB = static_cast<Hollow::Transform*>(go->GetComponent<Hollow::Transform>());
-				pB->mPosition = glm::vec3(i-8.0, 0.70, j-8.0);
+				pB->mPosition = glm::vec3(i - 8.0, 0.70, j - 8.0);
 				Hollow::Light* pL = go->GetComponent<Hollow::Light>();
-				auto randomizer = Random::Range(0.0f, 1.0f);
 				pL->mColor = glm::vec3(randomizer(), randomizer(), randomizer());
 			}
 		}
 
-		int dim = 10;
+		int dim = 8;
 		int height = 5;
 		for (int i = 0; i < dim; ++i) {
 			for (int j = 0; j < dim; ++j) {
 				for (int k = 0; k < height; ++k) {
 					Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
 					Hollow::Body* pB = static_cast<Hollow::Body*>(go->GetComponent<Hollow::Body>());
-					pB->mPosition = glm::vec3(2.0f * i, 2.2f * (k+2), 2.0f * j);
-					pB->mPreviousPosition = glm::vec3(2.0f * i, 2.2f * (k+2), 2.0f * j);
-					//physics->dAABBTree.AddCollider(static_cast<Collider*>(go->GetComponent(COLLIDER)));
+					pB->mPosition = glm::vec3(2.0f * i, 2.2f * (k + 2), 2.0f * j);
+					pB->mPreviousPosition = glm::vec3(2.0f * i, 2.2f * (k + 2), 2.0f * j);
 				}
 			}
-		}*/
-
-		
-		//for(int i = 0; i < 10; ++i)
-		
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UIElement.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StartMoveButton.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/StopMoveButton.json");
-	
-
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box4.json");
-		//for(int i = 0; i < 100; ++i)
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box6.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box8.json");
-
-		//Hollow::ScriptingManager::Instance().lua.script_file("Resources/Scripts/test.lua");
-		//TODO: Remove test json deserialize
-		/*std::ofstream file("Resources/Json data/test.json");
-		rapidjson::StringBuffer s;
-		rapidjson::Writer<rapidjson::StringBuffer> writer(s);
-		writer.StartObject();
-		writer.Key("GameObjects");
-		writer.StartArray();
-		std::vector<Hollow::GameObject*> gos = Hollow::GameObjectManager::Instance().GetGameObjects();
-		for (Hollow::GameObject* g : gos)
-		{
-			g->Deserialize(writer);
 		}
-		writer.EndArray();
-		writer.EndObject();
-		file.write(s.GetString(), s.GetSize());*/
-		// TESTING SOUNDS
-		//Hollow::ResourceManager::Instance().LoadSound("Resources/Audio/Songs/test.wav", FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL);
+		Hollow::ResourceManager::Instance().LoadSound("Resources/Audio/Songs/test.wav", FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL);
 	}
 	
 	~Prototype0()

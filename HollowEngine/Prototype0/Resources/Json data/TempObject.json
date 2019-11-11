@@ -2,7 +2,7 @@
     "Components": [
         {
             "Type": "Transform",
-            "Position": [ 0.0, 5.0, 10.0 ],
+            "Position": [ -4.0, 5.0, 10.0 ],
             "Scale": [ 1.0, 1.0, 1.0 ],
             "Rotation": [ 0.0, 90.0, 0.0 ]
         },
@@ -17,13 +17,13 @@
         },
         {
             "Type": "Model",
-            "Model": "Resources/Models/ArcherWalking.fbx",
+            "Model": "Resources/Models/Walking.fbx",
             "CastShadow": true
         },
       {
         "Type": "Material",
         "Shininess": 1.0,
-        "MaterialData": "Resources/Models/ArcherWalking.fbx"
+        "MaterialData": "Resources/Models/Walking.fbx"
       },
         {
             "Type": "Animator",
