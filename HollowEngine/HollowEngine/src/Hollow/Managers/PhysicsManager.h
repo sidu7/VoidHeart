@@ -23,6 +23,6 @@ namespace Hollow
 
 
 		HOLLOW_API  void ApplyImpulse(GameObject* object, glm::vec3 impulse);
-		HOLLOW_API  Collider* castRay();
+		HOLLOW_API  GameObject* CastRay();
 	};
 }

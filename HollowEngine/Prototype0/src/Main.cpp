@@ -88,7 +88,7 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
 
 		auto randomizer = Random::Range(0.0f, 1.0f);
-		for (int j = 0; j < 32; ++j)
+		/*for (int j = 0; j < 32; ++j)
 		{
 			for (int i = 0; i < 32; ++i)
 			{
@@ -98,9 +98,9 @@ public:
 				Hollow::Light* pL = go->GetComponent<Hollow::Light>();
 				pL->mColor = glm::vec3(randomizer(), randomizer(), randomizer());
 			}
-		}
+		}*/
 
-		int dim = 8;
+		int dim = 1;
 		int height = 5;
 		for (int i = 0; i < dim; ++i) {
 			for (int j = 0; j < dim; ++j) {

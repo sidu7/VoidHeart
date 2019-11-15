@@ -36,6 +36,37 @@ namespace Hollow {
 	public:
 		bool TestRay(const Ray& r, IntersectionData& id, glm::mat3& rot, glm::vec3& extents)
 		{
+			id.depth = std::numeric_limits<float>::max();
+
+			glm::vec3 PoC = r.origin - mCenter;
+
+			float b = 2 * glm::dot(r.direction, PoC);
+			float a = glm::dot(r.direction, r.direction);
+			float c = glm::dot(PoC, PoC) - mRadius * mRadius;
+
+			float D = b * b - 4 * a * c;
+
+			if (D < 0) {
+				return false;
+			}
+			else {
+				float tplus = (-b + sqrtf(D)) / (2.0f * a);
+				float tminus = (-b - sqrtf(D)) / (2.0f * a);
+
+				if (tplus < 0) {
+					return false;
+				}
+				else {
+					if (tminus <= 0) {
+						id.depth = tplus;
+						id.object = mpOwnerCollider;
+					}
+					else {
+						id.depth = tminus;
+						id.object = mpOwnerCollider;
+					}
+				}
+			}
 			return true;
 		}
 		ShapeCircle(float radius,glm::vec3 center) : Shape(ShapeType::BALL)
@@ -45,7 +76,8 @@ namespace Hollow {
 		}
 		bool TestRay(const Ray& r, IntersectionData& id)
 		{
-			return false;
+			return true;
+			
 		}
 		glm::vec3 GetHalfExtents() {
 			glm::vec3 extents;

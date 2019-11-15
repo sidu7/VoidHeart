@@ -73,6 +73,7 @@ namespace Hollow {
 
 		// Init Debug Shader
 		mpDebugShader = new Shader(data["DebugShader"].GetArray()[0].GetString(), data["DebugShader"].GetArray()[1].GetString());
+		mShowDebugDrawing = true;
 
 		// Init Particle Shader
 		mpParticleShader = new Shader(data["ParticleShader"].GetArray()[0].GetString(), data["ParticleShader"].GetArray()[1].GetString());

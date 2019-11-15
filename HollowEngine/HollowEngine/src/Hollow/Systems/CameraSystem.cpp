@@ -79,7 +79,7 @@ namespace Hollow {
 		mLastX = mousePos.x;
 		mLastY = mousePos.y;
 
-		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT)&&abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT))<20)// ||
+		if (!InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT)&&abs(InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT))<20)// ||
 			//ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
 			return;
@@ -89,7 +89,7 @@ namespace Hollow {
 			xoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX) / 16000;
 			yoffset = (float)InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY) / -16000;
 		}
-		else if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_LEFT))
+		else if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT))
 		{
 			xoffset *= pCamera->mMouseSensitivity;
 			yoffset *= pCamera->mMouseSensitivity;

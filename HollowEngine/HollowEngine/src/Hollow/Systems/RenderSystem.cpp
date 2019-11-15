@@ -3,6 +3,7 @@
 
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/DebugDrawManager.h"
+#include "Hollow/Managers/ImGuiManager.h"
 
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Model.h"
@@ -48,10 +49,26 @@ void Hollow::RenderSystem::Update()
 		//DebugDrawManager::Instance().DebugCircle(trans->mPosition + glm::vec3(0.0, 5.0, 0.0), glm::vec3(4.0f));
 		//DebugDrawManager::Instance().DebugLine(trans->mPosition, trans->mPosition + glm::vec3(30.0f, 30.0f, -10.0f), COLOR_ORANGE);
 		//DebugDrawManager::Instance().DebugCube(trans->mPosition+ glm::vec3(0.0f,trans->mScale.x,0.0f),glm::vec3(1.0f));
-		if(mGameObjects[i]->GetComponent<Collider>())
-			DebugDrawManager::Instance().DebugCube(trans->mPosition,mGameObjects[i]->GetComponent<Collider>()->mpShape->GetHalfExtents() * 2.0f);
+		//if(mGameObjects[i]->GetComponent<Collider>())
+			//DebugDrawManager::Instance().DebugCube(trans->mPosition,mGameObjects[i]->GetComponent<Collider>()->mpShape->GetHalfExtents() * 2.0f);
 		//DebugDrawManager::Instance().DebugAxes(trans->mPosition, glm::vec3(2.0f));
 		
+		Collider* pCollider = mGameObjects[i]->GetComponent<Collider>();
+
+		if (mGameObjects[i] == ImGuiManager::Instance().mpSelectedGameObject && pCollider)
+		{
+			DebugDrawManager::Instance().DebugAxes(trans->mPosition, trans->mScale);
+			if (pCollider->mpShape->mType == ShapeType::BOX)
+			{
+				DebugDrawManager::Instance().DebugCube(trans->mPosition,
+					pCollider->mpShape->GetHalfExtents() * 2.0f);
+			}
+			else
+			{
+				DebugDrawManager::Instance().DebugSphere(trans->mPosition,
+					pCollider->mpShape->GetHalfExtents() * 2.0f);
+			}
+		}
 
 		if (Material * material = mGameObjects[i]->GetComponent<Material>())
 		{

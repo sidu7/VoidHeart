@@ -12,13 +12,13 @@ namespace Hollow {
 		HOLLOW_API void Update();
 		// TODO: Write cleanup function
 		HOLLOW_API void StartFrame();
+		
+		GameObject* mpSelectedGameObject;
+		unsigned int mSelectedGameObjectID;
 	private:
 		void Render();
 		void TestingDisplay();
-
 	private:
 		GameWindow* mpWindow;
-		GameObject* mpSelectedGameObject;
-		unsigned int mSelectedGameObjectID;
 	};
 }
