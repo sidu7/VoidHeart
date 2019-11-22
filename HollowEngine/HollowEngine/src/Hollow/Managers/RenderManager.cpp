@@ -60,7 +60,7 @@ namespace Hollow {
 		mShadowMapMode = 0;
 
 		// Init skydome
-		InitializeSkydome();
+		InitializeSkydome(data);
 
 		// Init Hammersley block
 		InitializeHammersley(20);
@@ -326,7 +326,7 @@ namespace Hollow {
 	}
 
 
-	void RenderManager::InitializeSkydome()
+	void RenderManager::InitializeSkydome(rapidjson::Value::Object& data)
 	{
 		// Create skydome shader
 		CreateSkydomeShader();
@@ -341,8 +341,8 @@ namespace Hollow {
 
 		// TODO: Add skydome to game init file
 		// Load HDR skydome texture and irradiance map
-		mpSkydomeTexture = new Texture("Resources/Skydomes/Newport_Loft_Ref.hdr");
-		mpSkydomeIrradianceMap = new Texture("Resources/Skydomes/Newport_Loft_Ref.irr.hdr");
+		mpSkydomeTexture = new Texture(data["Skydome"].GetArray()[0].GetString());
+		mpSkydomeIrradianceMap = new Texture(data["Skydome"].GetArray()[1].GetString());
 	}
 
 	void RenderManager::InitializeHammersley(int n)
