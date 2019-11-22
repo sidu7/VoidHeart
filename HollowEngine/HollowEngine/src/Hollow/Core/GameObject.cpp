@@ -16,6 +16,7 @@ namespace Hollow {
 
 	void GameObject::AddComponent(Component* component)
 	{
+		component->mpOwner = this;
 		mComponents[component->GetIndex()] = component;
 		mIndices.push_back(component->GetIndex());
 	}

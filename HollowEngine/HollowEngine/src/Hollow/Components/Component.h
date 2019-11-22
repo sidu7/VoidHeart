@@ -25,6 +25,7 @@ namespace Hollow
 
 		std::string mComponentName;
 
+		GameObject* mpOwner;
 	protected:
 		virtual Component* CreateComponent() = 0;
 	};

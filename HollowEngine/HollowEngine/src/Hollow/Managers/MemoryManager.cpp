@@ -50,6 +50,7 @@ namespace Hollow
 	void MemoryManager::DeleteComponent(Component* component)
 	{
 		component->Clear();
+		component->mpOwner = nullptr;
 		mComponentPool[component->mComponentName.c_str()].push_back(component);
 	}
 

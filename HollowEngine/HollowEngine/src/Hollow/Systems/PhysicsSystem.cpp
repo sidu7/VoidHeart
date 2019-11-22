@@ -10,6 +10,7 @@
 #include "Hollow/Physics/NarrowPhase/SAT.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Physics/Broadphase/Shape.h"
+#include "Hollow/Managers/ImGuiManager.h"
 
 namespace Hollow
 {
@@ -335,13 +336,15 @@ namespace Hollow
 		ImGui::Begin("RayCast Result");
 		ImGui::Text("Mouse X : %f", Hollow::InputManager::Instance().GetMouseX());
 		ImGui::Text("Mouse Y : %f", Hollow::InputManager::Instance().GetMouseY());
-		if (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_R))
+		//if (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_R))
+		if (Hollow::InputManager::Instance().IsMouseButtonTriggered(SDL_BUTTON_LEFT))
 		{
-			Collider* pCol = PhysicsManager::Instance().castRay();
+			GameObject* pObj = PhysicsManager::Instance().CastRay();
 
-			if (pCol)
+			if (pObj)
 			{
-				ImGui::InputFloat3("Collider present", &pCol->mpTr->mScale[0]);
+				ImGuiManager::Instance().mpSelectedGameObject = pObj;
+				ImGuiManager::Instance().mSelectedGameObjectID = pObj->mID;				
 			}
 		}
 		ImGui::End();

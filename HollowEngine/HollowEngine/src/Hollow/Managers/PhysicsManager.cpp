@@ -12,6 +12,7 @@
 #include "Utils/RayCast.h"
 #include <stack>
 #include "RenderManager.h"
+#include "Hollow/Core/GameObject.h"
 
 namespace Hollow {
 
@@ -24,7 +25,7 @@ namespace Hollow {
 		// depending on the axis the impulse was applied on
 	}
 	
-	Collider* PhysicsManager::castRay()
+	GameObject* PhysicsManager::CastRay()
 	{
 		glm::ivec2 mouseXY = InputManager::Instance().GetMousePosition();
 		float x = 2.0f * (mouseXY.x + 0.5f) / 1280.0f - 1.0f,
@@ -47,7 +48,7 @@ namespace Hollow {
 
 		r.direction = direction;
 
-		DebugDrawManager::Instance().DebugRay(r.origin, r.direction);
+		//DebugDrawManager::Instance().DebugRay(r.origin, r.direction);
 
 		IntersectionData id, closest;
 		closest.object = nullptr;
@@ -103,7 +104,7 @@ namespace Hollow {
 
 		if (closest.object == nullptr) { return nullptr; }
 
-		return static_cast<Collider*>(closest.object);
+		return static_cast<Collider*>(closest.object)->mpOwner;
 	
 	}
 }
