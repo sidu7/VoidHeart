@@ -31,7 +31,7 @@ namespace Hollow {
 
 	private:
 		// Initialization Functions
-		void InitializeSkydome();
+		void InitializeSkydome(rapidjson::Value::Object& data);
 		void InitializeHammersley(int n);
 
 		void CreateAmbientShader();

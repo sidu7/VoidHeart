@@ -461,8 +461,8 @@
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
-IF NOT EXIST Prototype0 ( mkdir Prototype0)
-copy /y $(ProjectName)\*.dll Prototype0</Command>
+
+copy /y $(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll $(ProjectName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -492,8 +492,8 @@ copy /y $(ProjectName)\*.dll Prototype0</Command>
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)bin\$(Configuration)
-IF NOT EXIST Prototype0 ( mkdir Prototype0)
-copy /y $(ProjectName)\*.dll Prototype0</Command>
+
+copy /y $(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll $(ProjectName)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
