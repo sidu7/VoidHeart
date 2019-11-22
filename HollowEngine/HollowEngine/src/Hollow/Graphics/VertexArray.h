@@ -7,6 +7,7 @@ Author: Sidhant Tumma
 
 #pragma once
 #include <list>
+#include "Hollow/Common.h"
 
 namespace Hollow {
 

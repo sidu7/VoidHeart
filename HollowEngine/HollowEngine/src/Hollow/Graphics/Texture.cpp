@@ -1,6 +1,5 @@
 #include <hollowpch.h>
 #include "Texture.h"
-#include "Utils/GLCall.h"
 
 namespace Hollow
 {

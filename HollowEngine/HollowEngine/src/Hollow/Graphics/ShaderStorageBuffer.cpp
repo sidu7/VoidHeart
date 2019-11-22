@@ -1,8 +1,6 @@
 #include <hollowpch.h>
 #include "ShaderStorageBuffer.h"
 
-#include "Utils/GLCall.h"
-
 namespace Hollow
 {
 	ShaderStorageBuffer::ShaderStorageBuffer() : mRendererID(0), mSize(0)

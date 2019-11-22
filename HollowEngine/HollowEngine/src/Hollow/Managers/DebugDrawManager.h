@@ -1,4 +1,6 @@
 #pragma once
+#include "Hollow/Common.h"
+#include "Hollow/Graphics/Data/Color.h"
 
 namespace Hollow
 {

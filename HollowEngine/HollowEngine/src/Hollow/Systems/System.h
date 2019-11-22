@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Hollow/Common.h"
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Core/GameObject.h"
 

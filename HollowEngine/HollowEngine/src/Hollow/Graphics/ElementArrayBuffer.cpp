@@ -1,5 +1,5 @@
 #include <hollowpch.h>
-#include "Utils/GLCall.h"
+#include "Hollow/Common.h"
 #include "ElementArrayBuffer.h"
 
 namespace Hollow {

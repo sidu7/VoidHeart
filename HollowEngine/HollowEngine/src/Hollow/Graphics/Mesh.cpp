@@ -4,7 +4,6 @@
 #include "VertexBuffer.h"
 #include "ElementArrayBuffer.h"
 #include "Shader.h"
-#include "Utils/GLCall.h"
 
 namespace Hollow
 {

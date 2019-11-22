@@ -1,4 +1,5 @@
 #pragma once
+#include "Hollow/Common.h"
 
 namespace Hollow
 {

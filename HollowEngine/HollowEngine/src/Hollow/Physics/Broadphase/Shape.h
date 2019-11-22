@@ -1,7 +1,6 @@
 #pragma once
-
+#include "Hollow/Common.h"
 #include "Hollow/Physics/NarrowPhase/MeshData.h"
-#include "Utils/RayCast.h"
 #include "Hollow/Components/Collider.h"
 
 namespace Hollow {
