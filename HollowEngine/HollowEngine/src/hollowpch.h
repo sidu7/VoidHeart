@@ -43,11 +43,11 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_opengl3.h>
 #include <ImGui/imgui_impl_sdl.h>
-#include "stbi_image/stbi_image.h"
-#include "assimp/Importer.hpp"
-#include "assimp/assimp/scene.h"
-#include "assimp/assimp/postprocess.h"
-#include "assimp/assimp/cimport.h"
+#include <stbi_image/stbi_image.h>
+#include <assimp/Importer.hpp>
+#include <assimp/assimp/scene.h>
+#include <assimp/assimp/postprocess.h>
+#include <assimp/assimp/cimport.h>
 
 // FMOD Audio library
 #include <FMOD/fmod.hpp>
@@ -62,16 +62,6 @@
 // TODO: Add ifdef guards if more platforms
 #define NOMINMAX
 #include <Windows.h>
-
-// Our stuff, only add things here that don't change
-#include "Utils/Log.h"
-#include "Utils/Singleton.h"
-#include "Utils/Profiler.h"
-#include "Utils/JSONHelper.h"
-#include "Utils/GraphicsMath.h"
-#include "Hollow/Graphics/Data/Color.h"
-#include "Utils/Random.h"
-#include "Utils/ThreadSafeQueue.h"
 
 // GetObject() is defined by Windows and conflicts with GetObject() of 10004905
 

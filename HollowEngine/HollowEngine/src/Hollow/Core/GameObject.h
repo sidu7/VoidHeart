@@ -1,4 +1,5 @@
 #pragma once
+#include "Hollow/Core/Core.h"
 
 namespace Hollow {
 	class Component;

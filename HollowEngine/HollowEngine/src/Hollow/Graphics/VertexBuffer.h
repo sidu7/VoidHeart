@@ -6,6 +6,7 @@ Author: Sidhant Tumma
 - End Header --------------------------------------------------------*/
 
 #pragma once
+#include "Hollow/Common.h"
 
 namespace Hollow {
 	class VertexBuffer

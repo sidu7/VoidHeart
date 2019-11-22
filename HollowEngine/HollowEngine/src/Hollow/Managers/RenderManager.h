@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils/Singleton.h"
+#include "Hollow/Common.h"
 #include "Hollow/Graphics/Data/RenderData.h"
 #include "Hollow/Graphics/Data/LightData.h"
 #include "Hollow/Graphics/Data/MaterialData.h"

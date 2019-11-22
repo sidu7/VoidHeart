@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Hollow/Common.h"
 #include <sstream>
 #include <string>
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Hollow/Core/Core.h"
+#include "Hollow/Utils/Log.h"
 #include "rapidjson/document.h"
 #include "glm/glm.hpp"
 

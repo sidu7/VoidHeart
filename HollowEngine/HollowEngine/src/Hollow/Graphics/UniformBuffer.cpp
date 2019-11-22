@@ -1,6 +1,6 @@
 #include <hollowpch.h>
+#include "Hollow/Common.h" 
 #include "UniformBuffer.h"
-#include "Utils/GLCall.h"
 
 namespace Hollow
 {

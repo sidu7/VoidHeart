@@ -1,4 +1,5 @@
 #pragma once
+#include "Hollow/Common.h"
 #include "Hollow/Events/GameEvent.h"
 
 namespace Hollow

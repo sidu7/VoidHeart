@@ -1,5 +1,7 @@
 #pragma once
+#include "Hollow/Core/Core.h"
 #include "Hollow/Events/Event.h"
+#include "Hollow/Common.h"
 
 namespace Hollow {
 

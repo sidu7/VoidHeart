@@ -1,4 +1,5 @@
 #include <hollowpch.h>
+#include "Hollow/Common.h"
 #include "RenderManager.h"
 
 #include "ImGuiManager.h"
@@ -20,7 +21,6 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/DebugDrawManager.h"
 
-#include "Utils/GLCall.h"
 #include "ResourceManager.h"
 
 namespace Hollow {

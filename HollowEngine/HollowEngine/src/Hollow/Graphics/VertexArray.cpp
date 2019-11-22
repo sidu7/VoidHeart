@@ -6,7 +6,7 @@ Author: Sidhant Tumma
 - End Header --------------------------------------------------------*/
 
 #include <hollowpch.h>
-#include "Utils/GLCall.h"
+
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 
