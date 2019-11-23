@@ -14,4 +14,70 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Json data\Box.json" />
+    <None Include="Resources\Json data\box2.json" />
+    <None Include="Resources\Json data\box4.json" />
+    <None Include="Resources\Json data\box6.json" />
+    <None Include="Resources\Json data\box8.json" />
+    <None Include="Resources\Json data\Camera.json" />
+    <None Include="Resources\Json data\Cloud.json" />
+    <None Include="Resources\Json data\Floor.json" />
+    <None Include="Resources\Json data\Light.json" />
+    <None Include="Resources\Json data\LocalLight.json" />
+    <None Include="Resources\Json data\MiniMapCamera.json" />
+    <None Include="Resources\Json data\NPC.json" />
+    <None Include="Resources\Json data\Plane.json" />
+    <None Include="Resources\Json data\StartMoveButton.json" />
+    <None Include="Resources\Json data\StopMoveButton.json" />
+    <None Include="Resources\Json data\TempObject.json" />
+    <None Include="Resources\Json data\test.json" />
+    <None Include="Resources\Json data\UICamera.json" />
+    <None Include="Resources\Json data\UIElement.json" />
+    <None Include="Resources\Scripts\test.lua" />
+    <None Include="Resources\Shaders\Ambient.frag" />
+    <None Include="Resources\Shaders\Ambient.vert" />
+    <None Include="Resources\Shaders\Bloom.frag" />
+    <None Include="Resources\Shaders\Bloom.vert" />
+    <None Include="Resources\Shaders\CenterParticles.comp" />
+    <None Include="Resources\Shaders\Debug.frag" />
+    <None Include="Resources\Shaders\Debug.vert" />
+    <None Include="Resources\Shaders\Deferred.frag" />
+    <None Include="Resources\Shaders\Deferred.vert" />
+    <None Include="Resources\Shaders\Diffuse.frag" />
+    <None Include="Resources\Shaders\Diffuse.vert" />
+    <None Include="Resources\Shaders\fxaa.frag" />
+    <None Include="Resources\Shaders\GBuffer.frag" />
+    <None Include="Resources\Shaders\GBuffer.vert" />
+    <None Include="Resources\Shaders\Global.frag" />
+    <None Include="Resources\Shaders\Global.vert" />
+    <None Include="Resources\Shaders\HorizontalBlur.comp" />
+    <None Include="Resources\Shaders\LocalLight.frag" />
+    <None Include="Resources\Shaders\LocalLight.vert" />
+    <None Include="Resources\Shaders\ParticleSystem.frag" />
+    <None Include="Resources\Shaders\ParticleSystem.vert" />
+    <None Include="Resources\Shaders\Phong.frag" />
+    <None Include="Resources\Shaders\Phong.vert" />
+    <None Include="Resources\Shaders\RainParticles.comp" />
+    <None Include="Resources\Shaders\ShadowDebug.frag" />
+    <None Include="Resources\Shaders\ShadowDebug.vert" />
+    <None Include="Resources\Shaders\ShadowMap.frag" />
+    <None Include="Resources\Shaders\ShadowMap.vert" />
+    <None Include="Resources\Shaders\Skydome.frag" />
+    <None Include="Resources\Shaders\Skydome.vert" />
+    <None Include="Resources\Shaders\UIShader.frag" />
+    <None Include="Resources\Shaders\UIShader.vert" />
+    <None Include="Resources\Shaders\VerticalBlur.comp" />
+    <None Include="Resources\State data\npcstate.json" />
+    <None Include="Resources\State data\playerstate.json" />
+    <None Include="Resources\Settings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
 </Project>
