@@ -6,11 +6,15 @@
 #include "Hollow/Core/GameObjectFactory.h"
 #include "PhysicsManager.h"
 
+#include "Hollow/Components/Transform.h"
+
 namespace Hollow
 {
 	void SceneManager::Init()
 	{
-		selectedComponent = "";
+		selectedComponentName = "";
+		selectedComponent = nullptr;
+		selectedGameObject = nullptr;
 	}
 
 	void SceneManager::CleanUp()
@@ -27,15 +31,22 @@ namespace Hollow
 				{
 					selectedGameObject = MemoryManager::Instance().NewGameObject();
 					GameObjectManager::Instance().AddGameObject(selectedGameObject);
+					selectedGameObject->AddComponent(MemoryManager::Instance().NewComponent("Transform"));
 				}
-				if (ImGui::BeginCombo("Components",selectedComponent.c_str()))
+				if (ImGui::BeginCombo("Components",selectedComponentName.c_str()))
 				{
 					for (auto& component : MemoryManager::Instance().mComponents)
 					{
-						bool isSelected = (selectedComponent == component.first.c_str());
+						bool isSelected = (selectedComponentName == component.first.c_str());
 						if (ImGui::Selectable(component.first.c_str(), isSelected))
 						{
-							selectedComponent = component.first;
+							if(selectedComponent != nullptr)
+							{
+								MemoryManager::Instance().DeleteComponent(selectedComponent);
+								selectedComponent = nullptr;
+							}
+							selectedComponentName = component.first;
+							selectedComponent = MemoryManager::Instance().NewComponent(selectedComponentName);
 						}
 						if (isSelected)
 						{
@@ -44,9 +55,15 @@ namespace Hollow
 					}
 					ImGui::EndCombo();
 				}
+				if(selectedComponentName != "")
+				{
+					selectedComponent->DebugDisplay();
+				}
 				if(ImGui::Button("Add Component"))
 				{
-					selectedGameObject->AddComponent(MemoryManager::Instance().NewComponent(selectedComponent));
+					selectedGameObject->AddComponent(selectedComponent);
+					selectedComponent = nullptr;
+					selectedComponentName = "";
 				}
 				ImGui::InputText("FileName",charBuffer,255);
 				if(ImGui::Button("Export Prefab"))

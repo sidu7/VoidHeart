@@ -2,6 +2,7 @@
 #include "UIImage.h"
 
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -12,7 +13,7 @@ namespace Hollow
 		mpTexture = nullptr;
 		mColor = glm::vec3(0.0f);
 		mpShapeData = nullptr;
-		mShapeType = -1;
+		mShapeType = "";
 	}
 
 	void UIImage::Clear()
@@ -28,8 +29,8 @@ namespace Hollow
 		}
 		if (data.HasMember("Shape"))
 		{
-			mShapeType = data["Shape"].GetUint();
-			mpShapeData = ResourceManager::Instance().GetShape((Shapes)mShapeType);
+			mShapeType = data["Shape"].GetString();
+			mpShapeData = ResourceManager::Instance().GetShape(mShapeType);
 		}
 		if (data.HasMember("Color"))
 		{
@@ -46,5 +47,8 @@ namespace Hollow
 
 	void UIImage::DebugDisplay()
 	{
+		ImGuiHelper::InputText("Image File", TexturePath);
+		ImGuiHelper::InputText("Shape", mShapeType);
+		ImGui::InputFloat3("Color", (float*)&mColor);
 	}
 }

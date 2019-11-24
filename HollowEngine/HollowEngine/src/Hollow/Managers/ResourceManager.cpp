@@ -24,6 +24,12 @@ namespace Hollow
 	{
 		InitializeShapes();
 		importer = new Assimp::Importer();
+		
+		{
+#define MESH_SHAPE(name) mShapeEnumMap[#name] = Shapes::name;
+#include "Hollow/Enums/MeshShapes.enum"
+#undef MESH_SHAPE
+		}
 	}
 
 	void ResourceManager::CleanUp()
@@ -386,13 +392,22 @@ namespace Hollow
 	}
 
 
-	Mesh* ResourceManager::GetShape(Shapes shape)
+	Mesh* ResourceManager::GetShape(std::string type)
 	{
 		/*if (mShapes.find(shape) == mShapes.end())
 		{
 			HW_CORE_ERROR("Shape {0} not found", shape);
 		}*/
-		return mShapes[shape];
+		return mShapes[mShapeEnumMap[type]];
+	}
+
+	Mesh* ResourceManager::GetShape(Shapes type)
+	{
+		/*if (mShapes.find(shape) == mShapes.end())
+		{
+			HW_CORE_ERROR("Shape {0} not found", shape);
+		}*/
+		return mShapes[type];
 	}
 
 	FMOD::Sound* ResourceManager::LoadSound(const std::string& path, FMOD_MODE type)

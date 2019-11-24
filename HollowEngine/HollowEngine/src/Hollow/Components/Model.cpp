@@ -4,6 +4,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 
 #include "Hollow/Components/Transform.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow {
 
@@ -14,7 +15,7 @@ namespace Hollow {
 		mCastShadow = false;
 		mModelHasOffset = false;
 		mModelPath = "";
-		mShape = -1;
+		mShape = SHAPE_NUM;
 	}
 	
 	void Model::Clear()
@@ -35,8 +36,8 @@ namespace Hollow {
 		}
 		if (object.HasMember("Shape"))
 		{
-			mShape = object["Shape"].GetUint();
-			mMeshes.push_back(ResourceManager::Instance().GetShape((Shapes)mShape));
+			mShapeType = object["Shape"].GetString();
+			mMeshes.push_back(ResourceManager::Instance().GetShape(mShapeType));
 		}
 		if (object.HasMember("CastShadow"))
 		{
@@ -46,13 +47,17 @@ namespace Hollow {
 
 	void Model::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
-		JSONHelper::Write<unsigned int>("Shape", mShape, writer);
-		JSONHelper::Write<std::string>("Model", mModelPath, writer);
-		JSONHelper::Write<bool>("CastShadow", mCastShadow, writer);
-		JSONHelper::Write<bool>("ModelHasOffset", mModelHasOffset, writer);
+		JSONHelper::Write("Shape", mShapeType, writer);
+		JSONHelper::Write("Model", mModelPath, writer);
+		JSONHelper::Write("CastShadow", mCastShadow, writer);
+		JSONHelper::Write("ModelHasOffset", mModelHasOffset, writer);
 	}
 
 	void Model::DebugDisplay()
 	{
+		ImGuiHelper::InputText("Shape", mShapeType);
+		ImGuiHelper::InputText("Model File", mModelPath);
+		ImGui::Checkbox("CastShadow", &mCastShadow);
+		ImGui::Checkbox("ModelHasOffset", &mModelHasOffset);
 	}
 }

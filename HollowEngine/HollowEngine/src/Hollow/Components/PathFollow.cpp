@@ -68,6 +68,7 @@ namespace Hollow
 
 	void PathFollow::DebugDisplay()
 	{
+		ImGui::InputFloat("Tolerance", &mPathTolerance);
 		ImGui::Checkbox("Show Path", &mDebugPath);
 		ImGui::Checkbox("Move", &mMove);
 		if (ImGui::Button(mShowControlWindow ? "Hide Control Points Window" : "Show Control Points Window"))

@@ -48,5 +48,9 @@ namespace Hollow
 
 	void UITransform::DebugDisplay()
 	{
+		ImGui::InputFloat3("Position", (float*)&mPosition);
+		ImGui::InputFloat3("Scale", (float*)&mScale);
+		ImGui::InputFloat3("Rotation", (float*)&mRotation);
+		ImGui::InputFloat("Tilt", &mTilt);
 	}
 }

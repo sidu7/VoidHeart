@@ -3,6 +3,7 @@
 #include "Animator.h"
 
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -86,6 +87,18 @@ namespace Hollow
 
 	void Animator::DebugDisplay()
 	{
+		ImGuiHelper::InputText("BoneDataFile", mBoneDataPath);
+		if (ImGui::TreeNode("Animations"))
+		{
+			ImGui::Separator();
+			for (auto anim : mAnimationsDataPath)
+			{
+				ImGuiHelper::InputText("Animation Name", anim.first);
+				ImGuiHelper::InputText("File Path", anim.second);
+				ImGui::Separator();
+			}
+			ImGui::TreePop();
+		}
 		ImGui::InputFloat("BlendFactor", &mBlendFactor);
 	}
 }

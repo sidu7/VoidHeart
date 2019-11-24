@@ -3,6 +3,7 @@
 
 #include "Hollow/Managers/UIManager.h"
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -85,5 +86,13 @@ namespace Hollow
 
 	void UIButton::DebugDisplay()
 	{
+		ImGuiHelper::InputText("Button Function", mButtonFunctionType);
+		ImGui::Checkbox("Interactible", &mIsInteractible);
+		ImGuiHelper::InputText("Pressed Image File", mPressedImagePath);
+		ImGuiHelper::InputText("Released Image File", mReleasedImagePath);
+		ImGuiHelper::InputText("Inactive Image File", mInactiveImagePath);
+		ImGui::InputFloat3("Pressed Color", (float*)&mPressedColor);
+		ImGui::InputFloat3("Released Color", (float*)&mReleasedColor);
+		ImGui::InputFloat3("Inactive Color", (float*)&mInactiveColor);
 	}
 }

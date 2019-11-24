@@ -5,6 +5,7 @@ namespace Hollow
 {
 	class Mesh;
 	class Shader;
+	enum Shapes;
 
 	class Model : public Component
 	{
@@ -17,11 +18,12 @@ namespace Hollow
 		HOLLOW_API void DebugDisplay() override;
 
 	private:
-		unsigned int mShape;
+		std::string mShapeType;
 		std::string mModelPath;
 
 	public:
 		std::vector<Mesh*> mMeshes;
+		Shapes mShape;
 		bool mCastShadow;
 		bool mModelHasOffset;
 	};

@@ -9,6 +9,7 @@
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
 #include "Hollow/Graphics/ShaderStorageBuffer.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -94,5 +95,14 @@ namespace Hollow
 
 	void ParticleEmitter::DebugDisplay()
 	{
+		ImGui::InputInt("Count", (int*)&mCount);
+		ImGui::InputInt("Shape", (int*)&mDType);
+		ImGuiHelper::InputText("Texture File", mDTexturePath);
+		ImGui::InputFloat3("Area of Effect", (float*)&mAreaOfEffect);
+		ImGui::InputFloat2("Speed Range", (float*)&mSpeedRange);
+		ImGui::InputFloat2("Life Range", (float*)&mLifeRange);
+		ImGuiHelper::InputText("Compute Shader File", mComputeShaderPath);
+		ImGui::InputFloat3("Center Offset", (float*)&mCenterOffset);
+		ImGui::InputFloat("PixelSize", &mPixelSize);
 	}	
 }

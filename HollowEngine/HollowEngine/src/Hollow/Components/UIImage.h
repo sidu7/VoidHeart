@@ -19,7 +19,7 @@ namespace Hollow
 		
 	private:
 		std::string TexturePath;
-		unsigned int mShapeType;
+		std::string mShapeType;
 		
 	public:
 		Texture* mpTexture;

@@ -3,6 +3,8 @@
 
 namespace Hollow
 {
+	class Component;
+	
 	class SceneManager
 	{
 		SINGLETON(SceneManager);
@@ -18,8 +20,9 @@ namespace Hollow
 		void DeserializeLevel();
 	private:
 		// Creating Prefab
-		std::string selectedComponent;
+		std::string selectedComponentName;
 		char charBuffer[255];
 		GameObject* selectedGameObject;
+		Component* selectedComponent;
 	};
 }

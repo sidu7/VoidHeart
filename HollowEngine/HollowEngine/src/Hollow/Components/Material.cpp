@@ -6,6 +6,7 @@
 #include "Hollow/Graphics/Data/MaterialData.h"
 #include "Hollow/Graphics/Data/Color.h"
 #include "Hollow/Graphics/Texture.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 //#pragma warning (disable : 4312)
 
@@ -27,6 +28,7 @@ namespace Hollow {
 		mNormalTexturePath = "";
 		mHeightTexturePath = "";
 		mMaterialDataPath = "";
+		mHasMaterialTextures = false;
 	}
 
 	void Material::Clear()
@@ -55,6 +57,7 @@ namespace Hollow {
 		}
 		if (data.HasMember("MaterialTextures"))
 		{
+			mHasMaterialTextures = true;
 			MaterialData* materials = new MaterialData();
 			if (data.HasMember("DiffuseTexture"))
 			{
@@ -96,6 +99,7 @@ namespace Hollow {
 		JSONHelper::Write("Diffuse", mDiffuseColor, writer);
 		JSONHelper::Write("Specular", mSpecularColor, writer);
 		JSONHelper::Write("Shininess", mShininess, writer);
+		JSONHelper::Write("MaterialTextures", mHasMaterialTextures, writer);
 		JSONHelper::Write("DiffuseTexture", mDiffuseTexturePath, writer);
 		JSONHelper::Write("SpecularTexture", mSpecularTexturePath, writer);
 		JSONHelper::Write("NormalTexture", mNormalTexturePath, writer);
@@ -115,15 +119,30 @@ namespace Hollow {
 		// Show the shininess
 		ImGui::InputFloat("Shininess", &mShininess);
 
-		// Show parallax map height scale
-		ImGui::InputFloat("Height Scale", &mHeightScale);
+
+		ImGuiHelper::InputText("Texture File", mTexturePath);
 
 		// Show the texture if there is only one
 		if (mpTexture)
 		{
 			ImGui::Image((void*)(intptr_t)(mpTexture->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 		}
-		 // Show a small version of the currently selected texture
+
+		ImGui::Checkbox("Has Material Textures", &mHasMaterialTextures);
+		if (mHasMaterialTextures)
+		{
+			ImGuiHelper::InputText("Diffuse Texture Path", mDiffuseTexturePath);
+			ImGuiHelper::InputText("Specular Texture Path", mSpecularTexturePath);
+			ImGuiHelper::InputText("Normal Texture Path", mNormalTexturePath);
+			ImGuiHelper::InputText("Height Texture Path", mHeightTexturePath);
+			// Show parallax map height scale
+			ImGui::InputFloat("Height Scale", &mHeightScale);			
+		}
+		else
+		{
+			ImGuiHelper::InputText("Material Data File", mMaterialDataPath);
+		}
+		// Show a small version of the currently selected texture
 		for (MaterialData* material : mMaterials)
 		{
 			if (material->mpDiffuse)

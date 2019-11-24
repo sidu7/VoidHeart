@@ -22,6 +22,7 @@ namespace Hollow {
 		std::string mNormalTexturePath;
 		std::string mHeightTexturePath;
 		std::string mMaterialDataPath;
+		bool mHasMaterialTextures;
 
 	public:
 		glm::vec3 mDiffuseColor;

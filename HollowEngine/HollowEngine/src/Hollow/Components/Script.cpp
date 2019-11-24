@@ -1,5 +1,6 @@
 #include <hollowpch.h>
 #include "Script.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow {
 
@@ -17,9 +18,7 @@ namespace Hollow {
 
 	void Script::DebugDisplay()
 	{
-		char* str = (char*)mScriptPath.c_str();
-		ImGui::InputText("Path", str, 50);
-		mScriptPath = str;
+		ImGuiHelper::InputText("Script File", mScriptPath);
 	}
 
 	void Script::Serialize(rapidjson::Value::Object data)

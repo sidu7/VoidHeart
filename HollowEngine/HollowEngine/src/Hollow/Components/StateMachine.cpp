@@ -4,6 +4,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 
 #include "Hollow/Core/Data/StateData.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -46,5 +47,7 @@ namespace Hollow
 
 	void StateMachine::DebugDisplay()
 	{
+		ImGuiHelper::InputText("State File", mStateFilePath);
+		ImGuiHelper::InputText("Start State", mInitState);
 	}
 }
