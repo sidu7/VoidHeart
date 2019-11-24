@@ -48,7 +48,8 @@
     },
     {
       "Type": "Attack",
-      "Script":  "Resources/Scripts/EnemyAttack.lua"
+      "Script":  "Resources/Scripts/EnemyAttack.lua",
+	  "BaseAttackTime": 5.0
     }
   ]
 }

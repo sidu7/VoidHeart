@@ -38,7 +38,8 @@ namespace Hollow
 		lua.new_usertype<Body>("RigidBody",
 			sol::constructors<Body()>(),
 			"velocity", &Body::mVelocity,
-			"angularVelocity", &Body::mAngularVelocity
+			"angularVelocity", &Body::mAngularVelocity,
+			"position", &Body::mPosition
 		);
 
 		lua.new_usertype<Camera>("Camera",
@@ -49,8 +50,12 @@ namespace Hollow
 			"pitch", &Camera::mPitch
 			);
 
-		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
+		lua.new_usertype<GameObject>("GameObject",
+			sol::constructors<GameObject()>(),
+			"GetBody", &GameObject::GetComponent<Body>
+			);
 
+		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
 	}
 
 }

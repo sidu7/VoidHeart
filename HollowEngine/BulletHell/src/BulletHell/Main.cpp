@@ -32,6 +32,8 @@ public:
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
 
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Wall.json");
+
 		auto randomizer = Random::Range(0.0f, 1.0f);
 		/*for (int j = 0; j < 32; ++j)
 		{

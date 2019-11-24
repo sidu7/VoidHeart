@@ -2,6 +2,8 @@
 
 #include "Hollow/Managers/ScriptingManager.h"
 
+#include "Hollow/Components/Transform.h"
+
 namespace BulletHell
 {
 	Attack Attack::instance;
@@ -15,10 +17,15 @@ namespace BulletHell
 		{
 			mScriptPath = data["Script"].GetString();
 		}
+		if (data.HasMember("BaseAttackTime"))
+		{
+			mBaseAttackTime = data["BaseAttackTime"].GetFloat();
+		}
 	}
 	void Attack::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
 		Hollow::JSONHelper::Write<std::string>("Script", mScriptPath, writer);
+		Hollow::JSONHelper::Write<float>("BaseAttackTime", mBaseAttackTime, writer);
 	}
 	void Attack::Clear()
 	{
@@ -31,10 +38,14 @@ namespace BulletHell
 			ImGui::InputText("Path", str, 50);
 			mScriptPath = str;
 
-			// TODO: REMOVE THIS, for testing only
+			ImGui::InputFloat("Base Attack Time", &mBaseAttackTime);
+			ImGui::Text("Current Attack Time %f", mCurrentAttackTime);
+
+			// Attack testing button
 			if (ImGui::Button("Fire Attack"))
 			{
 				auto& lua = Hollow::ScriptingManager::Instance().lua;
+				lua["attackPosition"] = mpOwner->GetComponent<Hollow::Transform>()->mPosition;
 				lua.script_file(mScriptPath);
 			}
 

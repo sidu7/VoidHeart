@@ -16,6 +16,7 @@ namespace BulletHell
 
 	public:
 		std::string mScriptPath;
-		
+		float mBaseAttackTime;
+		float mCurrentAttackTime;
 	};
 }

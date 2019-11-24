@@ -168,6 +168,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       </PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="src\BulletHell\Main.cpp" />
+    <ClCompile Include="src\BulletHell\Systems\AttackSystem.cpp" />
     <ClCompile Include="src\BulletHell\Systems\HealthSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +240,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
   <ItemGroup>
     <ClInclude Include="src\BulletHell\Components\Attack.h" />
     <ClInclude Include="src\BulletHell\Components\Health.h" />
+    <ClInclude Include="src\BulletHell\Systems\AttackSystem.h" />
     <ClInclude Include="src\BulletHell\Systems\HealthSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
