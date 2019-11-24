@@ -16,24 +16,25 @@ namespace Hollow
 
 	void ParticleEmitter::Init()
 	{
-		mCenterOffset = glm::vec3(0.0f);
 		mCount = 0;
+		mTexture = nullptr;
+		mModelMatrix = glm::mat4(1.0f);
+		mpComputeShader = nullptr;
+		mType = PARTICLE_NUM;
+		
 		mSpeedRange = glm::vec2(0.0f);
 		mLifeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
+		mPixelSize = 0.0f;
+
+		mDType = -1;
+		mComputeShaderPath = "";
 	}
 
 	void ParticleEmitter::Clear()
 	{		
-		mParticlesList.clear();
-		mParticlePositions.clear();
-		mpParticle.clear();
-		mModelMatrices.clear();
-		delete mpParticlePositionVBO;
-		delete mTexture;
 		delete mpParticlePositionVAO;
-		delete mpParticleModelVBO;
 		delete mpParticleStorage;
 	}
 
@@ -42,15 +43,11 @@ namespace Hollow
 		mCount = static_cast<unsigned long>(data["Count"].GetFloat());
 		if (data.HasMember("Shape"))
 		{
-			//mpParticle.push_back(ResourceManager::Instance().GetShape((Shapes)data["Shape"].GetUint()));
-			mType = (ParticleType)data["Shape"].GetUint();
+			mDType = data["Shape"].GetUint();
+			mType = (ParticleType)mDType;
 			if (mType == POINT)
 			{
 				mTexture = ResourceManager::Instance().LoadTexture(data["Texture"].GetString());
-			}
-			else if (mType == MODEL)
-			{
-				mpParticle = ResourceManager::Instance().LoadModel(data["Model"].GetString());
 			}
 		}
 		if (data.HasMember("Area"))
@@ -67,7 +64,8 @@ namespace Hollow
 		}
 		if (data.HasMember("ComputeShader"))
 		{
-			mpComputeShader = ResourceManager::Instance().LoadShader(data["ComputeShader"].GetString());
+			mComputeShaderPath = data["ComputeShader"].GetString();
+			mpComputeShader = ResourceManager::Instance().LoadShader(mComputeShaderPath);
 		}
 		if(data.HasMember("CenterOffset"))
 		{
@@ -77,6 +75,18 @@ namespace Hollow
 		{
 			mPixelSize = data["PixelSize"].GetFloat();
 		}
+	}
+
+	void ParticleEmitter::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write("Count", mCount, writer);
+		JSONHelper::Write("Shape", mDType, writer);
+		JSONHelper::Write("Area", mAreaOfEffect, writer);
+		JSONHelper::Write("Speed", mSpeedRange, writer);
+		JSONHelper::Write("Life", mLifeRange, writer);
+		JSONHelper::Write("ComputeShader", mComputeShaderPath, writer);
+		JSONHelper::Write("CenterOffset", mCenterOffset, writer);
+		JSONHelper::Write("PixelSize", mPixelSize, writer);
 	}
 
 	void ParticleEmitter::DebugDisplay()

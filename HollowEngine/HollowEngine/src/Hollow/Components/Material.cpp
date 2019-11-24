@@ -15,27 +15,31 @@ namespace Hollow {
 
 	void Material::Init()
 	{
-		mpTexture = nullptr;
 		mDiffuseColor = COLOR_BLACK;
 		mSpecularColor = COLOR_BLACK;
 		mShininess = 0.0f;
+		mHeightScale = 0.0f;
+		mpTexture = nullptr;
+
+		mTexturePath = "";
+		mDiffuseTexturePath = "";
+		mSpecularTexturePath = "";
+		mNormalTexturePath = "";
+		mHeightTexturePath = "";
+		mMaterialDataPath = "";
 	}
 
 	void Material::Clear()
 	{
-		delete mpTexture;
 		mMaterials.clear();
-		mDiffuseColor = COLOR_BLACK;
-		mSpecularColor = COLOR_BLACK;
-		mShininess = 0.0f;
 	}
 
 	void Material::Serialize(rapidjson::Value::Object data)
 	{		
 		if (data.HasMember("Texture"))
 		{
-			std::string path = data["Texture"].GetString();
-			mpTexture = ResourceManager::Instance().LoadTexture(path);
+			mTexturePath = data["Texture"].GetString();
+			mpTexture = ResourceManager::Instance().LoadTexture(mTexturePath);
 		}
 		if (data.HasMember("Diffuse"))
 		{
@@ -54,23 +58,23 @@ namespace Hollow {
 			MaterialData* materials = new MaterialData();
 			if (data.HasMember("DiffuseTexture"))
 			{
-				std::string path = data["DiffuseTexture"].GetString();
-				materials->mpDiffuse = ResourceManager::Instance().LoadTexture(path);
+				mDiffuseTexturePath = data["DiffuseTexture"].GetString();
+				materials->mpDiffuse = ResourceManager::Instance().LoadTexture(mDiffuseTexturePath);
 			}
 			if (data.HasMember("SpecularTexture"))
 			{
-				std::string path = data["SpecularTexture"].GetString();
-				materials->mpSpecular = ResourceManager::Instance().LoadTexture(path);
+				mSpecularTexturePath = data["SpecularTexture"].GetString();
+				materials->mpSpecular = ResourceManager::Instance().LoadTexture(mSpecularTexturePath);
 			}
 			if (data.HasMember("NormalTexture"))
 			{
-				std::string path = data["NormalTexture"].GetString();
-				materials->mpNormal = ResourceManager::Instance().LoadTexture(path);
+				mNormalTexturePath = data["NormalTexture"].GetString();
+				materials->mpNormal = ResourceManager::Instance().LoadTexture(mNormalTexturePath);
 			}
 			if (data.HasMember("HeightTexture"))
 			{
-				std::string path = data["HeightTexture"].GetString();
-				materials->mpHeight = ResourceManager::Instance().LoadTexture(path);
+				mHeightTexturePath = data["HeightTexture"].GetString();
+				materials->mpHeight = ResourceManager::Instance().LoadTexture(mHeightTexturePath);
 			}
 			if (data.HasMember("HeightScale"))
 			{
@@ -81,58 +85,67 @@ namespace Hollow {
 		}
 		if (data.HasMember("MaterialData"))
 		{
-			std::string path = data["MaterialData"].GetString();
-			mMaterials = ResourceManager::Instance().LoadMaterials(path);
+			mMaterialDataPath = data["MaterialData"].GetString();
+			mMaterials = ResourceManager::Instance().LoadMaterials(mMaterialDataPath);
 		}
+	}
+
+	void Material::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write("Texture", mTexturePath, writer);
+		JSONHelper::Write("Diffuse", mDiffuseColor, writer);
+		JSONHelper::Write("Specular", mSpecularColor, writer);
+		JSONHelper::Write("Shininess", mShininess, writer);
+		JSONHelper::Write("DiffuseTexture", mDiffuseTexturePath, writer);
+		JSONHelper::Write("SpecularTexture", mSpecularTexturePath, writer);
+		JSONHelper::Write("NormalTexture", mNormalTexturePath, writer);
+		JSONHelper::Write("HeightTexture", mHeightTexturePath, writer);
+		JSONHelper::Write("HeightScale", mHeightScale, writer);
+		JSONHelper::Write("MaterialData", mMaterialDataPath, writer);
 	}
 
 	void Material::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Material"))
+		// Show the diffuse color
+		ImGui::ColorEdit3("Diffuse", &mDiffuseColor[0], ImGuiColorEditFlags_Float);
+
+		// Show the specular color
+		ImGui::ColorEdit3("Specular", &mSpecularColor[0], ImGuiColorEditFlags_Float);
+
+		// Show the shininess
+		ImGui::InputFloat("Shininess", &mShininess);
+
+		// Show parallax map height scale
+		ImGui::InputFloat("Height Scale", &mHeightScale);
+
+		// Show the texture if there is only one
+		if (mpTexture)
 		{
-			// Show the diffuse color
-			ImGui::ColorEdit3("Diffuse", &mDiffuseColor[0], ImGuiColorEditFlags_Float);
-
-			// Show the specular color
-			ImGui::ColorEdit3("Specular", &mSpecularColor[0], ImGuiColorEditFlags_Float);
-
-			// Show the shininess
-			ImGui::InputFloat("Shininess", &mShininess);
-
-			// Show parallax map height scale
-			ImGui::InputFloat("Height Scale", &mHeightScale);
-
-			// Show the texture if there is only one
-			if (mpTexture)
+			ImGui::Image((void*)(intptr_t)(mpTexture->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+		}
+		 // Show a small version of the currently selected texture
+		for (MaterialData* material : mMaterials)
+		{
+			if (material->mpDiffuse)
 			{
-				ImGui::Image((void*)(intptr_t)(mpTexture->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+				ImGui::Text("Diffuse texture");
+				ImGui::Image((void*)(intptr_t)(material->mpDiffuse->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 			}
-			 // Show a small version of the currently selected texture
-			for (MaterialData* material : mMaterials)
+			if (material->mpSpecular)
 			{
-				if (material->mpDiffuse)
-				{
-					ImGui::Text("Diffuse texture");
-					ImGui::Image((void*)(intptr_t)(material->mpDiffuse->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
-				}
-				if (material->mpSpecular)
-				{
-					ImGui::Text("Specular texture");
-					ImGui::Image((void*)(intptr_t)(material->mpSpecular->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
-				}
-				if (material->mpNormal)
-				{
-					ImGui::Text("Normal texture");
-					ImGui::Image((void*)(intptr_t)(material->mpNormal->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
-				}
-				if (material->mpHeight)
-				{
-					ImGui::Text("Height texture");
-					ImGui::Image((void*)(intptr_t)(material->mpHeight->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
-				}
+				ImGui::Text("Specular texture");
+				ImGui::Image((void*)(intptr_t)(material->mpSpecular->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
 			}
-
-			ImGui::TreePop();
+			if (material->mpNormal)
+			{
+				ImGui::Text("Normal texture");
+				ImGui::Image((void*)(intptr_t)(material->mpNormal->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			}
+			if (material->mpHeight)
+			{
+				ImGui::Text("Height texture");
+				ImGui::Image((void*)(intptr_t)(material->mpHeight->GetTextureID()), ImVec2(ImGui::GetContentRegionAvailWidth(), ImGui::GetContentRegionAvailWidth()), ImVec2(1, 1), ImVec2(0, 0));
+			}
 		}
 	}
 }

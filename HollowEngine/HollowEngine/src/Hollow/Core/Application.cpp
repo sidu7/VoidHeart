@@ -22,7 +22,10 @@ namespace Hollow {
 	
 	Application::Application(const std::string& settingsFilePath)
 	{
-		PARSE_JSON_FILE(settingsFilePath);
+		std::ifstream file(settingsFilePath);
+		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+		file.close();
+		PARSE_JSON_FILE(contents.c_str());
 		
 		rapidjson::Value::Object data = root.GetObject();
 		mpWindow = new GameWindow(JSONHelper::GetSettings(data,"Window"));

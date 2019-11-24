@@ -9,10 +9,19 @@ namespace Hollow {
 	{
 		REGISTERCOMPONENT(Material);
 	public:
-		HOLLOW_API void Init();
-		HOLLOW_API void Clear();
-		HOLLOW_API void Serialize(rapidjson::Value::Object data);
-		HOLLOW_API void DebugDisplay();
+		HOLLOW_API void Init() override;
+		HOLLOW_API void Clear() override;
+		HOLLOW_API void Serialize(rapidjson::Value::Object data) override;
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
+		HOLLOW_API void DebugDisplay() override;
+
+	private:
+		std::string mTexturePath;
+		std::string mDiffuseTexturePath;
+		std::string mSpecularTexturePath;
+		std::string mNormalTexturePath;
+		std::string mHeightTexturePath;
+		std::string mMaterialDataPath;
 
 	public:
 		glm::vec3 mDiffuseColor;

@@ -14,12 +14,12 @@ namespace Hollow
 		mCurrentState = nullptr;
 		mPreviousState = nullptr;
 		mNeedChangeState = false;
+		mStateFilePath = "";
+		mInitState = "";
 	}
 
 	void StateMachine::Clear()
 	{
-		mCurrentState = nullptr;
-		mPreviousState = nullptr;
 		mStates.clear();
 	}
 
@@ -27,13 +27,21 @@ namespace Hollow
 	{
 		if (data.HasMember("StateFile"))
 		{
-			mStates = ResourceManager::Instance().ReadStateMachineFile(data["StateFile"].GetString());
+			mStateFilePath = data["StateFile"].GetString();
+			mStates = ResourceManager::Instance().ReadStateMachineFile(mStateFilePath);
 		}
 		if (data.HasMember("StartState"))
 		{
-			mCurrentState = mStates[State::FindState(mStates, data["StartState"].GetString())];
+			mInitState = data["StartState"].GetString();
+			mCurrentState = mStates[State::FindState(mStates, mInitState)];
 			mPreviousState = mCurrentState;
 		}
+	}
+
+	void StateMachine::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write("StateFile", mStateFilePath, writer);
+		JSONHelper::Write("StartState", mInitState, writer);
 	}
 
 	void StateMachine::DebugDisplay()

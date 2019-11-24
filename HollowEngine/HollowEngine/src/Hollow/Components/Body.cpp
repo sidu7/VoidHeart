@@ -39,14 +39,10 @@ namespace Hollow {
 	
 	void Body::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Body"))
-		{
-			ImGui::InputFloat("Mass", &mMass);
-			ImGui::InputFloat3("Position", &mPosition[0]);
-			ImGui::InputFloat3("Velocity", &mVelocity[0]);
-			ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
-			ImGui::TreePop();
-		}
+		ImGui::InputFloat("Mass", &mMass);
+		ImGui::InputFloat3("Position", &mPosition[0]);
+		ImGui::InputFloat3("Velocity", &mVelocity[0]);
+		ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
 	}
 
 	void Body::Serialize(rapidjson::Value::Object data)

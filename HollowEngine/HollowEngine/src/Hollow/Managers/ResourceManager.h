@@ -36,7 +36,7 @@ namespace Hollow
 		  
 		HOLLOW_API  void Init();
 		HOLLOW_API  void CleanUp();
-		HOLLOW_API  void LoadLevelFromFile(std::string path);
+		HOLLOW_API  std::string LoadJSONFile(std::string path);
 		HOLLOW_API  GameObject* LoadGameObjectFromFile(std::string path);
 		HOLLOW_API  Texture* LoadTexture(std::string path);
 		HOLLOW_API  std::vector<Mesh*> LoadModel(std::string path);
@@ -72,6 +72,7 @@ namespace Hollow
 		std::unordered_map<std::string, std::vector<State*>> mStateFileCache;
 		std::unordered_map<std::string, Shader*> mShaderCache;
 		std::unordered_map<std::string, std::string> mCachedGameObjectsMap;
+		std::unordered_map<std::string, std::string> mJSONFileCache;
 
 		// Sounds cache, maybe split into SFX and Songs
 		std::unordered_map<std::string, FMOD::Sound*> mSoundCache;
