@@ -9,8 +9,7 @@ namespace Hollow
 	void Collider::Init()
 	{
 		mBounciness = 0.2f; // bounce
-		coeffStaticFriction = 0.9f; // to start sliding
-		coeffDynamicFriction = 0.75f; // while sliding
+		mFriction = 0.75f;
 		mpLocalShape = nullptr;
 		mpShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
 		mpLocalShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
