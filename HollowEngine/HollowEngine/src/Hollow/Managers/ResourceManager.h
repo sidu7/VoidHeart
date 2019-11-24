@@ -1,5 +1,5 @@
 #pragma once
-#include "Hollow/Graphics/Data/AnimationData.h"
+#include "Hollow/Common.h"
 
 namespace Hollow
 {
@@ -13,6 +13,7 @@ namespace Hollow
 	struct State;
 	class GameObject;
 	class Shader;
+	struct AnimationData;
 	
 	enum Shapes
 	{

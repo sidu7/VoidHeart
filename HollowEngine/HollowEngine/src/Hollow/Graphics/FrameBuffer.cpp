@@ -1,6 +1,6 @@
 #include <hollowpch.h>
+#include "Hollow/Common.h"
 #include "FrameBuffer.h"
-#include "Utils/GLCall.h"
 
 namespace Hollow {
 

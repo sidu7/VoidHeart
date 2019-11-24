@@ -5,7 +5,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: Sidhant Tumma
 - End Header --------------------------------------------------------*/
 #include <hollowpch.h>
-#include "Utils/GLCall.h"
+
 #include "VertexBuffer.h"
 
 namespace Hollow {

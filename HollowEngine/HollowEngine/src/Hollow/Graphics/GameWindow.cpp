@@ -1,5 +1,5 @@
 #include <hollowpch.h>
-
+#include "Hollow/Common.h"
 #include "GameWindow.h"
 
 namespace Hollow {

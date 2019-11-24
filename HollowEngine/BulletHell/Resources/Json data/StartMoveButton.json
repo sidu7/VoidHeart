@@ -1,0 +1,20 @@
+{
+  "Components": [
+    {
+      "Type": "UITransform",
+      "Position": [ 800, 100 ],
+      "Scale": [ 100, 20 ]
+    },
+    {
+      "Type": "UIImage",
+      "Shape": 3,
+      "Color": [ 0.0, 1.0, 0.0 ]
+    },
+    {
+      "Type": "UIButton",
+      "Function": "START_MOVING",
+      "PressedColor": [ 0.0, 1.0, 0.0 ],
+      "ReleasedColor": [1.0,0.0,0.0]
+    }
+  ]
+}

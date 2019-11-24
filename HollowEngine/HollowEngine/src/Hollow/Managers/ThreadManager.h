@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Hollow/Common.h"
 #define MAX_THREADS 2
 
 namespace Hollow

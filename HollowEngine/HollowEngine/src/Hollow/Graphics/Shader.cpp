@@ -1,5 +1,4 @@
 #include <hollowpch.h>
-#include "Utils/GLCall.h"
 #include "Shader.h"
 
 namespace Hollow {

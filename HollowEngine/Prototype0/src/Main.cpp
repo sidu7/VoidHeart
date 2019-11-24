@@ -1,7 +1,7 @@
 #include <Hollow.h>
 
+#include "Hollow/Common.h"
 #include "PrototypeComponent.h"
-#include "Utils/Random.h"
 
 #include "Hollow/Core/EntryPoint.h"
 #include "Hollow/Core/GameObject.h"

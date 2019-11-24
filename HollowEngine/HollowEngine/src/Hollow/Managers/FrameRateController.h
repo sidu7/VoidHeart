@@ -5,7 +5,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: Shantanu Chauhan
 - End Header --------------------------------------------------------*/
 #pragma once
-#include "hollowpch.h"
+#include "Hollow/Common.h"
 
 namespace Hollow {
 

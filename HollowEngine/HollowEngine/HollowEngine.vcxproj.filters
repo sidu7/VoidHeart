@@ -17,7 +17,6 @@
     <ClCompile Include="src\Hollow\Managers\GameObjectManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\MemoryManager.cpp" />
     <ClCompile Include="src\Hollow\Graphics\Shader.cpp" />
-    <ClCompile Include="src\Utils\Log.cpp" />
     <ClCompile Include="src\Hollow\Graphics\GameWindow.cpp" />
     <ClCompile Include="src\Hollow\Core\Application.cpp" />
     <ClCompile Include="src\Hollow\Core\GameObject.cpp" />
@@ -25,7 +24,6 @@
     <ClCompile Include="src\Hollow\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="src\Hollow\Graphics\ElementArrayBuffer.cpp" />
     <ClCompile Include="src\Hollow\Graphics\VertexArray.cpp" />
-    <ClCompile Include="src\Utils\GLCall.cpp" />
     <ClCompile Include="src\Hollow\Core\Layer.cpp" />
     <ClCompile Include="src\Hollow\Core\LayerStack.cpp" />
     <ClCompile Include="src\Hollow\Managers\ImGuiManager.cpp" />
@@ -68,7 +66,6 @@
     <ClCompile Include="src\Hollow\Graphics\UniformBuffer.cpp" />
     <ClCompile Include="src\Hollow\Components\PathFollow.cpp" />
     <ClCompile Include="src\Hollow\Systems\PathFollowSystem.cpp" />
-    <ClCompile Include="src\Utils\BSplineCurve.cpp" />
     <ClCompile Include="src\Hollow\Managers\ScriptingManager.cpp" />
     <ClCompile Include="src\Hollow\Components\Script.cpp" />
     <ClCompile Include="src\Hollow\Systems\ScriptingSystem.cpp" />
@@ -78,6 +75,9 @@
     <ClCompile Include="src\Hollow\Managers\UIManager.cpp" />
     <ClCompile Include="src\Hollow\Systems\UIButtonSystem.cpp" />
     <ClCompile Include="src\Hollow\Systems\UIRenderSystem.cpp" />
+    <ClCompile Include="src\Hollow\Utils\BSplineCurve.cpp" />
+    <ClCompile Include="src\Hollow\Utils\GLCall.cpp" />
+    <ClCompile Include="src\Hollow\Utils\Log.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -115,8 +115,6 @@
     <ClInclude Include="src\Hollow\Events\KeyEvent.h" />
     <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
     <ClInclude Include="src\Hollow.h" />
-    <ClInclude Include="src\Utils\Profiler.h" />
-    <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />
@@ -165,7 +163,6 @@
     <ClInclude Include="vendor\Include\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\Hollow\Managers\SystemManager.h" />
     <ClInclude Include="src\Hollow\Systems\System.h" />
-    <ClInclude Include="src\Utils\Log.h" />
     <ClInclude Include="src\Hollow\Graphics\GameWindow.h" />
     <ClInclude Include="src\Hollow\Core\Application.h" />
     <ClInclude Include="src\Hollow\Core\Core.h" />
@@ -175,7 +172,6 @@
     <ClInclude Include="src\Hollow\Graphics\VertexBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\ElementArrayBuffer.h" />
     <ClInclude Include="src\Hollow\Graphics\VertexArray.h" />
-    <ClInclude Include="src\Utils\GLCall.h" />
     <ClInclude Include="src\Hollow\Graphics\Vertex.h" />
     <ClInclude Include="src\Hollow\Core\Layer.h" />
     <ClInclude Include="src\Hollow\Core\LayerStack.h" />
@@ -193,7 +189,6 @@
     <ClInclude Include="src\Hollow\Managers\DebugDrawManager.h" />
     <ClInclude Include="src\Hollow\Components\Light.h" />
     <ClInclude Include="src\Hollow\Systems\LightSystem.h" />
-    <ClInclude Include="src\Utils\JSONHelper.h" />
     <ClInclude Include="src\Hollow\Components\Collider.h" />
     <ClInclude Include="src\Hollow\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Broadphase.h" />
@@ -206,7 +201,6 @@
     <ClInclude Include="src\Hollow\Components\ParticleEmitter.h" />
     <ClInclude Include="src\Hollow\Systems\ParticleSystem.h" />
     <ClInclude Include="src\Hollow\Components\StateMachine.h" />
-    <ClInclude Include="src\Utils\GraphicsMath.h" />
     <ClInclude Include="src\Hollow\Managers\AudioManager.h" />
     <ClInclude Include="src\Hollow\Systems\CameraSystem.h" />
     <ClInclude Include="src\Hollow\Components\Camera.h" />
@@ -225,19 +219,15 @@
     <ClInclude Include="src\Hollow\Systems\AnimationSystem.h" />
     <ClInclude Include="src\Hollow\Core\Data\StateData.h" />
     <ClInclude Include="src\Hollow\Systems\StateMachineSystem.h" />
-    <ClInclude Include="src\Utils\Random.h" />
-    <ClInclude Include="src\Utils\RayCast.h" />
     <ClInclude Include="src\Hollow\Graphics\ShaderStorageBuffer.h" />
     <ClInclude Include="src\Hollow\Physics\Resolution\PhysicsDataTypes.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Shape.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\SkydomeData.h" />
     <ClInclude Include="src\Hollow\Managers\ThreadManager.h" />
-    <ClInclude Include="src\Utils\ThreadSafeQueue.h" />
     <ClInclude Include="src\Hollow\Graphics\UniformBuffer.h" />
     <ClInclude Include="src\Hollow\Components\PathFollow.h" />
     <ClInclude Include="src\Hollow\Systems\PathFollowSystem.h" />
-    <ClInclude Include="src\Utils\BSplineCurve.h" />
     <ClInclude Include="src\Hollow\Events\GameEvent.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\UIRenderData.h" />
     <ClInclude Include="src\Hollow\Managers\ScriptingManager.h" />
@@ -249,6 +239,17 @@
     <ClInclude Include="src\Hollow\Managers\UIManager.h" />
     <ClInclude Include="src\Hollow\Systems\UIButtonSystem.h" />
     <ClInclude Include="src\Hollow\Systems\UIRenderSystem.h" />
+    <ClInclude Include="src\Hollow\Utils\BSplineCurve.h" />
+    <ClInclude Include="src\Hollow\Utils\GLCall.h" />
+    <ClInclude Include="src\Hollow\Utils\GraphicsMath.h" />
+    <ClInclude Include="src\Hollow\Utils\JSONHelper.h" />
+    <ClInclude Include="src\Hollow\Utils\Log.h" />
+    <ClInclude Include="src\Hollow\Utils\Profiler.h" />
+    <ClInclude Include="src\Hollow\Utils\Random.h" />
+    <ClInclude Include="src\Hollow\Utils\RayCast.h" />
+    <ClInclude Include="src\Hollow\Utils\Singleton.h" />
+    <ClInclude Include="src\Hollow\Utils\ThreadSafeQueue.h" />
+    <ClInclude Include="src\Hollow\Common.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

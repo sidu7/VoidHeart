@@ -4,6 +4,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 
 #include "Hollow/Graphics/Data/MaterialData.h"
+#include "Hollow/Graphics/Data/Color.h"
 #include "Hollow/Graphics/Texture.h"
 
 //#pragma warning (disable : 4312)

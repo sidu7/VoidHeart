@@ -1,5 +1,6 @@
 #pragma once
 #include "Hollow/Managers/MemoryManager.h"
+#include "Hollow/Common.h"
 
 namespace Hollow
 {

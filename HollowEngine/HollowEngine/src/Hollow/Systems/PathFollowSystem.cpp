@@ -1,4 +1,5 @@
 #include <hollowpch.h>
+#include "Hollow/Common.h"
 #include "PathFollowSystem.h"
 
 #include "Hollow/Components/PathFollow.h"
@@ -9,8 +10,6 @@
 
 #include "Hollow/Graphics/VertexArray.h"
 #include "Hollow/Graphics/VertexBuffer.h"
-
-#include "Utils/BSplineCurve.h"
 
 #include "Hollow/Managers/UIManager.h"
 

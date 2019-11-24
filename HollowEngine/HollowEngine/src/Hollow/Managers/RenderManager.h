@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils/Singleton.h"
+#include "Hollow/Common.h"
 #include "Hollow/Graphics/Data/RenderData.h"
 #include "Hollow/Graphics/Data/LightData.h"
 #include "Hollow/Graphics/Data/MaterialData.h"
@@ -31,7 +31,7 @@ namespace Hollow {
 
 	private:
 		// Initialization Functions
-		void InitializeSkydome();
+		void InitializeSkydome(rapidjson::Value::Object& data);
 		void InitializeHammersley(int n);
 
 		void CreateAmbientShader();

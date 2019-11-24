@@ -1,4 +1,5 @@
 #include <hollowpch.h>
+
 #include "Animator.h"
 
 #include "Hollow/Managers/ResourceManager.h"

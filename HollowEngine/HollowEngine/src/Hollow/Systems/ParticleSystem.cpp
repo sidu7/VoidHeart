@@ -1,4 +1,5 @@
 #include <hollowpch.h>
+#include "Hollow/Common.h"
 #include "ParticleSystem.h"
 
 #include "Hollow/Components/ParticleEmitter.h"
@@ -13,7 +14,6 @@
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 
-#include "Utils/Random.h"
 
 namespace Hollow
 {

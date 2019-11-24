@@ -1,4 +1,4 @@
-#include "hollowpch.h"
+#include <hollowpch.h>
 #include "Camera.h"
 
 #include "Hollow/Graphics/Data/CameraData.h"
