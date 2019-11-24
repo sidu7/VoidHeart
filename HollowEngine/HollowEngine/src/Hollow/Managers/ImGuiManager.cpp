@@ -12,7 +12,9 @@
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
+#include "Hollow/Components/Transform.h"
 
 
 namespace Hollow {
@@ -136,6 +138,15 @@ namespace Hollow {
 		{
 
 			Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Sphere.json");
+		}
+		if (ImGui::Button("Create Object"))
+		{
+			auto& lua = ScriptingManager::Instance().lua;
+			lua.script_file("Resources/Scripts/CreateObject.lua");
+			std::string path = lua["gameObjectPath"];
+			glm::vec3 tra = lua.get<glm::vec3>("position");
+			GameObject* pGameObject = Hollow::ResourceManager::Instance().LoadGameObjectFromFile(path);
+			pGameObject->GetComponent<Transform>()->mPosition = tra;
 		}
 	}
 }

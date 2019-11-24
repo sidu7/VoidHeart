@@ -83,17 +83,22 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua;$(SolutionDir)$(ProjectName)\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>lua53.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)bin\$(Configuration)
+      <Command>cd "$(SolutionDir)bin\$(Configuration)"
 
-copy /y HollowEngine\*.dll $(ProjectName)</Command>
+copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -129,22 +134,34 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua;$(SolutionDir)$(ProjectName)\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>lua53.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)bin\$(Configuration)
+      <Command>cd "$(SolutionDir)bin\$(Configuration)"
 
-copy /y HollowEngine\*.dll $(ProjectName)</Command>
+copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\BulletHell\Components\Health.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hollowpch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\BulletHell\Main.cpp" />
+    <ClCompile Include="src\BulletHell\Systems\HealthSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HollowEngine\HollowEngine.vcxproj">
@@ -211,6 +228,10 @@ copy /y HollowEngine\*.dll $(ProjectName)</Command>
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\BulletHell\Components\Health.h" />
+    <ClInclude Include="src\BulletHell\Systems\HealthSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,40 @@
+{
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 5.3, 100.0, 5.3 ],
+      "Scale": [ 4.0, 4.0, 4.0 ]
+    },
+    {
+      "Type": "Model",
+      "Shape": 0,
+      "CastShadow": true
+    },
+    {
+      "Type": "Body",
+      "Mass": 100.0,
+      "isFrictionLess": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Material",
+      "Shininess": 100000.0,
+      "Diffuse": [ 0.5, 0.5, 0.5 ],
+      "Specular": [2.0, 2.0, 2.0]
+    },
+    {
+      "Type": "ParticleEmitter",
+      "Shape": 0,
+      "Texture": "Resources/Textures/cracks.png",
+      "Count": 100000.0,
+      "Area": [ 1.0, 1.0, 1.0 ],
+      "Life": [ 1.0, 3.0 ],
+      "Speed": [ 1.5, 2.0 ],
+      "ComputeShader": "Resources/Shaders/CenterParticles.comp",
+      "PixelSize": 0.01
+    }
+  ]
+}
