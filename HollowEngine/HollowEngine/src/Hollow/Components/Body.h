@@ -20,7 +20,7 @@ namespace Hollow {
 		HOLLOW_API void Clear();
 		HOLLOW_API void DebugDisplay();
 		HOLLOW_API void Serialize(rapidjson::Value::Object data);
-
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 		float mMass, mInverseMass;
 		glm::vec3 mPosition;
 		glm::vec3 mPreviousPosition;
@@ -36,9 +36,9 @@ namespace Hollow {
 		glm::mat3 mLocalInertiaInverse;
 		glm::mat3 mWorldInertiaInverse;
 
-		RigidbodyType bodyType;
+		RigidbodyType mBodyType;
 
-		bool isFrictionLess;
+		bool mIsFrictionLess;
 
 	private:
 		static std::unordered_map<std::string, RigidbodyType> mapOfTypesToStrings;

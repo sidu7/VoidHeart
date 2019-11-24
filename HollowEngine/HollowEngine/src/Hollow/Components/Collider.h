@@ -16,18 +16,17 @@ namespace Hollow {
 		HOLLOW_API void Clear();
 		HOLLOW_API void DebugDisplay() override;
 		HOLLOW_API void Serialize(rapidjson::Value::Object);
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 	public:
 		Shape* mpShape;
 		Shape* mpLocalShape;
 
-		float coeffRestitution, coeffStaticFriction, coeffDynamicFriction;
+		float mBounciness, mFriction;
 
-		bool isTrigger;
+		bool mIsTrigger;
 
 		Transform* mpTr;
 		Body* mpBody;
-
-		bool isColliding;
 	};
 }
 

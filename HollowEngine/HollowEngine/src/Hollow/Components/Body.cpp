@@ -20,9 +20,9 @@ namespace Hollow {
 		mTotalTorque = glm::vec3(0);
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
-		isFrictionLess = false;
+		mIsFrictionLess = false;
 
-		bodyType = DYNAMIC;
+		mBodyType = DYNAMIC;
 
 		{
 #define RIGIDBODY_TYPE(name) Body::mapOfTypesToStrings[#name] = Body::name;
@@ -61,17 +61,25 @@ namespace Hollow {
 		}
 		if (data.HasMember("RigidbodyType"))
 		{
-			bodyType = mapOfTypesToStrings[data["RigidbodyType"].GetString()];
+			mBodyType = mapOfTypesToStrings[data["RigidbodyType"].GetString()];
 
-			if(bodyType == Body::STATIC)
+			if(mBodyType == Body::STATIC)
 				mMass = std::numeric_limits<float>::infinity();
 		}
 		if (data.HasMember("IsFrictionLess"))
 		{
-			isFrictionLess = data["IsFrictionLess"].GetBool();
+			mIsFrictionLess = data["IsFrictionLess"].GetBool();
 		}
 
 		mInverseMass = 1.0f / mMass;
+	}
+
+	HOLLOW_API void Body::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write<float>("Mass", mMass, writer);
+		JSONHelper::Write<glm::vec3>("Velocity", mVelocity, writer);
+		JSONHelper::Write<std::string>("RigidbodyType", STRINGIFY(mBodyType), writer);
+		JSONHelper::Write<bool>("IsFrictionLess", mIsFrictionLess, writer);
 	}
 	
 }

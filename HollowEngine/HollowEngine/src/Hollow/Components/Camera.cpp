@@ -84,9 +84,11 @@ namespace Hollow {
 		}
 		if (data.HasMember("ViewPortPosition"))
 		{
-			 glm::vec2 pos = JSONHelper::GetIVec2(data["ViewPortPosition"].GetArray());
+			 mDViewPortPosition = JSONHelper::GetIVec2(data["ViewPortPosition"].GetArray());
 			 glm::vec2 size = RenderManager::Instance().GetWindowSize();
-			 mViewPortPosition = glm::vec2(pos.x < 0 ? size.x + pos.x : pos.x, pos.y < 0 ? size.y + pos.y : pos.y);
+			 mViewPortPosition = glm::vec2(mDViewPortPosition.x < 0 ?
+				 size.x + mDViewPortPosition.x : mDViewPortPosition.x, mDViewPortPosition.y < 0 ?
+				 size.y + mDViewPortPosition.y : mDViewPortPosition.y);
 		}
 		if (data.HasMember("ViewPortSize"))
 		{
@@ -117,5 +119,24 @@ namespace Hollow {
 			ImGui::InputFloat3("Offset", &mOffsetFromAnchor[0]);
 			ImGui::TreePop();
 		}
+	}
+
+	void Camera::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write("Yaw", mYaw, writer);
+		JSONHelper::Write("Pitch", mPitch, writer);
+		JSONHelper::Write("MovementSpeed", mMovementSpeed, writer);
+		JSONHelper::Write("MouseSensitivity", mMouseSensitivity, writer);
+		JSONHelper::Write("Zoom", mZoom, writer);
+		JSONHelper::Write("NearPlane", mNearPlane, writer);
+		JSONHelper::Write("FarPlane", mFarPlane, writer);
+		JSONHelper::Write("IsActive", mIsActive, writer);
+		JSONHelper::Write("CameraType", (unsigned)mType, writer);
+		JSONHelper::Write("ProjectionType", (unsigned)mProjectionType, writer);
+		JSONHelper::Write("ViewPortPosition", mDViewPortPosition, writer);
+		JSONHelper::Write("ViewPortSize", mViewPortSize, writer);
+		JSONHelper::Write("PositionOffset", mOffsetFromAnchor, writer);
+		
+		
 	}
 }

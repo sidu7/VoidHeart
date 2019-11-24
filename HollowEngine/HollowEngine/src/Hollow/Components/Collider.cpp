@@ -8,7 +8,7 @@ namespace Hollow
 
 	void Collider::Init()
 	{
-		coeffRestitution = 0.2f; // bounce
+		mBounciness = 0.2f; // bounce
 		coeffStaticFriction = 0.9f; // to start sliding
 		coeffDynamicFriction = 0.75f; // while sliding
 		mpLocalShape = nullptr;
@@ -34,15 +34,15 @@ namespace Hollow
 	{
 		if (data.HasMember("isTrigger"))
 		{
-			isTrigger = data["isTrigger"].GetBool();
+			mIsTrigger = data["isTrigger"].GetBool();
 		}
-		if (data.HasMember("kRestitution"))
+		if (data.HasMember("Bounciness"))
 		{
-			coeffRestitution = data["kRestitution"].GetFloat();
+			mBounciness = data["Bounciness"].GetFloat();
 		}
-		if (data.HasMember("kFriction"))
+		if (data.HasMember("Friction"))
 		{
-			coeffDynamicFriction = data["kFriction"].GetFloat();
+			mFriction = data["Friction"].GetFloat();
 		}
 		if (data.HasMember("Shape"))
 		{
@@ -60,5 +60,14 @@ namespace Hollow
 				mpShape->mpOwnerCollider = this;
 			}
 		}
+
+	}
+
+	HOLLOW_API void Collider::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer> & writer)
+	{
+		JSONHelper::Write<float>("Friction", mFriction, writer);
+		JSONHelper::Write<float>("Bounciness", mBounciness, writer);
+		JSONHelper::Write<std::string>("Shape", STRINGIFY(mpShape->mType), writer);
+		JSONHelper::Write<bool>("isTrigger", mIsTrigger, writer);
 	}
 }
