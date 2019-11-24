@@ -2,6 +2,7 @@
 
 #include "Body.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow {
 
@@ -34,9 +35,11 @@ namespace Hollow {
 	void Body::DebugDisplay()
 	{
 		ImGui::InputFloat("Mass", &mMass);
+		ImGuiHelper::InputText("RigidbodyType", mDRigidbodyType);
 		ImGui::InputFloat3("Position", &mPosition[0]);
 		ImGui::InputFloat3("Velocity", &mVelocity[0]);
 		ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
+		ImGui::Checkbox("Frictionless", &mIsFrictionLess);
 	}
 
 	void Body::Serialize(rapidjson::Value::Object data)
