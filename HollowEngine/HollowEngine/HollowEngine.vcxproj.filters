@@ -133,8 +133,6 @@
     <ClInclude Include="src\Hollow\Events\KeyEvent.h" />
     <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
     <ClInclude Include="src\Hollow.h" />
-    <ClInclude Include="src\Utils\Profiler.h" />
-    <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />

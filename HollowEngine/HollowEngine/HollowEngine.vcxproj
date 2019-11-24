@@ -460,9 +460,10 @@
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)bin\$(Configuration)
-
-copy /y $(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll $(ProjectName)</Command>
+      <Command>cd "$(SolutionDir)bin\$(Configuration)"
+copy /y "$(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll" "$(ProjectName)"
+IF NOT EXIST BulletHell ( mkdir BulletHell)
+copy /y "$(ProjectName)\*.dll" "BulletHell"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -491,9 +492,10 @@ copy /y $(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll $(ProjectName)</
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)bin\$(Configuration)
-
-copy /y $(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll $(ProjectName)</Command>
+      <Command>cd "$(SolutionDir)bin\$(Configuration)"
+copy /y "$(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll" "$(ProjectName)"
+IF NOT EXIST BulletHell ( mkdir BulletHell)
+copy /y "$(ProjectName)\*.dll" "BulletHell"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

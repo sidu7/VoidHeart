@@ -3,6 +3,8 @@
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Camera.h"
 
+#include "Hollow/Managers/ResourceManager.h"
+
 namespace Hollow
 {
 	void ScriptingManager::Init()
@@ -46,6 +48,9 @@ namespace Hollow
 			"yaw", &Camera::mYaw,
 			"pitch", &Camera::mPitch
 			);
+
+		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
+
 	}
 
 }

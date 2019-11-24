@@ -23,7 +23,8 @@ namespace Hollow {
 
 	void Material::Clear()
 	{
-		delete mpTexture;
+		//delete mpTexture;
+		mpTexture = nullptr;
 		mMaterials.clear();
 		mDiffuseColor = COLOR_BLACK;
 		mSpecularColor = COLOR_BLACK;
