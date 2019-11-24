@@ -8,14 +8,20 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
 
+#include "BulletHell/Components/Health.h"
+
 class Prototype : public Hollow::Application
 {
 public:
 	Prototype() : Application("Resources/Settings.json")
 	{
+
+		Hollow::MemoryManager::Instance();
+
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
+		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Player.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
@@ -55,7 +61,7 @@ public:
 
 	~Prototype()
 	{
-		HW_TRACE("Prototype Closing");
+		HW_TRACE("BulletHell Prototype Closing");
 	}
 };
 

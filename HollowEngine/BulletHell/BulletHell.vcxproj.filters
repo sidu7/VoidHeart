@@ -15,11 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
@@ -79,5 +74,24 @@
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\BulletHell\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletHell\Systems\HealthSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletHell\Components\Health.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\BulletHell\Systems\HealthSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\Components\Health.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
