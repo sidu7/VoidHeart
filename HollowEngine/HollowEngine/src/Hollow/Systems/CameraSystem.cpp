@@ -177,26 +177,51 @@ namespace Hollow {
 				HandleKeyboardInput(pCamera, pTransform);
 				HandleMouseInput(pCamera);
 			}
-			else if(pCamera->mType == MAIN_CAMERA)
+			else if(pCamera->mType == MAIN_CAMERA||pCamera->mType ==THIRD_PERSON_CAMERA)
 			{
 				HandleMouseMotion(pCamera);
 			}
 
 			CameraData cameraData;
-			cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) *  pCamera->mOffsetFromAnchor;
-
-			if (pCamera->mProjectionType == PERSPECTIVE) 
+			if (pCamera->mType != THIRD_PERSON_CAMERA)
 			{
+				cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) * pCamera->mOffsetFromAnchor;
+
+				if (pCamera->mProjectionType == PERSPECTIVE)
+				{
+					cameraData.mViewMatrix = glm::lookAt(cameraData.mEyePosition, cameraData.mEyePosition + pCamera->mFront, pCamera->mUp);;
+					cameraData.mProjectionMatrix = glm::perspective(pCamera->mZoom, pCamera->mAspectRatio,
+						pCamera->mNearPlane, pCamera->mFarPlane);
+				}
+				else if (pCamera->mProjectionType == ORTHOGRAPHIC)
+				{
+					cameraData.mProjectionMatrix = glm::ortho(0.0f, static_cast<float>(pCamera->mViewPortSize.x), 0.0f, static_cast<float>(pCamera->mViewPortSize.y), -1.0f, 1.0f);
+					cameraData.mViewMatrix = glm::translate(glm::mat4(1.0f), cameraData.mEyePosition);
+				}
+			}
+			else
+			{
+				glm::vec3 frontDirection = - pCamera->mOffsetFromAnchor;
+				// Clamp pitch
+				if (pCamera->mPitch > -25.0f)
+				{
+					pCamera->mPitch = -25.0f;
+				}
+				if (pCamera->mPitch < -89.0f)
+				{
+					pCamera->mPitch = -89.0f;
+				}
+				frontDirection = glm::rotateX(frontDirection, glm::radians(-pCamera->mPitch));
+				frontDirection = glm::rotateY(frontDirection, glm::radians(-pCamera->mYaw));
+
+				cameraData.mEyePosition = frontDirection + pTransform->mPosition;
+				pCamera->mFront = glm::normalize(pTransform->mPosition + glm::vec3(0.0f,1.0f,0.0f) - cameraData.mEyePosition);
+				pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+				pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));
 				cameraData.mViewMatrix = glm::lookAt(cameraData.mEyePosition, cameraData.mEyePosition + pCamera->mFront, pCamera->mUp);;
 				cameraData.mProjectionMatrix = glm::perspective(pCamera->mZoom, pCamera->mAspectRatio,
 					pCamera->mNearPlane, pCamera->mFarPlane);
 			}
-			else if (pCamera->mProjectionType == ORTHOGRAPHIC)
-			{
-				cameraData.mProjectionMatrix = glm::ortho(0.0f, static_cast<float>(pCamera->mViewPortSize.x), 0.0f, static_cast<float>(pCamera->mViewPortSize.y),-1.0f,1.0f);
-				cameraData.mViewMatrix = glm::translate(glm::mat4(1.0f), cameraData.mEyePosition);
-			}
-			
 			cameraData.mType = pCamera->mType;
 			cameraData.mViewPortPosition = pCamera->mViewPortPosition;
 			cameraData.mViewPortSize = pCamera->mViewPortSize;
@@ -215,6 +240,8 @@ namespace Hollow {
 			case SIDE_CAMERA:
 				RenderManager::Instance().mSecondaryCameras.push_back(cameraData);
 				break;
+			case THIRD_PERSON_CAMERA:
+				RenderManager::Instance().mMainCamera = cameraData;
 			}
 			
 		}

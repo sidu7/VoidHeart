@@ -22,7 +22,8 @@ namespace Hollow
 		SAT mSAT;
 
 
-		HOLLOW_API  void ApplyImpulse(GameObject* object, glm::vec3 impulse);
+		HOLLOW_API  void ApplyAngularImpulse(GameObject* object, glm::vec3 impulse);
+		HOLLOW_API  void ApplyLinearImpulse(GameObject* object, glm::vec3 impulse);
 		HOLLOW_API  GameObject* CastRay();
 	};
 }
