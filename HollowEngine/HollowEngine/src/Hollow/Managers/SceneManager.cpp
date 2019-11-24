@@ -20,6 +20,14 @@ namespace Hollow
 
 	void SceneManager::CleanUp()
 	{
+		if (mSelectedGameObject != nullptr)
+		{
+			MemoryManager::Instance().DeleteGameObject(mSelectedGameObject);
+		}
+		if (mSelectedComponent != nullptr)
+		{
+			MemoryManager::Instance().DeleteComponent(mSelectedComponent);
+		}
 	}
 
 	void SceneManager::DebugDisplay()
@@ -30,6 +38,11 @@ namespace Hollow
 			{
 				if(ImGui::Button("Create Empty Gameobject"))
 				{
+					if(mSelectedGameObject != nullptr)
+					{
+						MemoryManager::Instance().DeleteGameObject(mSelectedGameObject);
+						mSelectedGameObject = nullptr;
+					}
 					mSelectedGameObject = MemoryManager::Instance().NewGameObject();
 					GameObjectManager::Instance().AddGameObject(mSelectedGameObject);
 					mSelectedGameObject->AddComponent(MemoryManager::Instance().NewComponent("Transform"));
@@ -60,18 +73,36 @@ namespace Hollow
 				}
 				if(mSelectedComponentName != "")
 				{
-					mSelectedComponent->DebugDisplay();
+					if(ImGui::TreeNode((mSelectedComponentName+" data").c_str()))
+					{
+						mSelectedComponent->DebugDisplay();
+						ImGui::TreePop();
+					}
 				}
 				if(ImGui::Button("Add Component"))
 				{
+					rapidjson::StringBuffer s;
+					rapidjson::Writer<rapidjson::StringBuffer> writer(s);
+					writer.StartObject();
+					writer.Key("Type");
+					writer.String(mSelectedComponentName.c_str());
+					mSelectedComponent->DeSerialize(writer);
+					writer.EndObject();
+					rapidjson::Document comp;
+					comp.Parse(s.GetString());
+					mSelectedComponent->Serialize(comp.GetObject());
+					//JSONParse
+					//serialize()
 					mSelectedGameObject->AddComponent(mSelectedComponent);
 					mSelectedComponent = nullptr;
 					mSelectedComponentName = "";
+					GameObjectManager::Instance().AddGameObject(mSelectedGameObject);
 				}
 				ImGui::InputText("FileName",charBuffer,255);
 				if(ImGui::Button("Export Prefab"))
 				{
 					DeserializeGameObject();
+					mSelectedGameObject = nullptr;
 				}
 				ImGui::EndTabItem();
 			}

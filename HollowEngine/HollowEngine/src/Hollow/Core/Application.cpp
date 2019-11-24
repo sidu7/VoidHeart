@@ -16,6 +16,7 @@
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/UIManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/SceneManager.h"
 
 namespace Hollow {
 
@@ -47,6 +48,7 @@ namespace Hollow {
 		ScriptingManager::Instance().Init();
 		UIManager::Instance().Init();
 		PhysicsManager::Instance().Init();
+		SceneManager::Instance().Init();
 
 
 		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
@@ -61,6 +63,7 @@ namespace Hollow {
 		ThreadManager::Instance().CleanUp();
 		UIManager::Instance().CleanUp();
 		SystemManager::Instance().CleanUp();
+		SceneManager::Instance().CleanUp();
 		MemoryManager::Instance().CleanUp();
 		delete mpWindow;
 	}
