@@ -42,7 +42,7 @@
         },
         {
             "Type": "Script",
-            "FilePath": "Resources/Scripts/test.lua"
+            "FilePath": "Resources/Scripts/PlayerMovement.lua"
         },
       {
         "Type": "Camera",
