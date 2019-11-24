@@ -27,7 +27,8 @@ namespace Hollow
 	enum ParticleType
 	{
 		POINT,
-		MODEL
+		MODEL,
+		PARTICLE_NUM
 	};
 
 	struct ParticleData

@@ -25,8 +25,12 @@ namespace Hollow
 
 		HOLLOW_API void DeleteGameObject(GameObject* pGameObject)
 		{
-			mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject));
-			OnDeleteGameObject(pGameObject);
+			auto itr = std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject);
+			if (itr != mGameObjects.end())
+			{
+				mGameObjects.erase(itr);
+				OnDeleteGameObject(pGameObject);
+			}
 		}
 
 		HOLLOW_API void DeleteAllGameObjects()

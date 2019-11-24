@@ -12,6 +12,7 @@ namespace Hollow
 		mpTexture = nullptr;
 		mColor = glm::vec3(0.0f);
 		mpShapeData = nullptr;
+		mShapeType = -1;
 	}
 
 	void UIImage::Clear()
@@ -22,12 +23,13 @@ namespace Hollow
 	{
 		if (data.HasMember("Image"))
 		{
-			mpTexture = ResourceManager::Instance().LoadTexture(data["Image"].GetString());
+			TexturePath = data["Image"].GetString();
+			mpTexture = ResourceManager::Instance().LoadTexture(TexturePath);
 		}
 		if (data.HasMember("Shape"))
 		{
-			mShapeType = (Shapes)data["Shape"].GetUint();
-			mpShapeData = ResourceManager::Instance().GetShape(mShapeType);
+			mShapeType = data["Shape"].GetUint();
+			mpShapeData = ResourceManager::Instance().GetShape((Shapes)mShapeType);
 		}
 		if (data.HasMember("Color"))
 		{
@@ -37,6 +39,9 @@ namespace Hollow
 
 	void UIImage::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
+		JSONHelper::Write("Image", TexturePath, writer);
+		JSONHelper::Write("Shape", mShapeType, writer);
+		JSONHelper::Write("Color", mColor, writer);
 	}
 
 	void UIImage::DebugDisplay()

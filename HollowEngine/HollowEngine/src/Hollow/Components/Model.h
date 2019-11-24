@@ -10,19 +10,19 @@ namespace Hollow
 	{
 		REGISTERCOMPONENT(Model);
 	public:
-		HOLLOW_API void Init();
-		HOLLOW_API void Clear();
-		HOLLOW_API void Serialize(rapidjson::Value::Object object);
-		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
-		HOLLOW_API void DebugDisplay();
+		HOLLOW_API void Init() override;
+		HOLLOW_API void Clear() override;
+		HOLLOW_API void Serialize(rapidjson::Value::Object object) override;
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
+		HOLLOW_API void DebugDisplay() override;
 
-		std::vector<Mesh*> mMeshes;
-		Shader* mpShader;
-		bool mCastShadow;
-		bool mModelHasOffset;
-
-		// variables for deserialization... can be private
+	private:
 		unsigned int mShape;
 		std::string mModelPath;
+
+	public:
+		std::vector<Mesh*> mMeshes;
+		bool mCastShadow;
+		bool mModelHasOffset;
 	};
 }

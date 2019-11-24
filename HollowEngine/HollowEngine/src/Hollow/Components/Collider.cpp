@@ -22,11 +22,7 @@ namespace Hollow
 
 	void Collider::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Collider"))
-		{
-			ImGui::InputFloat3("Shape Extents", &mpShape->GetHalfExtents()[0]);
-			ImGui::TreePop();
-		}
+		ImGui::InputFloat3("Shape Extents", &mpShape->GetHalfExtents()[0]);
 	}
 
 	void Collider::Serialize(rapidjson::Value::Object data)

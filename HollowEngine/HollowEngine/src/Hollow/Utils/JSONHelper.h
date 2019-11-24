@@ -16,11 +16,8 @@ namespace Hollow
 	{
 	public:
 
-#define PARSE_JSON_FILE(x) std::ifstream file(x);\
-		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());\
-		file.close(); \
-		rapidjson::Document root;\
-		root.Parse(contents.c_str());\
+#define PARSE_JSON_FILE(x) rapidjson::Document root;\
+		root.Parse(x);\
 		if(!root.IsObject()) { HW_CORE_ERROR("Error reading JSON file {0}",x); }
 
 		//JSON parsing
@@ -99,6 +96,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == 0)
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.Int(value);
 		}
@@ -106,6 +107,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const unsigned int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == -1)
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.Uint(value);
 		}
@@ -120,6 +125,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const float& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == 0.0f)
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.Double(value);
 		}
@@ -127,6 +136,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const double& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == 0.0)
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.Double(value);
 		}
@@ -134,6 +147,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const std::string& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == "")
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.String(value.c_str());
 		}
@@ -141,6 +158,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const glm::vec4& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == glm::vec4(0.0f))
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.StartArray();
 			writer.Double(value.x);
@@ -153,6 +174,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const glm::vec3& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == glm::vec3(0.0f))
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.StartArray();
 			writer.Double(value.x);
@@ -164,6 +189,10 @@ namespace Hollow
 		template<>
 		HOLLOW_API static void Write(const char* key, const glm::vec2& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
+			if(value == glm::vec2(0.0f))
+			{
+				return;
+			}
 			writer.Key(key);
 			writer.StartArray();
 			writer.Double(value.x);

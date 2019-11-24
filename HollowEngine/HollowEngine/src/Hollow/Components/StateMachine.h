@@ -9,11 +9,16 @@ namespace Hollow
 	{
 		REGISTERCOMPONENT(StateMachine);
 	public:
-		HOLLOW_API void Init();
-		HOLLOW_API void Clear();
-		HOLLOW_API void Serialize(rapidjson::Value::Object data);
-		HOLLOW_API void DebugDisplay();
+		HOLLOW_API void Init() override;
+		HOLLOW_API void Clear() override;
+		HOLLOW_API void Serialize(rapidjson::Value::Object data) override;
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
+		HOLLOW_API void DebugDisplay() override;
 
+	private:
+		std::string mStateFilePath;
+		std::string mInitState;
+		
 	public:
 		std::vector<State*> mStates;
 		State* mCurrentState;

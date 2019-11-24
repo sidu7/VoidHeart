@@ -18,6 +18,11 @@ namespace Hollow
 		mPressedColor = glm::vec3(0.0f);
 		mReleasedColor = glm::vec3(0.0f);
 		mInactiveColor = glm::vec3(0.0f);
+
+		mButtonFunctionType = "";
+		mPressedImagePath = "";
+		mReleasedImagePath = "";
+		mInactiveImagePath = "";
 	}
 
 	void UIButton::Clear()
@@ -29,7 +34,8 @@ namespace Hollow
 	{
 		if (data.HasMember("Function"))
 		{
-			mButtonFunction = UIManager::Instance().mButtonsEnumMap[data["Function"].GetString()];
+			mButtonFunctionType = data["Function"].GetString();
+			mButtonFunction = UIManager::Instance().mButtonsEnumMap[mButtonFunctionType];
 			mFunctions = UIManager::Instance().mButtonFunctionsMap[mButtonFunction];
 		}
 		if (data.HasMember("IsInteractible"))
@@ -38,15 +44,18 @@ namespace Hollow
 		}
 		if (data.HasMember("PressedImage"))
 		{
-			mpPressedImage = ResourceManager::Instance().LoadTexture(data["PressedImage"].GetString());
+			mPressedImagePath = data["PressedImage"].GetString();
+			mpPressedImage = ResourceManager::Instance().LoadTexture(mPressedImagePath);
 		}
 		if (data.HasMember("ReleasedImage"))
 		{
-			mpReleasedImage = ResourceManager::Instance().LoadTexture(data["PressedImage"].GetString());
+			mReleasedImagePath = data["PressedImage"].GetString();
+			mpReleasedImage = ResourceManager::Instance().LoadTexture(mReleasedImagePath);
 		}
 		if (data.HasMember("InactiveImage"))
 		{
-			mpInactiveImage = ResourceManager::Instance().LoadTexture(data["PressedImage"].GetString());
+			mInactiveImagePath = data["PressedImage"].GetString();
+			mpInactiveImage = ResourceManager::Instance().LoadTexture(mInactiveImagePath);
 		}
 		if (data.HasMember("PressedColor"))
 		{
@@ -64,6 +73,14 @@ namespace Hollow
 
 	void UIButton::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
+		JSONHelper::Write("Function", mButtonFunctionType, writer);
+		JSONHelper::Write("IsInteractible", mIsInteractible, writer);
+		JSONHelper::Write("PressedImage", mPressedImagePath, writer);
+		JSONHelper::Write("ReleasedImage", mReleasedImagePath, writer);
+		JSONHelper::Write("InactiveImage", mInactiveImagePath, writer);
+		JSONHelper::Write("PressedColor", mPressedColor, writer);
+		JSONHelper::Write("ReleasedColor", mReleasedColor, writer);
+		JSONHelper::Write("InactiveColor", mInactiveColor, writer);
 	}
 
 	void UIButton::DebugDisplay()

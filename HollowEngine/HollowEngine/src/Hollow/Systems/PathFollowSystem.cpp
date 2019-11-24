@@ -154,12 +154,7 @@ namespace Hollow
 	}
 
 	void PathFollowSystem::CreateDebugVAO(PathFollow* pathFollow)
-	{
-		if (pathFollow->mpCurveVAO)
-		{
-			delete pathFollow->mpCurveVAO;
-		}
-		
+	{		
 		std::vector<glm::vec4> curvePoints;
 		for (unsigned int j = 0; j < pathFollow->mControlPointsMatrices.size(); ++j)
 		{

@@ -12,11 +12,16 @@ namespace Hollow {
 	void Model::Init()
 	{
 		mCastShadow = false;
+		mModelHasOffset = false;
+		mModelPath = "";
+		mShape = -1;
 	}
+	
 	void Model::Clear()
 	{
-		mCastShadow = false;
+		mMeshes.clear();
 	}
+	
 	void Model::Serialize(rapidjson::Value::Object object)
 	{
 		if (object.HasMember("Model"))
@@ -41,14 +46,8 @@ namespace Hollow {
 
 	void Model::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
-		if (mMeshes.size() == 1)
-		{
-			JSONHelper::Write<unsigned int>("Shape", mShape, writer);
-		}
-		else
-		{
-			JSONHelper::Write<std::string>("Model", mModelPath, writer);
-		}
+		JSONHelper::Write<unsigned int>("Shape", mShape, writer);
+		JSONHelper::Write<std::string>("Model", mModelPath, writer);
 		JSONHelper::Write<bool>("CastShadow", mCastShadow, writer);
 		JSONHelper::Write<bool>("ModelHasOffset", mModelHasOffset, writer);
 	}
@@ -56,5 +55,4 @@ namespace Hollow {
 	void Model::DebugDisplay()
 	{
 	}
-
 }
