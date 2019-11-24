@@ -173,9 +173,9 @@ namespace Hollow
 	{
 		auto& skeleton = animator->mSkeleton;
 
-		for(auto bone : animator->mBones)
+		for(unsigned int i = 0; i < animator->mBones.size(); ++i)
 		{
-			skeleton[bone->mName] = glm::mat4(1.0f);
+			skeleton[animator->mBones[i]->mName] = glm::mat4(1.0f);
 		}
 	}
 

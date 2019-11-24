@@ -8,9 +8,8 @@ namespace Hollow
 
 	void Collider::Init()
 	{
-		coeffRestitution = 0.2f; // bounce
-		coeffStaticFriction = 0.9f; // to start sliding
-		coeffDynamicFriction = 0.75f; // while sliding
+		mBounciness = 0.2f; // bounce
+		mFriction = 0.75f;
 		mpLocalShape = nullptr;
 		mpShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
 		mpLocalShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
@@ -30,31 +29,40 @@ namespace Hollow
 	{
 		if (data.HasMember("isTrigger"))
 		{
-			isTrigger = data["isTrigger"].GetBool();
+			mIsTrigger = data["isTrigger"].GetBool();
 		}
-		if (data.HasMember("kRestitution"))
+		if (data.HasMember("Bounciness"))
 		{
-			coeffRestitution = data["kRestitution"].GetFloat();
+			mBounciness = data["Bounciness"].GetFloat();
 		}
-		if (data.HasMember("kFriction"))
+		if (data.HasMember("Friction"))
 		{
-			coeffDynamicFriction = data["kFriction"].GetFloat();
+			mFriction = data["Friction"].GetFloat();
 		}
 		if (data.HasMember("Shape"))
 		{
-			std::string Shape = data["Shape"].GetString();
-			if ( Shape == "BALL")
+			mDShape = data["Shape"].GetString();
+			if (mDShape == "BALL")
 			{
 				mpShape = new ShapeCircle(0.0f, glm::vec3(0.0f));
 				mpLocalShape = new ShapeCircle(0.0f, glm::vec3(0.0f));
 				mpShape->mpOwnerCollider = this;
 			}
-			if (Shape == "BOX")
+			if (mDShape == "BOX")
 			{
 				mpShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
 				mpLocalShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
 				mpShape->mpOwnerCollider = this;
 			}
 		}
+
+	}
+
+	HOLLOW_API void Collider::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer> & writer)
+	{
+		JSONHelper::Write<float>("Friction", mFriction, writer);
+		JSONHelper::Write<float>("Bounciness", mBounciness, writer);
+		JSONHelper::Write<std::string>("Shape", mDShape, writer);
+		JSONHelper::Write<bool>("isTrigger", mIsTrigger, writer);
 	}
 }

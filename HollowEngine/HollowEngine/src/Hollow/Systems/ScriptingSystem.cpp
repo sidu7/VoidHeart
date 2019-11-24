@@ -54,7 +54,7 @@ namespace Hollow
 				}
 			}
 
-			lua.script_file(script->scriptPath);
+			lua.script_file(script->mScriptPath);
 
 			PhysicsManager::Instance().ApplyImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
 

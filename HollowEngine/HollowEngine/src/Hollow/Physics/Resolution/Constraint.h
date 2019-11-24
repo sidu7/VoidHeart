@@ -95,12 +95,12 @@ namespace Hollow {
 		{
 			VelocityJacobian& dvj = JacobianScalarMult(mMatxj, impulse);
 
-			if (bodyA->bodyType != Body::RigidbodyType::KINEMATIC) {
+			if (bodyA->mBodyType != Body::RigidbodyType::KINEMATIC) {
 				bodyA->mVelocity += dvj.velocityA;
 				bodyA->mAngularVelocity += dvj.angularVelocityA;
 			}
 
-			if (bodyB->bodyType != Body::RigidbodyType::KINEMATIC) {
+			if (bodyB->mBodyType != Body::RigidbodyType::KINEMATIC) {
 				bodyB->mVelocity += dvj.velocityB;
 				bodyB->mAngularVelocity += dvj.angularVelocityB;
 			}

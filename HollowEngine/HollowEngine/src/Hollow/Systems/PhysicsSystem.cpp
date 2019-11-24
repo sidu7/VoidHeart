@@ -27,7 +27,7 @@ namespace Hollow
 			pCol->mpTr = static_cast<Transform*>(object->GetComponent<Transform>());
 			pCol->mpBody = static_cast<Body*>(object->GetComponent<Body>());
 
-			if (!pCol->isTrigger)
+			if (!pCol->mIsTrigger)
 			{
 				// TODO write inertia formula for spheres
 				glm::mat3 inertia = glm::mat3(0.0f);
@@ -86,12 +86,17 @@ namespace Hollow
 		ImGui::End();
 	}
 
+	void PhysicsSystem::OnDeleteAllGameObjects()
+	{
+		PhysicsManager::Instance().CleanUp();
+	}
+
 	void PhysicsSystem::Step(float fixedDeltaTime)
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			Collider* pCol = mGameObjects[i]->GetComponent<Collider>();
-			if (!pCol->isTrigger)
+			if (!pCol->mIsTrigger)
 			{
 				if (pCol->mpShape->mType == BOX)
 				{
@@ -132,7 +137,7 @@ namespace Hollow
 		for (auto& pair : pairs)
 		{
 
-			if (pair.first->isTrigger || pair.second->isTrigger)
+			if (pair.first->mIsTrigger || pair.second->mIsTrigger)
 			{
 				// TODO create event that an object entered a trigger
 
@@ -150,7 +155,7 @@ namespace Hollow
 
 			if (pBody != nullptr) {
 
-				if (pBody->bodyType == Body::STATIC || pBody->bodyType == Body::KINEMATIC)
+				if (pBody->mBodyType == Body::STATIC || pBody->mBodyType == Body::KINEMATIC)
 					continue;
 				// compute acceleration
 				glm::vec3 acc = pBody->mTotalForce * pBody->mInverseMass;
@@ -235,7 +240,7 @@ namespace Hollow
 
 					c->constraint.ApplyImpulse(c->bodyA, c->bodyB, c->contactPoints[j].mMatxjN, deltaLambda);
 
-					if (!(c->bodyA->isFrictionLess || c->bodyB->isFrictionLess)) {
+					if (!(c->bodyA->mIsFrictionLess || c->bodyB->mIsFrictionLess)) {
 						c->constraint.EvaluateVelocityJacobian(c->bodyA, c->bodyB);
 
 						//float nLambda = c->contactPoints[j]->normalImpulseSum;

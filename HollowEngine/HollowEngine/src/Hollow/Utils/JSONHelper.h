@@ -8,6 +8,8 @@
 #undef GetObject
 #endif
 
+#define STRINGIFY(x) #x
+
 namespace Hollow
 {
 	class JSONHelper
@@ -103,6 +105,17 @@ namespace Hollow
 		}
 
 		template<>
+		HOLLOW_API static void Write(const char* key, const unsigned long& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		{
+			if(value == 0)
+			{
+				return;
+			}
+			writer.Key(key);
+			writer.Uint64(value);
+		}
+
+		template<>
 		HOLLOW_API static void Write(const char* key, const unsigned int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			if(value == -1)
@@ -195,6 +208,16 @@ namespace Hollow
 			writer.StartArray();
 			writer.Double(value.x);
 			writer.Double(value.y);
+			writer.EndArray();
+		}
+
+		template<>
+		HOLLOW_API static void Write(const char* key, const glm::ivec2& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		{
+			writer.Key(key);
+			writer.StartArray();
+			writer.Int(value.x);
+			writer.Int(value.y);
 			writer.EndArray();
 		}
 	};

@@ -26,6 +26,7 @@ namespace Hollow
 	private:
 		unsigned int mDType;
 		std::string mComputeShaderPath;
+		std::string mDTexturePath;
 		
 	public:
 		unsigned long mCount;

@@ -15,6 +15,7 @@
 #include "Hollow/Managers/ThreadManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/UIManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
 
 namespace Hollow {
 
@@ -45,6 +46,7 @@ namespace Hollow {
         AudioManager::Instance().Init();
 		ScriptingManager::Instance().Init();
 		UIManager::Instance().Init();
+		PhysicsManager::Instance().Init();
 
 
 		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
