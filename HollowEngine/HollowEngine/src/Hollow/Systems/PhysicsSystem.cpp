@@ -86,6 +86,11 @@ namespace Hollow
 		ImGui::End();
 	}
 
+	void PhysicsSystem::OnDeleteAllGameObjects()
+	{
+		PhysicsManager::Instance().CleanUp();
+	}
+
 	void PhysicsSystem::Step(float fixedDeltaTime)
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)

@@ -65,12 +65,12 @@ namespace Hollow {
 			mDefaultZoom = mZoom;
 		}
 
-		if (data.HasMember("NearPlane"))
+		if (data.HasMember("Near"))
 		{
 			mNearPlane = data["Near"].GetFloat();
 		}
 
-		if (data.HasMember("FarPlane"))
+		if (data.HasMember("Far"))
 		{
 			mFarPlane = data["Far"].GetFloat();
 		}
@@ -124,8 +124,8 @@ namespace Hollow {
 		JSONHelper::Write("MovementSpeed", mMovementSpeed, writer);
 		JSONHelper::Write("MouseSensitivity", mMouseSensitivity, writer);
 		JSONHelper::Write("Zoom", mZoom, writer);
-		JSONHelper::Write("NearPlane", mNearPlane, writer);
-		JSONHelper::Write("FarPlane", mFarPlane, writer);
+		JSONHelper::Write("Near", mNearPlane, writer);
+		JSONHelper::Write("Far", mFarPlane, writer);
 		JSONHelper::Write("IsActive", mIsActive, writer);
 		JSONHelper::Write("CameraType", (unsigned)mType, writer);
 		JSONHelper::Write("ProjectionType", (unsigned)mProjectionType, writer);

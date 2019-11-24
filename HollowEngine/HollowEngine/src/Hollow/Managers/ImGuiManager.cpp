@@ -125,7 +125,7 @@ namespace Hollow {
 		ImGui::End();
 
 		// Show demo window for now
-		ImGui::ShowDemoWindow();
+		//ImGui::ShowDemoWindow();
 
 		Render();
 	}

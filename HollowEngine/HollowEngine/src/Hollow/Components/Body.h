@@ -2,7 +2,7 @@
 #include "Component.h"
 
 namespace Hollow {
-
+	enum RigidbodyType;
 
 	class Body : public Component
 	{
@@ -11,11 +11,12 @@ namespace Hollow {
 	public:
 		enum RigidbodyType
 		{
-	#define RIGIDBODY_TYPE(name) name,
-	#include "RigidbodyTypes.enum"
-	#undef RIGIDBODY_TYPE
+#define RIGIDBODY_TYPE(name) name,
+#include "Hollow/Enums/RigidbodyTypes.enum"
+#undef RIGIDBODY_TYPE
 			NUM
 		};
+		
 		HOLLOW_API void Init();
 		HOLLOW_API void Clear();
 		HOLLOW_API void DebugDisplay();
@@ -41,6 +42,6 @@ namespace Hollow {
 		bool mIsFrictionLess;
 
 	private:
-		static std::unordered_map<std::string, RigidbodyType> mapOfTypesToStrings;
+		std::string mDRigidbodyType;
 	};
 }

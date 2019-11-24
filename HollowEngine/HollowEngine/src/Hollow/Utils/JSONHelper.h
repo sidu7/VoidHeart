@@ -105,6 +105,17 @@ namespace Hollow
 		}
 
 		template<>
+		HOLLOW_API static void Write(const char* key, const unsigned long& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
+		{
+			if(value == 0)
+			{
+				return;
+			}
+			writer.Key(key);
+			writer.Uint64(value);
+		}
+
+		template<>
 		HOLLOW_API static void Write(const char* key, const unsigned int& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
 			if(value == -1)

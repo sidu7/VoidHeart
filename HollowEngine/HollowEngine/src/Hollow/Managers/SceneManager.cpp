@@ -4,6 +4,7 @@
 #include "GameObjectManager.h"
 #include "ResourceManager.h"
 #include "Hollow/Core/GameObjectFactory.h"
+#include "PhysicsManager.h"
 
 namespace Hollow
 {
@@ -84,7 +85,7 @@ namespace Hollow
 		std::string fileName = "Resources/Levels/" + LevelFile + ".json";
 		std::string contents = ResourceManager::Instance().LoadJSONFile(fileName);
 		PARSE_JSON_FILE(contents.c_str());
-
+		
 		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
 		for (unsigned int i = 0; i < gameobjects.Size(); ++i)
 		{

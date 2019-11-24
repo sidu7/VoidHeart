@@ -15,6 +15,12 @@
 
 namespace Hollow {
 
+	void PhysicsManager::CleanUp()
+	{
+		mSAT.ResetContacts();
+		mTree.DeleteTree();
+	}
+
 	void PhysicsManager::ApplyImpulse(GameObject* object, glm::vec3 impulse)
 	{
 		Body* pBody = object->GetComponent<Body>();
@@ -109,5 +115,14 @@ namespace Hollow {
 
 		return static_cast<Collider*>(closest.object)->mpOwner;
 	
+	}
+
+	void PhysicsManager::Init()
+	{
+		{
+#define RIGIDBODY_TYPE(name) mapOfTypesToStrings[#name] = Body::name;
+#include "Hollow/Enums/RigidbodyTypes.enum"
+#undef RIGIDBODY_TYPE
+		}
 	}
 }

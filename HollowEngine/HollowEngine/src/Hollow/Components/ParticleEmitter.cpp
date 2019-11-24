@@ -30,6 +30,7 @@ namespace Hollow
 
 		mDType = -1;
 		mComputeShaderPath = "";
+		mDTexturePath = "";
 	}
 
 	void ParticleEmitter::Clear()
@@ -40,14 +41,15 @@ namespace Hollow
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)
 	{
-		mCount = static_cast<unsigned long>(data["Count"].GetFloat());
+		mCount = static_cast<unsigned long>(data["Count"].GetUint64());
 		if (data.HasMember("Shape"))
 		{
 			mDType = data["Shape"].GetUint();
 			mType = (ParticleType)mDType;
 			if (mType == POINT)
 			{
-				mTexture = ResourceManager::Instance().LoadTexture(data["Texture"].GetString());
+				mDTexturePath = data["Texture"].GetString();
+				mTexture = ResourceManager::Instance().LoadTexture(mDTexturePath);
 			}
 		}
 		if (data.HasMember("Area"))
@@ -81,6 +83,7 @@ namespace Hollow
 	{
 		JSONHelper::Write("Count", mCount, writer);
 		JSONHelper::Write("Shape", mDType, writer);
+		JSONHelper::Write("Texture", mDTexturePath, writer);
 		JSONHelper::Write("Area", mAreaOfEffect, writer);
 		JSONHelper::Write("Speed", mSpeedRange, writer);
 		JSONHelper::Write("Life", mLifeRange, writer);

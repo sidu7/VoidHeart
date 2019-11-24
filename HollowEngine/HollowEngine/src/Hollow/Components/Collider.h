@@ -27,6 +27,8 @@ namespace Hollow {
 
 		Transform* mpTr;
 		Body* mpBody;
+	private:
+		std::string mDShape;
 	};
 }
 
