@@ -1,0 +1,18 @@
+{
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0, 10, 0 ]
+        },
+        {
+            "Type": "Camera",
+            "IsActive": true,
+            "Pitch": -90.0,
+            "Yaw": -67.800,
+            "CameraType": 2,
+            "ProjectionType": 0,
+            "ViewPortPosition": [ 495, -200 ],
+            "ViewPortSize": [ 300, 200 ]
+        }
+    ]
+}
