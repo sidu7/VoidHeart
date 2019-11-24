@@ -10,7 +10,10 @@ namespace Hollow
 	{
 		SINGLETON(ThreadManager);
 	public:
-		HOLLOW_API  ~ThreadManager() {}
+		HOLLOW_API  ~ThreadManager()
+		{
+			CleanUp();
+		}
 
 		HOLLOW_API  void Init();
 		HOLLOW_API  void CleanUp();
