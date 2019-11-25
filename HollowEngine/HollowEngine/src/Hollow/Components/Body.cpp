@@ -56,8 +56,8 @@ namespace Hollow {
 		if (data.HasMember("RigidbodyType"))
 		{
 			mDRigidbodyType = data["RigidbodyType"].GetString();
-			mBodyType = PhysicsManager::Instance().mapOfTypesToStrings[mDRigidbodyType];
-			
+			mBodyType = PhysicsManager::Instance().mRigidbodyTypesMap[mDRigidbodyType];
+
 			if(mBodyType == Body::STATIC)
 				mMass = std::numeric_limits<float>::infinity();
 		}

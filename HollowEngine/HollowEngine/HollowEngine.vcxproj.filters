@@ -251,6 +251,7 @@
     <ClInclude Include="src\Hollow\Common.h" />
     <ClInclude Include="src\Hollow\Managers\SceneManager.h" />
     <ClInclude Include="src\Hollow\Utils\ImGuiHelper.h" />
+    <ClInclude Include="src\Hollow\Core\GameObjectMetaData.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
