@@ -94,8 +94,20 @@ namespace Hollow
 			for (auto anim : mAnimationsDataPath)
 			{
 				ImGuiHelper::InputText("Animation Name", anim.first);
-				ImGuiHelper::InputText("File Path", anim.second);
+				ImGuiHelper::InputText("Animation File", anim.second);
 				ImGui::Separator();
+			}
+			ImGui::TreePop();
+		}
+		if(ImGui::TreeNode("Add Animation"))
+		{
+			ImGuiHelper::InputText("Animation Name", mNewAnimationName);
+			ImGuiHelper::InputText("Animation File", mNewAnimationFile);
+			if(ImGui::Button("Add"))
+			{
+				mAnimationsDataPath.emplace_back(std::make_pair(mNewAnimationName, mNewAnimationFile));
+				mNewAnimationName = "";
+				mNewAnimationFile = "";
 			}
 			ImGui::TreePop();
 		}
