@@ -32,12 +32,8 @@ namespace BulletHell
 
 	void Health::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Health"))
-		{
-			ImGui::InputInt("Hit Points", &mHitPoints);
-			ImGui::Checkbox("Is Alive", &mIsAlive);
-			ImGui::TreePop();
-		}
+		ImGui::InputInt("Hit Points", &mHitPoints);
+		ImGui::Checkbox("Is Alive", &mIsAlive);
 	}
 
 }
