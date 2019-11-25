@@ -78,6 +78,7 @@
     <ClCompile Include="src\Hollow\Utils\BSplineCurve.cpp" />
     <ClCompile Include="src\Hollow\Utils\GLCall.cpp" />
     <ClCompile Include="src\Hollow\Utils\Log.cpp" />
+    <ClCompile Include="src\Hollow\Managers\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -133,8 +134,6 @@
     <ClInclude Include="src\Hollow\Events\KeyEvent.h" />
     <ClInclude Include="src\Hollow\Events\MouseEvent.h" />
     <ClInclude Include="src\Hollow.h" />
-    <ClInclude Include="src\Utils\Profiler.h" />
-    <ClInclude Include="src\Utils\Singleton.h" />
     <ClInclude Include="src\Hollow\Managers\RenderManager.h" />
     <ClInclude Include="vendor\Include\ImGui\imconfig.h" />
     <ClInclude Include="vendor\Include\ImGui\imgui.h" />
@@ -250,6 +249,8 @@
     <ClInclude Include="src\Hollow\Utils\Singleton.h" />
     <ClInclude Include="src\Hollow\Utils\ThreadSafeQueue.h" />
     <ClInclude Include="src\Hollow\Common.h" />
+    <ClInclude Include="src\Hollow\Managers\SceneManager.h" />
+    <ClInclude Include="src\Hollow\Utils\ImGuiHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
@@ -257,5 +258,6 @@
   <ItemGroup>
     <None Include="src\Hollow\Enums\GameEvents.enum" />
     <None Include="src\Hollow\Enums\Buttons.enum" />
+    <None Include="src\Hollow\Enums\MeshShapes.enum" />
   </ItemGroup>
 </Project>

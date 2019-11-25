@@ -15,6 +15,7 @@
 #include "Hollow/Managers/ScriptingManager.h"
 
 #include "Hollow/Components/Transform.h"
+#include "SceneManager.h"
 
 
 namespace Hollow {
@@ -58,6 +59,10 @@ namespace Hollow {
 
 		ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
 		ImGui::Text("Number Of Active Objects: %i", GameObjectManager::Instance().GetGameObjects().size());
+		if(ImGui::Button("Delete GameObject"))
+		{
+			GameObjectManager::Instance().DeleteGameObject(mpSelectedGameObject);
+		}
 		// Get selected object 
 		ImGui::BeginChild("Left Side", ImVec2(150, 0), true);
 		for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
@@ -98,6 +103,11 @@ namespace Hollow {
 			if(ImGui::BeginTabItem("Renderer"))
 			{
 				RenderManager::Instance().DebugDisplay();
+				ImGui::EndTabItem();
+			}
+			if(ImGui::BeginTabItem("Scene"))
+			{
+				SceneManager::Instance().DebugDisplay();
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Audio"))

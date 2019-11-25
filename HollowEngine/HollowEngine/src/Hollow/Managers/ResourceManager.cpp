@@ -24,6 +24,12 @@ namespace Hollow
 	{
 		InitializeShapes();
 		importer = new Assimp::Importer();
+		
+		{
+#define MESH_SHAPE(name) mShapeEnumMap[#name] = Shapes::name;
+#include "Hollow/Enums/MeshShapes.enum"
+#undef MESH_SHAPE
+		}
 	}
 
 	void ResourceManager::CleanUp()
@@ -38,20 +44,16 @@ namespace Hollow
 		std::for_each(mModelRootsCache.begin(), mModelRootsCache.end(), [](std::pair<std::string, const aiScene*> value) { delete value.second; });
 	}
 
-	void ResourceManager::LoadLevelFromFile(std::string path)
+	std::string ResourceManager::LoadJSONFile(std::string path)
 	{
-		PARSE_JSON_FILE(path);
-
-		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
-		for (unsigned int i = 0; i < gameobjects.Size(); ++i)
+		if(mJSONFileCache.find(path) == mJSONFileCache.end())
 		{
-			GameObject* pNewGameObject = GameObjectFactory::Instance().LoadObject(gameobjects[i].GetObject());
-
-			if (pNewGameObject)
-			{
-				GameObjectManager::Instance().AddGameObject(pNewGameObject);
-			}
+			std::ifstream file(path);
+			std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+			file.close();
+			mJSONFileCache[path] = contents;
 		}
+		return mJSONFileCache[path];		
 	}
 
 	GameObject* ResourceManager::LoadGameObjectFromFile(std::string path)
@@ -390,13 +392,22 @@ namespace Hollow
 	}
 
 
-	Mesh* ResourceManager::GetShape(Shapes shape)
+	Mesh* ResourceManager::GetShape(std::string type)
 	{
 		/*if (mShapes.find(shape) == mShapes.end())
 		{
 			HW_CORE_ERROR("Shape {0} not found", shape);
 		}*/
-		return mShapes[shape];
+		return mShapes[mShapeEnumMap[type]];
+	}
+
+	Mesh* ResourceManager::GetShape(Shapes type)
+	{
+		/*if (mShapes.find(shape) == mShapes.end())
+		{
+			HW_CORE_ERROR("Shape {0} not found", shape);
+		}*/
+		return mShapes[type];
 	}
 
 	FMOD::Sound* ResourceManager::LoadSound(const std::string& path, FMOD_MODE type)
@@ -422,7 +433,8 @@ namespace Hollow
 	{
 		if (mStateFileCache.find(path) == mStateFileCache.end())
 		{
-			PARSE_JSON_FILE(path);
+			std::string contents = LoadJSONFile(path);
+			PARSE_JSON_FILE(contents.c_str());
 						
 			std::vector<State*> states;
 			rapidjson::Value::Array stateList = root["States"].GetArray();

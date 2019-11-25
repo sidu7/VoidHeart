@@ -11,6 +11,8 @@ namespace Hollow {
 		HOLLOW_API void Update();
 		HOLLOW_API void AddGameObject(GameObject* object);
 		HOLLOW_API void DebugContacts();
+
+		HOLLOW_API void OnDeleteAllGameObjects() override;
 		
 	private:
 		void Step(float);

@@ -8,11 +8,11 @@ namespace Hollow
 		REGISTERCOMPONENT(Transform);
 	public:
 
-		HOLLOW_API void Init();
-		HOLLOW_API void Clear() {}
-		HOLLOW_API void DebugDisplay();
-		HOLLOW_API void Serialize(rapidjson::Value::Object data);
-		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
+		HOLLOW_API void Init() override;
+		HOLLOW_API void Clear() override {}
+		HOLLOW_API void DebugDisplay() override;
+		HOLLOW_API void Serialize(rapidjson::Value::Object data) override;
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
 		glm::vec3 mPosition;					// mPosition is x,y,z
 		glm::vec3 mScale;						// mScale is x,y,z

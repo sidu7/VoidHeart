@@ -17,15 +17,10 @@ namespace Hollow
 	
 	enum Shapes
 	{
-		SPHERE,
-		CUBE,
-		TEAPOT,
-		QUAD,
-		CIRCLE,
-		AXES,
-		WIRECUBE,
-		LINE,
-		DIRECTION_LINE
+#define MESH_SHAPE(name) name,
+#include "Hollow/Enums/MeshShapes.enum"
+#undef MESH_SHAPE
+		SHAPE_NUM
 	};
 
 	class ResourceManager
@@ -36,7 +31,7 @@ namespace Hollow
 		  
 		HOLLOW_API  void Init();
 		HOLLOW_API  void CleanUp();
-		HOLLOW_API  void LoadLevelFromFile(std::string path);
+		HOLLOW_API  std::string LoadJSONFile(std::string path);
 		HOLLOW_API  GameObject* LoadGameObjectFromFile(std::string path);
 		HOLLOW_API  Texture* LoadTexture(std::string path);
 		HOLLOW_API  std::vector<Mesh*> LoadModel(std::string path);
@@ -44,7 +39,8 @@ namespace Hollow
 		HOLLOW_API  std::pair<float, std::vector<Bone*>> LoadBoneData(std::string path);
 		HOLLOW_API  std::pair<double, double> AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, 
 			std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>>& animationList, float factor);
-		HOLLOW_API  Mesh* GetShape(Shapes shape);
+		HOLLOW_API  Mesh* GetShape(std::string type);
+		HOLLOW_API  Mesh* GetShape(Shapes type);
 		HOLLOW_API  FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
 		HOLLOW_API  std::vector<State*> ReadStateMachineFile(std::string path);
 		HOLLOW_API  Shader* LoadShader(std::string path);
@@ -72,6 +68,8 @@ namespace Hollow
 		std::unordered_map<std::string, std::vector<State*>> mStateFileCache;
 		std::unordered_map<std::string, Shader*> mShaderCache;
 		std::unordered_map<std::string, std::string> mCachedGameObjectsMap;
+		std::unordered_map<std::string, std::string> mJSONFileCache;
+		std::unordered_map<std::string, Shapes> mShapeEnumMap;
 
 		// Sounds cache, maybe split into SFX and Songs
 		std::unordered_map<std::string, FMOD::Sound*> mSoundCache;

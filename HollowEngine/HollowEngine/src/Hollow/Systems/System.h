@@ -22,16 +22,22 @@ namespace Hollow
 		HOLLOW_API virtual void AddGameObject(GameObject* pGameObject) = 0;
 		HOLLOW_API virtual void HandleBroadcastEvent(GameEvent* event) { }
 		HOLLOW_API virtual void OnDeleteGameObject(GameObject* pGameObject) {}
+		HOLLOW_API virtual void OnDeleteAllGameObjects() {}
 
 		HOLLOW_API void DeleteGameObject(GameObject* pGameObject)
 		{
-			mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject));
-			OnDeleteGameObject(pGameObject);
+			auto itr = std::find(mGameObjects.begin(), mGameObjects.end(), pGameObject);
+			if (itr != mGameObjects.end())
+			{
+				mGameObjects.erase(itr);
+				OnDeleteGameObject(pGameObject);
+			}
 		}
 
 		HOLLOW_API void DeleteAllGameObjects()
 		{
 			mGameObjects.clear();
+			OnDeleteAllGameObjects();
 		}
 	protected:
 		template<typename First> // 1 template parameter

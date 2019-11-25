@@ -62,7 +62,6 @@ namespace Hollow
 				PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i],jump );
 			}
 			PhysicsManager::Instance().ApplyAngularImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
-
 		}
 	}
 

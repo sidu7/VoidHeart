@@ -81,7 +81,7 @@ namespace Hollow
 			rotation[2] = glm::vec4(viewDirection, 0.0f);
 			rotation[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-			if (pBody->bodyType == Body::KINEMATIC)
+			if (pBody->mBodyType == Body::KINEMATIC)
 			{
 				pBody->mPosition = position;
 			}
@@ -154,12 +154,7 @@ namespace Hollow
 	}
 
 	void PathFollowSystem::CreateDebugVAO(PathFollow* pathFollow)
-	{
-		if (pathFollow->mpCurveVAO)
-		{
-			delete pathFollow->mpCurveVAO;
-		}
-		
+	{		
 		std::vector<glm::vec4> curvePoints;
 		for (unsigned int j = 0; j < pathFollow->mControlPointsMatrices.size(); ++j)
 		{

@@ -2,7 +2,7 @@
 #include "Component.h"
 
 namespace Hollow {
-
+	enum RigidbodyType;
 
 	class Body : public Component
 	{
@@ -11,16 +11,17 @@ namespace Hollow {
 	public:
 		enum RigidbodyType
 		{
-	#define RIGIDBODY_TYPE(name) name,
-	#include "RigidbodyTypes.enum"
-	#undef RIGIDBODY_TYPE
+#define RIGIDBODY_TYPE(name) name,
+#include "Hollow/Enums/RigidbodyTypes.enum"
+#undef RIGIDBODY_TYPE
 			NUM
 		};
+		
 		HOLLOW_API void Init();
 		HOLLOW_API void Clear();
 		HOLLOW_API void DebugDisplay();
 		HOLLOW_API void Serialize(rapidjson::Value::Object data);
-
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 		float mMass, mInverseMass;
 		glm::vec3 mPosition;
 		glm::vec3 mPreviousPosition;
@@ -36,11 +37,11 @@ namespace Hollow {
 		glm::mat3 mLocalInertiaInverse;
 		glm::mat3 mWorldInertiaInverse;
 
-		RigidbodyType bodyType;
+		RigidbodyType mBodyType;
 
-		bool isFrictionLess;
+		bool mIsFrictionLess;
 
 	private:
-		static std::unordered_map<std::string, RigidbodyType> mapOfTypesToStrings;
+		std::string mDRigidbodyType;
 	};
 }
