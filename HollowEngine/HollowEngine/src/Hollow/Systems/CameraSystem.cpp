@@ -183,7 +183,27 @@ namespace Hollow {
 			}
 
 			CameraData cameraData;
-			cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) *  pCamera->mOffsetFromAnchor;
+			if (pCamera->mType == TOP_DOWN_CAMERA)
+			{
+				// Set camera position based on object
+				// LERP to desired position
+				glm::vec3 desiredPosition = pTransform->mPosition + pCamera->mOffsetFromAnchor;
+				float t = 0.8f;
+				glm::vec3 offsetDiff = t * (desiredPosition - pCamera->mPreviousPosition);
+				glm::vec3* d = &offsetDiff;
+				HW_CORE_TRACE("OFFSET {0}, {1}, {2}", d->x, d->y, d->z);
+				cameraData.mEyePosition = pTransform->mPosition + offsetDiff;
+				pCamera->mPreviousPosition = cameraData.mEyePosition;
+
+				glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -1.0f, -1.0f));
+				pCamera->mFront = frontDirection;
+				pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+				pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));
+			}
+			else
+			{
+				cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) *  pCamera->mOffsetFromAnchor;
+			}
 
 			if (pCamera->mProjectionType == PERSPECTIVE) 
 			{
@@ -214,6 +234,9 @@ namespace Hollow {
 				break;
 			case SIDE_CAMERA:
 				RenderManager::Instance().mSecondaryCameras.push_back(cameraData);
+				break;
+			case TOP_DOWN_CAMERA:
+				RenderManager::Instance().mMainCamera = cameraData;
 				break;
 			}
 			

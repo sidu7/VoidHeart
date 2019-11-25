@@ -12,11 +12,11 @@
         },
         {
           "Type": "Collider",
-          "Shape": "BOX"
+          "Shape": "BALL"
         },
         {
             "Type": "Model",
-            "Shape" :  1,
+            "Shape" :  0,
             "CastShadow": true
         },
         {

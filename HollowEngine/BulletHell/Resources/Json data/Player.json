@@ -50,10 +50,10 @@
         "Pitch": 0.0,
         "Yaw": -90.0,
         "Near": 0.1,
-        "CameraType": 0,
+        "CameraType": 4,
         "ProjectionType": 0,
         "MouseSensitivity": 1.6,
-        "PositionOffset": [ 0.0, 0.9, 0.3 ]
+        "PositionOffset": [ 0.0, 10.0, 10.0 ]
       },
       {
         "Type": "Health",
