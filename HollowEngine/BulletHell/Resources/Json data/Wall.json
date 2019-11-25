@@ -13,11 +13,11 @@
           "Type": "Collider",
           "Shape": "BOX"
         },
-        {
-            "Type": "Model",
-            "Shape" :  1,
-            "CastShadow": true
-        },
+      {
+        "Type": "Model",
+        "Shape": "CUBE",
+        "CastShadow": true
+      },
         {
             "Type": "Material",
             "Specular": [ 1.0, 1.0, 1.0 ],

@@ -9,7 +9,15 @@
 namespace Hollow {
 	void GameObjectManager::AddGameObject(GameObject* GameObject)
 	{
-		mGameObjects.push_back(GameObject);
+#if HW_DEBUG
+		auto itr = std::find(mGameObjects.begin(), mGameObjects.end(), GameObject);
+		if (itr == mGameObjects.end())
+		{
+#endif
+			mGameObjects.push_back(GameObject);
+#if HW_DEBUG
+		}
+#endif
 		SystemManager::Instance().AddObjectToSystems(GameObject);
 	}
 

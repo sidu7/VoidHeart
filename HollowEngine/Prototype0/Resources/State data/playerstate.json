@@ -5,10 +5,10 @@
       "State": "Walking",
       "IsLoop": true,
       "Events": [ "WallHit" ],
-      "Inputs": [ 82, 81 ],
-      "InputCondition": [ 1, 2 ],
+      "Inputs": [ 82, 81, 13 ],
+      "InputCondition": [ 1, 2, 0 ],
       "EventStates": [ "dead" ],
-      "InputStates": [ "Running", "Idle" ]
+      "InputStates": [ "Running", "Idle", "Jump" ]
     },
     {
       "State": "Running",

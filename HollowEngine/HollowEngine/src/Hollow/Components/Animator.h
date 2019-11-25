@@ -10,15 +10,21 @@ namespace Hollow
 	{
 		REGISTERCOMPONENT(Animator);
 	public:
-		HOLLOW_API void Init();
-		HOLLOW_API void Clear();
-		HOLLOW_API void Serialize(rapidjson::Value::Object data);
-		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
-		HOLLOW_API void DebugDisplay();
+		HOLLOW_API void Init() override;
+		HOLLOW_API void Clear() override;
+		HOLLOW_API void Serialize(rapidjson::Value::Object data) override;
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
+		HOLLOW_API void DebugDisplay() override;
 
+	private:
+		std::string mBoneDataPath;
+		std::vector<std::pair<std::string, std::string>> mAnimationsDataPath;
+		std::string mNewAnimationName;
+		std::string mNewAnimationFile;
+		
 	public:
 		std::vector<Bone*> mBones;
-		std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>> mAnimationData;
+		std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>> mAnimationData; // Corresponds to bones vector, contains each bones animation data
 		std::unordered_map<std::string,std::pair<double,double>> mAnimations; // Animation Name -> {ticks per sec,animation duration}
 		std::vector<glm::mat4> mBoneTransformations;
 		std::unordered_map<std::string, glm::mat4> mSkeleton; // Stores current transformation matrix for each bone

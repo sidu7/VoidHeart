@@ -9,6 +9,7 @@
 #include "Hollow/Graphics/Texture.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
 #include "Hollow/Graphics/ShaderStorageBuffer.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -16,41 +17,40 @@ namespace Hollow
 
 	void ParticleEmitter::Init()
 	{
-		mCenterOffset = glm::vec3(0.0f);
 		mCount = 0;
+		mTexture = nullptr;
+		mModelMatrix = glm::mat4(1.0f);
+		mpComputeShader = nullptr;
+		mType = PARTICLE_NUM;
+		
 		mSpeedRange = glm::vec2(0.0f);
 		mLifeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
+		mPixelSize = 0.0f;
+
+		mDType = -1;
+		mComputeShaderPath = "";
+		mDTexturePath = "";
 	}
 
 	void ParticleEmitter::Clear()
 	{		
-		mParticlesList.clear();
-		mParticlePositions.clear();
-		mpParticle.clear();
-		mModelMatrices.clear();
-		delete mpParticlePositionVBO;
-		delete mTexture;
 		delete mpParticlePositionVAO;
-		delete mpParticleModelVBO;
 		delete mpParticleStorage;
 	}
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)
 	{
-		mCount = static_cast<unsigned long>(data["Count"].GetFloat());
+		mCount = static_cast<unsigned long>(data["Count"].GetUint64());
 		if (data.HasMember("Shape"))
 		{
-			//mpParticle.push_back(ResourceManager::Instance().GetShape((Shapes)data["Shape"].GetUint()));
-			mType = (ParticleType)data["Shape"].GetUint();
+			mDType = data["Shape"].GetUint();
+			mType = (ParticleType)mDType;
 			if (mType == POINT)
 			{
-				mTexture = ResourceManager::Instance().LoadTexture(data["Texture"].GetString());
-			}
-			else if (mType == MODEL)
-			{
-				mpParticle = ResourceManager::Instance().LoadModel(data["Model"].GetString());
+				mDTexturePath = data["Texture"].GetString();
+				mTexture = ResourceManager::Instance().LoadTexture(mDTexturePath);
 			}
 		}
 		if (data.HasMember("Area"))
@@ -67,7 +67,8 @@ namespace Hollow
 		}
 		if (data.HasMember("ComputeShader"))
 		{
-			mpComputeShader = ResourceManager::Instance().LoadShader(data["ComputeShader"].GetString());
+			mComputeShaderPath = data["ComputeShader"].GetString();
+			mpComputeShader = ResourceManager::Instance().LoadShader(mComputeShaderPath);
 		}
 		if(data.HasMember("CenterOffset"))
 		{
@@ -79,7 +80,29 @@ namespace Hollow
 		}
 	}
 
+	void ParticleEmitter::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write("Count", mCount, writer);
+		JSONHelper::Write("Shape", mDType, writer);
+		JSONHelper::Write("Texture", mDTexturePath, writer);
+		JSONHelper::Write("Area", mAreaOfEffect, writer);
+		JSONHelper::Write("Speed", mSpeedRange, writer);
+		JSONHelper::Write("Life", mLifeRange, writer);
+		JSONHelper::Write("ComputeShader", mComputeShaderPath, writer);
+		JSONHelper::Write("CenterOffset", mCenterOffset, writer);
+		JSONHelper::Write("PixelSize", mPixelSize, writer);
+	}
+
 	void ParticleEmitter::DebugDisplay()
 	{
+		ImGui::InputInt("Count", (int*)&mCount);
+		ImGui::InputInt("Shape", (int*)&mDType);
+		ImGuiHelper::InputText("Texture File", mDTexturePath);
+		ImGui::InputFloat3("Area of Effect", (float*)&mAreaOfEffect);
+		ImGui::InputFloat2("Speed Range", (float*)&mSpeedRange);
+		ImGui::InputFloat2("Life Range", (float*)&mLifeRange);
+		ImGuiHelper::InputText("Compute Shader File", mComputeShaderPath);
+		ImGui::InputFloat3("Center Offset", (float*)&mCenterOffset);
+		ImGui::InputFloat("PixelSize", &mPixelSize);
 	}	
 }

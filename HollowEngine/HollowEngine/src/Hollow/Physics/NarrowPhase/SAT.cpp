@@ -516,7 +516,15 @@ namespace Hollow {
 
 	void SAT::ResetContacts()
 	{
+		for (auto c : *mPrevContacts)
+			delete c;
 
+		mPrevContacts->clear();
+
+		for (auto c : *mContacts)
+			delete c;
+
+		mContacts->clear();
 	}
 
 	void SAT::CopyContacts()

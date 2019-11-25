@@ -12,7 +12,7 @@
     },
     {
       "Type": "Body",
-      "Mass": 100.0,
+      "Mass": 1.0,
       "isFrictionLess": false
     },
     {

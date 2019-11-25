@@ -9,6 +9,20 @@ namespace Hollow
 
 	void Light::Init()
 	{
+		mPosition = glm::vec3(0.0f);
+		mRadius = 0.0f;
+		mColor = glm::vec3(0.0f);
+		mType = LIGHT_NUM;
+
+		mCastShadow = false;
+		mpShadowMap = nullptr;
+		mShadowMapSize = glm::vec2(0.0f);
+		mShadowMapNearPlane = 0.0f;
+		mShadowMapFarPlane = 0.0f;
+
+		mBlurDistance = 0;
+		mAlpha = 0.0f;
+		mMD = 0.0f;
 	}
 
 	void Light::Serialize(rapidjson::Value::Object data)
@@ -63,32 +77,33 @@ namespace Hollow
 		if (mCastShadow)
 		{
 			JSONHelper::Write<glm::vec2>("ShadowMapSize", mShadowMapSize, writer);
+			JSONHelper::Write("ShadowMapNearPlane", mShadowMapNearPlane, writer);
+			JSONHelper::Write("ShadowMapFarPlane", mShadowMapFarPlane, writer);
+			JSONHelper::Write("BlurDistance", mBlurDistance, writer);
+			JSONHelper::Write("Alpha", mAlpha, writer);
+			JSONHelper::Write("MD", mMD, writer);
 		}
 		JSONHelper::Write<float>("Radius", mRadius, writer);
 	}
 
 	void Light::Clear()
 	{
+		delete mpShadowMap;
 	}
 
 	void Light::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Light"))
+		ImGui::ColorPicker3("Color", &mColor[0]);
+		ImGui::InputFloat("Radius", &mRadius);
+		ImGui::InputFloat3("Position", &mPosition[0]);
+
+		if (mCastShadow)
 		{
-			ImGui::ColorPicker3("Color", &mColor[0]);
-			ImGui::InputFloat("Radius", &mRadius);
-			ImGui::InputFloat3("Position", &mPosition[0]);
-
-			if (mCastShadow)
-			{
-				ImGui::InputFloat("Shadow Map Far Plane", &mShadowMapFarPlane);
-				ImGui::InputFloat("Shadow Map Near Plane", &mShadowMapNearPlane);
-				ImGui::InputScalar("Blur Distance", ImGuiDataType_U32 ,&mBlurDistance);
-				ImGui::InputFloat("Alpha", &mAlpha);
-				ImGui::InputFloat("MD", &mMD);
-			}
-
-			ImGui::TreePop();
+			ImGui::InputFloat("Shadow Map Far Plane", &mShadowMapFarPlane);
+			ImGui::InputFloat("Shadow Map Near Plane", &mShadowMapNearPlane);
+			ImGui::InputScalar("Blur Distance", ImGuiDataType_U32 ,&mBlurDistance);
+			ImGui::InputFloat("Alpha", &mAlpha);
+			ImGui::InputFloat("MD", &mMD);
 		}
 	}
 }

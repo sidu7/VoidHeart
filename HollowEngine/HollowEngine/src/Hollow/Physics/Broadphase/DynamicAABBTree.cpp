@@ -190,12 +190,12 @@ namespace Hollow {
 					Collider* colA = static_cast<Collider*>(A->mClientData);
 					Collider* colB = static_cast<Collider*>(B->mClientData);
 
-					if (colA->isTrigger || colB->isTrigger) {
+					if (colA->mIsTrigger || colB->mIsTrigger) {
 						colliderPairs.push_front(std::make_pair(colA, colB));
 						return;
 					}
 					
-					if(colA->mpBody->bodyType == Body::STATIC && colB->mpBody->bodyType == Body::STATIC)
+					if(colA->mpBody->mBodyType == Body::STATIC && colB->mpBody->mBodyType == Body::STATIC)
 						return;
 
 					colliderPairs.push_front(std::make_pair(colA, colB));

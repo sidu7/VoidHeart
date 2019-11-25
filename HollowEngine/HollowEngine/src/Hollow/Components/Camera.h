@@ -14,6 +14,7 @@ namespace Hollow
 		HOLLOW_API void Serialize(rapidjson::Value::Object data);
 		HOLLOW_API void Clear();
 		HOLLOW_API void DebugDisplay();
+		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
 	public:
 		CameraType mType;
@@ -42,5 +43,8 @@ namespace Hollow
 		float mDefaultZoom;		//Used to reset the values
 		float mDefaultPitch;	//Used to reset the values
 		float mDefaultYaw;		//Used to reset the values
+
+	private:
+		glm::ivec2 mDViewPortPosition;
 	};
 }

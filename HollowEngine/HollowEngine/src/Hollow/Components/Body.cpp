@@ -1,12 +1,12 @@
 #include <hollowpch.h>
 
 #include "Body.h"
+#include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow {
 
 	Body Body::instance;
-
-	std::unordered_map<std::string, Body::RigidbodyType> Body::mapOfTypesToStrings;
 
 	void Body::Init()
 	{
@@ -20,15 +20,10 @@ namespace Hollow {
 		mTotalTorque = glm::vec3(0);
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
-		isFrictionLess = false;
+		mIsFrictionLess = false;
 
-		bodyType = DYNAMIC;
-
-		{
-#define RIGIDBODY_TYPE(name) Body::mapOfTypesToStrings[#name] = Body::name;
-#include "RigidbodyTypes.enum"
-#undef RIGIDBODY_TYPE
-		}
+		mDRigidbodyType = "";
+		mBodyType = Body::DYNAMIC;
 	}
 
 	void Body::Clear()
@@ -39,14 +34,12 @@ namespace Hollow {
 	
 	void Body::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Body"))
-		{
-			ImGui::InputFloat("Mass", &mMass);
-			ImGui::InputFloat3("Position", &mPosition[0]);
-			ImGui::InputFloat3("Velocity", &mVelocity[0]);
-			ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
-			ImGui::TreePop();
-		}
+		ImGui::InputFloat("Mass", &mMass);
+		ImGuiHelper::InputText("RigidbodyType", mDRigidbodyType);
+		ImGui::InputFloat3("Position", &mPosition[0]);
+		ImGui::InputFloat3("Velocity", &mVelocity[0]);
+		ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
+		ImGui::Checkbox("Frictionless", &mIsFrictionLess);
 	}
 
 	void Body::Serialize(rapidjson::Value::Object data)
@@ -61,17 +54,33 @@ namespace Hollow {
 		}
 		if (data.HasMember("RigidbodyType"))
 		{
-			bodyType = mapOfTypesToStrings[data["RigidbodyType"].GetString()];
+			mDRigidbodyType = data["RigidbodyType"].GetString();
+			mBodyType = PhysicsManager::Instance().mapOfTypesToStrings[mDRigidbodyType];
 
-			if(bodyType == Body::STATIC)
+			if(mBodyType == Body::STATIC)
 				mMass = std::numeric_limits<float>::infinity();
 		}
 		if (data.HasMember("IsFrictionLess"))
 		{
-			isFrictionLess = data["IsFrictionLess"].GetBool();
+			mIsFrictionLess = data["IsFrictionLess"].GetBool();
 		}
 
 		mInverseMass = 1.0f / mMass;
+	}
+
+	HOLLOW_API void Body::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		if(mMass == std::numeric_limits<float>::infinity())
+		{
+			JSONHelper::Write<float>("Mass", 0, writer);
+		}
+		else
+		{	
+			JSONHelper::Write<float>("Mass", mMass, writer);
+		}
+		JSONHelper::Write<glm::vec3>("Velocity", mVelocity, writer);
+		JSONHelper::Write<std::string>("RigidbodyType", mDRigidbodyType, writer);
+		JSONHelper::Write<bool>("IsFrictionLess", mIsFrictionLess, writer);
 	}
 	
 }

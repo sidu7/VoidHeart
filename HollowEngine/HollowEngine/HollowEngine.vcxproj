@@ -155,6 +155,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Hollow\Managers\SceneManager.cpp" />
     <ClCompile Include="src\Hollow\Managers\ScriptingManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -294,6 +295,7 @@
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />
     <ClInclude Include="src\Hollow\Components\Collider.h" />
+    <ClInclude Include="src\Hollow\Managers\SceneManager.h" />
     <ClInclude Include="src\Hollow\Managers\ScriptingManager.h" />
     <ClInclude Include="src\Hollow\Managers\UIManager.h" />
     <ClInclude Include="src\Hollow\Physics\Broadphase\Shape.h" />
@@ -367,6 +369,7 @@
     <ClInclude Include="src\Hollow\Managers\InputManager.h" />
     <ClInclude Include="src\Hollow\Graphics\Shader.h" />
     <ClInclude Include="src\Hollow\Utils\GraphicsMath.h" />
+    <ClInclude Include="src\Hollow\Utils\ImGuiHelper.h" />
     <ClInclude Include="src\Hollow\Utils\JSONHelper.h" />
     <ClInclude Include="src\Hollow\Utils\Log.h" />
     <ClInclude Include="src\Hollow.h" />
@@ -398,6 +401,7 @@
   <ItemGroup>
     <None Include="src\Hollow\Enums\Buttons.enum" />
     <None Include="src\Hollow\Enums\GameEvents.enum" />
+    <None Include="src\Hollow\Enums\MeshShapes.enum" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -445,7 +449,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HW_DEBUG;HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>hollowpch.h</PrecompiledHeaderFile>
@@ -474,7 +478,7 @@ copy /y "$(ProjectName)\*.dll" "BulletHell"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HW_RELEASE;HW_PLATFORM_WINDOWS;HW_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>hollowpch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

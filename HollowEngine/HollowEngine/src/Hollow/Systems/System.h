@@ -22,6 +22,7 @@ namespace Hollow
 		HOLLOW_API virtual void AddGameObject(GameObject* pGameObject) = 0;
 		HOLLOW_API virtual void HandleBroadcastEvent(GameEvent* event) { }
 		HOLLOW_API virtual void OnDeleteGameObject(GameObject* pGameObject) {}
+		HOLLOW_API virtual void OnDeleteAllGameObjects() {}
 
 		HOLLOW_API void DeleteGameObject(GameObject* pGameObject)
 		{
@@ -36,6 +37,7 @@ namespace Hollow
 		HOLLOW_API void DeleteAllGameObjects()
 		{
 			mGameObjects.clear();
+			OnDeleteAllGameObjects();
 		}
 	protected:
 		template<typename First> // 1 template parameter

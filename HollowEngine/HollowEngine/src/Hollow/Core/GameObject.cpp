@@ -35,7 +35,7 @@ namespace Hollow {
 	{
 		for (std::type_index typeIndex : mIndices)
 		{
-			mComponents[typeIndex]->DebugDisplay();
+			mComponents[typeIndex]->ShowDebug();
 		}
 	}
 

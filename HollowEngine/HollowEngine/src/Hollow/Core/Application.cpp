@@ -15,6 +15,8 @@
 #include "Hollow/Managers/ThreadManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/UIManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/SceneManager.h"
 
 namespace Hollow {
 
@@ -22,7 +24,10 @@ namespace Hollow {
 	
 	Application::Application(const std::string& settingsFilePath)
 	{
-		PARSE_JSON_FILE(settingsFilePath);
+		std::ifstream file(settingsFilePath);
+		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+		file.close();
+		PARSE_JSON_FILE(contents.c_str());
 		
 		rapidjson::Value::Object data = root.GetObject();
 		mpWindow = new GameWindow(JSONHelper::GetSettings(data,"Window"));
@@ -42,6 +47,8 @@ namespace Hollow {
         AudioManager::Instance().Init();
 		ScriptingManager::Instance().Init();
 		UIManager::Instance().Init();
+		PhysicsManager::Instance().Init();
+		SceneManager::Instance().Init();
 
 
 		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
@@ -56,6 +63,7 @@ namespace Hollow {
 		ThreadManager::Instance().CleanUp();
 		UIManager::Instance().CleanUp();
 		SystemManager::Instance().CleanUp();
+		SceneManager::Instance().CleanUp();
 		MemoryManager::Instance().CleanUp();
 		delete mpWindow;
 	}
