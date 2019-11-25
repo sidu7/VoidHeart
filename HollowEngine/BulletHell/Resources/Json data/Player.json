@@ -42,7 +42,7 @@
         },
         {
             "Type": "Script",
-            "FilePath": "Resources/Scripts/test.lua"
+            "FilePath": "Resources/Scripts/PlayerMovement.lua"
         },
       {
         "Type": "Camera",
@@ -54,6 +54,11 @@
         "ProjectionType": 0,
         "MouseSensitivity": 1.6,
         "PositionOffset": [ 0.0, 0.9, 0.3 ]
+      },
+      {
+        "Type": "Health",
+        "HitPoints": 10,
+        "IsAlive":  true
       }
     ]
 }

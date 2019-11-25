@@ -4,9 +4,9 @@
 
 namespace BulletHell
 {
-	class Health : public Hollow::Component
+	class Attack : public Hollow::Component
 	{
-		REGISTERCOMPONENT(Health);
+		REGISTERCOMPONENT(Attack);
 	public:
 		void Init();
 		void Serialize(rapidjson::Value::Object data);
@@ -15,7 +15,8 @@ namespace BulletHell
 		void DebugDisplay();
 
 	public:
-		int mHitPoints;
-		bool mIsAlive;
+		std::string mScriptPath;
+		float mBaseAttackTime;
+		float mCurrentAttackTime;
 	};
 }

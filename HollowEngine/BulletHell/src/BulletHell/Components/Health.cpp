@@ -1,7 +1,7 @@
 #include "Health.h"
 
-//namespace BulletHell
-//{
+namespace BulletHell
+{
 	Health Health::instance;
 
 	void Health::Init()
@@ -32,11 +32,8 @@
 
 	void Health::DebugDisplay()
 	{
-		//if (ImGui::TreeNode("Health"))
-		{
-			//ImGui::InputInt("Hit Points", &mHitPoints);
-			//ImGui::Checkbox("Is Alive", &mIsAlive);
-		}
+		ImGui::InputInt("Hit Points", &mHitPoints);
+		ImGui::Checkbox("Is Alive", &mIsAlive);
 	}
 
-//}
+}
