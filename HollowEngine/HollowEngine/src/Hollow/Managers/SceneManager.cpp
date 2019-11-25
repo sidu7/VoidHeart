@@ -7,18 +7,27 @@
 #include "PhysicsManager.h"
 
 #include "Hollow/Components/Transform.h"
+#include "ImGuiManager.h"
 
 namespace Hollow
 {
 	void SceneManager::Init()
 	{
-		selectedComponentName = "";
-		selectedComponent = nullptr;
-		selectedGameObject = nullptr;
+		mSelectedComponentName = "";
+		mSelectedComponent = nullptr;
+		mSelectedGameObject = nullptr;
 	}
 
 	void SceneManager::CleanUp()
 	{
+		if (mSelectedGameObject != nullptr)
+		{
+			MemoryManager::Instance().DeleteGameObject(mSelectedGameObject);
+		}
+		if (mSelectedComponent != nullptr)
+		{
+			MemoryManager::Instance().DeleteComponent(mSelectedComponent);
+		}
 	}
 
 	void SceneManager::DebugDisplay()
@@ -29,24 +38,31 @@ namespace Hollow
 			{
 				if(ImGui::Button("Create Empty Gameobject"))
 				{
-					selectedGameObject = MemoryManager::Instance().NewGameObject();
-					GameObjectManager::Instance().AddGameObject(selectedGameObject);
-					selectedGameObject->AddComponent(MemoryManager::Instance().NewComponent("Transform"));
+					if(mSelectedGameObject != nullptr)
+					{
+						MemoryManager::Instance().DeleteGameObject(mSelectedGameObject);
+						mSelectedGameObject = nullptr;
+					}
+					mSelectedGameObject = MemoryManager::Instance().NewGameObject();
+					GameObjectManager::Instance().AddGameObject(mSelectedGameObject);
+					mSelectedGameObject->AddComponent(MemoryManager::Instance().NewComponent("Transform"));
+					ImGuiManager::Instance().mpSelectedGameObject = mSelectedGameObject;
+					ImGuiManager::Instance().mSelectedGameObjectID = mSelectedGameObject->mID;
 				}
-				if (ImGui::BeginCombo("Components",selectedComponentName.c_str()))
+				if (ImGui::BeginCombo("Components",mSelectedComponentName.c_str()))
 				{
 					for (auto& component : MemoryManager::Instance().mComponents)
 					{
-						bool isSelected = (selectedComponentName == component.first.c_str());
+						bool isSelected = (mSelectedComponentName == component.first.c_str());
 						if (ImGui::Selectable(component.first.c_str(), isSelected))
 						{
-							if(selectedComponent != nullptr)
+							if(mSelectedComponent != nullptr)
 							{
-								MemoryManager::Instance().DeleteComponent(selectedComponent);
-								selectedComponent = nullptr;
+								MemoryManager::Instance().DeleteComponent(mSelectedComponent);
+								mSelectedComponent = nullptr;
 							}
-							selectedComponentName = component.first;
-							selectedComponent = MemoryManager::Instance().NewComponent(selectedComponentName);
+							mSelectedComponentName = component.first;
+							mSelectedComponent = MemoryManager::Instance().NewComponent(mSelectedComponentName);
 						}
 						if (isSelected)
 						{
@@ -55,20 +71,38 @@ namespace Hollow
 					}
 					ImGui::EndCombo();
 				}
-				if(selectedComponentName != "")
+				if(mSelectedComponentName != "")
 				{
-					selectedComponent->DebugDisplay();
+					if(ImGui::TreeNode((mSelectedComponentName+" data").c_str()))
+					{
+						mSelectedComponent->DebugDisplay();
+						ImGui::TreePop();
+					}
 				}
 				if(ImGui::Button("Add Component"))
 				{
-					selectedGameObject->AddComponent(selectedComponent);
-					selectedComponent = nullptr;
-					selectedComponentName = "";
+					rapidjson::StringBuffer s;
+					rapidjson::Writer<rapidjson::StringBuffer> writer(s);
+					writer.StartObject();
+					writer.Key("Type");
+					writer.String(mSelectedComponentName.c_str());
+					mSelectedComponent->DeSerialize(writer);
+					writer.EndObject();
+					rapidjson::Document comp;
+					comp.Parse(s.GetString());
+					mSelectedComponent->Serialize(comp.GetObject());
+					//JSONParse
+					//serialize()
+					mSelectedGameObject->AddComponent(mSelectedComponent);
+					mSelectedComponent = nullptr;
+					mSelectedComponentName = "";
+					GameObjectManager::Instance().AddGameObject(mSelectedGameObject);
 				}
 				ImGui::InputText("FileName",charBuffer,255);
 				if(ImGui::Button("Export Prefab"))
 				{
 					DeserializeGameObject();
+					mSelectedGameObject = nullptr;
 				}
 				ImGui::EndTabItem();
 			}
@@ -124,7 +158,7 @@ namespace Hollow
 		std::ofstream file(exportDir.c_str());
 		rapidjson::StringBuffer s;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(s);
-		selectedGameObject->Deserialize(writer);
+		mSelectedGameObject->Deserialize(writer);
 		file.write(s.GetString(), s.GetSize());
 		HW_CORE_INFO("JSON File {0} has been created",exportDir);
 	}

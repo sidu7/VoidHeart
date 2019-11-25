@@ -1,6 +1,7 @@
 #include <hollowpch.h>
 #include "Collider.h"
 #include "Hollow/Physics/Broadphase/Shape.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -23,6 +24,10 @@ namespace Hollow
 	void Collider::DebugDisplay()
 	{
 		ImGui::InputFloat3("Shape Extents", &mpShape->GetHalfExtents()[0]);
+		ImGui::Checkbox("Is Trigger", &mIsTrigger);
+		ImGui::InputFloat("Bounciness", &mBounciness);
+		ImGui::InputFloat("Friction", &mFriction);
+		ImGuiHelper::InputText("Shape", mDShape);
 	}
 
 	void Collider::Serialize(rapidjson::Value::Object data)

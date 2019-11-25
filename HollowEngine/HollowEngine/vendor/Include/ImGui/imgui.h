@@ -26,6 +26,7 @@ Index of this file:
 */
 
 #pragma once
+#include "Hollow/Core/Core.h"
 
 // Configuration file with compile-time options (edit imconfig.h or define IMGUI_USER_CONFIG to your own filename)
 #ifdef IMGUI_USER_CONFIG
@@ -54,7 +55,7 @@ Index of this file:
 // IMGUI_API is used for core imgui functions, IMGUI_IMPL_API is used for the default bindings files (imgui_impl_xxx.h)
 // Using dear imgui via a shared library is not recommended, because of function call overhead and because we don't guarantee backward nor forward ABI compatibility.
 #ifndef IMGUI_API
-#define IMGUI_API
+#define IMGUI_API HOLLOW_API
 #endif
 #ifndef IMGUI_IMPL_API
 #define IMGUI_IMPL_API              IMGUI_API

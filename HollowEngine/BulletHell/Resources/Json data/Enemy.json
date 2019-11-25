@@ -1,0 +1,55 @@
+{
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 10.0, 10.0, 10.0 ],
+      "Scale": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 1000000.0,
+      "isFrictionLess": true,
+      "Velocity": [ 0.0, 0.0, 4.0 ]
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX" 
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Walking.fbx",
+      "ModelHasOffset": true,
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Shininess": 1.0,
+      "MaterialData": "Resources/Models/Walking.fbx"
+    },
+    {
+      "Type": "Animator",
+      "BoneData": "Resources/Models/Walking.fbx",
+      "Animations": [ [ "Walking", "Resources/Models/NarutoRun.fbx" ] ]
+    },
+    {
+      "Type": "StateMachine",
+      "StateFile": "Resources/State data/npcstate.json",
+      "StartState": "Walking"
+    },
+    {
+      "Type": "PathFollow",
+      "Move": true,
+      "ControlPoints": [
+        [ 15.0, 0.5, -10.0 ],
+        [ 5.0, 0.5, -10.0 ],
+        [ -5.0, 0.5, -10.0 ],
+        [ -15.0, 0.5, -10.0 ]
+      ]
+    },
+    {
+      "Type": "Attack",
+      "Script":  "Resources/Scripts/EnemyAttack.lua",
+	  "BaseAttackTime": 5.0
+    }
+  ]
+}

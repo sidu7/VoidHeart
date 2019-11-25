@@ -19,6 +19,8 @@ namespace Hollow
 	private:
 		std::string mBoneDataPath;
 		std::vector<std::pair<std::string, std::string>> mAnimationsDataPath;
+		std::string mNewAnimationName;
+		std::string mNewAnimationFile;
 		
 	public:
 		std::vector<Bone*> mBones;

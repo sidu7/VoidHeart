@@ -114,11 +114,19 @@ namespace Hollow {
 	}
 	void Camera::DebugDisplay()
 	{
-		ImGui::InputFloat("Zoom", &mZoom);
 		ImGui::InputFloat("Yaw", &mYaw);
 		ImGui::InputFloat("Pitch", &mPitch);
-		ImGui::InputFloat("Mouse Sensitivity", &mMouseSensitivity);
-		ImGui::InputFloat3("Offset", &mOffsetFromAnchor[0]);
+		ImGui::InputFloat("MovementSpeed", &mMovementSpeed);
+		ImGui::InputFloat("MouseSensitivity", &mMouseSensitivity);
+		ImGui::InputFloat("Zoom", &mZoom);
+		ImGui::InputFloat("Near", &mNearPlane);
+		ImGui::InputFloat("Far", &mFarPlane);
+		ImGui::Checkbox("Active", &mIsActive);
+		ImGui::InputInt("CameraType", (int*)&mType);
+		ImGui::InputInt("ProjectionType", (int*)&mProjectionType);
+		ImGui::InputInt2("ViewPortPosition", &mDViewPortPosition[0]);
+		ImGui::InputInt2("ViewPortSize", &mViewPortSize[0]);
+		ImGui::InputFloat3("PositionOffset", &mOffsetFromAnchor[0]);
 	}
 
 	void Camera::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -135,8 +143,7 @@ namespace Hollow {
 		JSONHelper::Write("ProjectionType", (unsigned)mProjectionType, writer);
 		JSONHelper::Write("ViewPortPosition", mDViewPortPosition, writer);
 		JSONHelper::Write("ViewPortSize", mViewPortSize, writer);
-		JSONHelper::Write("PositionOffset", mOffsetFromAnchor, writer);
-		
+		JSONHelper::Write("PositionOffset", mOffsetFromAnchor, writer);		
 		
 	}
 }
