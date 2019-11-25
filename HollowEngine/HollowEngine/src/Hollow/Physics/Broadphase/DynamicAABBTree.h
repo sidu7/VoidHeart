@@ -51,7 +51,7 @@ namespace Hollow {
 		DynamicAABBTree();
 		~DynamicAABBTree();
 
-		void RemoveCollider();
+		void RemoveCollider(Collider* col);
 
 		void AddCollider(Collider* col);
 
@@ -77,7 +77,7 @@ namespace Hollow {
 	private:
 		void InsertNode(Node* node, Node** parent);
 		Node** SelectNode(Node* insertingNode, Node** left, Node** right);
-		void RemoveNode(Node* node);
+		Node* RemoveNode(Node* node);
 		std::vector<Node*> unfitNodes;
 
 		// ComputePair 
