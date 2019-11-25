@@ -21,7 +21,8 @@ namespace Hollow {
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mIsFrictionLess = false;
-
+		mUseGravity = true;
+		
 		mDRigidbodyType = "";
 		mBodyType = Body::DYNAMIC;
 	}
@@ -56,7 +57,7 @@ namespace Hollow {
 		{
 			mDRigidbodyType = data["RigidbodyType"].GetString();
 			mBodyType = PhysicsManager::Instance().mapOfTypesToStrings[mDRigidbodyType];
-
+			
 			if(mBodyType == Body::STATIC)
 				mMass = std::numeric_limits<float>::infinity();
 		}

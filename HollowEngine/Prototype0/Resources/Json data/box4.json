@@ -7,7 +7,8 @@
     },
     {
       "Type": "Body",
-      "Mass": 1.0
+      "Mass": 1.0,
+      "RigidbodyType" : "STATIC"
     },
     {
       "Type": "Collider",
@@ -15,7 +16,7 @@
     },
     {
       "Type": "Model",
-      "Shape": 1,
+      "Shape": "CUBE",
       "CastShadow": true
     },
     {
