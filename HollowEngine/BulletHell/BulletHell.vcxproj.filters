@@ -91,6 +91,18 @@
     <ClCompile Include="src\BulletHell\Systems\AttackSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\BulletHell\Components\Movement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletHell\Systems\MovementSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletHell\Components\DestroyTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletHell\Systems\DestroySystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BulletHell\Systems\HealthSystem.h">
@@ -103,6 +115,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\BulletHell\Systems\AttackSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\Components\Movement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\Systems\MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\Components\DestroyTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\Systems\DestroySystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

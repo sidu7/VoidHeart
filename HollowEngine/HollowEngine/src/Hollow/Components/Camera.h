@@ -24,7 +24,13 @@ namespace Hollow
 		glm::vec3 mRight;
 
 		glm::vec3 mOffsetFromAnchor;
+
+		// Top down camera variables
 		glm::vec3 mPreviousPosition;
+		float mLERPFactor;
+		glm::vec2 mXConstraints;
+		glm::vec2 mYConstraints;
+		glm::vec2 mZConstraints;
 		
 		bool mIsActive;
 		

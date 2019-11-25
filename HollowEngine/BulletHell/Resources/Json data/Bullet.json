@@ -3,12 +3,12 @@
         {
             "Type": "Transform",
           "Position": [ 0.5, 10.0, 0.0 ],
-          "Scale": [ 1.0, 1.0, 1.0 ]
+          "Scale": [ 0.2, 0.2, 0.2 ]
         },
         {
             "Type": "Body",
             "Mass": 1.0,
-            "RigidbodyType": "DYNAMIC"
+            "RigidbodyType": "KINEMATIC"
         },
         {
           "Type": "Collider",
@@ -16,7 +16,7 @@
         },
         {
             "Type": "Model",
-            "Shape" :  0,
+            "Shape" :  "BALL",
             "CastShadow": true
         },
         {
@@ -29,6 +29,10 @@
 			"Type": "Health",
 			"HitPoints": 10,
 			"IsAlive": true
+		},
+		{
+			"Type": "DestroyTimer",
+			"MaxTime": 3.0
 		}
     ]
 }

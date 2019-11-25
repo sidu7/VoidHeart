@@ -9,7 +9,7 @@ namespace Hollow
 {
 	void ScriptingManager::Init()
 	{
-		lua.open_libraries(sol::lib::base);
+		lua.open_libraries(sol::lib::base, sol::lib::math);
 
 		auto mult_overloads = sol::overload(
 			[](const glm::vec3& v1, const glm::vec3& v2) -> glm::vec3 { return v1 * v2; },

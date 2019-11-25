@@ -18,7 +18,7 @@ public:
 	{
 		//Hollow::SceneManager::Instance().LoadLevel("Resources/Levels/engine.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
-		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
+		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Player.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");

@@ -41,19 +41,23 @@
             "StartState": "Walking"
         },
         {
-            "Type": "Script",
-            "FilePath": "Resources/Scripts/PlayerMovement.lua"
+            "Type": "Movement",
+            "Script": "Resources/Scripts/PlayerMovement.lua"
         },
       {
         "Type": "Camera",
-        "IsActive": false,
+        "IsActive": true,
         "Pitch": 0.0,
         "Yaw": -90.0,
         "Near": 0.1,
-        "CameraType": 4,
+        "CameraType": 5,
         "ProjectionType": 0,
         "MouseSensitivity": 1.6,
-        "PositionOffset": [ 0.0, 10.0, 10.0 ]
+        "PositionOffset": [ 0.0, 15.0, 15.0 ],
+		"LERPFactor": 0.1,
+		"XConstraints": [ -100.0, 100.0],
+		"YConstraints": [ 0.0, 100.0],
+		"ZConstraints": [ -100.0, 28.0]
       },
       {
         "Type": "Health",

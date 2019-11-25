@@ -35,7 +35,10 @@ namespace Hollow {
 
 		mViewPortPosition = glm::ivec2(0,0);
 		mViewPortSize = glm::ivec2(0, 0);
+
+		mLERPFactor = 1.0f;
 	}
+
 	void Camera::Serialize(rapidjson::Value::Object data)
 	{
 
@@ -102,7 +105,22 @@ namespace Hollow {
 		{
 			mOffsetFromAnchor = JSONHelper::GetVec3F(data["PositionOffset"].GetArray());
 		}
-		
+		if (data.HasMember("LERPFactor"))
+		{
+			mLERPFactor = data["LERPFactor"].GetFloat();
+		}
+		if (data.HasMember("XConstraints"))
+		{
+			mXConstraints = JSONHelper::GetVec2F(data["XConstraints"].GetArray());
+		}
+		if (data.HasMember("YConstraints"))
+		{
+			mYConstraints = JSONHelper::GetVec2F(data["YConstraints"].GetArray());
+		}
+		if (data.HasMember("ZConstraints"))
+		{
+			mZConstraints = JSONHelper::GetVec2F(data["ZConstraints"].GetArray());
+		}
 	}
 	void Camera::Clear()
 	{
@@ -123,6 +141,10 @@ namespace Hollow {
 		ImGui::InputInt2("ViewPortPosition", &mDViewPortPosition[0]);
 		ImGui::InputInt2("ViewPortSize", &mViewPortSize[0]);
 		ImGui::InputFloat3("PositionOffset", &mOffsetFromAnchor[0]);
+		ImGui::InputFloat("LERP Factor", &mLERPFactor);
+		ImGui::InputFloat2("XConstraints", &mXConstraints[0]);
+		ImGui::InputFloat2("YConstraints", &mYConstraints[0]);
+		ImGui::InputFloat2("ZConstraints", &mZConstraints[0]);
 	}
 
 	void Camera::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -140,6 +162,9 @@ namespace Hollow {
 		JSONHelper::Write("ViewPortPosition", mDViewPortPosition, writer);
 		JSONHelper::Write("ViewPortSize", mViewPortSize, writer);
 		JSONHelper::Write("PositionOffset", mOffsetFromAnchor, writer);		
-		
+		JSONHelper::Write("LERPFactor", mLERPFactor, writer);
+		JSONHelper::Write("XConstraints", mXConstraints, writer);
+		JSONHelper::Write("YConstraints", mYConstraints, writer);
+		JSONHelper::Write("ZConstraints", mZConstraints, writer);
 	}
 }

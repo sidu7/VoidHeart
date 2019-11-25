@@ -183,26 +183,14 @@ namespace Hollow {
 			}
 
 			CameraData cameraData;
-			if (pCamera->mType != THIRD_PERSON_CAMERA)
-			{
-				cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) * pCamera->mOffsetFromAnchor;
+
 			if (pCamera->mType == TOP_DOWN_CAMERA)
 			{
-				// Set camera position based on object
-				// LERP to desired position
-				glm::vec3 desiredPosition = pTransform->mPosition + pCamera->mOffsetFromAnchor;
-				float t = 0.8f;
-				glm::vec3 offsetDiff = t * (desiredPosition - pCamera->mPreviousPosition);
-				glm::vec3* d = &offsetDiff;
-				HW_CORE_TRACE("OFFSET {0}, {1}, {2}", d->x, d->y, d->z);
-				cameraData.mEyePosition = pTransform->mPosition + offsetDiff;
-				pCamera->mPreviousPosition = cameraData.mEyePosition;
-
-				glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -1.0f, -1.0f));
-				pCamera->mFront = frontDirection;
-				pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
-				pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));
+				UpdateTopDownCamera(pCamera, pTransform, cameraData);
 			}
+			else if (pCamera->mType != THIRD_PERSON_CAMERA)
+			{
+				cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) * pCamera->mOffsetFromAnchor;
 
 				if (pCamera->mProjectionType == PERSPECTIVE)
 				{
@@ -239,6 +227,7 @@ namespace Hollow {
 				cameraData.mProjectionMatrix = glm::perspective(pCamera->mZoom, pCamera->mAspectRatio,
 					pCamera->mNearPlane, pCamera->mFarPlane);
 			}
+
 			cameraData.mType = pCamera->mType;
 			cameraData.mViewPortPosition = pCamera->mViewPortPosition;
 			cameraData.mViewPortSize = pCamera->mViewPortSize;
@@ -279,6 +268,41 @@ namespace Hollow {
 
 		pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
 		pCamera->mUp = glm::cross(pCamera->mRight, pCamera->mFront);
+	}
+
+	void CameraSystem::UpdateTopDownCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData)
+	{
+		// Set camera position based on object
+		// LERP to desired position
+		glm::vec3 desiredPosition = pTransform->mPosition + pCamera->mOffsetFromAnchor;
+		glm::vec3& p = desiredPosition;
+		float t = pCamera->mLERPFactor;
+		glm::vec3 d = pCamera->mPreviousPosition + t * (desiredPosition - pCamera->mPreviousPosition);
+		cameraData.mEyePosition = d;
+		// Apply camera constraits if they exist
+		ApplyConstraints(pCamera, cameraData);
+		pCamera->mPreviousPosition = cameraData.mEyePosition;
+
+		glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -0.7f, -1.0f));
+		pCamera->mFront = frontDirection;
+		pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+		pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));
+
+		// Set cameradata matrices
+		cameraData.mViewMatrix = glm::lookAt(cameraData.mEyePosition, cameraData.mEyePosition + pCamera->mFront, pCamera->mUp);;
+		cameraData.mProjectionMatrix = glm::perspective(pCamera->mZoom, pCamera->mAspectRatio,
+			pCamera->mNearPlane, pCamera->mFarPlane);
+	}
+
+	void CameraSystem::ApplyConstraints(Camera* pCamera, CameraData& cameraData)
+	{
+		glm::vec2& x = pCamera->mXConstraints;
+		glm::vec2& y = pCamera->mYConstraints;
+		glm::vec2& z = pCamera->mZConstraints;
+
+		cameraData.mEyePosition.x = glm::max(x.x, glm::min(cameraData.mEyePosition.x, x.y));
+		cameraData.mEyePosition.y = glm::max(y.x, glm::min(cameraData.mEyePosition.y, y.y));
+		cameraData.mEyePosition.z = glm::max(z.x, glm::min(cameraData.mEyePosition.z, z.y));
 	}
 
 	void CameraSystem::Reset(Camera* pCamera)

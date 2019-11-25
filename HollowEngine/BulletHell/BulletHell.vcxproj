@@ -157,6 +157,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BulletHell\Components\Attack.cpp" />
+    <ClCompile Include="src\BulletHell\Components\DestroyTimer.cpp" />
     <ClCompile Include="src\BulletHell\Components\Health.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
@@ -167,9 +168,12 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="src\BulletHell\Components\Movement.cpp" />
     <ClCompile Include="src\BulletHell\Main.cpp" />
     <ClCompile Include="src\BulletHell\Systems\AttackSystem.cpp" />
+    <ClCompile Include="src\BulletHell\Systems\DestroySystem.cpp" />
     <ClCompile Include="src\BulletHell\Systems\HealthSystem.cpp" />
+    <ClCompile Include="src\BulletHell\Systems\MovementSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HollowEngine\HollowEngine.vcxproj">
@@ -239,9 +243,13 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BulletHell\Components\Attack.h" />
+    <ClInclude Include="src\BulletHell\Components\DestroyTimer.h" />
     <ClInclude Include="src\BulletHell\Components\Health.h" />
+    <ClInclude Include="src\BulletHell\Components\Movement.h" />
     <ClInclude Include="src\BulletHell\Systems\AttackSystem.h" />
+    <ClInclude Include="src\BulletHell\Systems\DestroySystem.h" />
     <ClInclude Include="src\BulletHell\Systems\HealthSystem.h" />
+    <ClInclude Include="src\BulletHell\Systems\MovementSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

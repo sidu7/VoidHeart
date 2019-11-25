@@ -23,9 +23,9 @@ namespace BulletHell
 			{
 				// Fire attack and reset attack timer
 				auto& lua = Hollow::ScriptingManager::Instance().lua;
+
 				lua["attackPosition"] = pTransform->mPosition;
 				lua.script_file(pAttack->mScriptPath);
-
 
 				pAttack->mCurrentAttackTime = 0.0f;
 			}

@@ -7,6 +7,8 @@ namespace Hollow
 	class Event;
 	class MouseScrolledEvent;
 	class Camera;
+	struct CameraData;
+
 	class CameraSystem : public System
 	{
 		REGISTERSYSTEM(CameraSystem, 1)
@@ -21,6 +23,8 @@ namespace Hollow
 		void HandleMouseMotion(Camera* pCamera);
 		bool HandleMouseScroll(MouseScrolledEvent& mse,Camera* pCamera);
 		void UpdateCamera(Camera* pCamera);
+		void UpdateTopDownCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData);
+		void ApplyConstraints(Camera* pCamera, CameraData& cameraData);
 		void Reset(Camera* pCamera);
 
 	private:

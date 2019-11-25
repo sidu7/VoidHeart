@@ -1,8 +1,8 @@
 impulse = vec3.new()
 direction = vec3.new();
 
-front = fpsCamera.frontDirection
-right = fpsCamera.rightDirection
+front = vec3.new(0.0, 0.0, -1.0)--fpsCamera.frontDirection
+right = vec3.new(1.0, 0.0, 0.0)--fpsCamera.rightDirection
 
 front.y = 0.0
 right.y = 0.0
