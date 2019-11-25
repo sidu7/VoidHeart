@@ -15,6 +15,7 @@ namespace Hollow {
 		mRight = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		mOffsetFromAnchor = glm::vec3(0.0f);
+		mAnchorFocusOffset = glm::vec3(0.0f);
 		
 		mYaw = -90.0f;
 		mPitch = 0.0f;
@@ -127,6 +128,8 @@ namespace Hollow {
 		ImGui::InputInt2("ViewPortPosition", &mDViewPortPosition[0]);
 		ImGui::InputInt2("ViewPortSize", &mViewPortSize[0]);
 		ImGui::InputFloat3("PositionOffset", &mOffsetFromAnchor[0]);
+		ImGui::InputFloat3("AnchorFocusOffset", &mAnchorFocusOffset[0]);
+
 	}
 
 	void Camera::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -144,6 +147,7 @@ namespace Hollow {
 		JSONHelper::Write("ViewPortPosition", mDViewPortPosition, writer);
 		JSONHelper::Write("ViewPortSize", mViewPortSize, writer);
 		JSONHelper::Write("PositionOffset", mOffsetFromAnchor, writer);		
+		JSONHelper::Write("AnchorFocusOffset", mAnchorFocusOffset, writer);
 		
 	}
 }

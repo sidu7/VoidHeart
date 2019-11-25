@@ -352,7 +352,7 @@ namespace Hollow {
 
 			manifold->bodyA = refCollider->mpBody;
 			manifold->bodyB = inciCollider->mpBody;
-
+			manifold->frictionConstant = (refCollider->mFriction + inciCollider->mFriction) / 2.0f;
 			// push back the contacts into the list of manifolds
 			mContacts->push_back(manifold);
 		}
@@ -408,7 +408,7 @@ namespace Hollow {
 
 			manifold->bodyA = col1->mpBody;
 			manifold->bodyB = col2->mpBody;
-
+			manifold->frictionConstant = (col1->mFriction + col2->mFriction) / 2.0f;
 			manifold->contactPoints.emplace_back(c);
 
 			mContacts->push_back(manifold);
@@ -475,6 +475,7 @@ namespace Hollow {
 		c.point = pointOnBoxClosestToBall;
 		manifold->bodyA = box->mpBody;
 		manifold->bodyB = ball->mpBody;
+		manifold->frictionConstant = (box->mFriction + ball->mFriction) / 2.0f;
 		manifold->contactPoints.push_back(c);
 		mContacts->push_back(manifold);
 		manifold->SetupGroundConstraint();
@@ -508,6 +509,7 @@ namespace Hollow {
 
 		manifold->bodyA = ball1->mpBody;
 		manifold->bodyB = ball2->mpBody;
+		manifold->frictionConstant = (ball1->mFriction + ball2->mFriction) / 2.0f;
 		manifold->contactPoints.push_back(c);
 		mContacts->push_back(manifold);
 		manifold->SetupGroundConstraint();

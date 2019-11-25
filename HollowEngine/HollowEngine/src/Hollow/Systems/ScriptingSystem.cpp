@@ -40,7 +40,7 @@ namespace Hollow
 			lua["isStrafeRight"] = (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 16000);
 
 			lua["jump"] = (InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_B));
-	    lua["dash"] = (InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_X));
+			lua["dash"] = (InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_X));
 
 			if (InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_C) || InputManager::Instance().IsControllerButtonTriggered((SDL_CONTROLLER_BUTTON_A)))
 			{
@@ -59,7 +59,8 @@ namespace Hollow
 			if (lua["jump"])
 			{
 				glm::vec3 jump = lua.get<glm::vec3>("impulse");
-				jump.x = jump.z = 0.0f;
+				jump.x *= 2.0f;
+				jump.z *= 2.0f;
 				PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i],jump );
 			}
 			PhysicsManager::Instance().ApplyAngularImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
