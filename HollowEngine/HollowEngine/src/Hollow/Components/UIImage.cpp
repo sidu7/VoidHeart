@@ -2,6 +2,7 @@
 #include "UIImage.h"
 
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow
 {
@@ -12,6 +13,7 @@ namespace Hollow
 		mpTexture = nullptr;
 		mColor = glm::vec3(0.0f);
 		mpShapeData = nullptr;
+		mShapeType = "";
 	}
 
 	void UIImage::Clear()
@@ -22,11 +24,12 @@ namespace Hollow
 	{
 		if (data.HasMember("Image"))
 		{
-			mpTexture = ResourceManager::Instance().LoadTexture(data["Image"].GetString());
+			TexturePath = data["Image"].GetString();
+			mpTexture = ResourceManager::Instance().LoadTexture(TexturePath);
 		}
 		if (data.HasMember("Shape"))
 		{
-			mShapeType = (Shapes)data["Shape"].GetUint();
+			mShapeType = data["Shape"].GetString();
 			mpShapeData = ResourceManager::Instance().GetShape(mShapeType);
 		}
 		if (data.HasMember("Color"))
@@ -37,9 +40,15 @@ namespace Hollow
 
 	void UIImage::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
+		JSONHelper::Write("Image", TexturePath, writer);
+		JSONHelper::Write("Shape", mShapeType, writer);
+		JSONHelper::Write("Color", mColor, writer);
 	}
 
 	void UIImage::DebugDisplay()
 	{
+		ImGuiHelper::InputText("Image File", TexturePath);
+		ImGuiHelper::InputText("Shape", mShapeType);
+		ImGui::InputFloat3("Color", (float*)&mColor);
 	}
 }

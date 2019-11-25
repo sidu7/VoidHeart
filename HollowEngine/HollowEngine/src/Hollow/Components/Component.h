@@ -23,7 +23,14 @@ namespace Hollow
 		HOLLOW_API virtual ~Component() {}
 		HOLLOW_API virtual void DebugDisplay() = 0;
 		HOLLOW_API virtual void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) { }
-
+		HOLLOW_API void ShowDebug()
+		{
+			if (ImGui::TreeNode(mComponentName.c_str()))
+			{
+				DebugDisplay();
+				ImGui::TreePop();
+			}
+		}
 		std::string mComponentName;
 
 		GameObject* mpOwner;

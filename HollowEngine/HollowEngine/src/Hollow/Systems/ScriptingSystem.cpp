@@ -23,8 +23,8 @@ namespace Hollow
 			Camera* pCam = mGameObjects[i]->GetComponent<Camera>();
 
 			// setting body rotation to match camera rotation about y
-			pBody->mQuaternion = glm::toQuat(glm::rotate(glm::mat4(1.0f),
-				glm::radians(-pCam->mYaw + 90), glm::vec3(0.0f, 1.0f, 0.0f)));
+			/*pBody->mQuaternion = glm::toQuat(glm::rotate(glm::mat4(1.0f),
+				glm::radians(-pCam->mYaw + 90), glm::vec3(0.0f, 1.0f, 0.0f)));*/
 
 			auto& lua = ScriptingManager::Instance().lua;
 
@@ -57,9 +57,13 @@ namespace Hollow
 			}
 
 			lua.script_file(script->scriptPath);
-
-			PhysicsManager::Instance().ApplyImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
-
+			if (lua["jump"])
+			{
+				glm::vec3 jump = lua.get<glm::vec3>("impulse");
+				jump.x = jump.z = 0.0f;
+				PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i],jump );
+			}
+			PhysicsManager::Instance().ApplyAngularImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
 		}
 	}
 

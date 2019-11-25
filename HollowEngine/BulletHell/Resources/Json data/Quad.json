@@ -6,11 +6,11 @@
         "Scale": [ 30.0, 10.0, 2.0 ],
         "Rotation": [ 0.0, 0.0, 0.0 ]
       },
-        {
-            "Type": "Model",
-            "Shape": 3,
-            "CastShadow": true
-        },
+      {
+        "Type": "Model",
+        "Shape": "QUAD",
+        "CastShadow": true
+      },
       {
         "Type": "Material",
         "Diffuse": [ 0.0, 0.0, 0.0 ],

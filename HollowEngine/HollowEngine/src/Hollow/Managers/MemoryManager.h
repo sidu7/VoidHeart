@@ -1,10 +1,11 @@
 #pragma once
-#include "Hollow/Systems/System.h"
+#include "Hollow/Common.h"
 
 namespace Hollow
 {
 	class Component;
-
+	class SceneManager;
+	
 	class MemoryManager
 	{
 		SINGLETON(MemoryManager)
@@ -19,6 +20,7 @@ namespace Hollow
 		HOLLOW_API GameObject* NewGameObject();
 		HOLLOW_API void DeleteGameObject(GameObject* gameobject);
 
+		friend class SceneManager;
 	private:
 		std::unordered_map<std::string,std::list<Component*>> mComponentPool;
 		std::list<GameObject*> mGameObjectPool;

@@ -1,5 +1,6 @@
 #include <hollowpch.h>
 #include "Script.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow {
 
@@ -7,32 +8,29 @@ namespace Hollow {
 
 	void Script::Init()
 	{
-		scriptPath = "";
+		mScriptPath = "";
 	}
 
 	void Script::Clear()
 	{
-		Init();
 	}
 
 
 	void Script::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Script"))
-		{
-			char* str = (char*)scriptPath.c_str();
-			ImGui::InputText("Path", str, 50);
-			scriptPath = str;
-			ImGui::TreePop();
-		}
+		ImGuiHelper::InputText("Script File", mScriptPath);
 	}
 
 	void Script::Serialize(rapidjson::Value::Object data)
 	{
 		if (data.HasMember("FilePath"))
 		{
-			scriptPath = data["FilePath"].GetString();
+			mScriptPath = data["FilePath"].GetString();
 		}
 	}
 
+	void Script::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+	{
+		JSONHelper::Write("FilePath", mScriptPath, writer);
+	}
 }
