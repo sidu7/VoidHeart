@@ -242,6 +242,7 @@ namespace Hollow {
 				break;
 			case THIRD_PERSON_CAMERA:
 				RenderManager::Instance().mMainCamera = cameraData;
+				break;
 			}
 			
 		}
