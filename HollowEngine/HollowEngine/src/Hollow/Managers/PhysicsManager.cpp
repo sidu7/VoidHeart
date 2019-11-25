@@ -21,13 +21,16 @@ namespace Hollow {
 		mTree.DeleteTree();
 	}
 
-	void PhysicsManager::ApplyImpulse(GameObject* object, glm::vec3 impulse)
+	void PhysicsManager::ApplyAngularImpulse(GameObject* object, glm::vec3 impulse)
 	{
 		Body* pBody = object->GetComponent<Body>();
+		pBody->mAngularVelocity += -glm::vec3(-impulse.z,0.0f,impulse.x) * pBody->mInverseMass;
+	}
 
-		pBody->mVelocity += impulse / pBody->mMass;
-		// TODO should also have some angular component to it
-		// depending on the axis the impulse was applied on
+	void PhysicsManager::ApplyLinearImpulse(GameObject* object, glm::vec3 impulse)
+	{
+		Body* pBody = object->GetComponent<Body>();
+		pBody->mVelocity += impulse * pBody->mInverseMass;
 	}
 	
 	GameObject* PhysicsManager::CastRay()

@@ -7,7 +7,8 @@ namespace Hollow
 		MAIN_CAMERA,
 		UI_CAMERA,
 		SIDE_CAMERA,
-		SCENE_CAMERA
+		SCENE_CAMERA,
+		THIRD_PERSON_CAMERA
 	};
 
 	enum CameraProjection
