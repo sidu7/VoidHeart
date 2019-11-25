@@ -32,24 +32,19 @@ namespace BulletHell
 	}
 	void Attack::DebugDisplay()
 	{
-		if (ImGui::TreeNode("Attack"))
+		char* str = (char*)mScriptPath.c_str();
+		ImGui::InputText("Path", str, 50);
+		mScriptPath = str;
+
+		ImGui::InputFloat("Base Attack Time", &mBaseAttackTime);
+		ImGui::Text("Current Attack Time %f", mCurrentAttackTime);
+
+		// Attack testing button
+		if (ImGui::Button("Fire Attack"))
 		{
-			char* str = (char*)mScriptPath.c_str();
-			ImGui::InputText("Path", str, 50);
-			mScriptPath = str;
-
-			ImGui::InputFloat("Base Attack Time", &mBaseAttackTime);
-			ImGui::Text("Current Attack Time %f", mCurrentAttackTime);
-
-			// Attack testing button
-			if (ImGui::Button("Fire Attack"))
-			{
-				auto& lua = Hollow::ScriptingManager::Instance().lua;
-				lua["attackPosition"] = mpOwner->GetComponent<Hollow::Transform>()->mPosition;
-				lua.script_file(mScriptPath);
-			}
-
-			ImGui::TreePop();
+			auto& lua = Hollow::ScriptingManager::Instance().lua;
+			lua["attackPosition"] = mpOwner->GetComponent<Hollow::Transform>()->mPosition;
+			lua.script_file(mScriptPath);
 		}
 	}
 }
