@@ -12,6 +12,7 @@
 
 #include "RenderManager.h"
 #include "Hollow/Core/GameObject.h"
+#include "Hollow/Core/GameObjectMetaData.h"
 
 namespace Hollow {
 
@@ -19,6 +20,8 @@ namespace Hollow {
 	{
 		mSAT.ResetContacts();
 		mTree.DeleteTree();
+		mRigidbodyTypesMap.clear();
+		mCollisionMask.clear();
 	}
 
 	void PhysicsManager::ApplyAngularImpulse(GameObject* object, glm::vec3 impulse)
@@ -120,12 +123,37 @@ namespace Hollow {
 	
 	}
 
-	void PhysicsManager::Init()
+	void PhysicsManager::Init(rapidjson::Value::Object& data)
 	{
 		{
-#define RIGIDBODY_TYPE(name) mapOfTypesToStrings[#name] = Body::name;
+#define RIGIDBODY_TYPE(name) mRigidbodyTypesMap[#name] = Body::name;
 #include "Hollow/Enums/RigidbodyTypes.enum"
 #undef RIGIDBODY_TYPE
 		}
+
+
+		// Parse Collision Mask and set the CollisionMask map
+		std::ifstream file(std::string(data["CollisionMask"].GetString()));
+		std::string line;
+		
+		if (file.is_open())
+		{
+			while (getline(file, line))
+			{
+				std::istringstream iss(line);
+				std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+					std::istream_iterator<std::string>());
+					
+				int id = GameObjectMetaData::Instance().mMapOfGameObjectTypes[results[0]];
+				int count = results.size() - 1;
+				for(int i = 0; i < count; ++i)
+				{
+					mCollisionMask[id | BIT(i)] = (bool)std::stoi(results[i + 1]);
+				}
+			}
+			file.close();
+		}
+
+
 	}
 }

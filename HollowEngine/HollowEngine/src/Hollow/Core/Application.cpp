@@ -17,43 +17,14 @@
 #include "Hollow/Managers/UIManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/SceneManager.h"
+#include "GameObjectMetaData.h"
+
 
 namespace Hollow {
 
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-	
-	Application::Application(const std::string& settingsFilePath)
-	{
-		std::ifstream file(settingsFilePath);
-		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-		file.close();
-		PARSE_JSON_FILE(contents.c_str());
 		
-		rapidjson::Value::Object data = root.GetObject();
-		mpWindow = new GameWindow(JSONHelper::GetSettings(data,"Window"));
-
-		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
-		
-		mIsRunning = true;
-		// Initalize managers
-		InputManager::Instance().Init();
-		ThreadManager::Instance().Init();
-		MemoryManager::Instance().Init(JSONHelper::GetSettings(data,"Memory"));
-		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
-		SystemManager::Instance().Init();
-		ImGuiManager::Instance().Init(mpWindow);
-		EventManager::Instance().Init();
-		ResourceManager::Instance().Init();
-        AudioManager::Instance().Init();
-		ScriptingManager::Instance().Init();
-		UIManager::Instance().Init();
-		PhysicsManager::Instance().Init();
-		SceneManager::Instance().Init();
-
-
-		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
-	}
-
 	Application::~Application()
 	{
 		ResourceManager::Instance().CleanUp();
@@ -66,6 +37,40 @@ namespace Hollow {
 		SceneManager::Instance().CleanUp();
 		MemoryManager::Instance().CleanUp();
 		delete mpWindow;
+	}
+
+	void Application::Init(const std::string& settingsFilePath)
+	{
+
+		std::ifstream file(settingsFilePath);
+		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+		file.close();
+		PARSE_JSON_FILE(contents.c_str());
+
+		rapidjson::Value::Object data = root.GetObject();
+		mpWindow = new GameWindow(JSONHelper::GetSettings(data, "Window"));
+
+		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		mIsRunning = true;
+
+		// Initalize managers
+		InputManager::Instance().Init();
+		ThreadManager::Instance().Init();
+		MemoryManager::Instance().Init(JSONHelper::GetSettings(data, "Memory"));
+		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
+		SystemManager::Instance().Init();
+		ImGuiManager::Instance().Init(mpWindow);
+		EventManager::Instance().Init();
+		ResourceManager::Instance().Init();
+		AudioManager::Instance().Init();
+		ScriptingManager::Instance().Init();
+		UIManager::Instance().Init();
+		PhysicsManager::Instance().Init(JSONHelper::GetSettings(data, "Physics"));
+		SceneManager::Instance().Init();
+
+
+		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());
 	}
 
 	void Application::OnEvent(Event& e)

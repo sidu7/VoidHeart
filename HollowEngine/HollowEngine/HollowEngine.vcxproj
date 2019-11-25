@@ -284,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Hollow\Common.h" />
+    <ClInclude Include="src\Hollow\Core\GameObjectMetaData.h" />
     <ClInclude Include="src\Hollow\Graphics\Data\SkydomeData.h" />
     <ClInclude Include="src\Hollow\Components\Script.h" />
     <ClInclude Include="src\Hollow\Components\PathFollow.h" />

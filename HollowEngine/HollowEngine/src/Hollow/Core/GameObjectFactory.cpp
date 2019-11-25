@@ -3,6 +3,7 @@
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Components/Component.h"
 #include "Hollow/Managers/MemoryManager.h"
+#include "Hollow/Core/GameObjectMetaData.h"
 
 namespace Hollow {
 		
@@ -12,6 +13,12 @@ namespace Hollow {
 		
 		//unsigned int objectID = root["ID"].GetUint();
 		//pNewGameObject->mID = objectID;
+
+		if (root.HasMember("Type"))
+		{
+			int x = GameObjectMetaData::Instance().mMapOfGameObjectTypes[std::string(root["Type"].GetString())];
+			pNewGameObject->mType = BIT(x);
+		}
 
 		if (root.HasMember("Components"))
 		{

@@ -1,6 +1,7 @@
 #include <hollowpch.h>
 #include "DynamicAABBTree.h"
 #include "Hollow/Components/Body.h"
+#include "Hollow/Managers/PhysicsManager.h"
 
 namespace Hollow {
 
@@ -198,7 +199,11 @@ namespace Hollow {
 					if(colA->mpBody->mBodyType == Body::STATIC && colB->mpBody->mBodyType == Body::STATIC)
 						return;
 
-					colliderPairs.push_front(std::make_pair(colA, colB));
+					// Check if the objects should collide according to the game
+					if (PhysicsManager::Instance().mCollisionMask[colA->mpOwner->mType | colB->mpOwner->mType])
+					{
+						colliderPairs.push_front(std::make_pair(colA, colB));
+					}
 				}
 			}
 			else {
