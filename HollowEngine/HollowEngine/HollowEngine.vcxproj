@@ -467,7 +467,11 @@
       <Command>cd "$(SolutionDir)bin\$(Configuration)"
 copy /y "$(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll" "$(ProjectName)"
 IF NOT EXIST BulletHell ( mkdir BulletHell)
-copy /y "$(ProjectName)\*.dll" "BulletHell"</Command>
+copy /y "$(ProjectName)\*.dll" "BulletHell"
+IF NOT EXIST MarbleBall ( mkdir MarbleBall)
+copy /y "$(ProjectName)\*.dll" "MarbleBall"
+IF NOT EXIST Sniper ( mkdir Sniper)
+copy /y "$(ProjectName)\*.dll" "Sniper"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

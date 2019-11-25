@@ -56,7 +56,7 @@ namespace Hollow
 				}
 			}
 
-			lua.script_file(script->scriptPath);
+			lua.script_file(script->mScriptPath);
 			if (lua["jump"])
 			{
 				glm::vec3 jump = lua.get<glm::vec3>("impulse");
