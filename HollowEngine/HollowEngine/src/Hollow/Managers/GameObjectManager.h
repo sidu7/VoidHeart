@@ -12,7 +12,11 @@ namespace Hollow{
 		HOLLOW_API void DeleteAllGameObjects();
 		HOLLOW_API const std::vector<GameObject*>& GetGameObjects() { return mGameObjects; }
 
+		HOLLOW_API void ClearDeletionList();
+		
 	private:
 		std::vector<GameObject*> mGameObjects;
+
+		std::vector<GameObject*> mDeletionList;
 	};
 }

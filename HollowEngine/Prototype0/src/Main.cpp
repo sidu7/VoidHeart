@@ -26,6 +26,9 @@
 #include "Hollow/Managers/ScriptingManager.h"
 
 #include "GameOver.h"
+#include "Hollow/Core/GameObjectMetaData.h"
+
+#include "GameObjectsMetaData/GameObjectType.h"
 
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
@@ -68,11 +71,23 @@ class UILayer : public Hollow::Layer
 	}
 };
 
+void Hollow::GameObjectMetaData::Init()
+{
+	{
+#define GAMEOBJECT_TYPE(name) mMapOfGameObjectTypes[#name] = (int)GameObjectType::name;
+#include "GameObjectsMetaData/GameObjectType.enum"
+#undef GAMEOBJECT_TYPE
+	}
+}
+
 class Prototype0 : public Hollow::Application
 {
 public:
-	Prototype0() : Application("Resources/Settings.json")
+	Prototype0() 
 	{
+		Hollow::GameObjectMetaData::Instance().Init();
+		Application::Init("Resources/Settings.json");
+		
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");

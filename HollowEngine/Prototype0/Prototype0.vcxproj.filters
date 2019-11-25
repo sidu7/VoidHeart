@@ -35,6 +35,9 @@
     <ClInclude Include="src\GameOver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameObjectsMetaData\GameObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
@@ -42,7 +45,6 @@
   <ItemGroup>
     <None Include="Resources\Shaders\Skydome.frag" />
     <None Include="Resources\Shaders\Skydome.vert" />
-    <None Include="Resources\Settings.json" />
     <None Include="Resources\Json data\Box.json" />
     <None Include="Resources\Json data\box2.json" />
     <None Include="Resources\Json data\box4.json" />
@@ -96,6 +98,8 @@
     <None Include="Resources\Shaders\fxaa.frag" />
     <None Include="Resources\Shaders\Global.frag" />
     <None Include="Resources\Shaders\Global.vert" />
+    <None Include="src\GameObjectsMetaData\CollisionMask.data" />
+    <None Include="Resources\Settings.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\test.lua" />

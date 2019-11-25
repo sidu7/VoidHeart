@@ -18,6 +18,7 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/SceneManager.h"
 #include "GameObjectMetaData.h"
+#include "Hollow/Managers/GameObjectManager.h"
 
 
 namespace Hollow {
@@ -112,9 +113,10 @@ namespace Hollow {
 
 			AudioManager::Instance().Update();
 
-
 			RenderManager::Instance().Update();
 
+			GameObjectManager::Instance().ClearDeletionList();
+			
 			FrameRateController::Instance().FrameEnd();
 
 			if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_ESCAPE))

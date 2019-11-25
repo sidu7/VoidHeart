@@ -23,12 +23,29 @@ namespace Hollow {
 
 	void GameObjectManager::DeleteGameObject(GameObject* GameObject)
 	{
-		GameObject->Destroy();
-		mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), GameObject));
-		SystemManager::Instance().DeleteGameObejectInSystems(GameObject);
-		MemoryManager::Instance().DeleteGameObject(GameObject);
+		mDeletionList.push_back(GameObject);
 	}
 
+	void GameObjectManager::ClearDeletionList()
+	{
+		if (!mDeletionList.empty())
+		{
+			for (auto GameObject : mDeletionList) {
+				// Delete Everywhere
+				mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), GameObject));
+				SystemManager::Instance().DeleteGameObejectInSystems(GameObject);
+
+				// Destroy
+				GameObject->Destroy();
+
+				// Reclaim
+				MemoryManager::Instance().DeleteGameObject(GameObject);
+			}
+
+			mDeletionList.clear();
+		}
+	}
+	
 	void GameObjectManager::DeleteAllGameObjects()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)

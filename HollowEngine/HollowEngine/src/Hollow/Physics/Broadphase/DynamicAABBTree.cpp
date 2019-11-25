@@ -75,12 +75,12 @@ namespace Hollow {
 				if(static_cast<Collider*>(curr->mClientData) == col)
 				{
 					Node* parent = curr->parent;
-					Node* s = RemoveNode(curr);
+					Node* sib = RemoveNode(curr);
 
 					delete curr;
 					delete parent;
 
-					SyncHierarchy(s->parent);
+					SyncHierarchy(sib->parent);
 
 					return;
 				}
@@ -185,8 +185,19 @@ namespace Hollow {
 				for (Node* node : unfitNodes) {
 					Node* p = node->parent;
 					Node* s = node->GetSibling();
-					
-					RemoveNode(node);
+					Node** gp;
+					// if grandparent exists, find if parent was left or right
+					if (p->parent) {
+						gp = (p == p->parent->left) ? &p->parent->left : &p->parent->right;
+					}
+					else {
+						gp = &root;
+					}
+
+					// replace parent with sibling
+					s->parent = p->parent ? p->parent : nullptr;
+
+					*gp = s;
 
 					delete p;
 

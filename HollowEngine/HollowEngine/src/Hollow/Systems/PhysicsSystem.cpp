@@ -86,6 +86,11 @@ namespace Hollow
 		ImGui::End();
 	}
 
+	void PhysicsSystem::OnDeleteGameObject(GameObject* pGameObject)
+	{
+		PhysicsManager::Instance().mTree.RemoveCollider(pGameObject->GetComponent<Collider>());
+	}
+
 	void PhysicsSystem::OnDeleteAllGameObjects()
 	{
 		PhysicsManager::Instance().CleanUp();
