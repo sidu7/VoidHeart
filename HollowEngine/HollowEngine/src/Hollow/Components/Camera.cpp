@@ -102,6 +102,10 @@ namespace Hollow {
 		{
 			mOffsetFromAnchor = JSONHelper::GetVec3F(data["PositionOffset"].GetArray());
 		}
+		if (data.HasMember("AnchorFocusOffset"))
+		{
+			mAnchorFocusOffset = JSONHelper::GetVec3F(data["AnchorFocusOffset"].GetArray());
+		}
 		
 	}
 	void Camera::Clear()

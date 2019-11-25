@@ -30,9 +30,19 @@ namespace Hollow {
 		return mCurrentMouseState[keycode] && !mPrevMouseState[keycode];
 	}
 
-	bool InputManager::IsPressed(SDL_GameControllerButton button)
+	bool InputManager::IsControllerButtonTriggered(SDL_GameControllerButton button)
 	{
-		return SDL_GameControllerGetButton(mpController, button);
+		return mCurrentControllerState[button] && !mPrevControllerState[button];
+	}
+
+	bool InputManager::IsControllerButtonReleased(SDL_GameControllerButton button)
+	{
+		return !mCurrentControllerState[button] && mPrevControllerState[button];
+	}
+
+	bool InputManager::IsControllerButtonPressed(SDL_GameControllerButton button)
+	{
+		return mCurrentControllerState[button] && mPrevControllerState[button];
 	}
 
 	Sint16 InputManager::GetAxisValue(SDL_GameControllerAxis axis)
@@ -82,6 +92,8 @@ namespace Hollow {
 		SDL_memset(mPreviousState, 0, 512 * sizeof(Uint8));
 		SDL_memset(mPrevMouseState, 0, 6 * sizeof(bool));
 		SDL_memset(mCurrentMouseState, 0, 6 * sizeof(bool));
+		SDL_memset(mCurrentControllerState, 0, 12 * sizeof(bool));
+		SDL_memset(mPrevControllerState, 0, 12 * sizeof(bool));
 		mpController = SDL_GameControllerOpen(0);
 	}
 
@@ -104,6 +116,23 @@ namespace Hollow {
 				break;
 			}
 			}
+		}
+	}
+
+	void InputManager::HandleControllerEvents(const SDL_Event& e)
+	{
+		switch (e.type)
+		{
+		case SDL_CONTROLLERBUTTONDOWN:
+		{
+			mCurrentControllerState[e.cbutton.button] = true;
+			break;
+		}
+		case SDL_CONTROLLERBUTTONUP:
+		{
+			mCurrentControllerState[e.cbutton.button] = false;
+			break;
+		}
 		}
 	}
 
@@ -174,6 +203,7 @@ namespace Hollow {
 	{
 		SDL_Event e;
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 6 * sizeof(bool));
+		SDL_memcpy(mPrevControllerState, mCurrentControllerState, 12 * sizeof(bool));
 
 		xRel = 0.0f; yRel = 0.0f;
 
@@ -184,6 +214,7 @@ namespace Hollow {
 			HandleWindowEvents(e);
 			HandleKeyboardEvents(e);
 			HandleMouseEvents(e);
+			HandleControllerEvents(e);
 			// TODO add controller support here
 		}
 
