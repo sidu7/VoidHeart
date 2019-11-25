@@ -20,9 +20,9 @@ namespace Hollow
 		void DeserializeLevel();
 	private:
 		// Creating Prefab
-		std::string selectedComponentName;
+		std::string mSelectedComponentName;
 		char charBuffer[255];
-		GameObject* selectedGameObject;
-		Component* selectedComponent;
+		GameObject* mSelectedGameObject;
+		Component* mSelectedComponent;
 	};
 }
