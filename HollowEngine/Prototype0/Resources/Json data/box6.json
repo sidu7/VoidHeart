@@ -1,5 +1,5 @@
 {
-    "Type": "ENEMY",
+    "Type": "POINT",
     "Components": [
         {
             "Type": "Transform",

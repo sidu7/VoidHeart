@@ -12,7 +12,7 @@
 
 #include "RenderManager.h"
 #include "Hollow/Core/GameObject.h"
-#include "Hollow/Core/GameObjectMetaData.h"
+#include "Hollow/Core/GameMetaData.h"
 
 namespace Hollow {
 
@@ -111,13 +111,11 @@ namespace Hollow {
 				// cannot use curr->aabb because the mpOwnerCollider in the shape would always be null
 				Shape* shape = pCol->mpShape;
 
-				glm::mat3 rot = pCol->mpBody->mRotationMatrix;
+				glm::mat3 rot;
 				glm::vec3 extents = pCol->mpTr->mScale;
 
-				if(pCol->mIsTrigger)
-				{
-					rot = glm::mat3(1.0f);
-				}
+				rot = (pCol->mIsTrigger) ? glm::mat3(1.0f) : pCol->mpBody->mRotationMatrix;
+				
 								
 				if (shape->TestRay(r, id, rot, extents)) 
 				{
@@ -159,7 +157,7 @@ namespace Hollow {
 				std::vector<std::string> results(std::istream_iterator<std::string>{iss},
 					std::istream_iterator<std::string>());
 					
-				int id = GameObjectMetaData::Instance().mMapOfGameObjectTypes[results[0]];
+				int id = GameMetaData::Instance().mMapOfGameObjectTypes[results[0]];
 				int count = results.size() - 1;
 				for(int i = 0; i < count; ++i)
 				{

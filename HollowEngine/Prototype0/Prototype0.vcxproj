@@ -107,8 +107,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClCompile Include="src\PrototypeSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GameObjectsMetaData\GameObjectType.h" />
-    <ClInclude Include="src\GameOver.h" />
+    <ClInclude Include="src\GameMetaData\GameEventType.h" />
+    <ClInclude Include="src\GameMetaData\GameObjectType.h" />
     <ClInclude Include="src\PrototypeComponent.h" />
     <ClInclude Include="src\PrototypeSystem.h" />
   </ItemGroup>
@@ -172,7 +172,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
-    <None Include="src\GameObjectsMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\GameEvents.enum" />
+    <None Include="src\GameMetaData\GameEventsMap.data" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\test.lua" />

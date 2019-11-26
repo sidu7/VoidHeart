@@ -9,19 +9,14 @@ namespace Hollow {
 	class HOLLOW_API GameEvent
 	{
 	public:
-		enum HOLLOW_API GameEventType
-		{
-			COLLISION_EVENT,
-#define GAME_EVENT(name) name,
-#include "Hollow/Enums/GameEvents.enum"
-#undef GAME_EVENT
-			NUM
-		};
-		GameEvent(GameEventType type) {
+		GameEvent(int type) {
 			mType = type;
 		}
 		float mTimer = 0.0f;
-		GameEventType mType;
+		int mType; // identifier for event type
+
+		GameObject* mObject1;
+		GameObject* mObject2;
 	};
 
 }

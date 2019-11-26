@@ -23,6 +23,9 @@ namespace Hollow {
 
 	void GameObjectManager::DeleteGameObject(GameObject* GameObject)
 	{
+		if (std::find(mDeletionList.begin(), mDeletionList.end(), GameObject) != mDeletionList.end())
+			return;
+
 		mDeletionList.push_back(GameObject);
 	}
 
@@ -31,6 +34,7 @@ namespace Hollow {
 		if (!mDeletionList.empty())
 		{
 			for (auto GameObject : mDeletionList) {
+				
 				// Delete Everywhere
 				mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), GameObject));
 				SystemManager::Instance().DeleteGameObejectInSystems(GameObject);

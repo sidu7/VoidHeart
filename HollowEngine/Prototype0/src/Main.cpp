@@ -25,10 +25,10 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 
-#include "GameOver.h"
-#include "Hollow/Core/GameObjectMetaData.h"
+#include "Hollow/Core/GameMetaData.h"
 
-#include "GameObjectsMetaData/GameObjectType.h"
+#include "GameMetaData/GameObjectType.h"
+#include "GameMetaData/GameEventType.h"
 
 
 // Quoting theCherno: "A layer basically handles events and draws stuff"
@@ -61,22 +61,24 @@ class UILayer : public Hollow::Layer
 		if(e.GetEventType() == Hollow::EventType::MouseButtonPressed)
 		{
 			e.Handled = true;
-			
-			//Test Event
-			Hollow::GameOverEvent test;
-			Hollow::EventManager::Instance().BroadcastToSubscribers(&test);
 			//Test Event
 		}
 		//HW_TRACE("{0}", e);
 	}
 };
 
-void Hollow::GameObjectMetaData::Init()
+void Hollow::GameMetaData::Init()
 {
 	{
 #define GAMEOBJECT_TYPE(name) mMapOfGameObjectTypes[#name] = (int)GameObjectType::name;
-#include "GameObjectsMetaData/GameObjectType.enum"
+#include "GameMetaData/GameObjectType.enum"
 #undef GAMEOBJECT_TYPE
+	}
+
+	{
+#define GAME_EVENT(name) mMapOfGameEventTypes[#name] = (int)GameEventType::name;
+#include "GameMetaData/GameEvents.enum"
+#undef GAME_EVENT
 	}
 }
 
@@ -85,7 +87,7 @@ class Prototype0 : public Hollow::Application
 public:
 	Prototype0() 
 	{
-		Hollow::GameObjectMetaData::Instance().Init();
+		Hollow::GameMetaData::Instance().Init();
 		Application::Init("Resources/Settings.json");
 		
 		PushLayer(new GameLayer());

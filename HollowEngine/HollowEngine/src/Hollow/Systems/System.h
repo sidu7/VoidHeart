@@ -20,7 +20,7 @@ namespace Hollow
 		HOLLOW_API virtual void Init() {}
 		HOLLOW_API virtual void Update() = 0;
 		HOLLOW_API virtual void AddGameObject(GameObject* pGameObject) = 0;
-		HOLLOW_API virtual void HandleBroadcastEvent(GameEvent* event) { }
+		HOLLOW_API virtual void HandleBroadcastEvent(GameEvent& event) { }
 		HOLLOW_API virtual void OnDeleteGameObject(GameObject* pGameObject) {}
 		HOLLOW_API virtual void OnDeleteAllGameObjects() {}
 

@@ -17,7 +17,7 @@ namespace Hollow {
 		if (root.HasMember("Type"))
 		{
 			pNewGameObject->mDType = root["Type"].GetString();
-			int x = GameObjectMetaData::Instance().mMapOfGameObjectTypes[pNewGameObject->mDType];
+			int x = GameMetaData::Instance().mMapOfGameObjectTypes[pNewGameObject->mDType];
 			pNewGameObject->mType = BIT(x);
 		}
 

@@ -10,16 +10,16 @@ namespace Hollow
 	{
 		SINGLETON(EventManager)
 	public:
-		HOLLOW_API void Init();
-		HOLLOW_API void BroadcastToSubscribers(GameEvent* event);
-		HOLLOW_API void BroadcastEvent(GameEvent*);
+		HOLLOW_API void Init(rapidjson::Value::Object& data);
+		HOLLOW_API void BroadcastToSubscribers(GameEvent& event);
+		HOLLOW_API void BroadcastEvent(GameEvent&);
 		HOLLOW_API void AddDelayedEvent(GameEvent*, float);
 		HOLLOW_API void Update();
-		HOLLOW_API void SubscribeEvent(GameEvent::GameEventType eventType, std::function<void(GameEvent*)> callbackFunction);
+		HOLLOW_API void SubscribeEvent(int eventType, std::function<void(GameEvent&)> callbackFunction);
 		HOLLOW_API void CleanUp();
+		std::unordered_map<int, int> mGameObjectPairEventMap;
 	private:
 		std::vector<GameEvent*> mDelayedEvents;
-		std::unordered_map<GameEvent::GameEventType, std::vector<std::function<void(GameEvent*)>>> mEventsMap;
-		std::unordered_map<std::string, GameEvent::GameEventType> mEventsEnumMap;
+		std::unordered_map<int, std::vector<std::function<void(GameEvent&)>>> mEventsMap;
 	};
 }

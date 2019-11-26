@@ -10,8 +10,8 @@ class PrototypeSystem : public Hollow::System
 public:
 	~PrototypeSystem() {}
 	void Init() override;
-	void HandleBroadcastEvent(Hollow::GameEvent*) override;
+	void HandleBroadcastEvent(Hollow::GameEvent&) override;
 	void Update();
 	void AddGameObject(Hollow::GameObject* object);
-	void TestEventHandling(Hollow::GameEvent* event);
+	void TestEventHandling(Hollow::GameEvent& event);
 };

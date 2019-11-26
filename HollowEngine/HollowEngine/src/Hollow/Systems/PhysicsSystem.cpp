@@ -5,12 +5,12 @@
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/InputManager.h"
-#include "Hollow/Components/Camera.h"
 #include "Hollow/Physics/Broadphase/DynamicAABBTree.h"
 #include "Hollow/Physics/NarrowPhase/SAT.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Physics/Broadphase/Shape.h"
 #include "Hollow/Managers/ImGuiManager.h"
+#include "Hollow/Managers/EventManager.h"
 
 namespace Hollow
 {
@@ -146,15 +146,20 @@ namespace Hollow
 
 			if (pair.first->mIsTrigger || pair.second->mIsTrigger)
 			{
-				// TODO create event that an object entered a trigger
+				int id1 = pair.first->mpOwner->mType;
+				int id2 = pair.second->mpOwner->mType;
+				
+				GameEvent te(EventManager::Instance().mGameObjectPairEventMap[id1 | id2]);
+				te.mObject1 = pair.first->mpOwner;
+				te.mObject2 = pair.second->mpOwner;
 
+				EventManager::Instance().BroadcastEvent(te);
+				
 				continue;
 			}
 			// perform the SAT intersection test for cubes/cubes, spheres/cubes, and sphere/sphere
 			mSAT.CheckCollsionAndGenerateContact(pair.first, pair.second);
 		}
-
-		//HW_TRACE("{0}", mSAT.mContacts->size());
 
 		for (auto go : mGameObjects)
 		{
@@ -315,6 +320,19 @@ namespace Hollow
 
 	void PhysicsSystem::InterpolateState(float blendingFactor)
 	{
+		// Create Collision Events
+		for (auto& contact : *PhysicsManager::Instance().mSAT.mPrevContacts)
+		{
+			int id1 = contact->bodyA->mpOwner->mType;
+			int id2 = contact->bodyB->mpOwner->mType;
+
+			GameEvent ce(EventManager::Instance().mGameObjectPairEventMap[id1 | id2]);
+			ce.mObject1 = contact->bodyA->mpOwner;
+			ce.mObject2 = contact->bodyB->mpOwner;
+
+			EventManager::Instance().BroadcastToSubscribers(ce);
+		}
+		
 		for (auto go : mGameObjects)
 		{
 			Body* pBody = static_cast<Body*>(go->GetComponent<Body>());

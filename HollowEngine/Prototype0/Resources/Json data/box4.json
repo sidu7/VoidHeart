@@ -3,13 +3,13 @@
     "Components": [
         {
             "Type": "Transform",
-            "Position": [ 0.5, 2.0, 0.0 ],
+            "Position": [ 0.5, 20.0, 0.0 ],
             "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
             "Type": "Body",
             "Mass": 1.0,
-            "RigidbodyType": "STATIC"
+            "RigidbodyType": "DYNAMIC"
         },
         {
             "Type": "Collider",

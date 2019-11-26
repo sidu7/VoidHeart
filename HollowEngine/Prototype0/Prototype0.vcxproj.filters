@@ -32,10 +32,10 @@
     <ClInclude Include="src\PrototypeSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameOver.h">
+    <ClInclude Include="src\GameMetaData\GameObjectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObjectsMetaData\GameObjectType.h">
+    <ClInclude Include="src\GameMetaData\GameEventType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,8 +98,10 @@
     <None Include="Resources\Shaders\fxaa.frag" />
     <None Include="Resources\Shaders\Global.frag" />
     <None Include="Resources\Shaders\Global.vert" />
-    <None Include="src\GameObjectsMetaData\CollisionMask.data" />
     <None Include="Resources\Settings.json" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\GameEvents.enum" />
+    <None Include="src\GameMetaData\GameEventsMap.data" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\test.lua" />
