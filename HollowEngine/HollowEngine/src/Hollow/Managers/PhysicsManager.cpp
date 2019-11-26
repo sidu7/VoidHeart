@@ -102,16 +102,27 @@ namespace Hollow {
 
 			if (curr->IsLeaf())
 			{
+				Collider* pCol = static_cast<Collider*>(curr->mClientData);
+				
 				// cannot use curr->aabb because the mpOwnerCollider in the shape would always be null
-				Shape* shape = static_cast<Collider*>(curr->mClientData)->mpShape;
+				Shape* shape = pCol->mpShape;
 
-				glm::mat3& rot = static_cast<Collider*>(curr->mClientData)->mpBody->mRotationMatrix;
-				glm::vec3 extents = static_cast<Collider*>(curr->mClientData)->mpTr->mScale;
-				if (shape->TestRay(r, id, rot, extents)) {
-					if (id.depth < closest.depth) {
+				glm::mat3 rot = pCol->mpBody->mRotationMatrix;
+				glm::vec3 extents = pCol->mpTr->mScale;
+
+				if(pCol->mIsTrigger)
+				{
+					rot = glm::mat3(1.0f);
+				}
+								
+				if (shape->TestRay(r, id, rot, extents)) 
+				{
+					if (id.depth < closest.depth) 
+					{
 						closest = id;
 					}
 				}
+				
 			}
 
 			curr = curr->right;
