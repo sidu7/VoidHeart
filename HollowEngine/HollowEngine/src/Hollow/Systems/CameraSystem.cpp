@@ -37,7 +37,7 @@ namespace Hollow {
 	{
 		float frameTime = FrameRateController::Instance().GetFrameTime();
 		float velocity = pCamera->mMovementSpeed * frameTime;
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W)||InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_UP))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W)||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_UP))
 		{
 			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT)|| InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT)>20)
 			{
@@ -48,7 +48,7 @@ namespace Hollow {
 				pTransform->mPosition += pCamera->mFront * velocity;
 			}
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S)||InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S)||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 		{
 			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20)
 			{
@@ -59,11 +59,11 @@ namespace Hollow {
 				pTransform->mPosition -= pCamera->mFront * velocity;
 			}
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_A)||InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_A)||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
 		{
 			pTransform->mPosition -= pCamera->mRight * velocity;
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_D) || InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
+		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_D) || InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
 		{
 			pTransform->mPosition += pCamera->mRight * velocity;
 		}
@@ -215,7 +215,7 @@ namespace Hollow {
 				frontDirection = glm::rotateY(frontDirection, glm::radians(-pCamera->mYaw));
 
 				cameraData.mEyePosition = frontDirection + pTransform->mPosition;
-				pCamera->mFront = glm::normalize(pTransform->mPosition + glm::vec3(0.0f,1.0f,0.0f) - cameraData.mEyePosition);
+				pCamera->mFront = glm::normalize(pTransform->mPosition + pCamera->mAnchorFocusOffset - cameraData.mEyePosition);
 				pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
 				pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));
 				cameraData.mViewMatrix = glm::lookAt(cameraData.mEyePosition, cameraData.mEyePosition + pCamera->mFront, pCamera->mUp);;

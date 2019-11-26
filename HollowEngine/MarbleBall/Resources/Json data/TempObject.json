@@ -39,7 +39,8 @@
       "CameraType": 4,
       "ProjectionType": 0,
       "MouseSensitivity": 1.6,
-      "PositionOffset": [ 0.0, 1.0, 5.0 ]
+      "PositionOffset": [ 0.0, 1.0, 10.0 ],
+      "AnchorFocusOffset": [0.0,3.5,0.0]
     }
   ]
 }

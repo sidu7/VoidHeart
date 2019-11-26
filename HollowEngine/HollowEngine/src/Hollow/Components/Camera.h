@@ -24,7 +24,8 @@ namespace Hollow
 		glm::vec3 mRight;
 
 		glm::vec3 mOffsetFromAnchor;
-		
+		glm::vec3 mAnchorFocusOffset;
+
 		bool mIsActive;
 		
 		float mYaw;

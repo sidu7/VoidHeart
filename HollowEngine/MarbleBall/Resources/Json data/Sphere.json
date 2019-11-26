@@ -7,7 +7,7 @@
     },
     {
       "Type": "Model",
-      "Shape": 0,
+      "Shape": "SPHERE",
       "CastShadow": true
     },
     {
@@ -24,17 +24,6 @@
       "Shininess": 100000.0,
       "Diffuse": [ 0.5, 0.5, 0.5 ],
       "Specular": [2.0, 2.0, 2.0]
-    },
-    {
-      "Type": "ParticleEmitter",
-      "Shape": 0,
-      "Texture": "Resources/Textures/cracks.png",
-      "Count": 100000.0,
-      "Area": [ 1.0, 1.0, 1.0 ],
-      "Life": [ 1.0, 3.0 ],
-      "Speed": [ 1.5, 2.0 ],
-      "ComputeShader": "Resources/Shaders/CenterParticles.comp",
-      "PixelSize": 0.01
     }
   ]
 }

@@ -1,0 +1,1079 @@
+{
+  "GameObjects": [
+    {
+      "Type": "",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 11.251664161682129, 9.371041297912598, -31.748872756958009 ],
+          "Scale": [ 1.0, 1.0, 1.0 ]
+        },
+        {
+          "Type": "Camera",
+          "Yaw": 85.29959106445313,
+          "Pitch": -19.79998779296875,
+          "MovementSpeed": 5.0,
+          "MouseSensitivity": 0.10000000149011612,
+          "Zoom": 45.0,
+          "Near": 0.10000000149011612,
+          "Far": 100.0,
+          "IsActive": true,
+          "CameraType": 3,
+          "ProjectionType": 0,
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ]
+        }
+      ]
+    },
+    {
+      "Type": "PLAYER",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 0.08991250395774842, -152831.46875, 10.808097839355469 ],
+          "Rotation": [ 0.0, 90.0, 0.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
+        },
+        {
+          "Type": "Body",
+          "Mass": 1.0,
+          "Velocity": [ -1.424076081275853e-19, -1731.481201171875, 2.3895988514174359e-18 ],
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.75,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "BALL",
+          "isTrigger": false
+        },
+        {
+          "Type": "Model",
+          "Shape": "SPHERE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Material",
+          "Texture": "Resources/Textures/cracks.png",
+          "Specular": [ 9.999999974752428e-7, 9.999899930335233e-7, 9.999899930335233e-7 ],
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Script",
+          "FilePath": "Resources/Scripts/test.lua"
+        },
+        {
+          "Type": "Camera",
+          "Yaw": -707.9439086914063,
+          "Pitch": -69.79998779296875,
+          "MovementSpeed": 5.0,
+          "MouseSensitivity": 1.600000023841858,
+          "Zoom": 45.0,
+          "Near": 0.10000000149011612,
+          "Far": 1000.0,
+          "IsActive": false,
+          "CameraType": 4,
+          "ProjectionType": 0,
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ],
+          "PositionOffset": [ 0.0, 1.0, 3.0 ],
+          "AnchorFocusOffset": [ 0.0, 1.0, 0.0 ]
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Scale": [ 2.0, 1.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 3.200000286102295, 0.0, -7.800000190734863 ],
+          "Rotation": [ 0.0, -45.0, 0.0 ],
+          "Scale": [ 2.0, 1.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 11.0, 0.0, -11.0 ],
+          "Rotation": [ 0.0, 90.0, 0.0 ],
+          "Scale": [ 2.0, 1.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 28.0, 0.0, -22.5 ],
+          "Scale": [ 25.0, 1.0, 25.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 22.860000610351564, 2.0, -20.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 1.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 31.5, 2.0, -20.0 ],
+          "Rotation": [ 0.0, 0.0, -25.0 ],
+          "Scale": [ 10.0, 1.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 28.0, 0.0, -37.5 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 28.0, 0.0, -41.0 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 28.0, 0.0, -44.560001373291019 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 28.0, 0.0, -48.0 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 28.0, 0.0, -60.00000762939453 ],
+          "Scale": [ 20.0, 1.0, 20.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 28.0, 2.0, -70.0 ],
+          "Scale": [ 20.0, 5.0, 1.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 18.0, 2.0, -60.00000762939453 ],
+          "Scale": [ 1.0, 5.0, 20.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 0.0, 0.0, 10.0 ],
+          "Scale": [ 10.0, 1.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.0010000000474974514,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 5.0, 1.0, 10.0 ],
+          "Scale": [ 1.0, 2.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ -5.0, 1.0, 10.0 ],
+          "Scale": [ 1.0, 2.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 0.0, 1.0, 15.000001907348633 ],
+          "Rotation": [ 0.0, 90.0, 0.0 ],
+          "Scale": [ 1.0, 2.0, 10.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 41.0, 0.8000000715255737, -66.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.0010000000474974514,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 41.0, 0.8000000715255737, -54.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.0020000000949949028,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 41.0, 0.8000000715255737, -60.00000762939453 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.800000011920929,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 50.0, 5.0, -54.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.699999988079071,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 50.0, 5.0, -60.00000762939453 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.0010000000474974514,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 50.0, 5.0, -66.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.0010000000474974514,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 70.0, 4.0, -60.00000762939453 ],
+          "Scale": [ 40.0, 2.0, 20.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 80.0, 5.0, -50.0 ],
+          "Rotation": [ 0.0, 90.0, 90.0 ],
+          "Scale": [ 3.0, 2.0, 20.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 80.0, 5.0, -70.0 ],
+          "Rotation": [ 0.0, 90.0, 90.0 ],
+          "Scale": [ 3.0, 2.0, 20.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 90.0, 6.0, -60.00000762939453 ],
+          "Rotation": [ 0.0, 0.0, 90.0 ],
+          "Scale": [ 10.0, 2.0, 20.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    },
+    {
+      "Type": "PLATFORM",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 85.0, 12.0, -60.00000762939453 ],
+          "Scale": [ 10.0, 2.0, 20.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Body",
+          "RigidbodyType": "STATIC",
+          "IsFrictionLess": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 1.0,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "CUBE",
+          "isTrigger": false
+        }
+      ]
+    }
+  ]
+}
