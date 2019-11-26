@@ -152,7 +152,7 @@ namespace Hollow {
 				int count = results.size() - 1;
 				for(int i = 0; i < count; ++i)
 				{
-					mCollisionMask[id | BIT(i)] = (bool)std::stoi(results[i + 1]);
+					mCollisionMask[BIT(id) | BIT(i)] = (bool)std::stoi(results[i + 1]);
 				}
 			}
 			file.close();

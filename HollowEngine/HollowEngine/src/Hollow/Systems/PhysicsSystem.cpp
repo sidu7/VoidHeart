@@ -88,7 +88,8 @@ namespace Hollow
 
 	void PhysicsSystem::OnDeleteAllGameObjects()
 	{
-		PhysicsManager::Instance().CleanUp();
+		PhysicsManager::Instance().mSAT.ResetContacts();
+		PhysicsManager::Instance().mTree.DeleteTree();
 	}
 
 	void PhysicsSystem::Step(float fixedDeltaTime)
