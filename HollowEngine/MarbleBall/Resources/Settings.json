@@ -1,35 +1,32 @@
 {
   "FrameRate": 60,
-  "Window": [
-    {
-      "Name": "Hollow Engine",
-      "Width": 1280,
-      "Height": 720,
-      "Fullscreen": false,
-      "OpenglMajorVersion": 4,
-      "OpenglMinorVersion": 3,
-      "VSync": false
-    }
-  ],
-  "Renderer": [
-    {
-      "GBufferShader": [ "Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag" ],
-      "DeferredShader": [ "Resources/Shaders/Global.vert", "Resources/Shaders/Global.frag" ],
-      "ShadowMapShader": [ "Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag" ],
-      "DebugShader": [ "Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag" ],
-      "ParticleShader": [ "Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag" ],
-      "DebugShadowMapShader": [ "Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag" ],
-      "BlurComputeShaders": [ "Resources/Shaders/HorizontalBlur.comp", "Resources/Shaders/VerticalBlur.comp" ],
-      "LocalLightShader": [ "Resources/Shaders/LocalLight.vert", "Resources/Shaders/LocalLight.frag" ],
-      "BloomShader": [ "Resources/Shaders/Bloom.vert", "Resources/Shaders/Bloom.frag" ],
-      "UIShader": [ "Resources/Shaders/UIShader.vert", "Resources/Shaders/UIShader.frag" ],
-      "Skydome": [ "Resources/Skydomes/Newport_Loft_Ref.hdr", "Resources/Skydomes/Newport_Loft_Ref.irr.hdr" ]
-    }
-  ],
-  "Memory": [
-    {
-      "GameobjectsPool": 2000,
-      "ComponentsPool": 2000
-    }
-  ]
+  "Window": {
+    "Name": "Hollow Engine",
+    "Width": 1280,
+    "Height": 720,
+    "Fullscreen": false,
+    "OpenglMajorVersion": 4,
+    "OpenglMinorVersion": 3,
+    "VSync": false
+  },
+  "Physics": {
+    "CollisionMask": "src/GameObjectsMetaData/CollisionMask.data"
+  },
+  "Renderer": {
+    "GBufferShader": [ "Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag" ],
+    "DeferredShader": [ "Resources/Shaders/Global.vert", "Resources/Shaders/Global.frag" ],
+    "ShadowMapShader": [ "Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag" ],
+    "DebugShader": [ "Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag" ],
+    "ParticleShader": [ "Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag" ],
+    "DebugShadowMapShader": [ "Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag" ],
+    "BlurComputeShaders": [ "Resources/Shaders/HorizontalBlur.comp", "Resources/Shaders/VerticalBlur.comp" ],
+    "LocalLightShader": [ "Resources/Shaders/LocalLight.vert", "Resources/Shaders/LocalLight.frag" ],
+    "BloomShader": [ "Resources/Shaders/Bloom.vert", "Resources/Shaders/Bloom.frag" ],
+    "UIShader": [ "Resources/Shaders/UIShader.vert", "Resources/Shaders/UIShader.frag" ],
+    "Skydome": [ "Resources/Skydomes/Newport_Loft_Ref.hdr", "Resources/Skydomes/Newport_Loft_Ref.irr.hdr" ]
+  },
+  "Memory": {
+    "GameobjectsPool": 2000,
+    "ComponentsPool": 2000
+  }
 }

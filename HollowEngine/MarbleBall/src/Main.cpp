@@ -9,23 +9,40 @@
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/SceneManager.h"
 
-class Prototype : public Hollow::Application
+#include "Hollow/Core/GameObjectMetaData.h"
+#include "GameObjectsMetaData/GameObjectType.h"
+
+void Hollow::GameObjectMetaData::Init()
 {
-public:
-	Prototype() : Application("Resources/Settings.json")
 	{
-		Hollow::SceneManager::Instance().LoadLevel("Marble");
-		auto randomizer = Random::Range(0.0f, 1.0f);
+#define GAMEOBJECT_TYPE(name) mMapOfGameObjectTypes[#name] = (int)MarbleBall::GameObjectType::name;
+#include "GameObjectsMetaData/GameObjectType.enum"
+#undef GAMEOBJECT_TYPE
 	}
+}
 
-	~Prototype()
+namespace MarbleBall
+{
+	class MarbleBall : public Hollow::Application
 	{
-		HW_TRACE("Prototype Closing");
-	}
-};
+	public:
+		MarbleBall()
+		{
+			Hollow::GameObjectMetaData::Instance().Init();
+			// Engine Initialization
+			Application::Init("Resources/Settings.json");
 
+			Hollow::SceneManager::Instance().LoadLevel("Marble");
+		}
+
+		~MarbleBall()
+		{
+			HW_TRACE("MarbleBall Closing");
+		}
+	};
+}
 
 Hollow::Application* Hollow::CreateApplication()
 {
-	return new Prototype();
+	return new MarbleBall::MarbleBall();
 }

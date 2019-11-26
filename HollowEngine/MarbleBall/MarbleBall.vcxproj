@@ -205,6 +205,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
+    <None Include="src\GameObjectsMetaData\CollisionMask.data" />
+    <None Include="src\GameObjectsMetaData\GameObjectType.enum" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HollowEngine\HollowEngine.vcxproj">
@@ -213,6 +215,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GameObjectsMetaData\GameObjectType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
