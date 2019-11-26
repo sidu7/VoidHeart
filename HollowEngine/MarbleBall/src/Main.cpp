@@ -32,7 +32,7 @@ namespace MarbleBall
 			// Engine Initialization
 			Application::Init("Resources/Settings.json");
 
-			Hollow::SceneManager::Instance().LoadLevel("a");
+			Hollow::SceneManager::Instance().LoadLevel("Marble");
 		}
 
 		~MarbleBall()
