@@ -1,0 +1,51 @@
+{
+  "Type": "POINT",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "Scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "Type": "Material",
+      "Diffuse": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "Specular": [
+        0.9651089906692505,
+        1.0,
+        0.406862735748291
+      ],
+      "Shininess": 10000.0,
+      "MaterialTextures": true
+    },
+    {
+      "Type": "Model",
+      "Shape": "CUBE",
+      "CastShadow": true,
+      "ModelHasOffset": false
+    },
+    {
+      "Type": "Collider",
+      "Friction": 0.75,
+      "Bounciness": 0.20000000298023225,
+      "Shape": "BOX",
+      "isTrigger": true
+    },
+    {
+      "Type": "Body",
+      "RigidbodyType": "STATIC",
+      "IsFrictionLess": false
+    }
+  ]
+}
