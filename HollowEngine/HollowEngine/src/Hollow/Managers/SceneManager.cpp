@@ -110,7 +110,8 @@ namespace Hollow
 				ImGui::InputText("Prefab File", charBuffer, 255);
 				if (ImGui::Button("Add GameObject"))
 				{
-					ResourceManager::Instance().LoadGameObjectFromFile(charBuffer);
+					std::string fileName = "Resources/Prefabs/" + std::string(charBuffer) + ".json";
+					ResourceManager::Instance().LoadGameObjectFromFile(fileName);
 				}
 				ImGui::EndTabItem();
 			}
@@ -142,7 +143,9 @@ namespace Hollow
 		GameObjectManager::Instance().DeleteAllGameObjects();
 		
 		std::string fileName = "Resources/Levels/" + LevelFile + ".json";
-		std::string contents = ResourceManager::Instance().LoadJSONFile(fileName);
+		std::ifstream file(fileName);
+		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+		file.close();
 		PARSE_JSON_FILE(contents.c_str());
 		
 		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();

@@ -5,6 +5,7 @@ namespace Hollow {
 	class Component;
 	class GameObject
 	{
+		friend class GameObjectFactory;
 	public:
 		HOLLOW_API GameObject();
 		HOLLOW_API ~GameObject();
@@ -28,6 +29,7 @@ namespace Hollow {
 
 	private:
 		static unsigned int ID;
+		std::string mDType;
 	};
 
 	template <typename T>
