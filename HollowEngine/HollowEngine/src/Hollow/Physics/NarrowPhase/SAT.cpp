@@ -469,7 +469,14 @@ namespace Hollow {
 		Contact c;
 
 		c.rA = pointOnBoxClosestToBall - boxposition;
-		manifold->collisionNormal = glm::normalize(ball->mpBody->mPosition - pointOnBoxClosestToBall);
+		//HACK
+		glm::vec3 test = ball->mpBody->mPosition - pointOnBoxClosestToBall;
+		if (test == glm::vec3(0.0f))
+		{
+			test = ball->mpBody->mPosition + glm::vec3(0.0f, 0.001f, 0.0f) - pointOnBoxClosestToBall;
+		}
+		manifold->collisionNormal = glm::normalize(test);
+		//HACK
 		c.rB = (-manifold->collisionNormal) * ballShape->mRadius;
 		c.penetrationDepth = distanceToCenter - ballShape->mRadius;
 		c.point = pointOnBoxClosestToBall;
