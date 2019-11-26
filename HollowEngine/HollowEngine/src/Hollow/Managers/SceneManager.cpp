@@ -91,8 +91,7 @@ namespace Hollow
 					rapidjson::Document comp;
 					comp.Parse(s.GetString());
 					mSelectedComponent->Serialize(comp.GetObject());
-					//JSONParse
-					//serialize()
+					mSelectedGameObject = ImGuiManager::Instance().mpSelectedGameObject;
 					mSelectedGameObject->AddComponent(mSelectedComponent);
 					mSelectedComponent = nullptr;
 					mSelectedComponentName = "";
@@ -103,6 +102,15 @@ namespace Hollow
 				{
 					DeserializeGameObject();
 					mSelectedGameObject = nullptr;
+				}
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Load Prefab"))
+			{
+				ImGui::InputText("Prefab File", charBuffer, 255);
+				if (ImGui::Button("Add GameObject"))
+				{
+					ResourceManager::Instance().LoadGameObjectFromFile(charBuffer);
 				}
 				ImGui::EndTabItem();
 			}
@@ -168,7 +176,7 @@ namespace Hollow
 		std::string exportDir = "Resources/Levels/";
 		exportDir += charBuffer;
 		exportDir += ".json";
-		std::ofstream file(exportDir.c_str());
+		std::ofstream file(exportDir.c_str(),std::ofstream::trunc);
 		rapidjson::StringBuffer s;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(s);
 		writer.StartObject();

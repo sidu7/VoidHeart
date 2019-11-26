@@ -28,12 +28,16 @@ namespace Hollow {
 	{
 		Body* pBody = object->GetComponent<Body>();
 		pBody->mAngularVelocity += -glm::vec3(-impulse.z,0.0f,impulse.x) * pBody->mInverseMass;
+		//ApplyLinearImpulse(object, impulse);
 	}
 
 	void PhysicsManager::ApplyLinearImpulse(GameObject* object, glm::vec3 impulse)
 	{
 		Body* pBody = object->GetComponent<Body>();
 		pBody->mVelocity += impulse * pBody->mInverseMass;
+		//pBody->mVelocity.x = pBody->mVelocity.x - 0.005 * pBody->mVelocity.x;
+		//pBody->mVelocity.z = pBody->mVelocity.z - 0.005 * pBody->mVelocity.z;
+		//pBody->mAngularVelocity = pBody->mAngularVelocity - 0.05 * pBody->mAngularVelocity;
 	}
 	
 	GameObject* PhysicsManager::CastRay()

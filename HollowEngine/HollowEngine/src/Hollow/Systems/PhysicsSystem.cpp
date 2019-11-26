@@ -254,7 +254,7 @@ namespace Hollow
 
 						c->contactPoints[j].tangentImpulseSum1 += lambda;
 						c->contactPoints[j].tangentImpulseSum1 =
-							glm::clamp(c->contactPoints[j].tangentImpulseSum1, -mu * nLambda, mu * nLambda);
+							glm::clamp(c->contactPoints[j].tangentImpulseSum1, -c->frictionConstant * nLambda, c->frictionConstant * nLambda);
 
 						deltaLambda = c->contactPoints[j].tangentImpulseSum1 - origTangent0ImpulseSum;
 
@@ -270,7 +270,7 @@ namespace Hollow
 
 						c->contactPoints[j].tangentImpulseSum2 += lambda;
 						c->contactPoints[j].tangentImpulseSum2 =
-							glm::clamp(c->contactPoints[j].tangentImpulseSum2, -mu * nLambda, mu * nLambda);
+							glm::clamp(c->contactPoints[j].tangentImpulseSum2, -c->frictionConstant * nLambda, c->frictionConstant * nLambda);
 
 						deltaLambda = c->contactPoints[j].tangentImpulseSum2 - origTangent1ImpulseSum;
 
