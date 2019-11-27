@@ -31,6 +31,11 @@ namespace Hollow {
 
 	void EventManager::FireCollisionEvent(int eventId, GameObject* go1, GameObject* go2)
 	{
+		if(mGameObjectPairEventMap.find(eventId) == mGameObjectPairEventMap.end())
+		{
+			return;
+		}
+		
 		GameEvent te(mGameObjectPairEventMap[eventId]);
 		te.mpObject1 = go1;
 		te.mpObject2 = go2;
