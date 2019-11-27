@@ -31,7 +31,7 @@ namespace Hollow {
 
 	void EventManager::FireCollisionEvent(int eventId, GameObject* go1, GameObject* go2)
 	{
-		if(mGameObjectPairEventMap.find(eventId) == mGameObjectPairEventMap.end())
+		if(mGameObjectPairEventMap.count(eventId) <= 0)
 		{
 			return;
 		}
