@@ -40,7 +40,7 @@ namespace Hollow {
 		RigidbodyType mBodyType;
 
 		bool mIsFrictionLess;
-
+		bool mUseGravity;
 	private:
 		std::string mDRigidbodyType;
 	};

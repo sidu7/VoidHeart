@@ -21,7 +21,8 @@ namespace Hollow {
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mIsFrictionLess = false;
-
+		mUseGravity = true;
+		
 		mDRigidbodyType = "";
 		mBodyType = Body::DYNAMIC;
 	}
@@ -40,6 +41,7 @@ namespace Hollow {
 		ImGui::InputFloat3("Velocity", &mVelocity[0]);
 		ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
 		ImGui::Checkbox("Frictionless", &mIsFrictionLess);
+		ImGui::Checkbox("Use Gravity", &mUseGravity);
 	}
 
 	void Body::Serialize(rapidjson::Value::Object data)
@@ -64,6 +66,10 @@ namespace Hollow {
 		{
 			mIsFrictionLess = data["IsFrictionLess"].GetBool();
 		}
+		if (data.HasMember("UseGravity"))
+		{
+			mUseGravity = data["UseGravity"].GetBool();
+		}
 
 		mInverseMass = 1.0f / mMass;
 	}
@@ -84,6 +90,7 @@ namespace Hollow {
 		}
 		JSONHelper::Write<std::string>("RigidbodyType", mDRigidbodyType, writer);
 		JSONHelper::Write<bool>("IsFrictionLess", mIsFrictionLess, writer);
+		JSONHelper::Write<bool>("UseGravity", mUseGravity, writer);
 	}
 	
 }

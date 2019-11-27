@@ -5,12 +5,12 @@
 #include "Hollow/Components/Collider.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/InputManager.h"
-#include "Hollow/Components/Camera.h"
 #include "Hollow/Physics/Broadphase/DynamicAABBTree.h"
 #include "Hollow/Physics/NarrowPhase/SAT.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Physics/Broadphase/Shape.h"
 #include "Hollow/Managers/ImGuiManager.h"
+#include "Hollow/Managers/EventManager.h"
 
 namespace Hollow
 {
@@ -54,6 +54,7 @@ namespace Hollow
 				pCol->mpBody->mPreviousQuaternion = pCol->mpTr->mQuaternion;
 				pCol->mpBody->mRotationMatrix = glm::toMat3(pCol->mpBody->mQuaternion);
 			}
+
 			if (pCol->mpShape->mType == ShapeType::BOX)
 			{
 				// update local shape (0.5f because we are updating half extents)
@@ -65,6 +66,7 @@ namespace Hollow
 				static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpTr->mPosition;
 				static_cast<ShapeCircle*>(pCol->mpShape)->mRadius = pCol->mpTr->mScale.x / 2.0f; // this will only be (x||y||z) as its a sphere!
 			}
+			
 			// Collider added to Dynamic BVH
 			PhysicsManager::Instance().mTree.AddCollider(pCol);
 		}
@@ -84,6 +86,11 @@ namespace Hollow
 			}
 		}
 		ImGui::End();
+	}
+
+	void PhysicsSystem::OnDeleteGameObject(GameObject* pGameObject)
+	{
+		PhysicsManager::Instance().mTree.RemoveCollider(pGameObject->GetComponent<Collider>());
 	}
 
 	void PhysicsSystem::OnDeleteAllGameObjects()
@@ -140,15 +147,16 @@ namespace Hollow
 
 			if (pair.first->mIsTrigger || pair.second->mIsTrigger)
 			{
-				// TODO create event that an object entered a trigger
+				int id1 = pair.first->mpOwner->mType;
+				int id2 = pair.second->mpOwner->mType;
 
+				EventManager::Instance().FireCollisionEvent(id1 | id2, pair.first->mpOwner, pair.second->mpOwner);
+				
 				continue;
 			}
 			// perform the SAT intersection test for cubes/cubes, spheres/cubes, and sphere/sphere
 			mSAT.CheckCollsionAndGenerateContact(pair.first, pair.second);
 		}
-
-		//HW_TRACE("{0}", mSAT.mContacts->size());
 
 		for (auto go : mGameObjects)
 		{
@@ -156,11 +164,15 @@ namespace Hollow
 
 			if (pBody != nullptr) {
 
-				if (pBody->mBodyType == Body::STATIC || pBody->mBodyType == Body::KINEMATIC)
+				if (pBody->mBodyType == Body::STATIC)
 					continue;
 				// compute acceleration
 				glm::vec3 acc = pBody->mTotalForce * pBody->mInverseMass;
-				acc += gravity;
+				if (pBody->mUseGravity)
+				{
+					acc += gravity;
+				}
+				
 				glm::vec3 alpha = pBody->mTotalTorque * pBody->mWorldInertiaInverse;
 
 				// integrate acc into the velocity
@@ -305,6 +317,15 @@ namespace Hollow
 
 	void PhysicsSystem::InterpolateState(float blendingFactor)
 	{
+		// Create Collision Events (Not the best place but at least gets called once per frame for sure)
+		for (auto& contact : *PhysicsManager::Instance().mSAT.mPrevContacts)
+		{
+			int id1 = contact->bodyA->mpOwner->mType;
+			int id2 = contact->bodyB->mpOwner->mType;
+
+			EventManager::Instance().FireCollisionEvent(id1 | id2, contact->bodyA->mpOwner, contact->bodyB->mpOwner);
+		}
+		
 		for (auto go : mGameObjects)
 		{
 			Body* pBody = static_cast<Body*>(go->GetComponent<Body>());

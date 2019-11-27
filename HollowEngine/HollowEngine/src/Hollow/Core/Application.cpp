@@ -17,7 +17,7 @@
 #include "Hollow/Managers/UIManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/SceneManager.h"
-#include "GameObjectMetaData.h"
+#include "Hollow/Managers/GameObjectManager.h"
 
 
 namespace Hollow {
@@ -61,7 +61,7 @@ namespace Hollow {
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
-		EventManager::Instance().Init();
+		EventManager::Instance().Init(JSONHelper::GetSettings(data, "Events"));
 		ResourceManager::Instance().Init();
 		AudioManager::Instance().Init();
 		ScriptingManager::Instance().Init();
@@ -112,9 +112,10 @@ namespace Hollow {
 
 			AudioManager::Instance().Update();
 
-
 			RenderManager::Instance().Update();
 
+			GameObjectManager::Instance().ClearDeletionList();
+			
 			FrameRateController::Instance().FrameEnd();
 
 			if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_ESCAPE))

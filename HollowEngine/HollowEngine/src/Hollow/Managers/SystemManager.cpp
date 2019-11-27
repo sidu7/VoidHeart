@@ -45,7 +45,7 @@ namespace Hollow
 		}
 	}
 
-	void SystemManager::BroadcastEventToSystems(GameEvent* event)
+	void SystemManager::BroadcastEventToSystems(GameEvent& event)
 	{
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
 		{

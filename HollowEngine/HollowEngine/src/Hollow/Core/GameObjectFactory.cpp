@@ -3,7 +3,7 @@
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Components/Component.h"
 #include "Hollow/Managers/MemoryManager.h"
-#include "Hollow/Core/GameObjectMetaData.h"
+#include "GameMetaData.h"
 
 namespace Hollow {
 		
@@ -17,7 +17,7 @@ namespace Hollow {
 		if (root.HasMember("Type"))
 		{
 			pNewGameObject->mDType = root["Type"].GetString();
-			int x = GameObjectMetaData::Instance().mMapOfGameObjectTypes[pNewGameObject->mDType];
+			int x = GameMetaData::Instance().mMapOfGameObjectTypes[pNewGameObject->mDType];
 			pNewGameObject->mType = BIT(x);
 		}
 

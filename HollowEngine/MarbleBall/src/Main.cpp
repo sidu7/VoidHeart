@@ -9,15 +9,22 @@
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/SceneManager.h"
 
-#include "Hollow/Core/GameObjectMetaData.h"
-#include "GameObjectsMetaData/GameObjectType.h"
+#include "Hollow/Core/GameMetaData.h"
+#include "GameMetaData/GameObjectType.h"
+#include "GameMetaData/GameEventType.h"
 
-void Hollow::GameObjectMetaData::Init()
+void Hollow::GameMetaData::Init()
 {
 	{
 #define GAMEOBJECT_TYPE(name) mMapOfGameObjectTypes[#name] = (int)MarbleBall::GameObjectType::name;
-#include "GameObjectsMetaData/GameObjectType.enum"
+#include "GameMetaData/GameObjectType.enum"
 #undef GAMEOBJECT_TYPE
+	}
+
+	{
+#define GAME_EVENT(name) mMapOfGameEventTypes[#name] = (int)MarbleBall::GameEventType::name;
+#include "GameMetaData/GameEvents.enum"
+#undef GAME_EVENT
 	}
 }
 
@@ -28,7 +35,7 @@ namespace MarbleBall
 	public:
 		MarbleBall()
 		{
-			Hollow::GameObjectMetaData::Instance().Init();
+			Hollow::GameMetaData::Instance().Init();
 			// Engine Initialization
 			Application::Init("Resources/Settings.json");
 

@@ -1,16 +1,16 @@
 #pragma once
-#include "Hollow/Common.h"
 #include <unordered_map>
 #include <iostream>
 
 namespace Hollow
 {
-	class GameObjectMetaData
+	class GameMetaData
 	{
-		SINGLETON(GameObjectMetaData);
+		SINGLETON(GameMetaData);
 	public:
 		std::unordered_map<std::string, int> mMapOfGameObjectTypes;
-
+		std::unordered_map<std::string, int> mMapOfGameEventTypes;
+		
 		HOLLOW_API void Init();
 	};
 }

@@ -16,7 +16,8 @@ namespace Hollow {
 	{
 	}
 
-	void DynamicAABBTree::RemoveNode(Node* node) {
+	// returns Sibling pointer 
+	Node* DynamicAABBTree::RemoveNode(Node* node) {
 		Node* parent = node->parent;
 		if (parent) {
 			// if parent exists we need to switch sibling to parent position
@@ -29,11 +30,13 @@ namespace Hollow {
 				root = sibling;
 				sibling->parent = nullptr;
 			}
+			return sibling;
 		}
-		else {
-			root = nullptr;
-			delete node;
-		}
+		
+		root = nullptr;
+		delete node;
+		
+		return nullptr;
 	}
 
 	void DynamicAABBTree::DeleteTree() {
@@ -42,9 +45,49 @@ namespace Hollow {
 		colliderPairs.clear();
 	}
 
-	void DynamicAABBTree::RemoveCollider() {
-		// this needs a map between the collider and the generated nodes
-		// TODO when updating to Vector based tree create a map for this
+	// this needs a map between the collider and the generated nodes
+	// TODO when updating to Vector based tree create a map for this
+	void DynamicAABBTree::RemoveCollider(Collider* col) {
+
+		// To delete a leaf node from a tree
+		// -Traverse In-Order to find the leaf node
+		// -Delete the node and replace the parent with sibling
+		// -SyncHierarchy for siblings parent
+
+		std::stack<Node*> s;
+		Node* curr = root;
+
+		// inorder traversal for finding the node
+		while (curr != NULL || s.empty() == false)
+		{
+
+			while (curr != NULL)
+			{
+				s.push(curr);
+				curr = curr->left;
+			}
+
+			curr = s.top();
+			s.pop();
+
+			if (curr->IsLeaf())
+			{
+				if(static_cast<Collider*>(curr->mClientData) == col)
+				{
+					Node* parent = curr->parent;
+					Node* sib = RemoveNode(curr);
+
+					delete curr;
+					delete parent;
+
+					SyncHierarchy(sib->parent);
+
+					return;
+				}
+			}
+
+			curr = curr->right;
+		}
 	}
 
 	// Insert method for the tree

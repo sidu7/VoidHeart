@@ -76,14 +76,17 @@
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
     <None Include="Resources\Settings.json" />
-    <None Include="src\GameObjectsMetaData\CollisionMask.data" />
-    <None Include="src\GameObjectsMetaData\GameObjectType.enum" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\GameObjectType.enum" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GameObjectsMetaData\GameObjectType.h">
+    <ClInclude Include="src\GameMetaData\GameObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameMetaData\GameEventType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

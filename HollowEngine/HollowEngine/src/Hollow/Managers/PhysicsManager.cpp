@@ -12,7 +12,7 @@
 
 #include "RenderManager.h"
 #include "Hollow/Core/GameObject.h"
-#include "Hollow/Core/GameObjectMetaData.h"
+#include "Hollow/Core/GameMetaData.h"
 
 namespace Hollow {
 
@@ -106,16 +106,25 @@ namespace Hollow {
 
 			if (curr->IsLeaf())
 			{
+				Collider* pCol = static_cast<Collider*>(curr->mClientData);
+				
 				// cannot use curr->aabb because the mpOwnerCollider in the shape would always be null
-				Shape* shape = static_cast<Collider*>(curr->mClientData)->mpShape;
+				Shape* shape = pCol->mpShape;
 
-				glm::mat3& rot = static_cast<Collider*>(curr->mClientData)->mpBody->mRotationMatrix;
-				glm::vec3 extents = static_cast<Collider*>(curr->mClientData)->mpTr->mScale;
-				if (shape->TestRay(r, id, rot, extents)) {
-					if (id.depth < closest.depth) {
+				glm::mat3 rot;
+				glm::vec3 extents = pCol->mpTr->mScale;
+
+				rot = (pCol->mIsTrigger) ? glm::mat3(1.0f) : pCol->mpBody->mRotationMatrix;
+				
+								
+				if (shape->TestRay(r, id, rot, extents)) 
+				{
+					if (id.depth < closest.depth) 
+					{
 						closest = id;
 					}
 				}
+				
 			}
 
 			curr = curr->right;
@@ -148,7 +157,7 @@ namespace Hollow {
 				std::vector<std::string> results(std::istream_iterator<std::string>{iss},
 					std::istream_iterator<std::string>());
 					
-				int id = GameObjectMetaData::Instance().mMapOfGameObjectTypes[results[0]];
+				int id = GameMetaData::Instance().mMapOfGameObjectTypes[results[0]];
 				int count = results.size() - 1;
 				for(int i = 0; i < count; ++i)
 				{

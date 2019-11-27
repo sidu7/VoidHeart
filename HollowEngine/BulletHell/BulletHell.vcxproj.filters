@@ -74,7 +74,7 @@
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
-    <None Include="src\BulletHell\GameObjectsMetaData\CollisionMask.data" />
+    <None Include="src\BulletHell\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BulletHell\Main.cpp">
@@ -106,7 +106,10 @@
     <ClInclude Include="src\BulletHell\Systems\AttackSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\GameObjectsMetaData\GameObjectType.h">
+    <ClInclude Include="src\BulletHell\GameMetaData\GameObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\GameMetaData\GameEventType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

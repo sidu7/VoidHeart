@@ -11,7 +11,10 @@
         "VSync": false
     },
     "Physics": {
-        "CollisionMask": "src/BulletHell/GameObjectsMetaData/CollisionMask.data"
+        "CollisionMask": "src/GameMetaData/CollisionMask.data"
+    },
+    "Events": {
+        "EventData": "src/GameMetaData/GameEventsMap.data"
     },
     "Renderer": 
     {

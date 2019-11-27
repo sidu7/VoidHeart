@@ -236,12 +236,13 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
-    <None Include="src\BulletHell\GameObjectsMetaData\CollisionMask.data" />
+    <None Include="src\BulletHell\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BulletHell\Components\Attack.h" />
     <ClInclude Include="src\BulletHell\Components\Health.h" />
-    <ClInclude Include="src\BulletHell\GameObjectsMetaData\GameObjectType.h" />
+    <ClInclude Include="src\BulletHell\GameMetaData\GameEventType.h" />
+    <ClInclude Include="src\BulletHell\GameMetaData\GameObjectType.h" />
     <ClInclude Include="src\BulletHell\Systems\AttackSystem.h" />
     <ClInclude Include="src\BulletHell\Systems\HealthSystem.h" />
   </ItemGroup>
