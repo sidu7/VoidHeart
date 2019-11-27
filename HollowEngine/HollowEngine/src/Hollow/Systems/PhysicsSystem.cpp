@@ -95,7 +95,8 @@ namespace Hollow
 
 	void PhysicsSystem::OnDeleteAllGameObjects()
 	{
-		PhysicsManager::Instance().CleanUp();
+		PhysicsManager::Instance().mSAT.ResetContacts();
+		PhysicsManager::Instance().mTree.DeleteTree();
 	}
 
 	void PhysicsSystem::Step(float fixedDeltaTime)
@@ -370,7 +371,7 @@ namespace Hollow
 			if (pObj)
 			{
 				ImGuiManager::Instance().mpSelectedGameObject = pObj;
-				ImGuiManager::Instance().mSelectedGameObjectID = pObj->mID;				
+				ImGuiManager::Instance().mSelectedGameObjectID = pObj->mID;
 			}
 		}
 		ImGui::End();

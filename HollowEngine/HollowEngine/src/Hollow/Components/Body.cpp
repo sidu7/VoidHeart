@@ -84,7 +84,10 @@ namespace Hollow {
 		{	
 			JSONHelper::Write<float>("Mass", mMass, writer);
 		}
-		JSONHelper::Write<glm::vec3>("Velocity", mVelocity, writer);
+		if (mBodyType == STATIC)
+		{
+			JSONHelper::Write<glm::vec3>("Velocity", mVelocity, writer);
+		}
 		JSONHelper::Write<std::string>("RigidbodyType", mDRigidbodyType, writer);
 		JSONHelper::Write<bool>("IsFrictionLess", mIsFrictionLess, writer);
 		JSONHelper::Write<bool>("UseGravity", mUseGravity, writer);

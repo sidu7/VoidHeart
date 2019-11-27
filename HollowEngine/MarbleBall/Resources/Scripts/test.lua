@@ -27,4 +27,4 @@ end
 	--player.velocity.z = player.velocity.z - 0.02 * player.velocity.z;
 	--player.velocity.y = player.velocity.y - 0.01 * player.velocity.y;
 
-player.angularVelocity = player.angularVelocity - 0.05 * player.angularVelocity 
+player.angularVelocity = player.angularVelocity - 0.03 * player.angularVelocity 
