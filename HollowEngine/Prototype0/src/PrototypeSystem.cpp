@@ -18,7 +18,7 @@ void PrototypeSystem::AddGameObject(Hollow::GameObject* object)
 void PrototypeSystem::TestEventHandling(Hollow::GameEvent& event)
 {
 	//HW_TRACE("Event Collision");
-	Hollow::GameObjectManager::Instance().DeleteGameObject(event.mObject1);
+	Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
 }
 
 void PrototypeSystem::Init()
@@ -32,8 +32,8 @@ void PrototypeSystem::HandleBroadcastEvent(Hollow::GameEvent& event)
 	//HW_TRACE("Broadcast EVENT TEST");
 	if (event.mType == (int)GameEventType::ON_POINT_COLLECTED)
 	{
-		Hollow::GameObjectManager::Instance().DeleteGameObject(event.mObject1);
-		Hollow::GameObjectManager::Instance().DeleteGameObject(event.mObject2);
+		Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
+		Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
 	}
 }
 

@@ -17,7 +17,6 @@
 #include "Hollow/Managers/UIManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/SceneManager.h"
-#include "GameObjectMetaData.h"
 #include "Hollow/Managers/GameObjectManager.h"
 
 

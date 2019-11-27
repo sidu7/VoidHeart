@@ -148,12 +148,8 @@ namespace Hollow
 			{
 				int id1 = pair.first->mpOwner->mType;
 				int id2 = pair.second->mpOwner->mType;
-				
-				GameEvent te(EventManager::Instance().mGameObjectPairEventMap[id1 | id2]);
-				te.mObject1 = pair.first->mpOwner;
-				te.mObject2 = pair.second->mpOwner;
 
-				EventManager::Instance().BroadcastEvent(te);
+				EventManager::Instance().FireCollisionEvent(id1 | id2, pair.first->mpOwner, pair.second->mpOwner);
 				
 				continue;
 			}
@@ -320,17 +316,13 @@ namespace Hollow
 
 	void PhysicsSystem::InterpolateState(float blendingFactor)
 	{
-		// Create Collision Events
+		// Create Collision Events (Not the best place but at least gets called once per frame for sure)
 		for (auto& contact : *PhysicsManager::Instance().mSAT.mPrevContacts)
 		{
 			int id1 = contact->bodyA->mpOwner->mType;
 			int id2 = contact->bodyB->mpOwner->mType;
 
-			GameEvent ce(EventManager::Instance().mGameObjectPairEventMap[id1 | id2]);
-			ce.mObject1 = contact->bodyA->mpOwner;
-			ce.mObject2 = contact->bodyB->mpOwner;
-
-			EventManager::Instance().BroadcastToSubscribers(ce);
+			EventManager::Instance().FireCollisionEvent(id1 | id2, contact->bodyA->mpOwner, contact->bodyB->mpOwner);
 		}
 		
 		for (auto go : mGameObjects)

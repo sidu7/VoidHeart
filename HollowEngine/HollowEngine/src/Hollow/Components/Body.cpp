@@ -41,6 +41,7 @@ namespace Hollow {
 		ImGui::InputFloat3("Velocity", &mVelocity[0]);
 		ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
 		ImGui::Checkbox("Frictionless", &mIsFrictionLess);
+		ImGui::Checkbox("Use Gravity", &mUseGravity);
 	}
 
 	void Body::Serialize(rapidjson::Value::Object data)
@@ -65,6 +66,10 @@ namespace Hollow {
 		{
 			mIsFrictionLess = data["IsFrictionLess"].GetBool();
 		}
+		if (data.HasMember("UseGravity"))
+		{
+			mUseGravity = data["UseGravity"].GetBool();
+		}
 
 		mInverseMass = 1.0f / mMass;
 	}
@@ -82,6 +87,7 @@ namespace Hollow {
 		JSONHelper::Write<glm::vec3>("Velocity", mVelocity, writer);
 		JSONHelper::Write<std::string>("RigidbodyType", mDRigidbodyType, writer);
 		JSONHelper::Write<bool>("IsFrictionLess", mIsFrictionLess, writer);
+		JSONHelper::Write<bool>("UseGravity", mUseGravity, writer);
 	}
 	
 }

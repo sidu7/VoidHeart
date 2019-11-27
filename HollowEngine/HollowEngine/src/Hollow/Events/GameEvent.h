@@ -15,8 +15,8 @@ namespace Hollow {
 		float mTimer = 0.0f;
 		int mType; // identifier for event type
 
-		GameObject* mObject1;
-		GameObject* mObject2;
+		GameObject* mpObject1;
+		GameObject* mpObject2;
 	};
 
 }

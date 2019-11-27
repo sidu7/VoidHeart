@@ -9,7 +9,7 @@ namespace Hollow {
 	
 	void EventManager::Init(rapidjson::Value::Object& data)
 	{
-		// Parse Collision Mask and set the CollisionMask map
+		// Parse Event data and setup the map of object pair to event type map
 		std::ifstream file(std::string(data["EventData"].GetString()));
 		std::string line;
 
@@ -26,6 +26,22 @@ namespace Hollow {
 				mGameObjectPairEventMap[BIT(id1) | BIT(id2)] = GameMetaData::Instance().mMapOfGameEventTypes[results[2]];
 			}
 			file.close();
+		}
+	}
+
+	void EventManager::FireCollisionEvent(int eventId, GameObject* go1, GameObject* go2)
+	{
+		GameEvent te(mGameObjectPairEventMap[eventId]);
+		te.mpObject1 = go1;
+		te.mpObject2 = go2;
+
+		if(mEventsMap.find(te.mType) != mEventsMap.end())
+		{
+			BroadcastToSubscribers(te);
+		}
+		else
+		{
+			BroadcastEvent(te); // sends to all systems
 		}
 	}
 

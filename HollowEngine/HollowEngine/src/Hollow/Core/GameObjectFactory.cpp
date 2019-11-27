@@ -3,7 +3,7 @@
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Components/Component.h"
 #include "Hollow/Managers/MemoryManager.h"
-#include "Hollow/Core/GameObjectMetaData.h"
+#include "GameMetaData.h"
 
 namespace Hollow {
 		
