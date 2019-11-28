@@ -24,8 +24,8 @@ namespace Hollow
 
 	private:
 		std::map<GLchar, Character> mCharacters;
-		GLuint VAO_Text, VBO_Text;
-		FT_Library ft;
-		FT_Face face;
+		GLuint mVAO_Text, mVBO_Text;
+		FT_Library mft;
+		FT_Face mface;
 	};
 }

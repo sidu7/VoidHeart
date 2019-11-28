@@ -9,7 +9,7 @@ namespace Hollow
 	void TextRenderer::Init()
 	{
 		//Init FreeType
-		if (FT_Init_FreeType(&ft))
+		if (FT_Init_FreeType(&mft))
 		{
 			HW_CORE_ERROR("Error::Freetype: Could not init FreeType Library");
 		}
@@ -18,13 +18,13 @@ namespace Hollow
 
 	void TextRenderer::Load()
 	{
-		//Load font as face
-		if (FT_New_Face(ft, "Resources/Fonts/Kiddish.ttf", 0, &face))
+		//Load font as mface
+		if (FT_New_Face(mft, "Resources/Fonts/Kiddish.ttf", 0, &mface))
 		{
 			HW_CORE_ERROR("Error::Freetype: Failed to load font");
 		}
 		//Set size to load glyphs as
-		FT_Set_Pixel_Sizes(face, 0, 48);
+		FT_Set_Pixel_Sizes(mface, 0, 48);
 		//Disable byte-alignment restriction
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -32,7 +32,7 @@ namespace Hollow
 		for (GLubyte c = 0; c < 128; ++c)
 		{
 			//Load character glyph
-			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+			if (FT_Load_Char(mface, c, FT_LOAD_RENDER))
 			{
 				HW_CORE_ERROR("Error::Freetype: Failed to load Glyph");
 				continue;
@@ -44,10 +44,10 @@ namespace Hollow
 			glBindTexture(GL_TEXTURE_2D, texture);
 			glTexImage2D(
 				GL_TEXTURE_2D, 0, GL_RED,
-				face->glyph->bitmap.width,
-				face->glyph->bitmap.rows,
+				mface->glyph->bitmap.width,
+				mface->glyph->bitmap.rows,
 				0, GL_RED, GL_UNSIGNED_BYTE,
-				face->glyph->bitmap.buffer
+				mface->glyph->bitmap.buffer
 			);
 
 			//Set texture options
@@ -56,15 +56,15 @@ namespace Hollow
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			glm::vec2 size_((float)face->glyph->bitmap.width, (float)face->glyph->bitmap.rows);
-			glm::vec2 bearing_((float)face->glyph->bitmap_left, (float)face->glyph->bitmap_top);
+			glm::vec2 size_((float)mface->glyph->bitmap.width, (float)mface->glyph->bitmap.rows);
+			glm::vec2 bearing_((float)mface->glyph->bitmap_left, (float)mface->glyph->bitmap_top);
 
 			//Now store character for later use
 			Character character = {
 				texture,
 				size_,
 				bearing_,
-				face->glyph->advance.x
+				mface->glyph->advance.x
 			};
 			mCharacters.insert(std::pair<GLchar, Character>(c, character));
 		}
@@ -72,14 +72,14 @@ namespace Hollow
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		//Destroy FreeType once we're finished
-		FT_Done_Face(face);
-		FT_Done_FreeType(ft);
+		FT_Done_Face(mface);
+		FT_Done_FreeType(mft);
 
 		//Configure VAO/VBO for texture quads
-		glGenVertexArrays(1, &VAO_Text);
-		glGenBuffers(1, &VBO_Text);
-		glBindVertexArray(VAO_Text);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_Text);
+		glGenVertexArrays(1, &mVAO_Text);
+		glGenBuffers(1, &mVBO_Text);
+		glBindVertexArray(mVAO_Text);
+		glBindBuffer(GL_ARRAY_BUFFER, mVBO_Text);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
@@ -95,7 +95,7 @@ namespace Hollow
 		shader->SetInt("textTexture", 0);
 	
 		glActiveTexture(GL_TEXTURE0);
-		glBindVertexArray(VAO_Text);
+		glBindVertexArray(mVAO_Text);
 
 		//Iterate through all characters
 		std::string::const_iterator c;
@@ -109,7 +109,7 @@ namespace Hollow
 			GLfloat w = ch.size.x * data.mScale.x;
 			GLfloat h = ch.size.y * data.mScale.y;
 
-			//Update VBO_Text for each character
+			//Update mVBO_Text for each character
 			GLfloat vertices[6][4] = {
 				{xPos,		yPos + h,	0.0, 0.0},
 				{xPos,		yPos,		0.0, 1.0},
@@ -122,8 +122,8 @@ namespace Hollow
 
 			//Render glyph texture over quad
 			glBindTexture(GL_TEXTURE_2D, ch.textID);
-			//Update content of VBO_Text memory
-			glBindBuffer(GL_ARRAY_BUFFER, VBO_Text);
+			//Update content of mVBO_Text memory
+			glBindBuffer(GL_ARRAY_BUFFER, mVBO_Text);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
