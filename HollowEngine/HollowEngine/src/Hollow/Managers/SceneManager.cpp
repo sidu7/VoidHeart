@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Hollow/Core/GameObjectFactory.h"
 #include "PhysicsManager.h"
+#include "AudioManager.h"
 
 #include "Hollow/Components/Transform.h"
 #include "ImGuiManager.h"
@@ -147,6 +148,12 @@ namespace Hollow
 		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 		file.close();
 		PARSE_JSON_FILE(contents.c_str());
+
+		if(root.HasMember("Audio"))
+		{
+			std::string path = root["Audio"].GetObject()["Background"].GetString();
+			AudioManager::Instance().PlaySong(path);
+		}
 		
 		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();
 		for (unsigned int i = 0; i < gameobjects.Size(); ++i)

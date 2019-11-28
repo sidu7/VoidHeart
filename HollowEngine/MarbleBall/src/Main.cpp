@@ -40,6 +40,7 @@ namespace MarbleBall
 			Application::Init("Resources/Settings.json");
 
 			Hollow::SceneManager::Instance().LoadLevel("Marble");
+			Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UICamera.json");
 		}
 
 		~MarbleBall()

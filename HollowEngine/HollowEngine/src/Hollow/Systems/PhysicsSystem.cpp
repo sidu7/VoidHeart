@@ -150,7 +150,7 @@ namespace Hollow
 				int id1 = pair.first->mpOwner->mType;
 				int id2 = pair.second->mpOwner->mType;
 
-				EventManager::Instance().FireCollisionEvent(id1 | id2, pair.first->mpOwner, pair.second->mpOwner);
+				EventManager::Instance().FireCollisionEvent(BIT(id1) | BIT(id2), pair.first->mpOwner, pair.second->mpOwner);
 				
 				continue;
 			}
@@ -323,7 +323,7 @@ namespace Hollow
 			int id1 = contact->bodyA->mpOwner->mType;
 			int id2 = contact->bodyB->mpOwner->mType;
 
-			EventManager::Instance().FireCollisionEvent(id1 | id2, contact->bodyA->mpOwner, contact->bodyB->mpOwner);
+			EventManager::Instance().FireCollisionEvent(BIT(id1) | BIT(id2), contact->bodyA->mpOwner, contact->bodyB->mpOwner);
 		}
 		
 		for (auto go : mGameObjects)

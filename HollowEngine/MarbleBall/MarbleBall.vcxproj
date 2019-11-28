@@ -83,7 +83,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua;$(ProjectDir)src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -146,7 +146,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\Score.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Systems\ScoreSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Json data\Box.json" />
@@ -200,12 +202,16 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\ShadowMap.vert" />
     <None Include="Resources\Shaders\Skydome.frag" />
     <None Include="Resources\Shaders\Skydome.vert" />
+    <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="Resources\Shaders\TextRendering.vert" />
     <None Include="Resources\Shaders\UIShader.frag" />
     <None Include="Resources\Shaders\UIShader.vert" />
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
     <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\GameEvents.enum" />
+    <None Include="src\GameMetaData\GameEventsMap.data" />
     <None Include="src\GameMetaData\GameObjectType.enum" />
   </ItemGroup>
   <ItemGroup>
@@ -217,8 +223,10 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\Score.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
     <ClInclude Include="src\GameMetaData\GameObjectType.h" />
+    <ClInclude Include="src\Systems\ScoreSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

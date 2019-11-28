@@ -243,7 +243,7 @@ namespace Hollow {
 						return;
 
 					// Check if the objects should collide according to the game
-					if (PhysicsManager::Instance().mCollisionMask[colA->mpOwner->mType | colB->mpOwner->mType])
+					if (PhysicsManager::Instance().mCollisionMask[BIT(colA->mpOwner->mType) | BIT(colB->mpOwner->mType)])
 					{
 						colliderPairs.push_front(std::make_pair(colA, colB));
 					}
