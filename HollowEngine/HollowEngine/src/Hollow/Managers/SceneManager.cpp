@@ -151,8 +151,19 @@ namespace Hollow
 
 		if(root.HasMember("Audio"))
 		{
-			std::string path = root["Audio"].GetObject()["Background"].GetString();
-			AudioManager::Instance().PlaySong(path);
+			auto audio = root["Audio"].GetObject();
+			if(audio.HasMember("Volumes"))
+			{
+				auto volumes = audio["Volumes"].GetObject();
+				AudioManager::Instance().mMasterVolume = volumes["Master"].GetFloat();
+				AudioManager::Instance().mVolume[SOUND_BACKGROUND] = volumes["Music"].GetFloat();
+				AudioManager::Instance().mVolume[SOUND_EFFECT] = volumes["SFX"].GetFloat();
+			}
+			if (audio.HasMember("Background"))
+			{
+				std::string path = audio["Background"].GetString();
+				AudioManager::Instance().PlaySong(path);
+			}
 		}
 		
 		rapidjson::Value::Array gameobjects = root["GameObjects"].GetArray();

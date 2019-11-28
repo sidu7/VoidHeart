@@ -27,7 +27,7 @@ namespace MarbleBall
 
 	void ScoreSystem::AddGameObject(Hollow::GameObject* pGameObject)
 	{
-		CheckAllComponents<Score,Hollow::UIText>(pGameObject);
+		CheckAllComponents<Score>(pGameObject);
 	}
 
 	void ScoreSystem::HandleBroadcastEvent(Hollow::GameEvent& event)
@@ -42,8 +42,8 @@ namespace MarbleBall
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
 			Score* score = event.mpObject2->GetComponent<Score>();
 			score->mScore += score->mScoreIncrement;
-			Hollow::UIText* text = event.mpObject2->GetComponent<Hollow::UIText>();
-			text->mText = "Score: " + std::to_string(score->mScore);
+			//Hollow::UIText* text = event.mpObject2->GetComponent<Hollow::UIText>();
+			//text->mText = "Score: " + std::to_string(score->mScore);
 			sc = score->mScore;
 		}
 		else
@@ -52,8 +52,8 @@ namespace MarbleBall
 			Score* score = event.mpObject1->GetComponent<Score>();
 			score->mScore += score->mScoreIncrement;
 			sc = score->mScore;
-			Hollow::UIText* text = event.mpObject2->GetComponent<Hollow::UIText>();
-			text->mText = "Score: " + std::to_string(score->mScore);
+			//Hollow::UIText* text = event.mpObject2->GetComponent<Hollow::UIText>();
+			//text->mText = "Score: " + std::to_string(score->mScore);
 		}
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Pickup.wav");
 		HW_TRACE("Score {0}", sc);		

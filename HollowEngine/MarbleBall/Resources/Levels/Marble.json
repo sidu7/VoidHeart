@@ -1,6 +1,11 @@
 {
   "Audio": {
-    "Background" : "Resources/Audio/Songs/Background.mp3"
+    "Volumes": {
+      "Master": 1.0,
+      "Music": 0.05,
+      "SFX":  0.9
+    },
+    "Background": "Resources/Audio/Songs/Background.mp3"
   },
   "GameObjects": [
     {
