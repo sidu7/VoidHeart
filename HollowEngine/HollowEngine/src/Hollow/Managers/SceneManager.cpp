@@ -120,6 +120,14 @@ namespace Hollow
 			{
 				ImGui::Text("Save current scene to Level file");
 				ImGui::InputText("Level file name", charBuffer, 255);
+				if(ImGui::TreeNode("Audio"))
+				{
+					ImGui::SliderFloat("Master Volume", &AudioManager::Instance().mMasterVolume, 0.0f, 1.0f);
+					ImGui::SliderFloat("Music Volume", &AudioManager::Instance().mVolume[SOUND_BACKGROUND], 0.0f, 1.0f);
+					ImGui::SliderFloat("SFX Volume", &AudioManager::Instance().mVolume[SOUND_EFFECT],0.0f,1.0f);
+					ImGuiHelper::InputText("Background Music", mBackgroundAudio);
+					ImGui::TreePop();
+				}
 				if(ImGui::Button("SaveToFile"))
 				{
 					DeserializeLevel();
@@ -201,6 +209,22 @@ namespace Hollow
 		rapidjson::StringBuffer s;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(s);
 		writer.StartObject();
+		// Audio Deserialize
+		writer.Key("Audio");
+		writer.StartObject();
+		writer.Key("Volumes");
+		writer.StartObject();
+		writer.Key("Master");
+		writer.Double(AudioManager::Instance().mMasterVolume);
+		writer.Key("Music");
+		writer.Double(AudioManager::Instance().mVolume[SOUND_BACKGROUND]);
+		writer.Key("SFX");
+		writer.Double(AudioManager::Instance().mVolume[SOUND_EFFECT]);
+		writer.EndObject();
+		writer.Key("Background");
+		writer.String(mBackgroundAudio.c_str());
+		writer.EndObject();
+		// GameObjects Deserialize
 		writer.Key("GameObjects");
 		writer.StartArray();
 		std::vector<Hollow::GameObject*> gos = Hollow::GameObjectManager::Instance().GetGameObjects();

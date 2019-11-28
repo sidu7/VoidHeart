@@ -22,6 +22,7 @@ namespace Hollow
 		// Creating Prefab
 		std::string mSelectedComponentName;
 		char charBuffer[255];
+		std::string mBackgroundAudio;
 		GameObject* mSelectedGameObject;
 		Component* mSelectedComponent;
 	};
