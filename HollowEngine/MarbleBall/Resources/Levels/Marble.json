@@ -3,7 +3,7 @@
     "Volumes": {
       "Master": 1.0,
       "Music": 0.05,
-      "SFX":  0.9
+      "SFX": 0.9
     },
     "Background": "Resources/Audio/Songs/Background.mp3"
   },
@@ -13,13 +13,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [ 45.55767059326172, 16.118555068969728, -56.09272766113281 ],
+          "Position": [ 44.75093078613281, 16.3303165435791, -56.81739044189453 ],
           "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
           "Type": "Camera",
-          "Yaw": -31.400148391723634,
-          "Pitch": -8.800015449523926,
+          "Yaw": -9.300145149230957,
+          "Pitch": -13.800012588500977,
           "MovementSpeed": 5.0,
           "MouseSensitivity": 0.10000000149011612,
           "Zoom": 45.0,
@@ -38,7 +38,7 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [ 1.1083300113677979, 71.99181365966797, 11.768976211547852 ],
+          "Position": [ 1.1083300113677979, 0.7449997663497925, 11.768976211547852 ],
           "Rotation": [ 0.0, 90.0, 0.0 ],
           "Scale": [ 0.5, 0.5, 0.5 ]
         },
@@ -91,6 +91,17 @@
         {
           "Type": "Score",
           "ScoreIncrement": 10
+        },
+        {
+          "Type": "UITransform",
+          "Position": [ 70.0, 600.0 ],
+          "Scale": [ 2.0, 2.0 ]
+        },
+        {
+          "Type": "UIText",
+          "TextScale": [ 1.0, 1.0 ],
+          "Text": "Score: 0",
+          "Color": [ 0.034081459045410159, 0.0, 1.0 ]
         }
       ]
     },
@@ -134,7 +145,7 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [ 3.200000286102295, 0.0, -7.800000190734863 ],
+          "Position": [ 3.200000286102295, 0.0, -7.799999713897705 ],
           "Rotation": [ 0.0, -45.0, 0.0 ],
           "Scale": [ 2.0, 1.0, 10.0 ]
         },
@@ -390,7 +401,7 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [ 28.0, 0.0, -44.560001373291019 ],
+          "Position": [ 28.0, 0.0, -44.55999755859375 ],
           "Scale": [ 10.0, 1.0, 2.0 ]
         },
         {
@@ -1700,6 +1711,29 @@
           "Bounciness": 0.20000000298023225,
           "Shape": "BOX",
           "isTrigger": true
+        }
+      ]
+    },
+    {
+      "Type": "",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Scale": [ 1.0, 1.0, 1.0 ]
+        },
+        {
+          "Type": "Camera",
+          "Yaw": -90.0,
+          "MovementSpeed": 5.0,
+          "MouseSensitivity": 0.10000000149011612,
+          "Zoom": 45.0,
+          "Near": 0.10000000149011612,
+          "Far": 1000.0,
+          "IsActive": true,
+          "CameraType": 1,
+          "ProjectionType": 1,
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ]
         }
       ]
     }

@@ -1193,8 +1193,6 @@ namespace Hollow {
 			}
 		}
 
-		GLCall(glDisable(GL_BLEND));
-
 		mpUIShader->Unbind();
 		mUIRenderData.clear();
 
@@ -1209,6 +1207,8 @@ namespace Hollow {
 		
 		mpUITextShader->Unbind();
 		mUITextData.clear();
+
+		GLCall(glDisable(GL_BLEND));
 	}
 
 	void RenderManager::DebugDisplay()
