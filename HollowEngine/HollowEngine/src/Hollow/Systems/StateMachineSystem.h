@@ -8,7 +8,7 @@ namespace Hollow
 		REGISTERSYSTEM(StateMachineSystem, 1);
 	public:
 		HOLLOW_API virtual ~StateMachineSystem();
-		HOLLOW_API void Update();
-		HOLLOW_API void AddGameObject(GameObject* object);
+		HOLLOW_API void Update() override;
+		HOLLOW_API void AddGameObject(GameObject* object) override;
 	};
 }

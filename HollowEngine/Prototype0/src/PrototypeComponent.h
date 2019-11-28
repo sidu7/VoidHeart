@@ -8,6 +8,7 @@ class PrototypeComponent : public Hollow::Component
 public:
 	void Init();
 	void Serialize(rapidjson::Value::Object data) {}
+	void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override{}
 	void Clear();
 	void DebugDisplay();
 

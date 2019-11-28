@@ -8,7 +8,7 @@ namespace Hollow
 	void UITransform::Init()
 	{
 		mPosition = glm::vec2(0.0f);
-		mScale = glm::vec2(0.0f);
+		mScale = glm::vec2(1.0f);
 		mRotation = 0.0f;
 		mTilt = 0.0f;
 		mTransformationMatrix = glm::mat4(1.0f);
@@ -48,9 +48,9 @@ namespace Hollow
 
 	void UITransform::DebugDisplay()
 	{
-		ImGui::InputFloat3("Position", (float*)&mPosition);
-		ImGui::InputFloat3("Scale", (float*)&mScale);
-		ImGui::InputFloat3("Rotation", (float*)&mRotation);
+		ImGui::InputFloat2("Position", (float*)&mPosition);
+		ImGui::InputFloat2("Scale", (float*)&mScale);
+		ImGui::InputFloat("Rotation", &mRotation);
 		ImGui::InputFloat("Tilt", &mTilt);
 	}
 }

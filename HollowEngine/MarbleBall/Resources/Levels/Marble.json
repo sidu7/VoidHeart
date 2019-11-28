@@ -1,25 +1,25 @@
 {
+  "Audio": {
+    "Volumes": {
+      "Master": 1.0,
+      "Music": 0.05,
+      "SFX": 0.9
+    },
+    "Background": "Resources/Audio/Songs/Background.mp3"
+  },
   "GameObjects": [
     {
       "Type": "",
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            26.273876190185548,
-            17.685697555541993,
-            -55.4016227722168
-          ],
-          "Scale": [
-            1.0,
-            1.0,
-            1.0
-          ]
+          "Position": [ 44.75093078613281, 16.3303165435791, -56.81739044189453 ],
+          "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
           "Type": "Camera",
-          "Yaw": -13.300159454345704,
-          "Pitch": -12.100008964538575,
+          "Yaw": -9.300145149230957,
+          "Pitch": -13.800012588500977,
           "MovementSpeed": 5.0,
           "MouseSensitivity": 0.10000000149011612,
           "Zoom": 45.0,
@@ -28,14 +28,8 @@
           "IsActive": true,
           "CameraType": 3,
           "ProjectionType": 0,
-          "ViewPortPosition": [
-            0,
-            0
-          ],
-          "ViewPortSize": [
-            1280,
-            720
-          ]
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ]
         }
       ]
     },
@@ -44,30 +38,19 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            -0.13739058375358582,
-            5.744999885559082,
-            11.87232780456543
-          ],
-          "Rotation": [
-            0.0,
-            90.0,
-            0.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 1.1083300113677979, 0.7449997663497925, 11.768976211547852 ],
+          "Rotation": [ 0.0, 90.0, 0.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Body",
           "Mass": 1.0,
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
-          "Friction": 0.001,
+          "Friction": 0.0010000000474974514,
           "Bounciness": 0.20000000298023225,
           "Shape": "BALL",
           "isTrigger": false
@@ -81,11 +64,7 @@
         {
           "Type": "Material",
           "Texture": "Resources/Textures/cracks.png",
-          "Specular": [
-            9.999999974752428e-7,
-            9.999899930335233e-7,
-            9.999899930335233e-7
-          ],
+          "Specular": [ 9.999999974752428e-7, 9.999899930335233e-7, 9.999899930335233e-7 ],
           "MaterialTextures": true
         },
         {
@@ -94,8 +73,8 @@
         },
         {
           "Type": "Camera",
-          "Yaw": -707.9439086914063,
-          "Pitch": -69.79998779296875,
+          "Yaw": -904.7434692382813,
+          "Pitch": -49.0,
           "MovementSpeed": 5.0,
           "MouseSensitivity": 1.600000023841858,
           "Zoom": 45.0,
@@ -104,24 +83,25 @@
           "IsActive": false,
           "CameraType": 4,
           "ProjectionType": 0,
-          "ViewPortPosition": [
-            0,
-            0
-          ],
-          "ViewPortSize": [
-            1280,
-            720
-          ],
-          "PositionOffset": [
-            0.0,
-            1.0,
-            3.0
-          ],
-          "AnchorFocusOffset": [
-            0.0,
-            1.0,
-            0.0
-          ]
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ],
+          "PositionOffset": [ 0.0, 1.0, 3.0 ],
+          "AnchorFocusOffset": [ 0.0, 1.0, 0.0 ]
+        },
+        {
+          "Type": "Score",
+          "ScoreIncrement": 10
+        },
+        {
+          "Type": "UITransform",
+          "Position": [ 70.0, 600.0 ],
+          "Scale": [ 2.0, 2.0 ]
+        },
+        {
+          "Type": "UIText",
+          "TextScale": [ 1.0, 1.0 ],
+          "Text": "Score: 0",
+          "Color": [ 0.034081459045410159, 0.0, 1.0 ]
         }
       ]
     },
@@ -130,24 +110,12 @@
       "Components": [
         {
           "Type": "Transform",
-          "Scale": [
-            2.0,
-            1.0,
-            10.0
-          ]
+          "Scale": [ 2.0, 1.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -160,7 +128,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -176,34 +145,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            3.200000286102295,
-            0.0,
-            -7.800000190734863
-          ],
-          "Rotation": [
-            0.0,
-            -45.0,
-            0.0
-          ],
-          "Scale": [
-            2.0,
-            1.0,
-            10.0
-          ]
+          "Position": [ 3.200000286102295, 0.0, -7.799999713897705 ],
+          "Rotation": [ 0.0, -45.0, 0.0 ],
+          "Scale": [ 2.0, 1.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -216,7 +165,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -232,34 +182,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            11.0,
-            0.0,
-            -11.0
-          ],
-          "Rotation": [
-            0.0,
-            90.0,
-            0.0
-          ],
-          "Scale": [
-            2.0,
-            1.0,
-            10.0
-          ]
+          "Position": [ 11.0, 0.0, -11.0 ],
+          "Rotation": [ 0.0, 90.0, 0.0 ],
+          "Scale": [ 2.0, 1.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -272,7 +202,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -288,29 +219,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.0,
-            0.0,
-            -22.5
-          ],
-          "Scale": [
-            25.0,
-            1.0,
-            25.0
-          ]
+          "Position": [ 28.0, 0.0, -22.5 ],
+          "Scale": [ 25.0, 1.0, 25.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -323,7 +238,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -339,34 +255,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            22.860000610351564,
-            2.0,
-            -20.0
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            25.0
-          ],
-          "Scale": [
-            10.0,
-            1.0,
-            10.0
-          ]
+          "Position": [ 22.860000610351564, 2.0, -20.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 1.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -379,7 +275,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -395,34 +292,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            31.5,
-            2.0,
-            -20.0
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            -25.0
-          ],
-          "Scale": [
-            10.0,
-            1.0,
-            10.0
-          ]
+          "Position": [ 31.5, 2.0, -20.0 ],
+          "Rotation": [ 0.0, 0.0, -25.0 ],
+          "Scale": [ 10.0, 1.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -435,7 +312,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -451,29 +329,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.0,
-            0.0,
-            -37.5
-          ],
-          "Scale": [
-            10.0,
-            1.0,
-            2.0
-          ]
+          "Position": [ 28.0, 0.0, -37.5 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -486,7 +348,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -502,29 +365,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.0,
-            0.0,
-            -41.0
-          ],
-          "Scale": [
-            10.0,
-            1.0,
-            2.0
-          ]
+          "Position": [ 28.0, 0.0, -41.0 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -537,7 +384,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -553,29 +401,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.0,
-            0.0,
-            -44.560001373291019
-          ],
-          "Scale": [
-            10.0,
-            1.0,
-            2.0
-          ]
+          "Position": [ 28.0, 0.0, -44.55999755859375 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -588,7 +420,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -604,29 +437,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.0,
-            0.0,
-            -48.0
-          ],
-          "Scale": [
-            10.0,
-            1.0,
-            2.0
-          ]
+          "Position": [ 28.0, 0.0, -48.0 ],
+          "Scale": [ 10.0, 1.0, 2.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -639,7 +456,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -655,29 +473,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.0,
-            0.0,
-            -60.0000114440918
-          ],
-          "Scale": [
-            20.0,
-            1.0,
-            20.0
-          ]
+          "Position": [ 28.0, 0.0, -60.0000114440918 ],
+          "Scale": [ 20.0, 1.0, 20.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -690,7 +492,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -706,29 +509,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.0,
-            2.0,
-            -70.0
-          ],
-          "Scale": [
-            20.0,
-            5.0,
-            1.0
-          ]
+          "Position": [ 28.0, 2.0, -70.0 ],
+          "Scale": [ 20.0, 5.0, 1.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -741,7 +528,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -757,29 +545,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            18.0,
-            2.0,
-            -60.0000114440918
-          ],
-          "Scale": [
-            1.0,
-            5.0,
-            20.0
-          ]
+          "Position": [ 18.0, 2.0, -60.0000114440918 ],
+          "Scale": [ 1.0, 5.0, 20.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -792,7 +564,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -808,29 +581,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            0.0,
-            0.0,
-            10.0
-          ],
-          "Scale": [
-            10.0,
-            1.0,
-            10.0
-          ]
+          "Position": [ 0.0, 0.0, 10.0 ],
+          "Scale": [ 10.0, 1.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -843,7 +600,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -859,29 +617,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            5.0,
-            1.0,
-            10.0
-          ],
-          "Scale": [
-            1.0,
-            2.0,
-            10.0
-          ]
+          "Position": [ 5.0, 1.0, 10.0 ],
+          "Scale": [ 1.0, 2.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -894,7 +636,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -910,29 +653,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            -5.0,
-            1.0,
-            10.0
-          ],
-          "Scale": [
-            1.0,
-            2.0,
-            10.0
-          ]
+          "Position": [ -5.0, 1.0, 10.0 ],
+          "Scale": [ 1.0, 2.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -945,7 +672,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -961,34 +689,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            0.0,
-            1.0,
-            15.00000286102295
-          ],
-          "Rotation": [
-            0.0,
-            90.0,
-            0.0
-          ],
-          "Scale": [
-            1.0,
-            2.0,
-            10.0
-          ]
+          "Position": [ 0.0, 1.0, 15.00000286102295 ],
+          "Rotation": [ 0.0, 90.0, 0.0 ],
+          "Scale": [ 1.0, 2.0, 10.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1001,7 +709,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1017,34 +726,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            41.0,
-            0.8000000715255737,
-            -66.0
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            25.0
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            6.0
-          ]
+          "Position": [ 41.0, 0.8000000715255737, -66.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1057,7 +746,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1073,34 +763,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            41.0,
-            0.8000000715255737,
-            -54.0
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            25.0
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            6.0
-          ]
+          "Position": [ 41.0, 0.8000000715255737, -54.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1113,7 +783,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1129,34 +800,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            41.0,
-            0.8000000715255737,
-            -60.0000114440918
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            25.0
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            6.0
-          ]
+          "Position": [ 41.0, 0.8000000715255737, -60.0000114440918 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1169,7 +820,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1185,34 +837,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            50.0,
-            5.0,
-            -54.0
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            25.0
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            6.0
-          ]
+          "Position": [ 50.0, 5.0, -54.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1225,7 +857,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1241,34 +874,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            50.0,
-            5.0,
-            -60.0000114440918
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            25.0
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            6.0
-          ]
+          "Position": [ 50.0, 5.0, -60.0000114440918 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1281,7 +894,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1297,34 +911,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            50.0,
-            5.0,
-            -66.0
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            25.0
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            6.0
-          ]
+          "Position": [ 50.0, 5.0, -66.0 ],
+          "Rotation": [ 0.0, 0.0, 25.0 ],
+          "Scale": [ 10.0, 2.0, 6.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1337,7 +931,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1353,29 +948,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            70.0,
-            4.0,
-            -60.0000114440918
-          ],
-          "Scale": [
-            40.0,
-            2.0,
-            20.0
-          ]
+          "Position": [ 70.0, 4.0, -60.0000114440918 ],
+          "Scale": [ 40.0, 2.0, 20.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1388,7 +967,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1404,34 +984,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            80.0,
-            5.0,
-            -50.0
-          ],
-          "Rotation": [
-            0.0,
-            90.0,
-            90.0
-          ],
-          "Scale": [
-            3.0,
-            2.0,
-            20.0
-          ]
+          "Position": [ 80.0, 5.0, -50.0 ],
+          "Rotation": [ 0.0, 90.0, 90.0 ],
+          "Scale": [ 3.0, 2.0, 20.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1444,7 +1004,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1460,34 +1021,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            80.0,
-            5.0,
-            -70.0
-          ],
-          "Rotation": [
-            0.0,
-            90.0,
-            90.0
-          ],
-          "Scale": [
-            3.0,
-            2.0,
-            20.0
-          ]
+          "Position": [ 80.0, 5.0, -70.0 ],
+          "Rotation": [ 0.0, 90.0, 90.0 ],
+          "Scale": [ 3.0, 2.0, 20.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1500,7 +1041,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1516,34 +1058,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            90.0,
-            6.0,
-            -60.0000114440918
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            90.0
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            20.0
-          ]
+          "Position": [ 90.0, 6.0, -60.0000114440918 ],
+          "Rotation": [ 0.0, 0.0, 90.0 ],
+          "Scale": [ 10.0, 2.0, 20.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1556,7 +1078,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1572,29 +1095,13 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            85.00000762939453,
-            12.0,
-            -60.0000114440918
-          ],
-          "Scale": [
-            10.0,
-            2.0,
-            20.0
-          ]
+          "Position": [ 85.00000762939453, 12.0, -60.0000114440918 ],
+          "Scale": [ 10.0, 2.0, 20.0 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "Specular": [
-            1.0,
-            0.0,
-            0.0
-          ],
+          "Diffuse": [ 1.0, 0.0, 0.0 ],
+          "Specular": [ 1.0, 0.0, 0.0 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1607,7 +1114,8 @@
         {
           "Type": "Body",
           "RigidbodyType": "STATIC",
-          "IsFrictionLess": false
+          "IsFrictionLess": false,
+          "UseGravity": true
         },
         {
           "Type": "Collider",
@@ -1623,29 +1131,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 0.0, 1.0, 0.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1669,29 +1162,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            0.20000000298023225,
-            1.0,
-            -5.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 0.20000000298023225, 1.0, -5.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1715,29 +1193,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            6.0,
-            1.0,
-            -10.5
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 6.0, 1.0, -10.5 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1761,29 +1224,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            15.0,
-            1.0,
-            -11.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 15.0, 1.0, -11.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1807,29 +1255,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            27.200000762939454,
-            5.0,
-            -16.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 27.200000762939454, 5.0, -16.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1853,29 +1286,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            27.200000762939454,
-            5.0,
-            -23.799999237060548
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 27.200000762939454, 5.0, -23.799999237060548 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1899,29 +1317,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            27.0,
-            1.0,
-            -20.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 27.0, 1.0, -20.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1945,29 +1348,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            24.0,
-            1.0,
-            -37.5
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 24.0, 1.0, -37.5 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -1991,29 +1379,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            32.0,
-            1.0,
-            -41.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 32.0, 1.0, -41.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2037,29 +1410,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            32.0,
-            1.0,
-            -44.5
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 32.0, 1.0, -44.5 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2083,29 +1441,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.5,
-            1.0,
-            -48.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 28.5, 1.0, -48.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2129,29 +1472,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            28.5,
-            2.0,
-            -60.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 28.5, 2.0, -60.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2175,29 +1503,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            41.0,
-            3.0,
-            -60.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 41.0, 3.0, -60.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2221,29 +1534,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            50.0,
-            6.5,
-            -67.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 50.0, 6.5, -67.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2267,29 +1565,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            68.0,
-            6.5,
-            -69.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 68.0, 6.5, -69.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2313,29 +1596,44 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            68.0,
-            6.0,
-            -52.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 68.0, 6.0, -52.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
+          "Shininess": 10000.0,
+          "MaterialTextures": true
+        },
+        {
+          "Type": "Model",
+          "Shape": "CUBE",
+          "CastShadow": true,
+          "ModelHasOffset": false
+        },
+        {
+          "Type": "Collider",
+          "Friction": 0.75,
+          "Bounciness": 0.20000000298023225,
+          "Shape": "BOX",
+          "isTrigger": true
+        }
+      ]
+    },
+    {
+      "Type": "GOAL",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [ 82.0, 8.0, -60.0 ],
+          "Scale": [ 4.0, 4.0, 4.0 ]
+        },
+        {
+          "Type": "Material",
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2359,29 +1657,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            85.00000762939453,
-            17.0,
-            -60.0
-          ],
-          "Scale": [
-            4.0,
-            4.0,
-            4.0
-          ]
+          "Position": [ 35.0, 3.0, -26.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2405,29 +1688,14 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            35.0,
-            3.0,
-            -26.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Position": [ 20.0, 3.0, -26.0 ],
+          "Rotation": [ 45.0, 0.0, 45.0 ],
+          "Scale": [ 0.5, 0.5, 0.5 ]
         },
         {
           "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
+          "Diffuse": [ 1.0, 1.0, 0.0 ],
+          "Specular": [ 0.9651089906692505, 1.0, 0.406862735748291 ],
           "Shininess": 10000.0,
           "MaterialTextures": true
         },
@@ -2447,48 +1715,25 @@
       ]
     },
     {
-      "Type": "POINT",
+      "Type": "",
       "Components": [
         {
           "Type": "Transform",
-          "Position": [
-            20.0,
-            3.0,
-            -26.0
-          ],
-          "Scale": [
-            0.5,
-            0.5,
-            0.5
-          ]
+          "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
-          "Type": "Material",
-          "Diffuse": [
-            1.0,
-            1.0,
-            0.0
-          ],
-          "Specular": [
-            0.9651089906692505,
-            1.0,
-            0.406862735748291
-          ],
-          "Shininess": 10000.0,
-          "MaterialTextures": true
-        },
-        {
-          "Type": "Model",
-          "Shape": "CUBE",
-          "CastShadow": true,
-          "ModelHasOffset": false
-        },
-        {
-          "Type": "Collider",
-          "Friction": 0.75,
-          "Bounciness": 0.20000000298023225,
-          "Shape": "BOX",
-          "isTrigger": true
+          "Type": "Camera",
+          "Yaw": -90.0,
+          "MovementSpeed": 5.0,
+          "MouseSensitivity": 0.10000000149011612,
+          "Zoom": 45.0,
+          "Near": 0.10000000149011612,
+          "Far": 1000.0,
+          "IsActive": true,
+          "CameraType": 1,
+          "ProjectionType": 1,
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ]
         }
       ]
     }

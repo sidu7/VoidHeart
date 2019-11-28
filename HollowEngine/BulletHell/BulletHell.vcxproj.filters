@@ -75,6 +75,8 @@
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
     <None Include="src\BulletHell\GameMetaData\CollisionMask.data" />
+    <None Include="Resources\Shaders\TextRendering.vert" />
+    <None Include="Resources\Shaders\TextRendering.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BulletHell\Main.cpp">

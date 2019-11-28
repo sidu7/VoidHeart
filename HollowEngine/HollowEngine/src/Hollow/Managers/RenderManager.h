@@ -9,6 +9,7 @@
 #include "Hollow/Graphics/Data/ParticleData.h"
 #include "Hollow/Graphics/Data/SkydomeData.h"
 #include "Hollow/Graphics/Data/UIRenderData.h"
+#include "Hollow/Graphics/Data/UITextData.h"
 #include <GL/glew.h>
 
 namespace Hollow {
@@ -18,6 +19,7 @@ namespace Hollow {
 	class Shader;
 	class FrameBuffer;
 	class UniformBuffer;
+	class TextRenderer;
 
 	class RenderManager
 	{
@@ -82,6 +84,7 @@ namespace Hollow {
 		std::vector<ParticleData> mParticleData;
 		std::vector<DebugPathData> mDebugPathData;
 		std::vector<UIRenderData> mUIRenderData;
+		std::vector<UITextData> mUITextData;
 		
 		CameraData mMainCamera;
 		CameraData mUICamera;
@@ -152,7 +155,9 @@ namespace Hollow {
 
 		// UI Shader
 		Shader* mpUIShader;
-
+		Shader* mpUITextShader;
+		TextRenderer* mpTextRenderer;
+		
 		bool mShowDebugDrawing;
 	};
 }

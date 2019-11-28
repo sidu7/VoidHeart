@@ -16,6 +16,7 @@
 #include "Hollow/Graphics/FrameBuffer.h"
 #include "Hollow/Graphics/ShaderStorageBuffer.h"
 #include "Hollow/Graphics/UniformBuffer.h"
+#include "Hollow/Graphics/TextRenderer.h"
 
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/PhysicsManager.h"
@@ -92,11 +93,16 @@ namespace Hollow {
 
 		// Init UI Shader
 		mpUIShader = new Shader(data["UIShader"].GetArray()[0].GetString(), data["UIShader"].GetArray()[1].GetString());
+		mpUITextShader = new Shader(data["UITextShader"].GetArray()[0].GetString(), data["UITextShader"].GetArray()[1].GetString());
+
+		// Init Text Renderer
+		mpTextRenderer = new TextRenderer();
+		mpTextRenderer->Init();
 	}
 
 	void RenderManager::CleanUp()
 	{
-
+		delete mpTextRenderer;
 		delete mpDeferredShader;
 		delete mpUIShader;
 		// CleanUp GBuffer things
@@ -1187,10 +1193,22 @@ namespace Hollow {
 			}
 		}
 
-		GLCall(glDisable(GL_BLEND));
-
 		mpUIShader->Unbind();
 		mUIRenderData.clear();
+
+		// Render UI Text
+		mpUITextShader->Use();
+		mpUITextShader->SetMat4("Projection", mProjectionMatrix);
+		
+		for (int i = 0; i < mUITextData.size(); ++i)
+		{	
+			mpTextRenderer->RenderText(mUITextData[i],mpUITextShader);
+		}
+		
+		mpUITextShader->Unbind();
+		mUITextData.clear();
+
+		GLCall(glDisable(GL_BLEND));
 	}
 
 	void RenderManager::DebugDisplay()

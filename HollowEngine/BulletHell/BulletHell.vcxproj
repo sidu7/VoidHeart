@@ -231,6 +231,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\ShadowMap.vert" />
     <None Include="Resources\Shaders\Skydome.frag" />
     <None Include="Resources\Shaders\Skydome.vert" />
+    <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="Resources\Shaders\TextRendering.vert" />
     <None Include="Resources\Shaders\UIShader.frag" />
     <None Include="Resources\Shaders\UIShader.vert" />
     <None Include="Resources\Shaders\VerticalBlur.comp" />

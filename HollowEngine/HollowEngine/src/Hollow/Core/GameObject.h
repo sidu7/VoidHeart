@@ -1,5 +1,5 @@
 #pragma once
-#include "Hollow/Core/Core.h"
+#include "Hollow/Common.h"
 
 namespace Hollow {
 	class Component;
@@ -24,7 +24,7 @@ namespace Hollow {
 		std::unordered_map<std::type_index, Component*> mComponents;
 		std::vector<std::type_index> mIndices;
 		unsigned int mID;
-		unsigned int mType;
+		int mType;
 		bool mActive;
 
 	private:
