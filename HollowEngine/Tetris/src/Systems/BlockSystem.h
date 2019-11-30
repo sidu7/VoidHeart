@@ -17,6 +17,8 @@ public:
 
 private:
 	Tetromino RotateAroundZ(Tetromino& data);
+	Tetromino RotateAroundX(Tetromino& data);
+	Tetromino RotateAroundY(Tetromino& data);
 
 public:
 	bool mSpawnBlock;
