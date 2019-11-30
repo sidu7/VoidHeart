@@ -106,12 +106,16 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\PrototypeComponent.cpp" />
     <ClCompile Include="src\PrototypeSystem.cpp" />
+    <ClCompile Include="src\Systems\BlockSystem.cpp" />
+    <ClCompile Include="src\Systems\LayerSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
     <ClInclude Include="src\GameMetaData\GameObjectType.h" />
     <ClInclude Include="src\PrototypeComponent.h" />
     <ClInclude Include="src\PrototypeSystem.h" />
+    <ClInclude Include="src\Systems\BlockSystem.h" />
+    <ClInclude Include="src\Systems\LayerSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

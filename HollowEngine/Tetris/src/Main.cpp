@@ -84,6 +84,7 @@ void Hollow::GameMetaData::Init()
 	}
 }
 
+
 class Tetris : public Hollow::Application
 {
 public:
@@ -95,10 +96,22 @@ public:
 		PushLayer(new GameLayer());
 		PushOverlay(new UILayer());
 
-		Hollow::SceneManager::Instance().LoadLevel("tetrisbase");
-		
-		Hollow::ResourceManager::Instance().LoadSound("Resources/Audio/Songs/tetris.mp3", FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL);
-		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/tetris.mp3");
+		Hollow::SceneManager::Instance().LoadLevel("tetris");
+
+		/*Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
+		int dim = 10;
+		int height = 15;
+		for (int i = 0; i < height; ++i) {
+			for (int j = 0; j < dim; ++j) {
+				for (int k = 0; k < dim; ++k) {
+					Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/box2.json");
+					Hollow::Transform* pB = go->GetComponent<Hollow::Transform>();
+					pB->mPosition = glm::vec3(j, i , k);
+					go->mActive = false;
+				}
+			}
+		}*/
+
 	}
 	
 	~Tetris()

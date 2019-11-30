@@ -3,16 +3,8 @@
     "Components": [
         {
             "Type": "Transform",
-            "Position": [ 1.0, 0.0, 1.0 ],
-            "Scale": [ 200.0, 1.0, 200.0 ]
-        },
-        {
-            "Type": "Body",
-            "RigidbodyType": "STATIC"
-        },
-        {
-            "Type": "Collider",
-            "Shape": "BOX"
+            "Position": [ 5.0, -1.0, 5.0 ],
+            "Scale": [ 10.0, 1.0, 10.0 ]
         },
         {
             "Type": "Model",
