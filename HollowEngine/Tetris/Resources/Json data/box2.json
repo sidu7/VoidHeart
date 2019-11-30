@@ -1,0 +1,21 @@
+{
+    "Type": "ROCK",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.5, 10.0, 0.0 ],
+            "Scale": [ 1.0, 1.0, 1.0 ]
+        },
+        {
+            "Type": "Model",
+            "Shape": "CUBE",
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Specular": [ 1.0, 1.0, 1.0 ],
+            "Shininess": 10.0,
+            "Texture": "Resources/Textures/square.png"
+        }
+    ]
+}
