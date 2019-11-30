@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PrototypeComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PrototypeSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\PrototypeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PrototypeSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameMetaData\GameObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameMetaData\GameEventType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Skydome.frag" />
+    <None Include="Resources\Shaders\Skydome.vert" />
+    <None Include="Resources\Json data\Box.json" />
+    <None Include="Resources\Json data\box2.json" />
+    <None Include="Resources\Json data\box4.json" />
+    <None Include="Resources\Json data\box6.json" />
+    <None Include="Resources\Json data\box8.json" />
+    <None Include="Resources\Json data\Camera.json" />
+    <None Include="Resources\Json data\Cloud.json" />
+    <None Include="Resources\Json data\Floor.json" />
+    <None Include="Resources\Json data\Light.json" />
+    <None Include="Resources\Json data\LocalLight.json" />
+    <None Include="Resources\Json data\MiniMapCamera.json" />
+    <None Include="Resources\Json data\NPC.json" />
+    <None Include="Resources\Json data\Plane.json" />
+    <None Include="Resources\Json data\TempObject.json" />
+    <None Include="Resources\Json data\test.json" />
+    <None Include="Resources\Shaders\Bloom.frag" />
+    <None Include="Resources\Shaders\Bloom.vert" />
+    <None Include="Resources\Shaders\Debug.frag" />
+    <None Include="Resources\Shaders\Debug.vert" />
+    <None Include="Resources\Shaders\Deferred.frag" />
+    <None Include="Resources\Shaders\Deferred.vert" />
+    <None Include="Resources\Shaders\Diffuse.frag" />
+    <None Include="Resources\Shaders\Diffuse.vert" />
+    <None Include="Resources\Shaders\GBuffer.frag" />
+    <None Include="Resources\Shaders\GBuffer.vert" />
+    <None Include="Resources\Shaders\HorizontalBlur.comp" />
+    <None Include="Resources\Shaders\LocalLight.frag" />
+    <None Include="Resources\Shaders\LocalLight.vert" />
+    <None Include="Resources\Shaders\ParticleSystem.frag" />
+    <None Include="Resources\Shaders\ParticleSystem.vert" />
+    <None Include="Resources\Shaders\Phong.frag" />
+    <None Include="Resources\Shaders\Phong.vert" />
+    <None Include="Resources\Shaders\ShadowDebug.frag" />
+    <None Include="Resources\Shaders\ShadowDebug.vert" />
+    <None Include="Resources\Shaders\ShadowMap.frag" />
+    <None Include="Resources\Shaders\ShadowMap.vert" />
+    <None Include="Resources\Shaders\UIShader.frag" />
+    <None Include="Resources\Shaders\UIShader.vert" />
+    <None Include="Resources\Shaders\VerticalBlur.comp" />
+    <None Include="Resources\State data\npcstate.json" />
+    <None Include="Resources\State data\playerstate.json" />
+    <None Include="Resources\Shaders\CenterParticles.comp" />
+    <None Include="Resources\Json data\UICamera.json" />
+    <None Include="Resources\Shaders\RainParticles.comp" />
+    <None Include="Resources\Json data\UIElement.json" />
+    <None Include="Resources\Json data\UIButton.json" />
+    <None Include="Resources\Json data\StopMoveButton.json" />
+    <None Include="Resources\Json data\StartMoveButton.json" />
+    <None Include="Resources\Shaders\Ambient.frag" />
+    <None Include="Resources\Shaders\Ambient.vert" />
+    <None Include="Resources\Shaders\fxaa.frag" />
+    <None Include="Resources\Shaders\Global.frag" />
+    <None Include="Resources\Shaders\Global.vert" />
+    <None Include="Resources\Settings.json" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\GameEvents.enum" />
+    <None Include="src\GameMetaData\GameEventsMap.data" />
+    <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="Resources\Shaders\TextRendering.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Scripts\test.lua" />
+  </ItemGroup>
+</Project>

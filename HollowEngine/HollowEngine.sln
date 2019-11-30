@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Prototype0", "Prototype0\Prototype0.vcxproj", "{99FDE0D6-5B06-4684-932A-A900CA14C123}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HollowEngine", "HollowEngine\HollowEngine.vcxproj", "{C6B9321E-CD01-4F02-AE9C-3885231C8949}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletHell", "BulletHell\BulletHell.vcxproj", "{444ADBB9-D1F4-4153-A42F-6F4E316EF350}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MarbleBall", "MarbleBall\MarbleBall.vcxproj", "{3E837E68-1FA3-4998-89F0-BE16D13F2AD9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sniper", "Sniper\Sniper.vcxproj", "{612315BC-355B-4D0C-85E6-901082F9C0ED}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tetris", "Tetris\Tetris.vcxproj", "{73CD9D6C-50D3-453E-8710-0D5927AE2B72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{99FDE0D6-5B06-4684-932A-A900CA14C123}.Debug|x64.ActiveCfg = Debug|x64
-		{99FDE0D6-5B06-4684-932A-A900CA14C123}.Debug|x64.Build.0 = Debug|x64
-		{99FDE0D6-5B06-4684-932A-A900CA14C123}.Release|x64.ActiveCfg = Release|x64
-		{99FDE0D6-5B06-4684-932A-A900CA14C123}.Release|x64.Build.0 = Release|x64
 		{C6B9321E-CD01-4F02-AE9C-3885231C8949}.Debug|x64.ActiveCfg = Debug|x64
 		{C6B9321E-CD01-4F02-AE9C-3885231C8949}.Debug|x64.Build.0 = Debug|x64
 		{C6B9321E-CD01-4F02-AE9C-3885231C8949}.Release|x64.ActiveCfg = Release|x64
@@ -35,10 +29,10 @@ Global
 		{3E837E68-1FA3-4998-89F0-BE16D13F2AD9}.Debug|x64.Build.0 = Debug|x64
 		{3E837E68-1FA3-4998-89F0-BE16D13F2AD9}.Release|x64.ActiveCfg = Release|x64
 		{3E837E68-1FA3-4998-89F0-BE16D13F2AD9}.Release|x64.Build.0 = Release|x64
-		{612315BC-355B-4D0C-85E6-901082F9C0ED}.Debug|x64.ActiveCfg = Debug|x64
-		{612315BC-355B-4D0C-85E6-901082F9C0ED}.Debug|x64.Build.0 = Debug|x64
-		{612315BC-355B-4D0C-85E6-901082F9C0ED}.Release|x64.ActiveCfg = Release|x64
-		{612315BC-355B-4D0C-85E6-901082F9C0ED}.Release|x64.Build.0 = Release|x64
+		{73CD9D6C-50D3-453E-8710-0D5927AE2B72}.Debug|x64.ActiveCfg = Debug|x64
+		{73CD9D6C-50D3-453E-8710-0D5927AE2B72}.Debug|x64.Build.0 = Debug|x64
+		{73CD9D6C-50D3-453E-8710-0D5927AE2B72}.Release|x64.ActiveCfg = Release|x64
+		{73CD9D6C-50D3-453E-8710-0D5927AE2B72}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
