@@ -7,6 +7,7 @@
 
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/RenderManager.h"
+#include "Hollow/Components/UIText.h"
 
 namespace Hollow
 {
@@ -18,7 +19,7 @@ namespace Hollow
 
 	void UIButtonSystem::AddGameObject(GameObject* object)
 	{
-		CheckAllComponents<UITransform, UIImage, UIButton>(object);
+		CheckAllComponents<UITransform, UIImage, UIButton, UIText>(object);
 	}
 
 	bool UIButtonSystem::IsButtonClicked(glm::vec2 mousePosition, glm::vec2 buttonCenter, glm::vec2 buttonScale)

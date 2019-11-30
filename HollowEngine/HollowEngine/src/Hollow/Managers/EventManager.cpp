@@ -3,14 +3,51 @@
 
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Core/GameMetaData.h"
 
 namespace Hollow {
 	
-	void EventManager::Init()
+	void EventManager::Init(rapidjson::Value::Object& data)
 	{
-#define GAME_EVENT(name) mEventsEnumMap[#name] = GameEvent::GameEventType::name;
-#include "Hollow/Enums/GameEvents.enum"
-#undef GAME_EVENT
+		// Parse Event data and setup the map of object pair to event type map
+		std::ifstream file(std::string(data["EventData"].GetString()));
+		std::string line;
+
+		if (file.is_open())
+		{
+			while (getline(file, line))
+			{
+				std::istringstream iss(line);
+				std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+					std::istream_iterator<std::string>());
+
+				int id1 = GameMetaData::Instance().mMapOfGameObjectTypes[results[0]];
+				int id2 = GameMetaData::Instance().mMapOfGameObjectTypes[results[1]];
+				mGameObjectPairEventMap[BIT(id1) | BIT(id2)] = GameMetaData::Instance().mMapOfGameEventTypes[results[2]];
+			}
+			file.close();
+		}
+	}
+
+	void EventManager::FireCollisionEvent(int eventId, GameObject* go1, GameObject* go2)
+	{
+		if(mGameObjectPairEventMap.count(eventId) <= 0)
+		{
+			return;
+		}
+		
+		GameEvent te(mGameObjectPairEventMap[eventId]);
+		te.mpObject1 = go1;
+		te.mpObject2 = go2;
+
+		if(mEventsMap.find(te.mType) != mEventsMap.end())
+		{
+			BroadcastToSubscribers(te);
+		}
+		else
+		{
+			BroadcastEvent(te); // sends to all systems
+		}
 	}
 
 	void EventManager::AddDelayedEvent(GameEvent* event, float delayTimer)
@@ -25,7 +62,7 @@ namespace Hollow {
 		{
 			if (mDelayedEvents[i]->mTimer <= 0.0f)
 			{
-				SystemManager::Instance().BroadcastEventToSystems(mDelayedEvents[i]);
+				SystemManager::Instance().BroadcastEventToSystems(*mDelayedEvents[i]);
 				GameEvent* event = mDelayedEvents[i];
 				mDelayedEvents.erase(mDelayedEvents.begin() + i);
 				delete event;
@@ -37,7 +74,7 @@ namespace Hollow {
 		}
 	}
 
-	void EventManager::SubscribeEvent(GameEvent::GameEventType eventType, std::function<void(GameEvent*)> callbackFunction)
+	void EventManager::SubscribeEvent(int eventType, std::function<void(GameEvent&)> callbackFunction)
 	{
 		mEventsMap[eventType].emplace_back(callbackFunction);
 	}
@@ -47,14 +84,13 @@ namespace Hollow {
 		mEventsMap.clear();
 		std::for_each(mDelayedEvents.begin(), mDelayedEvents.end(), [](GameEvent* event) {delete event; });
 		mDelayedEvents.clear();
-		mEventsEnumMap.clear();
 	}
 
-	void EventManager::BroadcastToSubscribers(GameEvent* event)
+	void EventManager::BroadcastToSubscribers(GameEvent& event)
 	{
-		if(mEventsMap.find(event->mType) != mEventsMap.end())
+		if(mEventsMap.find(event.mType) != mEventsMap.end())
 		{
-			auto& list = mEventsMap[event->mType];
+			auto& list = mEventsMap[event.mType];
 			for(auto function : list)
 			{
 				function(event);
@@ -66,7 +102,7 @@ namespace Hollow {
 		}
 	}
 
-	void EventManager::BroadcastEvent(GameEvent* event)
+	void EventManager::BroadcastEvent(GameEvent& event)
 	{
 		SystemManager::Instance().BroadcastEventToSystems(event);
 	}

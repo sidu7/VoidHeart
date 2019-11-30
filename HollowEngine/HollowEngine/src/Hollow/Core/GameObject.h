@@ -1,10 +1,11 @@
 #pragma once
-#include "Hollow/Core/Core.h"
+#include "Hollow/Common.h"
 
 namespace Hollow {
 	class Component;
 	class GameObject
 	{
+		friend class GameObjectFactory;
 	public:
 		HOLLOW_API GameObject();
 		HOLLOW_API ~GameObject();
@@ -23,10 +24,12 @@ namespace Hollow {
 		std::unordered_map<std::type_index, Component*> mComponents;
 		std::vector<std::type_index> mIndices;
 		unsigned int mID;
+		int mType;
 		bool mActive;
 
 	private:
 		static unsigned int ID;
+		std::string mDType;
 	};
 
 	template <typename T>

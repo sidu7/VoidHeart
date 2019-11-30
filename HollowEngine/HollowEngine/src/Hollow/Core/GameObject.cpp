@@ -1,6 +1,7 @@
 #include <hollowpch.h>
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Components/Component.h"
+#include "Hollow/Utils/ImGuiHelper.h"
 
 namespace Hollow {
 
@@ -33,6 +34,7 @@ namespace Hollow {
 
 	void GameObject::DebugDisplay()
 	{
+		ImGuiHelper::InputText("Type", mDType);
 		for (std::type_index typeIndex : mIndices)
 		{
 			mComponents[typeIndex]->ShowDebug();
@@ -42,6 +44,8 @@ namespace Hollow {
 	void GameObject::Deserialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
 		writer.StartObject();
+		writer.Key("Type");
+		writer.String(mDType.c_str());
 		writer.Key("Components");
 		writer.StartArray();
 		for (unsigned int i = 0; i < mIndices.size(); ++i)

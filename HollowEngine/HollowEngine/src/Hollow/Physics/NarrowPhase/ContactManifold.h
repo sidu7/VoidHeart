@@ -13,8 +13,9 @@ namespace Hollow {
 
 		glm::vec3 collisionNormal;
 		glm::vec3 t0, t1;
-		
-		ContactManifold() : collisionNormal(0), t0(0), t1(0)
+		float frictionConstant;
+
+		ContactManifold() : collisionNormal(0), t0(0), t1(0),frictionConstant(0.0f)
 		{}
 		//EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 		void SetupGroundConstraint()
@@ -46,6 +47,7 @@ namespace Hollow {
 
 			collisionNormal = cm.collisionNormal;
 			constraint = cm.constraint;
+			frictionConstant = cm.frictionConstant;
 
 			for (auto cp : cm.contactPoints)
 			{

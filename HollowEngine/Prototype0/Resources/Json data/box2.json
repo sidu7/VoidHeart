@@ -1,9 +1,10 @@
 {
+    "Type": "ROCK",
     "Components": [
         {
             "Type": "Transform",
-          "Position": [ 0.5, 10.0, 0.0 ],
-          "Scale": [ 1.0, 1.0, 1.0 ]
+            "Position": [ 0.5, 10.0, 0.0 ],
+            "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
             "Type": "Body",
@@ -11,12 +12,12 @@
             "RigidbodyType": "DYNAMIC"
         },
         {
-          "Type": "Collider",
-          "Shape": "BOX"
+            "Type": "Collider",
+            "Shape": "BOX"
         },
         {
             "Type": "Model",
-            "Shape" :  1,
+            "Shape": "CUBE",
             "CastShadow": true
         },
         {

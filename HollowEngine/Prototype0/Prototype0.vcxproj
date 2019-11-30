@@ -107,7 +107,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClCompile Include="src\PrototypeSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GameOver.h" />
+    <ClInclude Include="src\GameMetaData\GameEventType.h" />
+    <ClInclude Include="src\GameMetaData\GameObjectType.h" />
     <ClInclude Include="src\PrototypeComponent.h" />
     <ClInclude Include="src\PrototypeSystem.h" />
   </ItemGroup>
@@ -115,6 +116,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Ambient.frag" />
     <None Include="Resources\Shaders\Ambient.vert" />
     <None Include="Resources\Shaders\fxaa.frag" />
@@ -142,7 +144,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\UIButton.json" />
     <None Include="Resources\Json data\UICamera.json" />
     <None Include="Resources\Json data\UIElement.json" />
-    <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Bloom.frag" />
     <None Include="Resources\Shaders\Bloom.vert" />
     <None Include="Resources\Shaders\CenterParticles.comp" />
@@ -171,6 +172,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\GameEvents.enum" />
+    <None Include="src\GameMetaData\GameEventsMap.data" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\test.lua" />

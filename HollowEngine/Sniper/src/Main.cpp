@@ -11,8 +11,9 @@
 class Prototype : public Hollow::Application
 {
 public:
-	Prototype() : Application("Resources/Settings.json")
+	Prototype()
 	{
+		Application::Init("Resources/Settings.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");

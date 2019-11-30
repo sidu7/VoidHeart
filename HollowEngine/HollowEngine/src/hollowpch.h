@@ -24,6 +24,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <map>
 #include <unordered_map>
 
 //Indexing
@@ -52,6 +53,10 @@
 // FMOD Audio library
 #include <FMOD/fmod.hpp>
 #include <FMOD/fmod_studio.hpp>
+
+// FreeType Text Rendering library
+#include <freetype/ft2build.h>
+#include <freetype/freetype/freetype.h>
 
 // Serialization library
 #include <rapidjson/document.h>

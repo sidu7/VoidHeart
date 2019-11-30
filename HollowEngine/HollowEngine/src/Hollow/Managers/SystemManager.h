@@ -18,7 +18,7 @@ namespace Hollow
 		HOLLOW_API  void Update();
 		HOLLOW_API  void CleanUp();
 		HOLLOW_API  void AddObjectToSystems(GameObject* GameObject);
-		HOLLOW_API  void BroadcastEventToSystems(GameEvent* event);
+		HOLLOW_API  void BroadcastEventToSystems(GameEvent& event);
 		HOLLOW_API  void DeleteGameObejectInSystems(GameObject* GameObject);
 		HOLLOW_API  void DeleteAllGameObjectsInSystems();
 

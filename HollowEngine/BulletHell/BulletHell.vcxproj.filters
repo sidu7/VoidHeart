@@ -74,6 +74,9 @@
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
+    <None Include="src\BulletHell\GameMetaData\CollisionMask.data" />
+    <None Include="Resources\Shaders\TextRendering.vert" />
+    <None Include="Resources\Shaders\TextRendering.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BulletHell\Main.cpp">
@@ -127,6 +130,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\BulletHell\Systems\DestroySystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\GameMetaData\GameObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletHell\GameMetaData\GameEventType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

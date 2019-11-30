@@ -1,4 +1,5 @@
 {
+    "Type": "FLOOR",
     "Components": [
         {
             "Type": "Transform",
@@ -10,12 +11,12 @@
             "RigidbodyType": "STATIC"
         },
         {
-          "Type": "Collider",
-          "Shape": "BOX"
+            "Type": "Collider",
+            "Shape": "BOX"
         },
         {
             "Type": "Model",
-            "Shape": 1,
+            "Shape": "CUBE",
             "CastShadow": true
         },
         {

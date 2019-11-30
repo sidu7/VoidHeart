@@ -32,6 +32,8 @@ namespace Hollow
 		glm::vec2 mYConstraints;
 		glm::vec2 mZConstraints;
 		
+		glm::vec3 mAnchorFocusOffset;
+
 		bool mIsActive;
 		
 		float mYaw;

@@ -15,6 +15,7 @@ namespace Hollow {
 		mRight = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		mOffsetFromAnchor = glm::vec3(0.0f);
+		mAnchorFocusOffset = glm::vec3(0.0f);
 		
 		mYaw = -90.0f;
 		mPitch = 0.0f;
@@ -122,6 +123,12 @@ namespace Hollow {
 			mZConstraints = JSONHelper::GetVec2F(data["ZConstraints"].GetArray());
 		}
 	}
+		if (data.HasMember("AnchorFocusOffset"))
+		{
+			mAnchorFocusOffset = JSONHelper::GetVec3F(data["AnchorFocusOffset"].GetArray());
+		}
+		
+	}
 	void Camera::Clear()
 	{
 
@@ -145,6 +152,8 @@ namespace Hollow {
 		ImGui::InputFloat2("XConstraints", &mXConstraints[0]);
 		ImGui::InputFloat2("YConstraints", &mYConstraints[0]);
 		ImGui::InputFloat2("ZConstraints", &mZConstraints[0]);
+		ImGui::InputFloat3("AnchorFocusOffset", &mAnchorFocusOffset[0]);
+
 	}
 
 	void Camera::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -166,5 +175,7 @@ namespace Hollow {
 		JSONHelper::Write("XConstraints", mXConstraints, writer);
 		JSONHelper::Write("YConstraints", mYConstraints, writer);
 		JSONHelper::Write("ZConstraints", mZConstraints, writer);
+		JSONHelper::Write("AnchorFocusOffset", mAnchorFocusOffset, writer);
+		
 	}
 }

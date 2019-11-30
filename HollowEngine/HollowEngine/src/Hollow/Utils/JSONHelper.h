@@ -27,7 +27,7 @@ namespace Hollow
 			{
 				HW_CORE_ERROR("Setting {0} not found", setting);
 			}
-			return data[setting].GetArray()[0].GetObject();
+			return data[setting].GetObject();
 		}
 
 		HOLLOW_API static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)

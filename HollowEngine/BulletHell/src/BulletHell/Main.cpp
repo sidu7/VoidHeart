@@ -10,12 +10,35 @@
 #include "Hollow/Managers/EventManager.h"
 
 #include "BulletHell/Components/Health.h"
+#include "GameMetaData/GameObjectType.h"
+#include "GameMetaData/GameEventType.h"
+#include "Hollow/Core/GameMetaData.h"
+
+void Hollow::GameMetaData::Init()
+{
+	{
+#define GAMEOBJECT_TYPE(name) mMapOfGameObjectTypes[#name] = (int)BulletHell::GameObjectType::name;
+#include "GameMetaData/GameObjectType.enum"
+#undef GAMEOBJECT_TYPE
+	}
+
+	{
+#define GAME_EVENT(name) mMapOfGameEventTypes[#name] = (int)BulletHell::GameEventType::name;
+#include "GameMetaData/GameEvents.enum"
+#undef GAME_EVENT
+	}
+}
 
 class Prototype : public Hollow::Application
 {
 public:
-	Prototype() : Application("Resources/Settings.json")
+	Prototype()
 	{
+		Hollow::GameMetaData::Instance().Init();
+		// Engine Initialization
+		Application::Init("Resources/Settings.json");
+
+		
 		//Hollow::SceneManager::Instance().LoadLevel("Resources/Levels/engine.json");
 		Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
 		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");

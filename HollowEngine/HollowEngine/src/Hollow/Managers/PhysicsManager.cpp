@@ -12,6 +12,7 @@
 
 #include "RenderManager.h"
 #include "Hollow/Core/GameObject.h"
+#include "Hollow/Core/GameMetaData.h"
 
 namespace Hollow {
 
@@ -19,18 +20,24 @@ namespace Hollow {
 	{
 		mSAT.ResetContacts();
 		mTree.DeleteTree();
+		mRigidbodyTypesMap.clear();
+		mCollisionMask.clear();
 	}
 
 	void PhysicsManager::ApplyAngularImpulse(GameObject* object, glm::vec3 impulse)
 	{
 		Body* pBody = object->GetComponent<Body>();
 		pBody->mAngularVelocity += -glm::vec3(-impulse.z,0.0f,impulse.x) * pBody->mInverseMass;
+		//ApplyLinearImpulse(object, impulse);
 	}
 
 	void PhysicsManager::ApplyLinearImpulse(GameObject* object, glm::vec3 impulse)
 	{
 		Body* pBody = object->GetComponent<Body>();
 		pBody->mVelocity += impulse * pBody->mInverseMass;
+		//pBody->mVelocity.x = pBody->mVelocity.x - 0.005 * pBody->mVelocity.x;
+		//pBody->mVelocity.z = pBody->mVelocity.z - 0.005 * pBody->mVelocity.z;
+		//pBody->mAngularVelocity = pBody->mAngularVelocity - 0.05 * pBody->mAngularVelocity;
 	}
 	
 	GameObject* PhysicsManager::CastRay()
@@ -99,16 +106,25 @@ namespace Hollow {
 
 			if (curr->IsLeaf())
 			{
+				Collider* pCol = static_cast<Collider*>(curr->mClientData);
+				
 				// cannot use curr->aabb because the mpOwnerCollider in the shape would always be null
-				Shape* shape = static_cast<Collider*>(curr->mClientData)->mpShape;
+				Shape* shape = pCol->mpShape;
 
-				glm::mat3& rot = static_cast<Collider*>(curr->mClientData)->mpBody->mRotationMatrix;
-				glm::vec3 extents = static_cast<Collider*>(curr->mClientData)->mpTr->mScale;
-				if (shape->TestRay(r, id, rot, extents)) {
-					if (id.depth < closest.depth) {
+				glm::mat3 rot;
+				glm::vec3 extents = pCol->mpTr->mScale;
+
+				rot = (pCol->mIsTrigger) ? glm::mat3(1.0f) : pCol->mpBody->mRotationMatrix;
+				
+								
+				if (shape->TestRay(r, id, rot, extents)) 
+				{
+					if (id.depth < closest.depth) 
+					{
 						closest = id;
 					}
 				}
+				
 			}
 
 			curr = curr->right;
@@ -120,12 +136,37 @@ namespace Hollow {
 	
 	}
 
-	void PhysicsManager::Init()
+	void PhysicsManager::Init(rapidjson::Value::Object& data)
 	{
 		{
-#define RIGIDBODY_TYPE(name) mapOfTypesToStrings[#name] = Body::name;
+#define RIGIDBODY_TYPE(name) mRigidbodyTypesMap[#name] = Body::name;
 #include "Hollow/Enums/RigidbodyTypes.enum"
 #undef RIGIDBODY_TYPE
 		}
+
+
+		// Parse Collision Mask and set the CollisionMask map
+		std::ifstream file(std::string(data["CollisionMask"].GetString()));
+		std::string line;
+		
+		if (file.is_open())
+		{
+			while (getline(file, line))
+			{
+				std::istringstream iss(line);
+				std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+					std::istream_iterator<std::string>());
+					
+				int id = GameMetaData::Instance().mMapOfGameObjectTypes[results[0]];
+				int count = results.size() - 1;
+				for(int i = 0; i < count; ++i)
+				{
+					mCollisionMask[BIT(id) | BIT(i)] = (bool)std::stoi(results[i + 1]);
+				}
+			}
+			file.close();
+		}
+
+
 	}
 }

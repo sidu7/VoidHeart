@@ -13,8 +13,10 @@ namespace Hollow {
 	{
 		//SINGLETON(Application)
 	public:
-		HOLLOW_API Application(const std::string& settingsFilePath);
+		HOLLOW_API Application(){}
 		HOLLOW_API virtual ~Application();
+
+		HOLLOW_API void Init(const std::string& settingsFilePath);
 		 
 		//inline static Application& Instance() { return *instance; }
 		HOLLOW_API void OnEvent(Event& e);
