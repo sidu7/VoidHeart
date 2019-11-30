@@ -1,5 +1,5 @@
 {
-  "Type": "BULLET",
+  "Type": "PLAYER_BULLET",
   "Components": [
     {
       "Type": "Transform",

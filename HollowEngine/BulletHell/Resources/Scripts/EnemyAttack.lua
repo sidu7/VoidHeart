@@ -19,7 +19,7 @@ end
 
 function FirePattern2 ()
 	gameObjectPath = "Resources/Json data/Bullet.json"
-	local numObj = 10
+	local numObj = 0
 	for i=1,numObj do
 		go = CreateGameObject(gameObjectPath)
 		body = go:GetBody()

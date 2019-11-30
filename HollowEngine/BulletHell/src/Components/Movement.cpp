@@ -1,5 +1,5 @@
+#include <Hollow.h>
 #include "Movement.h"
-#include "Hollow/Common.h"
 
 namespace BulletHell
 {

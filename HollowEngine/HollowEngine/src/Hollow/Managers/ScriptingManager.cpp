@@ -1,7 +1,9 @@
 #include <hollowpch.h>
 #include "ScriptingManager.h"
+
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Camera.h"
+#include "Hollow/Components/Transform.h"
 
 #include "Hollow/Managers/ResourceManager.h"
 
@@ -42,6 +44,11 @@ namespace Hollow
 			"position", &Body::mPosition
 		);
 
+		lua.new_usertype<Transform>("Transform",
+			sol::constructors<Transform()>(),
+			"position", &Transform::mPosition
+			);
+
 		lua.new_usertype<Camera>("Camera",
 			sol::constructors<Camera()>(),
 			"frontDirection", &Camera::mFront,
@@ -52,7 +59,8 @@ namespace Hollow
 
 		lua.new_usertype<GameObject>("GameObject",
 			sol::constructors<GameObject()>(),
-			"GetBody", &GameObject::GetComponent<Body>
+			"GetBody", &GameObject::GetComponent<Body>,
+			"GetTransform", &GameObject::GetComponent<Transform>
 			);
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));

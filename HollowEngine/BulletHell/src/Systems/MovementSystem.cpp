@@ -1,6 +1,7 @@
+#include <Hollow.h>
 #include "MovementSystem.h"
 
-#include "BulletHell/Components/Movement.h"
+#include "Components/Movement.h"
 
 #include "Hollow/Components/Body.h"
 
@@ -21,7 +22,7 @@ namespace BulletHell
 
 			auto& lua = Hollow::ScriptingManager::Instance().lua;
 
-			lua["player"] = pBody;
+			lua["body"] = pBody;
 
 			lua["isMoveForward"] = (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_UP) || Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) < -16000);
 
@@ -31,13 +32,13 @@ namespace BulletHell
 
 			lua["isStrafeRight"] = (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT) || Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 16000);
 
-			lua["jump"] = (Hollow::InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_B));
+			lua["jump"] = (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_B));
 
-			lua["dash"] = (Hollow::InputManager::Instance().IsPressed(SDL_CONTROLLER_BUTTON_X));
+			lua["dash"] = (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_X));
 
 			lua.script_file(script->mScriptPath);
-			glm::vec3 jump = lua.get<glm::vec3>("impulse");
-			Hollow::PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i], jump);
+			glm::vec3 impulse = lua.get<glm::vec3>("impulse");
+			Hollow::PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i], impulse);
 		}
 	}
 

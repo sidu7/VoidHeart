@@ -1,6 +1,6 @@
 #include "DestroySystem.h"
 
-#include "BulletHell/Components/DestroyTimer.h"
+#include "Components/DestroyTimer.h"
 
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/GameObjectManager.h"

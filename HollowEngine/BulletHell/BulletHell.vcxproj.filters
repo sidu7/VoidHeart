@@ -74,68 +74,80 @@
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
-    <None Include="src\BulletHell\GameMetaData\CollisionMask.data" />
     <None Include="Resources\Shaders\TextRendering.vert" />
     <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BulletHell\Main.cpp">
+    <ClCompile Include="src\Components\Attack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Systems\HealthSystem.cpp">
+    <ClCompile Include="src\Components\DestroyTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Components\Health.cpp">
+    <ClCompile Include="src\Components\Health.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Components\Attack.cpp">
+    <ClCompile Include="src\Components\Movement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Systems\AttackSystem.cpp">
+    <ClCompile Include="src\Systems\AttackSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Components\Movement.cpp">
+    <ClCompile Include="src\Systems\DestroySystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Systems\MovementSystem.cpp">
+    <ClCompile Include="src\Systems\HealthSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Components\DestroyTimer.cpp">
+    <ClCompile Include="src\Systems\MovementSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Systems\DestroySystem.cpp">
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Behavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\BehaviorSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BulletHell\Systems\HealthSystem.h">
+    <ClInclude Include="src\Components\Attack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Components\Health.h">
+    <ClInclude Include="src\Components\DestroyTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Components\Attack.h">
+    <ClInclude Include="src\Components\Health.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Systems\AttackSystem.h">
+    <ClInclude Include="src\Components\Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Components\Movement.h">
+    <ClInclude Include="src\GameMetaData\GameEventType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Systems\MovementSystem.h">
+    <ClInclude Include="src\GameMetaData\GameObjectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Components\DestroyTimer.h">
+    <ClInclude Include="src\Systems\AttackSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Systems\DestroySystem.h">
+    <ClInclude Include="src\Systems\DestroySystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\GameMetaData\GameObjectType.h">
+    <ClInclude Include="src\Systems\HealthSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\GameMetaData\GameEventType.h">
+    <ClInclude Include="src\Systems\MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Behavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\BehaviorSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,12 +1,11 @@
 #pragma once
-#include "Hollow.h"
 #include "Hollow/Components/Component.h"
 
 namespace BulletHell
 {
-	class Movement : public Hollow::Component
+	class Behavior : public Hollow::Component
 	{
-		REGISTERCOMPONENT(Movement);
+		REGISTERCOMPONENT(Behavior);
 	public:
 		void Init();
 		void Serialize(rapidjson::Value::Object data);
@@ -15,6 +14,8 @@ namespace BulletHell
 		void DebugDisplay();
 
 	public:
-		std::string mScriptPath;
+		std::string mCurrentBehavior;
+		std::unordered_map<std::string, std::string> mBehaviorStates;
+		std::vector<std::pair<int, std::string>> mThreshold;
 	};
 }

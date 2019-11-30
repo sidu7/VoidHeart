@@ -122,12 +122,10 @@ namespace Hollow {
 		{
 			mZConstraints = JSONHelper::GetVec2F(data["ZConstraints"].GetArray());
 		}
-	}
 		if (data.HasMember("AnchorFocusOffset"))
 		{
 			mAnchorFocusOffset = JSONHelper::GetVec3F(data["AnchorFocusOffset"].GetArray());
-		}
-		
+		}	
 	}
 	void Camera::Clear()
 	{

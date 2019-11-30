@@ -1,11 +1,13 @@
 impulse = vec3.new()
 direction = vec3.new();
 
-front = vec3.new(0.0, 0.0, -1.0)--fpsCamera.frontDirection
-right = vec3.new(1.0, 0.0, 0.0)--fpsCamera.rightDirection
+front = vec3.new(0.0, 0.0, -1.0)
+right = vec3.new(1.0, 0.0, 0.0)
 
 front.y = 0.0
 right.y = 0.0
+
+speed = vec3.new(200.0, 0.0, 200.0)
 
 if isMoveForward then
 	impulse = impulse + front;
@@ -27,10 +29,11 @@ if jump then
 	impulse = impulse + vec3.new(0.0, 20.0, 0.0);
 end
 if dash then
-	dashSpeed = 40.0
-	impulse = impulse + direction*dashSpeed
+	dashSpeed = 15.0
+	impulse = impulse + direction * dashSpeed
 end
 
+impulse = impulse * speed;
+
 -- Damp Overall Velocity and Rotation
-player.velocity = player.velocity - 0.8 * player.velocity 
-player.angularVelocity = player.angularVelocity - 0.8 * player.angularVelocity 
+body.velocity = body.velocity - 0.8 * body.velocity 

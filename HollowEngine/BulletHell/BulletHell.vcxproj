@@ -156,9 +156,10 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\BulletHell\Components\Attack.cpp" />
-    <ClCompile Include="src\BulletHell\Components\DestroyTimer.cpp" />
-    <ClCompile Include="src\BulletHell\Components\Health.cpp">
+    <ClCompile Include="src\Components\Attack.cpp" />
+    <ClCompile Include="src\Components\Behavior.cpp" />
+    <ClCompile Include="src\Components\DestroyTimer.cpp" />
+    <ClCompile Include="src\Components\Health.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hollowpch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -168,12 +169,13 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Components\Movement.cpp" />
-    <ClCompile Include="src\BulletHell\Main.cpp" />
-    <ClCompile Include="src\BulletHell\Systems\AttackSystem.cpp" />
-    <ClCompile Include="src\BulletHell\Systems\DestroySystem.cpp" />
-    <ClCompile Include="src\BulletHell\Systems\HealthSystem.cpp" />
-    <ClCompile Include="src\BulletHell\Systems\MovementSystem.cpp" />
+    <ClCompile Include="src\Components\Movement.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Systems\AttackSystem.cpp" />
+    <ClCompile Include="src\Systems\BehaviorSystem.cpp" />
+    <ClCompile Include="src\Systems\DestroySystem.cpp" />
+    <ClCompile Include="src\Systems\HealthSystem.cpp" />
+    <ClCompile Include="src\Systems\MovementSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HollowEngine\HollowEngine.vcxproj">
@@ -242,19 +244,21 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
-    <None Include="src\BulletHell\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BulletHell\Components\Attack.h" />
-    <ClInclude Include="src\BulletHell\Components\DestroyTimer.h" />
-    <ClInclude Include="src\BulletHell\Components\Health.h" />
-    <ClInclude Include="src\BulletHell\GameMetaData\GameEventType.h" />
-    <ClInclude Include="src\BulletHell\GameMetaData\GameObjectType.h" />
-    <ClInclude Include="src\BulletHell\Components\Movement.h" />
-    <ClInclude Include="src\BulletHell\Systems\AttackSystem.h" />
-    <ClInclude Include="src\BulletHell\Systems\DestroySystem.h" />
-    <ClInclude Include="src\BulletHell\Systems\HealthSystem.h" />
-    <ClInclude Include="src\BulletHell\Systems\MovementSystem.h" />
+    <ClInclude Include="src\Components\Attack.h" />
+    <ClInclude Include="src\Components\Behavior.h" />
+    <ClInclude Include="src\Components\DestroyTimer.h" />
+    <ClInclude Include="src\Components\Health.h" />
+    <ClInclude Include="src\GameMetaData\GameEventType.h" />
+    <ClInclude Include="src\GameMetaData\GameObjectType.h" />
+    <ClInclude Include="src\Components\Movement.h" />
+    <ClInclude Include="src\Systems\AttackSystem.h" />
+    <ClInclude Include="src\Systems\BehaviorSystem.h" />
+    <ClInclude Include="src\Systems\DestroySystem.h" />
+    <ClInclude Include="src\Systems\HealthSystem.h" />
+    <ClInclude Include="src\Systems\MovementSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,5 @@
 {
+  "Type" :  "ENEMY",
   "Components": [
     {
       "Type": "Transform",
@@ -9,11 +10,12 @@
       "Type": "Body",
       "Mass": 1000000.0,
       "isFrictionLess": true,
+      "RigidbodyType":  "DYNAMIC",
       "Velocity": [ 0.0, 0.0, 4.0 ]
     },
     {
       "Type": "Collider",
-      "Shape": "BOX" 
+      "Shape": "BOX"
     },
     {
       "Type": "Model",
@@ -48,8 +50,8 @@
     },
     {
       "Type": "Attack",
-      "Script":  "Resources/Scripts/EnemyAttack.lua",
-	  "BaseAttackTime": 100.0
+      "Script": "Resources/Scripts/EnemyAttack.lua",
+      "BaseAttackTime": 100.0
     }
   ]
 }

@@ -16,7 +16,7 @@ namespace Hollow
 
 	void ScriptingSystem::Update()
 	{
-		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
+		for (unsigned int i = 1; i < 0/*mGameObjects.size()*/; ++i)
 		{
 			Script* script = mGameObjects[i]->GetComponent<Script>();
 			Body* pBody = mGameObjects[i]->GetComponent<Body>();
@@ -62,7 +62,7 @@ namespace Hollow
 				jump.x *= 2.0f;
 				jump.z *= 2.0f;
 				PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i],jump );
-			//}
+			}
 			
 			//PhysicsManager::Instance().ApplyAngularImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
 		}
