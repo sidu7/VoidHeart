@@ -15,6 +15,9 @@ public:
 	void Update() override;
 	void AddGameObject(Hollow::GameObject* object) override;
 
+private:
+	Tetromino RotateAroundZ(Tetromino& data);
+
 public:
 	bool mSpawnBlock;
 
