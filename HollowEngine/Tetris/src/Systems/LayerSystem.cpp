@@ -3,26 +3,39 @@
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Model.h"
 #include "Hollow/Managers/DebugDrawManager.h"
+#include "BlockSystem.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 LayerSystem LayerSystem::instance;
 
 void LayerSystem::Init()
 {
-	once = true;
+	mMoveInterval = 1.0f;
+	mTimePast = 0.0f;
+	
+	memset(mLayers, false, sizeof(bool) * 1500);
+	memset(mFloor, false, sizeof(bool) * 1500);
+
+	mBlockSystem = Hollow::SystemManager::Instance().GetSystem<BlockSystem>();
 }
 
 void LayerSystem::Update()
 {
-	/*if (once)
+	memset(mLayers, false, sizeof(bool) * 1500);
+	memcpy(mLayers, mFloor, sizeof(bool) * 1500);
+
+	mTimePast += Hollow::FrameRateController::Instance().GetFrameTime();
+	
+	if(mTimePast > mMoveInterval)
 	{
-		for (int i = 0; i < mGameObjects.size() - 1; ++i)
-		{
-			mGameObjects[i + 1]->mActive = mLayers[i / 100][i % 10][(i / 10) % 10];
-			Hollow::Transform* transform = mGameObjects[i + 1]->GetComponent<Hollow::Transform>();
-			Hollow::DebugDrawManager::Instance().DebugCube(transform->mPosition, transform->mScale);
-		}
-		once = false;
-	}*/
+		mActiveTetrominoPosition.x -= 1;
+		mTimePast = 0.0f;
+	}
+	if (mActiveTetromino)
+	{
+		mBlockSystem->CopyTetromino(*mActiveTetromino, mLayers, mActiveTetrominoPosition);
+	}
+	
 	for (int i = 0; i < mGameObjects.size() - 1; ++i)
 	{
 		mGameObjects[i + 1]->mActive = mLayers[i / 100][i % 10][(i / 10) % 10];

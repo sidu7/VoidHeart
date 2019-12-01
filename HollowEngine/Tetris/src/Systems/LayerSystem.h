@@ -1,5 +1,7 @@
 #pragma once
 #include "Hollow/Systems/System.h"
+class BlockSystem;
+struct Tetromino;
 
 class LayerSystem : public Hollow::System
 {
@@ -12,5 +14,13 @@ public:
 
 public:
 	bool mLayers[15][10][10]; // height, z, x
-	bool once;
+	bool mFloor[15][10][10]; // for blocks that are fixed
+
+	BlockSystem* mBlockSystem;
+	Tetromino* mActiveTetromino;
+
+	float mMoveInterval;
+	float mTimePast;
+	
+	glm::vec3 mActiveTetrominoPosition;
 };
