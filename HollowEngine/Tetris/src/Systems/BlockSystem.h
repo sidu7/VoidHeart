@@ -65,8 +65,10 @@ public:
 	void AddGameObject(Hollow::GameObject* object) override;
 
 private:
-	Tetromino3 RotateAroundZ(Tetromino3& data);
-	Tetromino4 RotateAroundZ(Tetromino4& data);
+	Tetromino3 RotateAboutZ(Tetromino3& data);
+	Tetromino4 RotateAboutZ(Tetromino4& data);
+	Tetromino3 RotateAboutY(Tetromino3& data);
+	Tetromino3 RotateAboutX(Tetromino3& data);
 	void CopyTetromino3(bool src[3][3][3], bool dest[][10][10]);
 	void CopyTetromino4(bool src[4][4][4], bool dest[][10][10]);
 	void CopyTetromino2(bool src[2][2][2], bool dest[][10][10]);

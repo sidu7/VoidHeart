@@ -29,24 +29,78 @@ void BlockSystem::Init()
 	mSpawnBlock = true;
 }
 
+void BlockSystem::CopyTetromino3(bool src[3][3][3], bool dest[][10][10])
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			for (int k = 0; k < 3; ++k)
+			{
+				dest[i][j][k] = src[i][j][k];
+			}
+		}
+	}
+}
+
+void BlockSystem::CopyTetromino4(bool src[4][4][4], bool dest[][10][10])
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			for (int k = 0; k < 4; ++k)
+			{
+				dest[i][j][k] = src[i][j][k];
+			}
+		}
+	}
+}
+
+void BlockSystem::CopyTetromino2(bool src[2][2][2], bool dest[][10][10])
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		for (int j = 0; j < 2; ++j)
+		{
+			for (int k = 0; k < 2; ++k)
+			{
+				dest[i][j][k] = src[i][j][k];
+			}
+		}
+	}
+}
+
 void BlockSystem::Update()
 {
 	if(mSpawnBlock)
 	{
 		LayerSystem* layer = Hollow::SystemManager::Instance().GetSystem<LayerSystem>();
-		//CopyTetromino3(mShapes[2].mData, layer->mLayers);
+		CopyTetromino3(mShapes[2].mData, layer->mLayers);
 		//CopyTetromino4(mBar.mData, layer->mLayers);
-		CopyTetromino2(mCube.mData, layer->mLayers);
+		//CopyTetromino2(mCube.mData, layer->mLayers);
 		mSpawnBlock = false;
 	}
 	if(Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_K))
 	{
-		//Tetromino3 L = RotateAroundZ(mShapes[2]);
+		Tetromino3 L = RotateAboutZ(mShapes[2]);
 		//RotateAroundZ(mBar);
 		LayerSystem* layer = Hollow::SystemManager::Instance().GetSystem<LayerSystem>();
-		//CopyTetromino3(mShapes[2].mData, layer->mLayers);
+		CopyTetromino3(mShapes[2].mData, layer->mLayers);
 		//CopyTetromino4(mBar.mData, layer->mLayers);
-		CopyTetromino2(mCube.mData, layer->mLayers);
+		//CopyTetromino2(mCube.mData, layer->mLayers);
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_J))
+	{
+		Tetromino3 L = RotateAboutX(mShapes[2]);
+		LayerSystem* layer = Hollow::SystemManager::Instance().GetSystem<LayerSystem>();
+		CopyTetromino3(mShapes[2].mData, layer->mLayers);
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_L))
+	{
+		Tetromino3 L = RotateAboutY(mShapes[2]);
+		LayerSystem* layer = Hollow::SystemManager::Instance().GetSystem<LayerSystem>();
+		CopyTetromino3(mShapes[2].mData, layer->mLayers);
 	}
 }
 
@@ -54,7 +108,7 @@ void BlockSystem::AddGameObject(Hollow::GameObject* object)
 {
 }
 
-Tetromino3 BlockSystem::RotateAroundZ(Tetromino3& data)
+Tetromino3 BlockSystem::RotateAboutZ(Tetromino3& data)
 {
 	bool workingArray[3][3] = { false };
 
@@ -101,7 +155,7 @@ Tetromino3 BlockSystem::RotateAroundZ(Tetromino3& data)
 	return data;
 }
 
-Tetromino4 BlockSystem::RotateAroundZ(Tetromino4& data)
+Tetromino4 BlockSystem::RotateAboutZ(Tetromino4& data)
 {
 	bool workingArray[4][4] = { false };
 
@@ -150,44 +204,96 @@ Tetromino4 BlockSystem::RotateAroundZ(Tetromino4& data)
 	return data;
 }
 
-void BlockSystem::CopyTetromino3(bool src[3][3][3], bool dest[][10][10])
+Tetromino3 BlockSystem::RotateAboutX(Tetromino3& data)
 {
+	bool workingArray[3][3] = { false };
+
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < 3; ++j)
 		{
+			bool res = false;
 			for (int k = 0; k < 3; ++k)
 			{
-				dest[i][j][k] = src[i][j][k];
+				res = res || data.mData[2 - i][j][k];
+			}
+			workingArray[i][j] = res;
+		}
+	}
+
+	// Mirror working array
+	for (int i = 0; i < 3; ++i)
+	{
+		std::swap(workingArray[0][i], workingArray[2][i]);
+		for (int j = 0; j < 3; ++j)
+		{
+			std::swap(data.mData[2][i][j], data.mData[0][i][j]);
+		}
+	}
+
+	// Transpose working array
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = i; j < 3; ++j)
+		{
+			if (i == j)
+			{
+				continue;
+			}
+			std::swap(workingArray[i][j], workingArray[j][i]);
+			for (int k = 0; k < 3; ++k)
+			{
+				std::swap(data.mData[2 - i][j][k], data.mData[2 - j][i][k]);
 			}
 		}
 	}
+	
+	return data;
 }
 
-void BlockSystem::CopyTetromino4(bool src[4][4][4], bool dest[][10][10])
+Tetromino3 BlockSystem::RotateAboutY(Tetromino3& data)
 {
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 4; ++j)
-		{
-			for (int k = 0; k < 4; ++k)
-			{
-				dest[i][j][k] = src[i][j][k];
-			}
-		}
-	}
-}
+	bool workingArray[3][3] = { false };
 
-void BlockSystem::CopyTetromino2(bool src[2][2][2], bool dest[][10][10])
-{
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
-		for (int j = 0; j < 2; ++j)
+		for (int j = 0; j < 3; ++j)
 		{
-			for (int k = 0; k < 2; ++k)
+			bool res = false;
+			for (int k = 0; k < 3; ++k)
 			{
-				dest[i][j][k] = src[i][j][k];
+				res = res || data.mData[k][i][j];
+			}
+			workingArray[i][j] = res;
+		}
+	}
+
+	// Mirror working array
+	for (int i = 0; i < 3; ++i)
+	{
+		std::swap(workingArray[0][i], workingArray[2][i]);
+		for (int j = 0; j < 3; ++j)
+		{
+			std::swap(data.mData[j][i][2], data.mData[j][i][0]);
+		}
+	}
+
+	// Transpose working array
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = i; j < 3; ++j)
+		{
+			if (i == j)
+			{
+				continue;
+			}
+			std::swap(workingArray[i][j], workingArray[j][i]);
+			for (int k = 0; k < 3; ++k)
+			{
+				std::swap(data.mData[k][j][2-i], data.mData[k][i][2-j]);
 			}
 		}
 	}
+
+	return data;
 }
