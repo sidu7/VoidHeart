@@ -1,10 +1,34 @@
 #pragma once
 #include "Hollow/Systems/System.h"
 
-struct Tetromino3
+struct Tetromino
+{
+	int size;
+	virtual Tetromino* Copy() = 0;
+	Tetromino(int size) : size(size)
+	{		
+	}
+};
+
+enum Rotation
+{
+	X,
+	Y,
+	Z
+};
+
+struct Tetromino3 : Tetromino
 {
 	bool mData[3][3][3]; //Height, z, x
-	Tetromino3()
+
+	Tetromino* Copy() override
+	{
+		Tetromino3* t3 = new Tetromino3();
+		memcpy(t3->mData, mData, size * size * size * sizeof(bool));
+		return t3;
+	}
+	
+	Tetromino3() : Tetromino(3)
 	{
 		for (int i = 0; i < 3; ++i)
 		{
@@ -19,10 +43,16 @@ struct Tetromino3
 	}
 };
 
-struct Tetromino4
+struct Tetromino4 : Tetromino
 {
 	bool mData[4][4][4];
-	Tetromino4()
+	Tetromino* Copy() override
+	{
+		Tetromino4* t4 = new Tetromino4();
+		memcpy(t4->mData, mData, size * size * size * sizeof(bool));
+		return t4;
+	}
+	Tetromino4() : Tetromino(4)
 	{
 		for (int i = 0; i < 4; ++i)
 		{
@@ -37,10 +67,17 @@ struct Tetromino4
 	}
 };
 
-struct Tetromino2
+struct Tetromino2 : Tetromino
 {
 	bool mData[2][2][2];
-	Tetromino2()
+	Tetromino* Copy() override
+	{
+		Tetromino2* t2 = new Tetromino2();
+		memcpy(t2->mData, mData, size * size * size * sizeof(bool));
+		return t2;
+	}
+	
+	Tetromino2() : Tetromino(2)
 	{
 		for (int i = 0; i < 2; ++i)
 		{
@@ -55,6 +92,8 @@ struct Tetromino2
 	}
 };
 
+class LayerSystem;
+
 class BlockSystem : public Hollow::System
 {
 	REGISTERSYSTEM(BlockSystem, 2);
@@ -64,15 +103,22 @@ public:
 	void Update() override;
 	void AddGameObject(Hollow::GameObject* object) override;
 
-private:
-	Tetromino3 RotateAboutZ(Tetromino3& data);
-	Tetromino4 RotateAboutZ(Tetromino4& data);
-	Tetromino3 RotateAboutY(Tetromino3& data);
-	Tetromino3 RotateAboutX(Tetromino3& data);
-	void CopyTetromino3(bool src[3][3][3], bool dest[][10][10]);
-	void CopyTetromino4(bool src[4][4][4], bool dest[][10][10]);
-	void CopyTetromino2(bool src[2][2][2], bool dest[][10][10]);
 
+	void CopyTetromino(Tetromino& t, bool dest[][10][10], glm::ivec3 position);
+	
+private:
+	void CopyTetromino3(bool src[3][3][3], bool dest[][10][10], glm::ivec3 position);
+	void CopyTetromino4(bool src[4][4][4], bool dest[][10][10], glm::ivec3 position);
+	void CopyTetromino2(bool src[2][2][2], bool dest[][10][10], glm::ivec3 position);
+	void RotateAboutZ(Tetromino3& data);
+	void RotateAboutZ(Tetromino4& data);
+	void RotateAboutY(Tetromino3& data);
+	void RotateAboutY(Tetromino4& data);
+	void RotateAboutX(Tetromino3& data);
+	void RotateAboutX(Tetromino4& data);
+
+	void Rotate(Tetromino& data, Rotation rotation);
+	
 public:
 	bool mSpawnBlock;
 
@@ -80,4 +126,8 @@ private:
 	Tetromino3 mShapes[3]; // L, S, and T
 	Tetromino4 mBar;
 	Tetromino2 mCube;
+	
+	Tetromino* mTetrominos[5]; // L,S,T,I,O
+
+	LayerSystem* mLayerSystem;
 };
