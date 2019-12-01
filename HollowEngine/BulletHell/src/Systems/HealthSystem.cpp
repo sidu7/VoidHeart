@@ -43,7 +43,7 @@ namespace BulletHell
 			}
 
 			// Check for invincibility
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_X)
+			if (Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT)
 				&& !pHealth->mInvincible)
 			{
 				pHealth->mInvincible = true;

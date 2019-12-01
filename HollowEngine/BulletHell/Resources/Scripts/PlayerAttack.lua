@@ -11,7 +11,7 @@ function PlayerAttack ()
 		xVelocity = xVelocity / totalVelocity
 		zVelocity = zVelocity / totalVelocity
 		
-		local attackSpeed = 10.0
+		local attackSpeed = 20.0
 		body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
 
 		transform = go:GetTransform()
