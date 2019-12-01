@@ -170,11 +170,13 @@
         {
           "Type": "Health",
           "HitPoints": 10,
-          "IsAlive": true
+          "IsAlive": true,
+          "InvincibleTime": 3.0
         },
         {
           "Type": "Attack",
-          "Script": "Resources/Scripts/PlayerAttack.lua"
+          "Script": "Resources/Scripts/PlayerAttack.lua",
+          "BaseAttackTime":  0.1
         }
       ]
     },

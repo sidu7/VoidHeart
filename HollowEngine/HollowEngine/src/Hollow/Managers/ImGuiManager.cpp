@@ -96,10 +96,6 @@ namespace Hollow {
 		ImGui::Begin("Managers");
 		if (ImGui::BeginTabBar("Manager Tab Bar"))
 		{
-			if (InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_Y))
-			{
-				Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Sphere.json");
-			}
 			if(ImGui::BeginTabItem("Renderer"))
 			{
 				RenderManager::Instance().DebugDisplay();

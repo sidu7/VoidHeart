@@ -7,7 +7,7 @@
     },
     {
       "Type": "Model",
-      "Shape": 0,
+      "Shape": "SPHERE",
       "CastShadow": true
     },
     {

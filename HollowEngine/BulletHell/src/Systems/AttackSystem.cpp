@@ -18,6 +18,15 @@ namespace BulletHell
 
 	void AttackSystem::Init()
 	{
+		// Send attack component to lua
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<Attack>("Attack",
+			sol::constructors<Attack()>(),
+			"baseAttackTime", &Attack::mBaseAttackTime,
+			"currentAttackTime", &Attack::mCurrentAttackTime
+			);
+
 	}
 
 	void AttackSystem::Update()
@@ -52,14 +61,20 @@ namespace BulletHell
 		// Check buttons/axis directions and fire player attack script
 		Attack* pAttack = pPlayer->GetComponent<Attack>();
 		Hollow::Transform* pTransform = pPlayer->GetComponent<Hollow::Transform>();
+		pAttack->mCurrentAttackTime += mDeltaTime;
 
 		// Fire player lua script
-		if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_A))
-		{
-			auto& lua = Hollow::ScriptingManager::Instance().lua;
-			lua["attackPosition"] = pTransform->mPosition;
-			lua.script_file(pAttack->mScriptPath);
-		}
+		short rightHorizontalAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX);
+		short rightVerticallAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY);
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		// Send values to lua
+		lua["attackPosition"] = pTransform->mPosition;
+		lua["horizontalAxis"] = rightHorizontalAxis;
+		lua["verticalAxis"] = rightVerticallAxis;
+		lua["attack"] = pAttack;
+		lua.script_file(pAttack->mScriptPath);
+
 	}
 
 	void AttackSystem::EnemyAttackUpdate(Hollow::GameObject* pEnemy)

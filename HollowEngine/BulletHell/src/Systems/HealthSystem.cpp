@@ -3,6 +3,8 @@
 
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
+#include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -27,12 +29,30 @@ namespace BulletHell
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			Health* pHealth = mGameObjects[i]->GetComponent<Health>();
+
+			// Update invincibility time
+			if (pHealth->mInvincible)
+			{
+				pHealth->mCurrentInvincibleTime += Hollow::FrameRateController::Instance().GetFrameTime();
+				
+				// Check if should still be invincible
+				if (pHealth->mCurrentInvincibleTime > pHealth->mInvincibleTime)
+				{
+					pHealth->mInvincible = false;
+				}
+			}
+
+			// Check for invincibility
+			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_X)
+				&& !pHealth->mInvincible)
+			{
+				pHealth->mInvincible = true;
+				pHealth->mCurrentInvincibleTime = 0.0f;
+			}
+
 			if (pHealth->mHitPoints < 0)
 			{
 				pHealth->mIsAlive = false;
-			}
-			if (!pHealth->mIsAlive)
-			{
 				// Send event to destroy object
 				Hollow::GameObjectManager::Instance().DeleteGameObject(mGameObjects[i]);
 			}
@@ -64,11 +84,11 @@ namespace BulletHell
 
 	void HealthSystem::OnBulletHitWall(Hollow::GameEvent& event)
 	{
-		if (event.mpObject1->mType == (int)GameObjectType::BULLET)
+		if (event.mpObject1->mType == (int)GameObjectType::BULLET || event.mpObject1->mType == (int)GameObjectType::PLAYER_BULLET)
 		{
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
 		}
-		else if (event.mpObject2->mType == (int)GameObjectType::BULLET)
+		else if (event.mpObject2->mType == (int)GameObjectType::BULLET || event.mpObject2->mType == (int)GameObjectType::PLAYER_BULLET)
 		{
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
 		}
@@ -93,7 +113,10 @@ namespace BulletHell
 
 		// Decrease player health, object hit must have a health component
 		Health* pHealth = pObjectHit->GetComponent<Health>();
-		--pHealth->mHitPoints;
+		if (!pHealth->mInvincible)
+		{
+			--pHealth->mHitPoints;
+		}
 	}
 
 }

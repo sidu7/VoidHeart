@@ -32,9 +32,9 @@ namespace BulletHell
 
 			lua["isStrafeRight"] = (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT) || Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 16000);
 
-			lua["jump"] = (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_B));
-
-			lua["dash"] = (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_X));
+			//lua["dash"] = (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER));
+			//lua["dash"] = (Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 5000);
+			lua["dash"] = (Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT));
 
 			lua.script_file(script->mScriptPath);
 			glm::vec3 impulse = lua.get<glm::vec3>("impulse");

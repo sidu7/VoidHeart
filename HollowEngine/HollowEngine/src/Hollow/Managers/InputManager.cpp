@@ -30,6 +30,11 @@ namespace Hollow {
 		return mCurrentMouseState[keycode] && !mPrevMouseState[keycode];
 	}
 
+	bool InputManager::IsControllerButtonPressed(SDL_GameControllerButton button)
+	{
+		return mCurrentControllerState[button] && mPrevControllerState[button];
+	}
+
 	bool InputManager::IsControllerButtonTriggered(SDL_GameControllerButton button)
 	{
 		return mCurrentControllerState[button] && !mPrevControllerState[button];
@@ -40,9 +45,19 @@ namespace Hollow {
 		return !mCurrentControllerState[button] && mPrevControllerState[button];
 	}
 
-	bool InputManager::IsControllerButtonPressed(SDL_GameControllerButton button)
+	bool InputManager::IsControllerTriggerPressed(SDL_GameControllerAxis axis)
 	{
-		return mCurrentControllerState[button] && mPrevControllerState[button];
+		return mCurrentTriggerState[axis] && mPrevTriggerState[axis];
+	}
+
+	bool InputManager::IsControllerTriggerTriggered(SDL_GameControllerAxis axis)
+	{
+		return mCurrentTriggerState[axis] && !mPrevTriggerState[axis];
+	}
+
+	bool InputManager::IsControllerTriggerReleased(SDL_GameControllerAxis axis)
+	{
+		return !mCurrentTriggerState[axis] && mPrevTriggerState[axis];
 	}
 
 	Sint16 InputManager::GetAxisValue(SDL_GameControllerAxis axis)
@@ -133,6 +148,19 @@ namespace Hollow {
 			mCurrentControllerState[e.cbutton.button] = false;
 			break;
 		}
+		case SDL_CONTROLLERAXISMOTION:
+		{
+			// TODO: Only works on triggers for the moment, need to abs
+			if (e.caxis.value > 3000)
+			{
+				mCurrentTriggerState[e.caxis.axis] = true;
+			}
+			else
+			{
+				mCurrentTriggerState[e.caxis.axis] = false;
+			}
+			break;
+		}
 		}
 	}
 
@@ -204,6 +232,7 @@ namespace Hollow {
 		SDL_Event e;
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 6 * sizeof(bool));
 		SDL_memcpy(mPrevControllerState, mCurrentControllerState, 12 * sizeof(bool));
+		SDL_memcpy(mPrevTriggerState, mCurrentTriggerState, 6 * sizeof(bool));
 
 		xRel = 0.0f; yRel = 0.0f;
 

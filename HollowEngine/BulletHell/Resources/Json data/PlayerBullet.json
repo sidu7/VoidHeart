@@ -9,7 +9,8 @@
     {
       "Type": "Body",
       "Mass": 0.00001,
-      "RigidbodyType": "DYNAMIC"
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity" : false
     },
     {
       "Type": "Collider",

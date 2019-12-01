@@ -17,5 +17,8 @@ namespace BulletHell
 	public:
 		int mHitPoints;
 		bool mIsAlive;
+		bool mInvincible;
+		float mInvincibleTime;
+		float mCurrentInvincibleTime;
 	};
 }
