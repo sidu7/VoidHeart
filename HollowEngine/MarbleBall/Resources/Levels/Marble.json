@@ -86,7 +86,8 @@
           "ViewPortPosition": [ 0, 0 ],
           "ViewPortSize": [ 1280, 720 ],
           "PositionOffset": [ 0.0, 1.0, 3.0 ],
-          "AnchorFocusOffset": [ 0.0, 1.0, 0.0 ]
+            "AnchorFocusOffset": [ 0.0, 1.0, 0.0 ],
+            "PitchLowerBound":  -25
         },
         {
           "Type": "Score",

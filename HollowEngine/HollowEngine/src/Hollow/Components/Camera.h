@@ -44,6 +44,8 @@ namespace Hollow
 		float mDefaultPitch;	//Used to reset the values
 		float mDefaultYaw;		//Used to reset the values
 
+		float mPitchLowerBound;
+		
 	private:
 		glm::ivec2 mDViewPortPosition;
 	};
