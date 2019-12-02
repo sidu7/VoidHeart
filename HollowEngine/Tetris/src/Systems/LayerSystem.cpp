@@ -6,6 +6,7 @@
 #include "BlockSystem.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Components/UIText.h"
+#include "Hollow/Managers/AudioManager.h"
 
 LayerSystem LayerSystem::instance;
 
@@ -58,7 +59,7 @@ void LayerSystem::Update()
 			mTimePast = 0.0f;
 		}
 
-		if (!mBlockSystem->mSpawnBlock)
+		if (!mBlockSystem->mSpawnBlock && mActiveTetromino)
 		{
 			mBlockSystem->CopyTetromino(*mActiveTetromino, mLayers, mActiveTetrominoPosition);
 		}
@@ -136,6 +137,7 @@ void LayerSystem::CheckLines()
 	{
 		if (CheckLine(l))
 		{
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/1Up.wav");
 			// Delete line l
 			for (int m = l + mActiveTetrominoPosition.x; m < 15; ++m)
 			{

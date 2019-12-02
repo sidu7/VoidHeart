@@ -1,11 +1,11 @@
 {
   "Audio": {
     "Volumes": {
-      "Master": 0.10000000149011612,
-      "Music": 0.20000000298023225,
-      "SFX": 0.0
+      "Master": 0.3,
+      "Music": 0.2,
+      "SFX": 0.6
     },
-    "Background": ""
+    "Background": "Resources/Audio/Songs/tetris.mp3"
   },
   "GameObjects": [
     {
