@@ -21,7 +21,6 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnBulletHitPlayer));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
-
 	}
 
 	void HealthSystem::Update()
@@ -84,13 +83,13 @@ namespace BulletHell
 
 	void HealthSystem::OnBulletHitWall(Hollow::GameEvent& event)
 	{
-		if (event.mpObject1->mType == (int)GameObjectType::BULLET || event.mpObject1->mType == (int)GameObjectType::PLAYER_BULLET)
-		{
-			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
-		}
-		else if (event.mpObject2->mType == (int)GameObjectType::BULLET || event.mpObject2->mType == (int)GameObjectType::PLAYER_BULLET)
+		if (event.mpObject1->mType == (int)GameObjectType::WALL)
 		{
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
+		}
+		else
+		{
+			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
 		}
 	}
 

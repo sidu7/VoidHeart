@@ -2,31 +2,42 @@ function Move()
 enemyBody.velocity = vec3.new(0, 0, 0)
 end
 
-function FirePattern ()
-	gameObjectPath = "Resources/Json data/Bullet.json"
-	local numObj = 10
+function SemiCircle(offset)
+	local gameObjectPath = "Resources/Json data/Bullet.json"
+	local numObj = 30
 	for i=0,numObj do
 		go = CreateGameObject(gameObjectPath)
 		body = go:GetBody()
 		body.position = attackPosition
-		local theta = (i/numObj * math.pi)
-		local attackSpeed = 4.0
+		local theta = (i/numObj * math.pi) + math.rad(offset)
+		local attackSpeed = 14.0
 		body.velocity = vec3.new(attackSpeed*math.cos(theta), 0.0, attackSpeed*math.sin(theta))
 		transform = go:GetTransform()
 		transform.position = body.position
 	end
 end
 
+function FirePattern ()
+	if attackFlag then
+		SemiCircle(0)
+	else
+		SemiCircle(15)
+	end
+end
+
 function Attack()
 	if currentAttackTime > baseAttackTime then
 		FirePattern()
+		attackFlag = not attackFlag
 		currentAttackTime = 0.0
 	end
 end
 
 function Update()
 	Move()
-	Attack()
+	if transitionTime < 0.0001 then
+		Attack()
+	end
 end
 
 Update()

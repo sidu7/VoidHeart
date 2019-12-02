@@ -38,24 +38,7 @@ public:
 		// Engine Initialization
 		Application::Init("Resources/Settings.json");
 
-
-		Hollow::SceneManager::Instance().LoadLevel("Level1");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Camera.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/TempObject.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Player.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Cloud.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/NPC.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Enemy.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Plane.json");
-
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/UICamera.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/MiniMapCamera.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Light.json");
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Quad.json");
-
-
-		//Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Wall.json");
+		Hollow::SceneManager::Instance().LoadLevel("Level3");
 
 	}
 

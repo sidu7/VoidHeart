@@ -4,24 +4,44 @@ function Move()
 		enemyBody.velocity.x = speed
 	end
 	-- Turn around if past a certain x point
-	local reversePosition = 10.0
+	local reversePosition = 15.0
 	if 	enemyBody.position.x > reversePosition or
 		enemyBody.position.x < -reversePosition then
 		enemyBody.velocity.x = -enemyBody.velocity.x
 	end
 end
 
-function FirePattern ()
-	gameObjectPath = "Resources/Json data/Bullet.json"
-	local numObj = 3
-	for i=1,numObj do
+function SemiCircle(offset)
+	local gameObjectPath = "Resources/Json data/Bullet.json"
+	local numObj = 10
+	for i=0,numObj do
 		go = CreateGameObject(gameObjectPath)
 		body = go:GetBody()
-		body.position = attackPosition + vec3.new(i*0.1, 0.0, 0.3*i+0.8)
-		body.velocity = vec3.new(0.0, 0.0, 20.0)
+		body.position = attackPosition
+		local theta = (i/numObj * math.pi) + math.rad(offset)
+		local attackSpeed = 24.0
+		body.velocity = vec3.new(attackSpeed*math.cos(theta), 0.0, attackSpeed*math.sin(theta))
 		transform = go:GetTransform()
 		transform.position = body.position
 	end
+end
+
+function VBulletPattern()
+	gameObjectPath = "Resources/Json data/Bullet.json"
+	local numObj = 10
+	for i=1,numObj do
+		go = CreateGameObject(gameObjectPath)
+		body = go:GetBody()
+		body.position = attackPosition + vec3.new(0, 0.0, 0.0)
+		body.velocity = vec3.new((i - numObj/2)*2.0, 0.0, 10.0)
+		transform = go:GetTransform()
+		transform.position = body.position
+	end
+end
+
+function FirePattern ()
+	VBulletPattern()
+	SemiCircle(0)
 end
 
 function Attack()
@@ -33,7 +53,9 @@ end
 
 function Update()
 	Move()
-	Attack()
+	if transitionTime < 0.0001 then
+		Attack()
+	end
 end
 
 Update()

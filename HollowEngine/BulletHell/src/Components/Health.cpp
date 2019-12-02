@@ -33,7 +33,7 @@ namespace BulletHell
 		Hollow::JSONHelper::Write<int>("HitPoints", mHitPoints, writer);
 		Hollow::JSONHelper::Write<bool>("IsAlive", mIsAlive, writer);
 		Hollow::JSONHelper::Write<bool>("Invincible", mInvincible, writer);
-		Hollow::JSONHelper::Write<float>("InvincibileTime", mInvincibleTime, writer);
+		Hollow::JSONHelper::Write<float>("InvincibleTime", mInvincibleTime, writer);
 	}
 
 	void Health::Clear()

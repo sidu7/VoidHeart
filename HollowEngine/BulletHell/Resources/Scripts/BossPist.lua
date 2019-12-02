@@ -1,5 +1,5 @@
 function Move()
-	local speed = 15.0
+	local speed = 20.0
 	if math.abs(enemyBody.velocity.x) < speed then
 		enemyBody.velocity.x = speed * enemyBody.velocity.x / math.abs(enemyBody.velocity.x)
 	end
@@ -33,12 +33,27 @@ end
 
 function VBulletPattern(zvel)
 	gameObjectPath = "Resources/Json data/Bullet.json"
-	local numObj = 5
+	local numObj = 10
 	for i=1,numObj do
 		go = CreateGameObject(gameObjectPath)
 		body = go:GetBody()
 		body.position = attackPosition + vec3.new(0, 0.0, 0.0)
-		body.velocity = vec3.new((i - numObj/2)*1.0, 0.0, zvel)
+		body.velocity = vec3.new((i - numObj/2)*3.0, 0.0, zvel)
+		transform = go:GetTransform()
+		transform.position = body.position
+	end
+end
+
+function SemiCircle(offset)
+	local gameObjectPath = "Resources/Json data/Bullet.json"
+	local numObj = 10
+	for i=0,numObj do
+		go = CreateGameObject(gameObjectPath)
+		body = go:GetBody()
+		body.position = attackPosition
+		local theta = (i/numObj * math.pi) + math.rad(offset)
+		local attackSpeed = 24.0
+		body.velocity = vec3.new(attackSpeed*math.cos(theta), 0.0, attackSpeed*math.sin(theta))
 		transform = go:GetTransform()
 		transform.position = body.position
 	end
@@ -46,7 +61,8 @@ end
 
 function FirePattern ()
 	FireAtPlayer()
-	VBulletPattern(20.0)
+	VBulletPattern(10.0)
+	SemiCircle(0)
 end
 
 function Attack()

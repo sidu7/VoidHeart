@@ -17,5 +17,6 @@ namespace BulletHell
 		std::string mCurrentBehavior;
 		std::unordered_map<std::string, std::string> mBehaviorStates;
 		std::vector<std::pair<int, std::string>> mThreshold;
+		float mTransitionTime;
 	};
 }

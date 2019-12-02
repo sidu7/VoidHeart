@@ -47,6 +47,17 @@ namespace BulletHell
 			writer.EndArray();
 		}
 		writer.EndArray();
+
+		writer.Key("Threshold");
+		writer.StartArray();
+		for (auto state : mThreshold)
+		{
+			writer.StartArray();
+			writer.Int(state.first);
+			writer.String(state.second.c_str());
+			writer.EndArray();
+		}
+		writer.EndArray();
 	}
 
 	void Behavior::Clear()

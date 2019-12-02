@@ -1,5 +1,6 @@
 #pragma once
 #include "Hollow/Systems/System.h"
+#include "Hollow/Components/Body.h"
 
 namespace BulletHell
 {
@@ -11,5 +12,9 @@ namespace BulletHell
 		void Update() override;
 		void AddGameObject(Hollow::GameObject* pGameObject) override;
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
+
+	private:
+		float mDeltaTime;
+		Hollow::Body* mpPlayerBody;
 	};
 }
