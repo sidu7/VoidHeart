@@ -8,6 +8,7 @@
 
 #include "Hollow/Utils/Random.h"
 #include "Hollow/Managers/AudioManager.h"
+#include "Hollow/Managers/GameObjectManager.h"
 
 BlockSystem BlockSystem::instance;
 
@@ -37,8 +38,48 @@ void BlockSystem::Init()
 	Tetromino2* O = new Tetromino2();
 	mTetrominos[4] = O;
 	
-	mSpawnBlock = false;
+	mSpawnBlock = true;
 	mSpawnBox = false;
+
+}
+
+glm::ivec4 CalculateMoveDirection(float yaw)
+{
+	glm::ivec4 move = glm::ivec4(0);
+	bool negativeYaw = yaw < 0;
+	
+	int iyaw = negativeYaw ? (360-(abs((int)yaw) % 360)) % 360 : (int)yaw % 360;
+	if(iyaw >= 135 && iyaw < 225) // camera front in -z direction
+	{
+		move.x = 0;
+		move.y = 1;
+		move.z = -1;
+		move.w = 0;
+	}
+	else if(iyaw >= 225 && iyaw < 315) // camera front in +x direction
+	{
+		move.x = 1;
+		move.y = 0;
+		move.z = 0;
+		move.w = 1;
+	}
+	else if ((iyaw >= 315 && iyaw < 359) ||
+		(iyaw >= 0 && iyaw < 45)) // camera front in +z direction
+	{
+		move.x = 0;
+		move.y = -1;
+		move.z = 1;
+		move.w = 0;
+	}
+	else if (iyaw >= 45 && iyaw < 135) // camera front in -x direction
+	{
+		move.x = -1;
+		move.y = 0;
+		move.z = 0;
+		move.w = -1;
+	}
+
+	return move;
 }
 
 void BlockSystem::Updato()
@@ -50,6 +91,11 @@ void BlockSystem::Updato()
 		mSpawnBlock = true;
 	}
 	ImGui::End();
+
+	// This works under the assumption that the first object is Camera Object 
+	mpCam = Hollow::GameObjectManager::Instance().GetGameObjects()[0]->GetComponent<Hollow::Camera>();
+	glm::ivec4 moveDirection = CalculateMoveDirection(mpCam->mYaw);
+	
 	if(mLayerSystem->mGameOver)
 	{
 		return;
@@ -79,49 +125,74 @@ void BlockSystem::Updato()
 		mLayerSystem->mActiveTetrominoPosition = glm::ivec3(16 - mLayerSystem->mActiveTetromino->size, 5, 5);
 		mSpawnBlock = false;
 	}
-	if(Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_B))
+	if(Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_A))
 	{
 		mLayerSystem->mDropping = true;
 		mLayerSystem->mInterval = mLayerSystem->mDropInterval;
 	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_K))
+	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_X))
 	{
 		Rotate(*mLayerSystem->mActiveTetromino, Z);
 	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_J))
+	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_Y))
 	{
 		Rotate(*mLayerSystem->mActiveTetromino, X);
 	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_L))
+	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_B))
 	{
 		Rotate(*mLayerSystem->mActiveTetromino, Y);
 	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_LEFT))
+	
+	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
 	{
-		if (CheckForBound(LEFT))
+		if (moveDirection.x != 0 && 
+			moveDirection.x == 1 ? CheckForBound(BACK) : CheckForBound(FRONT))
 		{
-			mLayerSystem->mActiveTetrominoPosition.z -= 1;
+			mLayerSystem->mActiveTetrominoPosition.y -= moveDirection.x;
+		}
+		if (moveDirection.y != 0 &&
+			moveDirection.y == 1 ? CheckForBound(LEFT) : CheckForBound(RIGHT))
+		{
+			mLayerSystem->mActiveTetrominoPosition.z -= moveDirection.y;
 		}
 	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_RIGHT))
+	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
 	{
-		if (CheckForBound(RIGHT))
+		if (moveDirection.x != 0 &&
+			moveDirection.x == 1 ? CheckForBound(FRONT) : CheckForBound(BACK))
 		{
-			mLayerSystem->mActiveTetrominoPosition.z += 1;
+			mLayerSystem->mActiveTetrominoPosition.y += moveDirection.x;
+		}
+		if (moveDirection.y != 0 &&
+			moveDirection.y == 1 ? CheckForBound(RIGHT) : CheckForBound(LEFT))
+		{
+			mLayerSystem->mActiveTetrominoPosition.z += moveDirection.y;
 		}
 	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_UP))
+	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_DPAD_UP))
 	{
-		if (CheckForBound(BACK))
+		if (moveDirection.z != 0 &&
+			moveDirection.z == 1 ? CheckForBound(FRONT) : CheckForBound(BACK))
 		{
-			mLayerSystem->mActiveTetrominoPosition.y -= 1;
+			mLayerSystem->mActiveTetrominoPosition.y += moveDirection.z;
+		}
+		if (moveDirection.w != 0 &&
+			moveDirection.w == 1 ? CheckForBound(RIGHT) : CheckForBound(LEFT))
+		{
+			mLayerSystem->mActiveTetrominoPosition.z += moveDirection.w;
 		}
 	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_DOWN))
+	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 	{
-		if (CheckForBound(FRONT))
+		if (moveDirection.z != 0 &&
+			moveDirection.z == 1 ? CheckForBound(BACK) : CheckForBound(FRONT))
 		{
-			mLayerSystem->mActiveTetrominoPosition.y += 1;
+			mLayerSystem->mActiveTetrominoPosition.y -= moveDirection.z;
+		}
+		if (moveDirection.w != 0 &&
+			moveDirection.w == 1 ? CheckForBound(LEFT) : CheckForBound(RIGHT))
+		{
+			mLayerSystem->mActiveTetrominoPosition.z -= moveDirection.w;
 		}
 	}
 }

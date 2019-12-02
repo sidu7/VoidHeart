@@ -18,7 +18,7 @@
             },
             {
                 "Type": "Camera",
-                "Yaw": 0.3,
+                "Yaw": 180.0,
                 "Pitch": -25.0,
                 "MovementSpeed": 1.0,
                 "MouseSensitivity": 0.5,

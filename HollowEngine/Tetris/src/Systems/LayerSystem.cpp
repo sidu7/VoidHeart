@@ -164,6 +164,11 @@ void LayerSystem::CheckLines()
 
 bool LayerSystem::CheckLine(int i)
 {
+	if (mActiveTetrominoPosition.x + i == 0)
+	{
+		return false;
+	}
+	
 	for (int j = 0; j < 12; ++j)
 	{
 		for (int k = 0; k < 12; ++k)

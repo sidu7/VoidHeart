@@ -47,8 +47,8 @@ namespace Hollow {
 		Uint8 mCurrentState[512];
 		Uint8 mPreviousState[512];
 
-		bool mCurrentControllerState[12];
-		bool mPrevControllerState[12];
+		bool mCurrentControllerState[15];
+		bool mPrevControllerState[15];
 		bool mPrevMouseState[6];
 		bool mCurrentMouseState[6];
 	};

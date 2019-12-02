@@ -1,5 +1,6 @@
 #pragma once
 #include "Hollow/Systems/System.h"
+#include "Hollow/Components/Camera.h"
 
 struct Tetromino
 {
@@ -142,5 +143,7 @@ private:
 
 	LayerSystem* mLayerSystem;
 
+	Hollow::Camera* mpCam;
+	
 	bool mSpawnBox;
 };
