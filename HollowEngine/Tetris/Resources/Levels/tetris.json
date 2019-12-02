@@ -1,11 +1,11 @@
 {
   "Audio": {
     "Volumes": {
-      "Master": 0.1,
-      "Music": 0.2,
+      "Master": 0.10000000149011612,
+      "Music": 0.20000000298023225,
       "SFX": 0.0
     },
-    "Background": "Resources/Audio/Songs/tetris.mp3"
+    "Background": ""
   },
   "GameObjects": [
     {
@@ -14,7 +14,7 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [ -14.680761337280274, 16.344886779785158, 18.348634719848634 ],
+          "Position": [ -16.060407638549806, 16.76133155822754, 18.551673889160158 ],
           "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
@@ -29,6 +29,30 @@
           "IsActive": true,
           "CameraType": 3,
           "ProjectionType": 0,
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ]
+        }
+      ]
+    },
+    {
+      "Type": "",
+      "Active": true,
+      "Components": [
+        {
+          "Type": "Transform",
+          "Scale": [ 1.0, 1.0, 1.0 ]
+        },
+        {
+          "Type": "Camera",
+          "Yaw": -90.0,
+          "MovementSpeed": 5.0,
+          "MouseSensitivity": 0.10000000149011612,
+          "Zoom": 45.0,
+          "Near": 0.10000000149011612,
+          "Far": 1000.0,
+          "IsActive": true,
+          "CameraType": 1,
+          "ProjectionType": 1,
           "ViewPortPosition": [ 0, 0 ],
           "ViewPortSize": [ 1280, 720 ]
         }
@@ -77,6 +101,16 @@
           "Specular": [ 0.5, 0.5, 0.5 ],
           "Shininess": 1.0,
           "MaterialTextures": true
+        },
+        {
+          "Type": "UITransform",
+          "Position": [ 250.0, 300.0 ],
+          "Scale": [ 4.0, 4.0 ]
+        },
+        {
+          "Type": "UIText",
+          "TextScale": [ 1.0, 1.0 ],
+          "Color": [ 1.0, 0.0, 0.0 ]
         }
       ]
     },

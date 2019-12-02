@@ -5,12 +5,15 @@
 #include "Hollow/Managers/DebugDrawManager.h"
 #include "BlockSystem.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Components/UIText.h"
 
 LayerSystem LayerSystem::instance;
 
 void LayerSystem::Init()
 {
-	mMoveInterval = 0.5f;
+	mMoveInterval = 1.0f;
+	mInterval = mMoveInterval;
+	mDropInterval = 0.05f;
 	mTimePast = 0.0f;
 	
 	memset(mLayers, false, sizeof(bool) * 16*12*12);
@@ -27,31 +30,44 @@ void LayerSystem::Init()
 
 	mBlockSystem = Hollow::SystemManager::Instance().GetSystem<BlockSystem>();
 
-	mActiveTetrominoPosition = glm::ivec3(13, 5, 5);
+	mActiveTetrominoPosition = glm::ivec3(0, 0, 0);
 	mActiveTetrominoBase = 0;
+
+	mDropping = false;
+	mGameOver = false;
 }
 
 void LayerSystem::Update()
 {
-	memset(mLayers, false, sizeof(bool) * 16*12*12);
-	memcpy(mLayers, mFloor, sizeof(bool) * 16*12*12);
-
-	mTimePast += Hollow::FrameRateController::Instance().GetFrameTime();
-
-	mBlockSystem->Updato();
-	
-	if(mTimePast > mMoveInterval)
+	if (!mGameOver)
 	{
-		CheckForDrop();		
-		mActiveTetrominoPosition.x -= 1;
-		mTimePast = 0.0f;
+		memset(mLayers, false, sizeof(bool) * 16 * 12 * 12);
+		memcpy(mLayers, mFloor, sizeof(bool) * 16 * 12 * 12);
+
+		mTimePast += Hollow::FrameRateController::Instance().GetFrameTime();
+
+		if (!mDropping)
+		{
+			mBlockSystem->Updato();
+		}
+
+		if (mTimePast > mInterval)
+		{
+			CheckForDrop();
+			mActiveTetrominoPosition.x -= 1;
+			mTimePast = 0.0f;
+		}
+
+		if (!mBlockSystem->mSpawnBlock)
+		{
+			mBlockSystem->CopyTetromino(*mActiveTetromino, mLayers, mActiveTetrominoPosition);
+		}
 	}
-	
-	if (mActiveTetromino)
+	else
 	{
-		mBlockSystem->CopyTetromino(*mActiveTetromino, mLayers, mActiveTetrominoPosition);
+		Hollow::UIText* text = mGameObjects[0]->GetComponent<Hollow::UIText>();
+		text->mText = "GAMEOVER!!";
 	}
-	
 	for (int i = 0; i < mGameObjects.size() - 5; ++i)
 	{
 		int x = i / 144;
@@ -161,8 +177,12 @@ bool LayerSystem::CheckLine(int i)
 
 void LayerSystem::MakeFloor()
 {
+	if(mDropping)
+	{
+		mDropping = false;
+		mInterval = mMoveInterval;
+	}
 	mBlockSystem->CopyTetromino(*mActiveTetromino, mFloor, mActiveTetrominoPosition);
 	CheckLines();	
-	mActiveTetromino = nullptr;
 	mBlockSystem->mSpawnBlock = true;
 }

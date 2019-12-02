@@ -41,13 +41,30 @@ void BlockSystem::Init()
 
 void BlockSystem::Updato()
 {
+	if(mLayerSystem->mGameOver)
+	{
+		return;
+	}
 	if (mSpawnBlock)
 	{
-		delete mLayerSystem->mActiveTetromino;
+		if (mLayerSystem->mActiveTetromino)
+		{
+			if (mLayerSystem->mActiveTetrominoPosition.x + mLayerSystem->mActiveTetromino->size == 15)
+			{
+				HW_INFO("GAME OVER!!!");
+				mLayerSystem->mGameOver = true;
+			}
+			delete mLayerSystem->mActiveTetromino;
+		}
 		auto randomizer = Random::Range(0, 4);
 		mLayerSystem->mActiveTetromino = mTetrominos[randomizer()]->Copy();
 		mLayerSystem->mActiveTetrominoPosition = glm::ivec3(16 - mLayerSystem->mActiveTetromino->size, 5, 5);
 		mSpawnBlock = false;
+	}
+	if(Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_B))
+	{
+		mLayerSystem->mDropping = true;
+		mLayerSystem->mInterval = mLayerSystem->mDropInterval;
 	}
 	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_K))
 	{

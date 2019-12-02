@@ -27,6 +27,12 @@ public:
 
 	float mMoveInterval;
 	float mTimePast;
+	float mInterval;
+
+	bool mDropping;
+	float mDropInterval;
+
+	bool mGameOver;
 	
 	glm::ivec3 mActiveTetrominoPosition;
 	int mActiveTetrominoBase;
