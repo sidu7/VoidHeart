@@ -10,7 +10,7 @@ LayerSystem LayerSystem::instance;
 
 void LayerSystem::Init()
 {
-	mMoveInterval = 1.0f;
+	mMoveInterval = 0.5f;
 	mTimePast = 0.0f;
 	
 	memset(mLayers, false, sizeof(bool) * 16*12*12);
@@ -112,9 +112,57 @@ void LayerSystem::CheckForDrop()
 	}	
 }
 
+void LayerSystem::CheckLines()
+{
+	int size = mActiveTetromino->size;
+	int l = 0;
+	for (int i = 0; i < size; ++i) // height layer
+	{
+		if (CheckLine(l))
+		{
+			// Delete line l
+			for (int m = l + mActiveTetrominoPosition.x; m < 15; ++m)
+			{
+				for (int j = 0; j < 12; ++j)
+				{
+					for (int k = 0; k < 12; ++k)
+					{
+						mFloor[m][j][k] = mFloor[m + 1][j][k];
+					}
+				}
+			}
+			for (int j = 0; j < 12; ++j) // Last row false
+			{
+				for (int k = 0; k < 12; ++k)
+				{
+					mFloor[15][j][k] = false;
+				}
+			}
+			--l;
+		}
+		++l;
+	}
+}
+
+bool LayerSystem::CheckLine(int i)
+{
+	for (int j = 0; j < 12; ++j)
+	{
+		for (int k = 0; k < 12; ++k)
+		{
+			if (!mFloor[mActiveTetrominoPosition.x + i][j][k])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 void LayerSystem::MakeFloor()
 {
 	mBlockSystem->CopyTetromino(*mActiveTetromino, mFloor, mActiveTetrominoPosition);
+	CheckLines();	
 	mActiveTetromino = nullptr;
 	mBlockSystem->mSpawnBlock = true;
 }

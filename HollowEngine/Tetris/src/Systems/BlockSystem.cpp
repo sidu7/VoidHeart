@@ -45,7 +45,7 @@ void BlockSystem::Updato()
 	{
 		delete mLayerSystem->mActiveTetromino;
 		auto randomizer = Random::Range(0, 4);
-		mLayerSystem->mActiveTetromino = mTetrominos[randomizer()]->Copy();
+		mLayerSystem->mActiveTetromino = mTetrominos[4]->Copy();
 		mLayerSystem->mActiveTetrominoPosition = glm::ivec3(16 - mLayerSystem->mActiveTetromino->size, 5, 5);
 		mSpawnBlock = false;
 	}

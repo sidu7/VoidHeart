@@ -15,6 +15,8 @@ public:
 private:
 	void MakeFloor();
 	void CheckForDrop();
+	bool CheckLine(int i);
+	void CheckLines();
 	
 public:
 	bool mLayers[16][12][12]; // height, z, x
