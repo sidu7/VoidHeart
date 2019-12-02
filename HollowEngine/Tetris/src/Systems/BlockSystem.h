@@ -141,4 +141,6 @@ private:
 	Tetromino* mTetrominos[5]; // L,S,T,I,O
 
 	LayerSystem* mLayerSystem;
+
+	bool mSpawnBox;
 };

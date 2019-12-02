@@ -7,6 +7,7 @@
 #include "Hollow/Managers/InputManager.h"
 
 #include "Hollow/Utils/Random.h"
+#include "Hollow/Managers/AudioManager.h"
 
 BlockSystem BlockSystem::instance;
 
@@ -36,18 +37,52 @@ void BlockSystem::Init()
 	Tetromino2* O = new Tetromino2();
 	mTetrominos[4] = O;
 	
-	mSpawnBlock = true;
+	mSpawnBlock = false;
+	mSpawnBox = false;
 }
 
 void BlockSystem::Updato()
 {
+	ImGui::Begin("Tetris");
+	ImGui::Checkbox("Spawn Box", &mSpawnBox);
+	if(ImGui::Button("Start"))
+	{
+		mSpawnBlock = true;
+	}
+	ImGui::End();
+	if(mLayerSystem->mGameOver)
+	{
+		return;
+	}
 	if (mSpawnBlock)
 	{
-		delete mLayerSystem->mActiveTetromino;
-		auto randomizer = Random::Range(0, 4);
-		mLayerSystem->mActiveTetromino = mTetrominos[randomizer()]->Copy();
+		if (mLayerSystem->mActiveTetromino)
+		{
+			if (mLayerSystem->mActiveTetrominoPosition.x + mLayerSystem->mActiveTetromino->size == 15)
+			{
+				HW_INFO("GAME OVER!!!");
+				mLayerSystem->mGameOver = true;
+				Hollow::AudioManager::Instance().mMute[Hollow::SOUND_TYPE::SOUND_BACKGROUND];
+				Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/gameover.wav");
+			}
+			delete mLayerSystem->mActiveTetromino;
+		}
+		if (mSpawnBox)
+		{
+			mLayerSystem->mActiveTetromino = mTetrominos[4]->Copy();
+		}
+		else
+		{
+			auto randomizer = Random::Range(0, 4);
+			mLayerSystem->mActiveTetromino = mTetrominos[randomizer()]->Copy();
+		}
 		mLayerSystem->mActiveTetrominoPosition = glm::ivec3(16 - mLayerSystem->mActiveTetromino->size, 5, 5);
 		mSpawnBlock = false;
+	}
+	if(Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_B))
+	{
+		mLayerSystem->mDropping = true;
+		mLayerSystem->mInterval = mLayerSystem->mDropInterval;
 	}
 	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_K))
 	{
