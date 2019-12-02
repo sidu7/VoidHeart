@@ -40,7 +40,7 @@
       "Components": [
         {
           "Type": "Transform",
-          "Position": [ 0.0, 40.0, 20.0 ],
+          "Position": [ 5.5, 50.0, 5.5 ],
           "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
