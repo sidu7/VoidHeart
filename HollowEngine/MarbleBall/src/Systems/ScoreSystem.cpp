@@ -5,10 +5,10 @@
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/AudioManager.h"
 
-#include "GameMetaData/GameEventType.h"
-#include "GameMetaData/GameObjectType.h"
+#include "../GameMetaData/GameEventType.h"
+#include "../GameMetaData/GameObjectType.h"
 
-#include "Components/Score.h"
+#include "../Components/Score.h"
 #include "Hollow/Components/UIText.h"
 
 namespace MarbleBall
