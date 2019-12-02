@@ -12,9 +12,13 @@ public:
 	void Update() override;
 	void AddGameObject(Hollow::GameObject* object) override;
 
+private:
+	void MakeFloor();
+	void CheckForDrop();
+	
 public:
-	bool mLayers[15][10][10]; // height, z, x
-	bool mFloor[15][10][10]; // for blocks that are fixed
+	bool mLayers[16][12][12]; // height, z, x
+	bool mFloor[16][12][12]; // for blocks that are fixed
 
 	BlockSystem* mBlockSystem;
 	Tetromino* mActiveTetromino;
@@ -22,5 +26,6 @@ public:
 	float mMoveInterval;
 	float mTimePast;
 	
-	glm::vec3 mActiveTetrominoPosition;
+	glm::ivec3 mActiveTetrominoPosition;
+	int mActiveTetrominoBase;
 };

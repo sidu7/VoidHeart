@@ -6,6 +6,8 @@
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/InputManager.h"
 
+#include "Hollow/Utils/Random.h"
+
 BlockSystem BlockSystem::instance;
 
 void BlockSystem::Init()
@@ -37,7 +39,60 @@ void BlockSystem::Init()
 	mSpawnBlock = true;
 }
 
-void BlockSystem::CopyTetromino3(bool src[3][3][3], bool dest[][10][10], glm::ivec3 position)
+void BlockSystem::Updato()
+{
+	if (mSpawnBlock)
+	{
+		delete mLayerSystem->mActiveTetromino;
+		auto randomizer = Random::Range(0, 4);
+		mLayerSystem->mActiveTetromino = mTetrominos[randomizer()]->Copy();
+		mLayerSystem->mActiveTetrominoPosition = glm::ivec3(16 - mLayerSystem->mActiveTetromino->size, 5, 5);
+		mSpawnBlock = false;
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_K))
+	{
+		Rotate(*mLayerSystem->mActiveTetromino, Z);
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_J))
+	{
+		Rotate(*mLayerSystem->mActiveTetromino, X);
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_L))
+	{
+		Rotate(*mLayerSystem->mActiveTetromino, Y);
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_LEFT))
+	{
+		if (CheckForBound(LEFT))
+		{
+			mLayerSystem->mActiveTetrominoPosition.z -= 1;
+		}
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_RIGHT))
+	{
+		if (CheckForBound(RIGHT))
+		{
+			mLayerSystem->mActiveTetrominoPosition.z += 1;
+		}
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_UP))
+	{
+		if (CheckForBound(BACK))
+		{
+			mLayerSystem->mActiveTetrominoPosition.y -= 1;
+		}
+	}
+	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_DOWN))
+	{
+		if (CheckForBound(FRONT))
+		{
+			mLayerSystem->mActiveTetrominoPosition.y += 1;
+		}
+	}
+}
+
+
+void BlockSystem::CopyTetromino3(bool src[3][3][3], bool dest[][12][12], glm::ivec3 position)
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -45,14 +100,13 @@ void BlockSystem::CopyTetromino3(bool src[3][3][3], bool dest[][10][10], glm::iv
 		{
 			for (int k = 0; k < 3; ++k)
 			{
-				dest[i + position.x][j + position.y][k + position.z] = src[i][j][k];
+				dest[i + position.x][j + position.y][k + position.z] |= src[i][j][k];				
 			}
 		}
 	}
-	
 }
 
-void BlockSystem::CopyTetromino4(bool src[4][4][4], bool dest[][10][10], glm::ivec3 position)
+void BlockSystem::CopyTetromino4(bool src[4][4][4], bool dest[][12][12], glm::ivec3 position)
 {
 	for (int i = 0; i < 4; ++i)
 	{
@@ -60,13 +114,13 @@ void BlockSystem::CopyTetromino4(bool src[4][4][4], bool dest[][10][10], glm::iv
 		{
 			for (int k = 0; k < 4; ++k)
 			{
-				dest[i + position.x][j + position.y][k + position.z] = src[i][j][k];
+				dest[i + position.x][j + position.y][k + position.z] |= src[i][j][k];				
 			}
 		}
 	}
 }
 
-void BlockSystem::CopyTetromino2(bool src[2][2][2], bool dest[][10][10], glm::ivec3 position)
+void BlockSystem::CopyTetromino2(bool src[2][2][2], bool dest[][12][12], glm::ivec3 position)
 {
 	for (int i = 0; i < 2; ++i)
 	{
@@ -74,7 +128,7 @@ void BlockSystem::CopyTetromino2(bool src[2][2][2], bool dest[][10][10], glm::iv
 		{
 			for (int k = 0; k < 2; ++k)
 			{
-				dest[i + position.x][j + position.y][k + position.z] = src[i][j][k];
+				dest[i + position.x][j + position.y][k + position.z] |= src[i][j][k];				
 			}
 		}
 	}
@@ -128,7 +182,7 @@ void BlockSystem::Rotate(Tetromino& data, Rotation rotation)
 	}
 }
 
-void BlockSystem::CopyTetromino(Tetromino& t, bool dest[][10][10], glm::ivec3 position)
+void BlockSystem::CopyTetromino(Tetromino& t, bool dest[][12][12], glm::ivec3 position)
 {
 	switch(t.size)
 	{
@@ -150,29 +204,6 @@ void BlockSystem::CopyTetromino(Tetromino& t, bool dest[][10][10], glm::ivec3 po
 		CopyTetromino4(t4.mData, dest, position);
 	}
 		break;
-	}
-}
-
-void BlockSystem::Update()
-{
-	if(mSpawnBlock)
-	{
-		delete mLayerSystem->mActiveTetromino;
-		mLayerSystem->mActiveTetromino = mTetrominos[0]->Copy();
-		mLayerSystem->mActiveTetrominoPosition = glm::ivec3(12, 4, 4);
-		mSpawnBlock = false;
-	}
-	if(Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_K))
-	{
-		Rotate(*mLayerSystem->mActiveTetromino, Z);
-	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_J))
-	{
-		Rotate(*mLayerSystem->mActiveTetromino, X);
-	}
-	if (Hollow::InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_L))
-	{
-		Rotate(*mLayerSystem->mActiveTetromino, Y);
 	}
 }
 
@@ -362,6 +393,58 @@ void BlockSystem::RotateAboutX(Tetromino4& data)
 			}
 		}
 	}
+}
+
+bool BlockSystem::CheckForBound(Direction dir)
+{
+	int size = mLayerSystem->mActiveTetromino->size;
+	for (int i = 0; i < size; ++i) // height layer
+	{
+		for (int j = 0; j < size; ++j)
+		{
+			for (int k = 0; k < size; ++k)
+			{
+				bool block, layer;
+				switch(size)
+				{
+				case 2:
+					block = static_cast<Tetromino2*>(mLayerSystem->mActiveTetromino)->mData[i][j][k];
+					break;
+				case 3:
+					block = static_cast<Tetromino3*>(mLayerSystem->mActiveTetromino)->mData[i][j][k];
+					break;
+				case 4:
+					block = static_cast<Tetromino4*>(mLayerSystem->mActiveTetromino)->mData[i][j][k];
+					break;
+				}
+				switch (dir)
+				{
+				case FRONT:
+					layer = mLayerSystem->mLayers[mLayerSystem->mActiveTetrominoPosition.x + i]
+					[j + mLayerSystem->mActiveTetrominoPosition.y + 1]
+					[k + mLayerSystem->mActiveTetrominoPosition.z];
+					break;
+				case BACK:
+					layer = mLayerSystem->mLayers[mLayerSystem->mActiveTetrominoPosition.x + i]
+						[j + mLayerSystem->mActiveTetrominoPosition.y - 1][k + mLayerSystem->mActiveTetrominoPosition.z];
+					break;
+				case LEFT:
+					layer = mLayerSystem->mLayers[mLayerSystem->mActiveTetrominoPosition.x + i]
+						[j + mLayerSystem->mActiveTetrominoPosition.y][k + mLayerSystem->mActiveTetrominoPosition.z - 1];
+					break;
+				case RIGHT:
+					layer = mLayerSystem->mLayers[mLayerSystem->mActiveTetrominoPosition.x + i]
+						[j + mLayerSystem->mActiveTetrominoPosition.y][k + mLayerSystem->mActiveTetrominoPosition.z + 1];
+					break;
+				}
+				if (block && layer)
+				{
+					return false;
+				}
+			}
+		}
+	}
+	return true;
 }
 
 void BlockSystem::RotateAboutY(Tetromino3& data)

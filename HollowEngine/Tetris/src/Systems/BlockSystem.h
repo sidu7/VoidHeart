@@ -17,6 +17,14 @@ enum Rotation
 	Z
 };
 
+enum Direction
+{
+	FRONT,
+	BACK,
+	LEFT,
+	RIGHT
+};
+
 struct Tetromino3 : Tetromino
 {
 	bool mData[3][3][3]; //Height, z, x
@@ -100,22 +108,25 @@ class BlockSystem : public Hollow::System
 public:
 	~BlockSystem() {}
 	void Init() override;
-	void Update() override;
+	void Updato();
+	void Update() {}
 	void AddGameObject(Hollow::GameObject* object) override;
 
 
-	void CopyTetromino(Tetromino& t, bool dest[][10][10], glm::ivec3 position);
+	void CopyTetromino(Tetromino& t, bool dest[][12][12], glm::ivec3 position);
 	
 private:
-	void CopyTetromino3(bool src[3][3][3], bool dest[][10][10], glm::ivec3 position);
-	void CopyTetromino4(bool src[4][4][4], bool dest[][10][10], glm::ivec3 position);
-	void CopyTetromino2(bool src[2][2][2], bool dest[][10][10], glm::ivec3 position);
+	void CopyTetromino3(bool src[3][3][3], bool dest[][12][12], glm::ivec3 position);
+	void CopyTetromino4(bool src[4][4][4], bool dest[][12][12], glm::ivec3 position);
+	void CopyTetromino2(bool src[2][2][2], bool dest[][12][12], glm::ivec3 position);
 	void RotateAboutZ(Tetromino3& data);
 	void RotateAboutZ(Tetromino4& data);
 	void RotateAboutY(Tetromino3& data);
 	void RotateAboutY(Tetromino4& data);
 	void RotateAboutX(Tetromino3& data);
 	void RotateAboutX(Tetromino4& data);
+
+	bool CheckForBound(Direction dir);
 
 	void Rotate(Tetromino& data, Rotation rotation);
 	

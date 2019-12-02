@@ -1,7 +1,6 @@
 #include <Hollow.h>
 
 #include "Hollow/Common.h"
-#include "PrototypeComponent.h"
 
 #include "Hollow/Core/EntryPoint.h"
 #include "Hollow/Core/GameObject.h"
@@ -97,10 +96,10 @@ public:
 		PushOverlay(new UILayer());
 
 		Hollow::SceneManager::Instance().LoadLevel("tetris");
-
+		
 		/*Hollow::GameObject* go = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json data/Floor.json");
-		int dim = 10;
-		int height = 15;
+		int dim = 12;
+		int height = 16;
 		for (int i = 0; i < height; ++i) {
 			for (int j = 0; j < dim; ++j) {
 				for (int k = 0; k < dim; ++k) {
@@ -111,7 +110,6 @@ public:
 				}
 			}
 		}*/
-
 	}
 	
 	~Tetris()
