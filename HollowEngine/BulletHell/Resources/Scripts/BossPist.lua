@@ -59,15 +59,23 @@ function SemiCircle(offset)
 	end
 end
 
-function FirePattern ()
+function FirePattern (num)
+	if(num < 4.0) then
+	FireAtPlayer()
+	elseif (num < 7.0 ) then
+	VBulletPattern(10.0)
+	elseif (num < 10.0) then
+	SemiCircle(0)
+	else
 	FireAtPlayer()
 	VBulletPattern(10.0)
 	SemiCircle(0)
+	end
 end
 
-function Attack()
+function Attack(num)
 	if currentAttackTime > baseAttackTime then
-		FirePattern()
+		FirePattern(num)
 		currentAttackTime = 0.0
 	end
 end
@@ -75,7 +83,7 @@ end
 function Update()
 	Move()
 	if transitionTime < 0.0001 then
-		Attack()
+		Attack(math.random(10))
 	end
 end
 
