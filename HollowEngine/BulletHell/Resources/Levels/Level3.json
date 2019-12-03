@@ -146,7 +146,7 @@
           "Near": 0.10000000149011612,
           "Far": 1000.0,
           "IsActive": true,
-          "CameraType": 5,
+          "CameraType": 6,
           "ProjectionType": 0,
           "ViewPortPosition": [
             0,
@@ -158,10 +158,10 @@
           ],
           "PositionOffset": [
             0.0,
-            12.5,
+            7.5,
             15.0
           ],
-          "LERPFactor": 0.10000000149011612,
+          "LERPFactor": 0.070000000149011612,
           "XConstraints": [
             -20.0,
             20.0
@@ -173,7 +173,8 @@
           "ZConstraints": [
             -30.0,
             26.0
-          ]
+          ],
+          "FocusObjects": [ "PLAYER", "ENEMY" ]
         },
         {
           "Type": "Health",
@@ -198,6 +199,111 @@
             -5.091341495513916,
             1.9973543882369996,
             -11.755645751953128
+          ],
+          "Scale": [
+            3.0,
+            3.0,
+            3.0
+          ]
+        },
+        {
+          "Type": "Body",
+          "Mass": 1000000.0,
+          "RigidbodyType": "DYNAMIC",
+          "IsFrictionLess": true,
+          "UseGravity": true
+        },
+        {
+          "Type": "Collider",
+          "Bounciness": 0.20000000298023225,
+          "Shape": "BOX",
+          "isTrigger": false
+        },
+        {
+          "Type": "Model",
+          "Model": "Resources/Models/Walking.fbx",
+          "CastShadow": true,
+          "ModelHasOffset": true
+        },
+        {
+          "Type": "Material",
+          "Shininess": 1.0,
+          "MaterialTextures": true,
+          "MaterialData": "Resources/Models/Walking.fbx"
+        },
+        {
+          "Type": "Animator",
+          "BoneData": "Resources/Models/Walking.fbx",
+          "Animations": [
+            [
+              "Walking",
+              "Resources/Models/NarutoRun.fbx"
+            ]
+          ],
+          "BlendFactor": 1.0
+        },
+        {
+          "Type": "Attack",
+          "Script": "Resources/Scripts/EnemyAttack.lua",
+          "BaseAttackTime": 1.2
+        },
+        {
+          "Type": "Health",
+          "HitPoints": 100,
+          "IsAlive": true,
+          "Invincible": false,
+          "InvincibleTime": 3.0
+        },
+        {
+          "Type": "Behavior",
+          "BehaviorStates": [
+            [
+              "Happy",
+              "BossHappy.lua"
+            ],
+            [
+              "Sad",
+              "BossSad.lua"
+            ],
+            [
+              "Angry",
+              "BossAngry.lua"
+            ],
+            [
+              "Pist",
+              "BossPist.lua"
+            ]
+          ],
+          "Threshold": [
+            [
+              75,
+              "Happy"
+            ],
+            [
+              50,
+              "Sad"
+            ],
+            [
+              25,
+              "Angry"
+            ],
+            [
+              0,
+              "Pist"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "Type": "ENEMY",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Position": [
+            -5.091341495513916,
+            1.9973543882369996,
+            0.755645751953128
           ],
           "Scale": [
             3.0,

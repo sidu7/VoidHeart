@@ -1,4 +1,5 @@
 #include <hollowpch.h>
+#include "SystemManager.h"
 #include "SceneManager.h"
 #include "MemoryManager.h"
 #include "GameObjectManager.h"
@@ -185,6 +186,7 @@ namespace Hollow
 			}
 		}
 		HW_CORE_INFO("Scene {0} has been loaded", LevelFile);
+		SystemManager::Instance().OnSceneInit();
 	}
 
 	void SceneManager::DeserializeGameObject()

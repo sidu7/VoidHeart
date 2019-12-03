@@ -9,7 +9,8 @@ namespace Hollow
 		SIDE_CAMERA,
 		SCENE_CAMERA,
 		THIRD_PERSON_CAMERA,
-		TOP_DOWN_CAMERA
+		TOP_DOWN_CAMERA,
+		MULTI_FOCUS_CAMERA
 	};
 
 	enum CameraProjection

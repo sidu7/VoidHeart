@@ -43,7 +43,7 @@ namespace BulletHell
 
 			// Check for invincibility
 			if (Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT)
-				&& !pHealth->mInvincible)
+				&& !pHealth->mInvincible && pHealth->mpOwner->mType == (int)GameObjectType::PLAYER)
 			{
 				pHealth->mInvincible = true;
 				pHealth->mCurrentInvincibleTime = 0.0f;

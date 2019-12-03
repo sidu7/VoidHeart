@@ -126,10 +126,19 @@ namespace Hollow {
 		{
 			mAnchorFocusOffset = JSONHelper::GetVec3F(data["AnchorFocusOffset"].GetArray());
 		}	
+		if (data.HasMember("FocusObjects"))
+		{
+			auto objects = data["FocusObjects"].GetArray();
+			for (int i = 0; i < objects.Size(); ++i)
+			{
+				mFocusObjects.emplace_back(objects[i].GetString());
+			}
+		}
 	}
 	void Camera::Clear()
 	{
-
+		mFocusObjects.clear();
+		mFocusPositions.clear();
 	}
 	void Camera::DebugDisplay()
 	{
@@ -174,6 +183,13 @@ namespace Hollow {
 		JSONHelper::Write("YConstraints", mYConstraints, writer);
 		JSONHelper::Write("ZConstraints", mZConstraints, writer);
 		JSONHelper::Write("AnchorFocusOffset", mAnchorFocusOffset, writer);
+		writer.Key("FocusObjects");
+		writer.StartArray();
+		for (int i = 0; i < mFocusObjects.size(); ++i)
+		{
+			writer.String(mFocusObjects[i].c_str());
+		}
+		writer.EndArray();
 		
 	}
 }

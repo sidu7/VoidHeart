@@ -16,6 +16,7 @@ namespace Hollow
 		HOLLOW_API virtual ~CameraSystem() {}
 		HOLLOW_API void Update();
 		HOLLOW_API void AddGameObject(GameObject* object);		 
+		HOLLOW_API void OnSceneInit() override;
 
 	private:
 		void HandleKeyboardInput(Camera* pCamera, Transform* pTransform);
@@ -24,6 +25,7 @@ namespace Hollow
 		bool HandleMouseScroll(MouseScrolledEvent& mse,Camera* pCamera);
 		void UpdateCamera(Camera* pCamera);
 		void UpdateTopDownCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData);
+		void UpdateMultiFocusCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData);
 		void ApplyConstraints(Camera* pCamera, CameraData& cameraData);
 		void Reset(Camera* pCamera);
 

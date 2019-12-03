@@ -1,11 +1,14 @@
 #include <hollowpch.h>
 #include "CameraSystem.h"
+#include "Hollow/Core/GameMetaData.h"
+
 #include "Hollow/Components/Camera.h"
 
 #include"Hollow/Managers/FrameRateController.h"
 
 #include"Hollow/Managers/InputManager.h"
 #include"Hollow/Managers/RenderManager.h"
+#include"Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Graphics/Data/CameraData.h"
 #include "Hollow/Events/MouseEvent.h"
 #include "Hollow/Components/Transform.h"
@@ -29,6 +32,26 @@ namespace Hollow {
 			else
 			{
 				pCamera->mAspectRatio = ((float)pCamera->mViewPortSize.x / pCamera->mViewPortSize.y);
+			}
+		}
+	}
+
+	void CameraSystem::OnSceneInit()
+	{
+		for (int i = 0;i< mGameObjects.size(); ++i)
+		{
+			Camera* pCamera = mGameObjects[i]->GetComponent<Camera>();
+			if (pCamera->mType == CameraType::MULTI_FOCUS_CAMERA)
+			{
+				for (int j = 0; j < pCamera->mFocusObjects.size(); ++j)
+				{
+					int type = GameMetaData::Instance().mMapOfGameObjectTypes[pCamera->mFocusObjects[j]];
+					auto& list = GameObjectManager::Instance().GetObjectByType(type);
+					for(auto objects: list)
+					{
+						pCamera->mFocusPositions.emplace_back(objects->GetComponent<Transform>());
+					}
+				}
 			}
 		}
 	}
@@ -188,6 +211,10 @@ namespace Hollow {
 			{
 				UpdateTopDownCamera(pCamera, pTransform, cameraData);
 			}
+			else if (pCamera->mType == MULTI_FOCUS_CAMERA)
+			{
+				UpdateMultiFocusCamera(pCamera,pTransform,cameraData);
+			}
 			else if (pCamera->mType != THIRD_PERSON_CAMERA)
 			{
 				cameraData.mEyePosition = pTransform->mPosition + glm::toMat3(pTransform->mQuaternion) * pCamera->mOffsetFromAnchor;
@@ -252,6 +279,9 @@ namespace Hollow {
 			case THIRD_PERSON_CAMERA:
 				RenderManager::Instance().mMainCamera = cameraData;
 				break;
+			case MULTI_FOCUS_CAMERA:
+				RenderManager::Instance().mMainCamera = cameraData;
+				break;
 			}
 			
 		}
@@ -294,6 +324,49 @@ namespace Hollow {
 			pCamera->mNearPlane, pCamera->mFarPlane);
 	}
 
+	void CameraSystem::UpdateMultiFocusCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData)
+	{
+		// Set camera position based on object
+		// LERP to desired position
+		float distance = 0.0f;
+		glm::vec3 midPoint(0.0f);
+		for (int i = 0;i<pCamera->mFocusPositions.size();++i)
+		{
+			for (int j = 0; j < pCamera->mFocusPositions.size(); ++j)
+			{
+				if (i == j)
+					continue;
+				glm::vec3 objectsvector = pCamera->mFocusPositions[i]->mPosition - pCamera->mFocusPositions[j]->mPosition;
+				float tempdist = glm::length(objectsvector);
+				if (tempdist >= distance)
+					distance = tempdist;
+			}
+			midPoint += pCamera->mFocusPositions[i]->mPosition;
+		}
+		midPoint /= pCamera->mFocusPositions.size();
+		glm::vec3 focuspoint = midPoint;
+		glm::vec3 desiredPosition = focuspoint + pCamera->mOffsetFromAnchor;
+		glm::vec3 apnaFront = glm::normalize(pCamera->mOffsetFromAnchor);
+		desiredPosition += apnaFront * distance * 0.5f;
+		glm::vec3& p = desiredPosition;
+		float t = pCamera->mLERPFactor;
+		glm::vec3 d = pCamera->mPreviousPosition + t * (desiredPosition - pCamera->mPreviousPosition);
+		cameraData.mEyePosition = d;
+		// Apply camera constraits if they exist
+		//ApplyConstraints(pCamera, cameraData);
+		pCamera->mPreviousPosition = cameraData.mEyePosition;
+
+		glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -0.5f, -1.0f));
+		//glm::vec3 frontDirection = glm::normalize(focuspoint - desiredPosition);
+		pCamera->mFront = frontDirection;
+		pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+		pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));
+
+		// Set cameradata matrices
+		cameraData.mViewMatrix = glm::lookAt(cameraData.mEyePosition, cameraData.mEyePosition + pCamera->mFront, pCamera->mUp);;
+		cameraData.mProjectionMatrix = glm::perspective(pCamera->mZoom, pCamera->mAspectRatio,
+			pCamera->mNearPlane, pCamera->mFarPlane);
+	}
 	void CameraSystem::ApplyConstraints(Camera* pCamera, CameraData& cameraData)
 	{
 		glm::vec2& x = pCamera->mXConstraints;

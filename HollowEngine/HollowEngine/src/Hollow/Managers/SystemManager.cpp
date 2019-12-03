@@ -23,6 +23,14 @@ namespace Hollow
 		std::for_each(mSystems.begin(), mSystems.end(), [](System* x) { x->Init(); });
 	}
 
+	void SystemManager::OnSceneInit()
+	{
+		for (unsigned int i = 0; i < mSystems.size(); ++i)
+		{
+			mSystems[i]->OnSceneInit();
+		}
+	}
+
 	void SystemManager::Update()
 	{
 		for (unsigned int i = 0; i < mSystems.size(); ++i)

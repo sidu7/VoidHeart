@@ -5,7 +5,7 @@ namespace Hollow
 {
 	enum CameraType;
 	enum CameraProjection;
-
+	class Transform;
 	class Camera : public Component
 	{
 		REGISTERCOMPONENT(Camera);
@@ -51,6 +51,9 @@ namespace Hollow
 		float mDefaultZoom;		//Used to reset the values
 		float mDefaultPitch;	//Used to reset the values
 		float mDefaultYaw;		//Used to reset the values
+
+		std::vector <Transform*> mFocusPositions;
+		std::vector <std::string> mFocusObjects;
 
 	private:
 		glm::ivec2 mDViewPortPosition;
