@@ -5,6 +5,9 @@
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/AudioManager.h"
+
+#include "Hollow/Components/UIText.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -69,16 +72,29 @@ namespace BulletHell
 
 	void HealthSystem::OnBulletHitPlayer(Hollow::GameEvent& event)
 	{
+		Health* pPlayerHealth = nullptr;
+		Hollow::UIText* pHPText = nullptr;
 		if (event.mpObject1->mType == (int)GameObjectType::PLAYER)
 		{
 			// Call handle function with player, bullet
 			HandleBulletDamage(event.mpObject1, event.mpObject2);
+
+			pPlayerHealth = event.mpObject1->GetComponent<Health>();
+			pHPText = event.mpObject1->GetComponent<Hollow::UIText>();
 		}
 		else
 		{
 			// Call handle function with input reversed
 			HandleBulletDamage(event.mpObject2, event.mpObject1);
+
+			pPlayerHealth = event.mpObject2->GetComponent<Health>();
+			pHPText = event.mpObject2->GetComponent<Hollow::UIText>();
 		}
+
+		// Update player HP bar
+		std::string ss = "Player HP: ";
+		pHPText->mText = ss + std::to_string(pPlayerHealth->mHitPoints);
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/PlayerHit.wav");
 	}
 
 	void HealthSystem::OnBulletHitWall(Hollow::GameEvent& event)
@@ -95,14 +111,26 @@ namespace BulletHell
 
 	void HealthSystem::OnPlayerBulletHitEnemy(Hollow::GameEvent& event)
 	{
+		Health* pEnemyHealth = nullptr;
+		Hollow::UIText* pHPText = nullptr;
+
 		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
 		{
 			HandleBulletDamage(event.mpObject1, event.mpObject2);
+			pEnemyHealth = event.mpObject1->GetComponent<Health>();
+			pHPText = event.mpObject1->GetComponent<Hollow::UIText>();
 		}
 		else
 		{
 			HandleBulletDamage(event.mpObject2, event.mpObject1);
+			pEnemyHealth = event.mpObject2->GetComponent<Health>();
+			pHPText = event.mpObject2->GetComponent<Hollow::UIText>();
 		}
+
+		// Update player HP bar
+		std::string ss = "Enemy HP: ";
+		pHPText->mText = ss + std::to_string(pEnemyHealth->mHitPoints);
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/BossHit.wav");
 	}
 
 	void HealthSystem::HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet)
@@ -115,7 +143,7 @@ namespace BulletHell
 		if (!pHealth->mInvincible)
 		{
 			--pHealth->mHitPoints;
-		}
+		}		
 	}
 
 }

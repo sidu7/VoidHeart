@@ -5,7 +5,7 @@
       "Music": 0.0,
       "SFX": 0.0
     },
-    "Background": ""
+    "Background": "Resources/Audio/Songs/test.wav"
   },
   "GameObjects": [
     {
@@ -187,6 +187,41 @@
           "Type": "Attack",
           "Script": "Resources/Scripts/PlayerAttack.lua",
           "BaseAttackTime": 0.4
+        },
+        {
+          "Type": "UITransform",
+          "Position": [ 70.0, 600.0 ],
+          "Scale": [ 2.0, 2.0 ]
+        },
+        {
+          "Type": "UIText",
+          "Text": "PLAYERUI",
+          "TextScale": [ 1.0, 1.0 ],
+          "OffsetPosition": [ 1.0, 1.0 ],
+          "Color": [ 0.0, 0.0, 1.0 ]
+        }
+      ]
+    },
+    {
+      "Type": "UICAMERA",
+      "Components": [
+        {
+          "Type": "Transform",
+          "Scale": [ 1.0, 1.0, 1.0 ]
+        },
+        {
+          "Type": "Camera",
+          "Yaw": -90.0,
+          "MovementSpeed": 5.0,
+          "MouseSensitivity": 0.10000000149011612,
+          "Zoom": 45.0,
+          "Near": 0.10000000149011612,
+          "Far": 1000.0,
+          "IsActive": true,
+          "CameraType": 1,
+          "ProjectionType": 1,
+          "ViewPortPosition": [ 0, 0 ],
+          "ViewPortSize": [ 1280, 720 ]
         }
       ]
     },
@@ -292,6 +327,18 @@
               "Pist"
             ]
           ]
+        },
+        {
+          "Type": "UITransform",
+          "Position": [ 500.0, 0.0 ],
+          "Scale": [ 2.0, 2.0 ]
+        },
+        {
+          "Type": "UIText",
+          "Text": "ENEMYUI",
+          "TextScale": [ 1.0, 1.0 ],
+          "OffsetPosition": [ 1.0, 1.0 ],
+          "Color": [ 0.0, 0.7, 0.0 ]
         }
       ]
     },
