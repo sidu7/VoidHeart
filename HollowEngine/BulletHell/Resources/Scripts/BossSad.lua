@@ -45,6 +45,7 @@ end
 function FirePattern ()
 	VBulletPattern()
 	SemiCircle(0)
+	PlaySFX("Resources/Audio/SFX/1UP.wav")
 end
 
 function Attack()

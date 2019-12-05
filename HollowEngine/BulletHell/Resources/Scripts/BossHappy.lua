@@ -23,6 +23,7 @@ function FirePattern ()
 	else
 		SemiCircle(5)
 	end
+	PlaySFX("Resources/Audio/SFX/1UP.wav")
 end
 
 function Attack()

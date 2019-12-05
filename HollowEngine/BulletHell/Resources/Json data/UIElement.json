@@ -1,0 +1,17 @@
+{
+  "Type": "",
+  "Components": [
+    {
+      "Type": "UITransform",
+      "Position": [ 0, 0 ],
+      "Scale": [ 1, 1 ]
+    },
+    {
+      "Type": "UIText",
+      "Text": "",
+      "TextScale": [ 1.0, 1.0 ],
+      "OffsetPosition": [ 1.0, 1.0 ],
+      "Color": [ 1.0, 1.0, 1.0 ]
+    }
+  ]
+}

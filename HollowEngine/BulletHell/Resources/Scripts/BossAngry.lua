@@ -73,6 +73,7 @@ function FirePattern ()
 	for i=0,10 do 
 	FireFollowBullet()
 	end
+	PlaySFX("Resources/Audio/SFX/1UP.wav")
 end
 
 function Attack()

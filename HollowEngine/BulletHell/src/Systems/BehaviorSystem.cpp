@@ -51,6 +51,7 @@ namespace BulletHell
 			pBehavior->mTransitionTime -= mDeltaTime;
 
 			// Update position based on script
+			if(mpPlayerBody != nullptr)
 			{
 				Hollow::Body* pBody = mGameObjects[i]->GetComponent<Hollow::Body>();
 				Attack* pAttack = mGameObjects[i]->GetComponent<Attack>();

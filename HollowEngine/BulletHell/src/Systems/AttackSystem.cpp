@@ -87,11 +87,14 @@ namespace BulletHell
 		Attack* pAttack = pEnemy->GetComponent<Attack>();
 		pAttack->mCurrentAttackTime += mDeltaTime;
 		// Fire attack and reset attack timer
-		auto& lua = Hollow::ScriptingManager::Instance().lua;
+		if (mpPlayerBody != nullptr)
+		{
+			auto& lua = Hollow::ScriptingManager::Instance().lua;
 
-		lua["attack"] = pAttack;
-		lua["followObject"] = pEnemy;
-		lua["followPosition"] = mpPlayerBody->mPosition;
-		lua.script_file(pAttack->mScriptPath);
+			lua["attack"] = pAttack;
+			lua["followObject"] = pEnemy;
+			lua["followPosition"] = mpPlayerBody->mPosition;
+			lua.script_file(pAttack->mScriptPath);
+		}
 	}
 }

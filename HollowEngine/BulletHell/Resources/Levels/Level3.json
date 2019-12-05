@@ -195,7 +195,7 @@
         },
         {
           "Type": "UIText",
-          "Text": "PLAYERUI",
+          "Text": "Player HP: 100",
           "TextScale": [ 1.0, 1.0 ],
           "OffsetPosition": [ 1.0, 1.0 ],
           "Color": [ 0.0, 0.0, 1.0 ]
@@ -244,7 +244,7 @@
         {
           "Type": "Body",
           "Mass": 1000000.0,
-          "RigidbodyType": "DYNAMIC",
+          "RigidbodyType": "STATIC",
           "IsFrictionLess": true,
           "UseGravity": true
         },
@@ -335,7 +335,7 @@
         },
         {
           "Type": "UIText",
-          "Text": "ENEMYUI",
+          "Text": "Enemy HP: 100",
           "TextScale": [ 1.0, 1.0 ],
           "OffsetPosition": [ 1.0, 1.0 ],
           "Color": [ 0.0, 0.7, 0.0 ]

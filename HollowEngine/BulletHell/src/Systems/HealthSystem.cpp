@@ -6,6 +6,7 @@
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/AudioManager.h"
+#include "Hollow/Managers/ResourceManager.h"
 
 #include "Hollow/Components/UIText.h"
 
@@ -55,8 +56,31 @@ namespace BulletHell
 			if (pHealth->mHitPoints < 0)
 			{
 				pHealth->mIsAlive = false;
+				std::string gameEndText = "";
+
+				// Check type of object destroyed
+				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
+				{
+					//YOU LOSE
+					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
+					gameEndText = "You Lose!";
+				}
+				if (mGameObjects[i]->mType == (int)GameObjectType::ENEMY)
+				{
+					//YOU WIN
+					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/win.wav");
+					gameEndText = "You Win!";
+				}
 				// Send event to destroy object
 				Hollow::GameObjectManager::Instance().DeleteGameObject(mGameObjects[i]);
+
+				// Create new UI object
+				// TODO: Fix how this is being done
+				Hollow::GameObject* pUI = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json Data/UIElement.json");
+				Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
+				pUIText->mOffsetPosition = glm::vec2(400.0f, 300.0f);
+				pUIText->mTextScale = glm::vec2(4.0f, 4.0f);
+				pUIText->mText = gameEndText;
 			}
 		}
 	}

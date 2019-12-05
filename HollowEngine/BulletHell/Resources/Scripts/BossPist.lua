@@ -91,6 +91,7 @@ function FirePattern ()
 
 	FireHomingBullet()
 	FireHomingBullet()
+	PlaySFX("Resources/Audio/SFX/1UP.wav")
 end
 
 function Attack()
