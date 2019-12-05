@@ -17,6 +17,8 @@ namespace Hollow
 		glm::vec2 mOffsetPosition;
 		glm::vec2 mTextScale;
 		std::string mText;
+		std::string mTag;
 		glm::vec3 mColor;
+		bool mChangingText;
 	};
 }

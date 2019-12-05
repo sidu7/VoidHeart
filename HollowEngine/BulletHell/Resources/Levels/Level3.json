@@ -1,9 +1,9 @@
 {
   "Audio": {
     "Volumes": {
-      "Master": 0.0,
-      "Music": 0.0,
-      "SFX": 0.0
+      "Master": 0.3,
+      "Music": 0.2,
+      "SFX": 1.0
     },
     "Background": "Resources/Audio/Songs/test.wav"
   },
@@ -71,7 +71,7 @@
           ],
           "Rotation": [
             0.0,
-            90.0,
+            0.0,
             0.0
           ],
           "Scale": [
@@ -97,7 +97,7 @@
           "Type": "Model",
           "Model": "Resources/Models/Walking.fbx",
           "CastShadow": true,
-          "ModelHasOffset": false
+          "ModelHasOffset": true
         },
         {
           "Type": "Material",
@@ -191,11 +191,12 @@
         {
           "Type": "UITransform",
           "Position": [ 70.0, 600.0 ],
-          "Scale": [ 2.0, 2.0 ]
+          "Scale": [ 1.5, 1.5 ]
         },
         {
           "Type": "UIText",
-          "Text": "Player HP: 100",
+          "Tag": "PLAYERHP",
+          "ChangingText": true,
           "TextScale": [ 1.0, 1.0 ],
           "OffsetPosition": [ 1.0, 1.0 ],
           "Color": [ 0.0, 0.0, 1.0 ]
@@ -278,6 +279,11 @@
           "BlendFactor": 1.0
         },
         {
+          "Type": "StateMachine",
+          "StateFile": "Resources/State data/npcstate.json",
+          "StartState": "Walking"
+        },
+        {
           "Type": "Attack",
           "Script": "Resources/Scripts/EnemyAttack.lua",
           "BaseAttackTime": 1.2
@@ -330,12 +336,13 @@
         },
         {
           "Type": "UITransform",
-          "Position": [ 500.0, 0.0 ],
-          "Scale": [ 2.0, 2.0 ]
+          "Position": [ 400.0, 20.0 ],
+          "Scale": [ 1.5, 1.5 ]
         },
         {
           "Type": "UIText",
-          "Text": "Enemy HP: 100",
+          "Tag": "ENEMYHP",
+          "ChangingText": true,
           "TextScale": [ 1.0, 1.0 ],
           "OffsetPosition": [ 1.0, 1.0 ],
           "Color": [ 0.0, 0.7, 0.0 ]
@@ -349,8 +356,8 @@
           "Type": "Transform",
           "Position": [
             0.0,
-            40.0,
-            20.0
+            50.0,
+            40.0
           ],
           "Scale": [
             1.0,

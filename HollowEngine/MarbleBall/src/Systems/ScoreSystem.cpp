@@ -10,6 +10,7 @@
 
 #include "../Components/Score.h"
 #include "Hollow/Components/UIText.h"
+#include "Hollow/Managers/LocalizationManager.h"
 
 namespace MarbleBall
 {
@@ -23,6 +24,20 @@ namespace MarbleBall
 
 	void ScoreSystem::Update()
 	{
+		for(int i = 0; i < mGameObjects.size(); ++i)
+		{
+			Score* score = mGameObjects[i]->GetComponent<Score>();
+			Hollow::UIText* text = mGameObjects[i]->GetComponent<Hollow::UIText>();
+			if (!score->mGoalReached)
+			{
+				std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["SCORE"];
+				text->mText = ss + std::to_string(score->mScore);
+			}
+			else
+			{
+				text->mText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["GOAL"];
+			}
+		}
 	}
 
 	void ScoreSystem::AddGameObject(Hollow::GameObject* pGameObject)
@@ -36,40 +51,36 @@ namespace MarbleBall
 
 	void ScoreSystem::OnPointCollected(Hollow::GameEvent& event)
 	{
-		Score* score = nullptr;
-		Hollow::UIText* text = nullptr;
+		Score* score = nullptr;		
 		if(event.mpObject1->mType == (int)GameObjectType::POINT)
 		{
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
 			score = event.mpObject2->GetComponent<Score>();
-			text = event.mpObject2->GetComponent<Hollow::UIText>();
 		}
 		else
 		{
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
 			score = event.mpObject1->GetComponent<Score>();
-			text = event.mpObject1->GetComponent<Hollow::UIText>();
 		}
-		score->mScore += score->mScoreIncrement;
-		std::string ss = "Score: ";
-		text->mText = ss + std::to_string(score->mScore);
+		score->mScore += score->mScoreIncrement;		
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Pickup.wav");
 	}
 
 	void ScoreSystem::OnGoalReached(Hollow::GameEvent& event)
 	{
-		Hollow::UIText* text = nullptr;
+		Score* score = nullptr;
 		if (event.mpObject1->mType == (int)GameObjectType::GOAL)
 		{
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
-			text = event.mpObject2->GetComponent<Hollow::UIText>();
+			score = event.mpObject2->GetComponent<Score>();
 		}
 		else
 		{
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
-			text = event.mpObject1->GetComponent<Hollow::UIText>();
+			score = event.mpObject1->GetComponent<Score>();
 		}
+		
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Goal.wav");
-		text->mText = "Goal Reached";
+		score->mGoalReached = true;
 	}
 }

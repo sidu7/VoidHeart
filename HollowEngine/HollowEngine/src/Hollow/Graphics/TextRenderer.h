@@ -16,14 +16,14 @@ namespace Hollow
 	class TextRenderer
 	{
 	public:
-		void Init();
-		void RenderText(UITextData& data, Shader* shader);
+		HOLLOW_API void Init();
+		HOLLOW_API void LoadFont(std::string fontFile);
+		HOLLOW_API void RenderText(UITextData& data, Shader* shader);
 
 	private:
-		void Load();
-
+		std::wstring ToWString(std::string& aChars);
 	private:
-		std::map<GLchar, Character> mCharacters;
+		std::map<wchar_t, Character> mCharacters;
 		GLuint mVAO_Text, mVBO_Text;
 		FT_Library mft;
 		FT_Face mface;

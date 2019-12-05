@@ -43,6 +43,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Hollow\Managers\LocalizationManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Hollow\Managers\PhysicsManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -308,6 +312,7 @@
     <ClInclude Include="src\Hollow\Graphics\Data\UIRenderData.h" />
     <ClInclude Include="src\Hollow\Graphics\TextRenderer.h" />
     <ClInclude Include="src\Hollow\Graphics\UniformBuffer.h" />
+    <ClInclude Include="src\Hollow\Managers\LocalizationManager.h" />
     <ClInclude Include="src\Hollow\Managers\PhysicsManager.h" />
     <ClInclude Include="src\Hollow\Components\Animator.h" />
     <ClInclude Include="src\Hollow\Components\Collider.h" />
@@ -430,14 +435,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -519,7 +524,11 @@ copy /y "$(ProjectName)\*.dll" "Sniper"</Command>
       <Command>cd "$(SolutionDir)bin\$(Configuration)"
 copy /y "$(SolutionDir)$(ProjectName)\dll\$(Configuration)\*.dll" "$(ProjectName)"
 IF NOT EXIST BulletHell ( mkdir BulletHell)
-copy /y "$(ProjectName)\*.dll" "BulletHell"</Command>
+copy /y "$(ProjectName)\*.dll" "BulletHell"
+IF NOT EXIST MarbleBall ( mkdir MarbleBall)
+copy /y "$(ProjectName)\*.dll" "MarbleBall"
+IF NOT EXIST Sniper ( mkdir Sniper)
+copy /y "$(ProjectName)\*.dll" "Sniper"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

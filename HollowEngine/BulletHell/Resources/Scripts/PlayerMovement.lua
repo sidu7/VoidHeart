@@ -38,3 +38,4 @@ impulse = impulse * speed;
 
 -- Damp Overall Velocity and Rotation
 body.velocity = body.velocity - 0.8 * body.velocity 
+body.angularVelocity = body.angularVelocity - 0.8* body.angularVelocity;

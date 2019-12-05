@@ -5,6 +5,7 @@
 #include "Hollow/Components/UIText.h"
 
 #include "Hollow/Managers/RenderManager.h"
+#include "Hollow/Managers/LocalizationManager.h"
 
 namespace Hollow
 {
@@ -22,7 +23,14 @@ namespace Hollow
 			UIText* text = mGameObjects[i]->GetComponent<UIText>();
 
 			UITextData uitext;
-			uitext.mText = text->mText;
+			if(!text->mChangingText)
+			{
+				uitext.mText = LocalizationManager::Instance().mCurrentLanguageMap[text->mTag];
+			}
+			else
+			{
+				uitext.mText = text->mText;
+			}
 			uitext.mColor = text->mColor;
 			uitext.mPosition = transform->mPosition + text->mOffsetPosition;
 			uitext.mScale = transform->mScale * text->mTextScale;
@@ -33,7 +41,11 @@ namespace Hollow
 
 	void UITextRenderSystem::AddGameObject(GameObject* pGameObject)
 	{
-		CheckAllComponents<UITransform, UIText>(pGameObject);
+		if(CheckAllComponents<UITransform, UIText>(pGameObject))
+		{
+			UIText* text = pGameObject->GetComponent<UIText>();
+			text->mText = LocalizationManager::Instance().mCurrentLanguageMap[text->mTag];
+		}
 	}
 
 	void UITextRenderSystem::HandleBroadcastEvent(GameEvent& event)

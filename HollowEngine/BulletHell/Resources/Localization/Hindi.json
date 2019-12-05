@@ -1,0 +1,7 @@
+{
+  "FontFile": "Resources/Fonts/arial.ttf",
+  "PLAYERHP": "खेलाड़ी: ",
+  "ENEMYHP": "दुश्मन: ",
+  "LOSE": "तुम हारे!",
+  "WIN": "तुम जीते!"
+}

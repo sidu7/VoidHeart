@@ -71,6 +71,8 @@
     <None Include="Resources\Scripts\PlayerAttack.lua" />
     <None Include="Resources\Scripts\PlayerMovement.lua" />
     <None Include="Resources\Json data\UIElement.json" />
+    <None Include="Resources\Localization\Hindi.json" />
+    <None Include="Resources\Localization\Japanese.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

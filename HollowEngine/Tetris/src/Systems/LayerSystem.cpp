@@ -7,6 +7,7 @@
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Components/UIText.h"
 #include "Hollow/Managers/AudioManager.h"
+#include "Hollow/Managers/LocalizationManager.h"
 
 LayerSystem LayerSystem::instance;
 
@@ -68,7 +69,7 @@ void LayerSystem::Update()
 	else
 	{
 		Hollow::UIText* text = mGameObjects[0]->GetComponent<Hollow::UIText>();
-		text->mText = "GAMEOVER!!";
+		text->mText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["GAMEOVER"];
 		mBlockSystem->mpCam->mYaw++;
 	}
 	for (int i = 0; i < mGameObjects.size() - 5; ++i)

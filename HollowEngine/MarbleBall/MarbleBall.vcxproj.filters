@@ -88,6 +88,8 @@
     <None Include="src\GameMetaData\GameEventsMap.data" />
     <None Include="Resources\Shaders\TextRendering.vert" />
     <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="Resources\Localization\English.json" />
+    <None Include="Resources\Localization\Hindi.json" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

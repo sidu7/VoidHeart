@@ -113,6 +113,7 @@
         },
         {
           "Type": "UIText",
+          "ChangingText" :  true,
           "TextScale": [ 1.0, 1.0 ],
           "Color": [ 1.0, 0.0, 0.0 ]
         }
