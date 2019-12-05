@@ -74,7 +74,7 @@ namespace Hollow {
 
 		// Init Debug Shader
 		mpDebugShader = new Shader(data["DebugShader"].GetArray()[0].GetString(), data["DebugShader"].GetArray()[1].GetString());
-		mShowDebugDrawing = true;
+		mShowDebugDrawing = false;
 
 		// Init Particle Shader
 		mpParticleShader = new Shader(data["ParticleShader"].GetArray()[0].GetString(), data["ParticleShader"].GetArray()[1].GetString());
@@ -342,8 +342,22 @@ namespace Hollow {
 		mSkydomeData.mAngles = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		// Set exposure and contrast
-		mExposure = 1.0f;
-		mContrast = 1.0f;
+		if(data.HasMember("Exposure"))
+		{
+			mExposure = data["Exposure"].GetFloat();
+		}
+		else
+		{
+			mExposure = 1.0f;
+		}
+		if(data.HasMember("Contrast"))
+		{
+			mContrast = data["Contrast"].GetFloat();
+		}
+		else
+		{
+			mContrast = 1.0f;
+		}
 
 		// TODO: Add skydome to game init file
 		// Load HDR skydome texture and irradiance map

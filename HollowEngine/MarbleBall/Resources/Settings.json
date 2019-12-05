@@ -28,7 +28,9 @@
     "BloomShader": [ "Resources/Shaders/Bloom.vert", "Resources/Shaders/Bloom.frag" ],
     "UIShader": [ "Resources/Shaders/UIShader.vert", "Resources/Shaders/UIShader.frag" ],
     "UITextShader": [ "Resources/Shaders/TextRendering.vert", "Resources/Shaders/TextRendering.frag" ],
-    "Skydome": [ "Resources/Skydomes/Newport_Loft_Ref.hdr", "Resources/Skydomes/Newport_Loft_Ref.irr.hdr" ]
+    "Skydome": [ "Resources/Skydomes/Milkyway_small.hdr", "Resources/Skydomes/Milkyway_Light.hdr" ],
+    "Exposure": 4.0,
+    "Contrast": 1.0
   },
     "Memory":
     {
