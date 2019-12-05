@@ -18,24 +18,24 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PrototypeComponent.cpp">
+    <ClCompile Include="src\Systems\LayerSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PrototypeSystem.cpp">
+    <ClCompile Include="src\Systems\BlockSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\PrototypeComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PrototypeSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\GameMetaData\GameObjectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GameMetaData\GameEventType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\LayerSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\BlockSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

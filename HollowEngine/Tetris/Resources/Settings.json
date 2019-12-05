@@ -32,7 +32,7 @@
     },
     "Memory":
     {
-            "GameobjectsPool": 2000,
-            "ComponentsPool": 2000
+            "GameobjectsPool": 4000,
+            "ComponentsPool": 4000
     }
 }

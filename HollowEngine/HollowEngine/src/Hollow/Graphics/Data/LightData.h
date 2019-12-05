@@ -17,6 +17,8 @@ namespace Hollow
 		glm::mat4 mShadowMatrix;
 		float mShadowMapNearPlane;
 		float mShadowMapFarPlane;
+		float mFOV;
+		glm::vec3 mLookAtPoint;
 
 		unsigned int mBlurDistance;
 		float mAlpha;

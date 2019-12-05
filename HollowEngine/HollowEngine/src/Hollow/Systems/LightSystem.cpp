@@ -33,6 +33,8 @@ namespace Hollow
 			light.mBlurDistance = clight->mBlurDistance;
 			light.mAlpha = clight->mAlpha;
 			light.mMD = clight->mMD;
+			light.mLookAtPoint = clight->mLookAtPoint;
+			light.mFOV = clight->mFOV;
 
 			light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;// +glm::vec3(i, 0.5, i);
 			//light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;
