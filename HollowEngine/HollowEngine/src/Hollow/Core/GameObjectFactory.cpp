@@ -20,6 +20,11 @@ namespace Hollow {
 			pNewGameObject->mType = GameMetaData::Instance().mMapOfGameObjectTypes[pNewGameObject->mDType];
 		}
 
+		if(root.HasMember("Active"))
+		{
+			pNewGameObject->mActive = root["Active"].GetBool();
+		}
+		
 		if (root.HasMember("Components"))
 		{
 			rapidjson::Value::Array comp = root["Components"].GetArray();

@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{73CD9D6C-50D3-453E-8710-0D5927AE2B72}</ProjectGuid>
+    <RootNamespace>Prototype0</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <ProjectName>Tetris</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>lua53.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>cd "$(SolutionDir)bin\$(Configuration)"
+
+copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>lua53.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>cd "$(SolutionDir)bin\$(Configuration)"
+
+copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HollowEngine\HollowEngine.vcxproj">
+      <Project>{c6b9321e-cd01-4f02-ae9c-3885231c8949}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Systems\BlockSystem.cpp" />
+    <ClCompile Include="src\Systems\LayerSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GameMetaData\GameEventType.h" />
+    <ClInclude Include="src\GameMetaData\GameObjectType.h" />
+    <ClInclude Include="src\Systems\BlockSystem.h" />
+    <ClInclude Include="src\Systems\LayerSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Settings.json" />
+    <None Include="Resources\Shaders\Ambient.frag" />
+    <None Include="Resources\Shaders\Ambient.vert" />
+    <None Include="Resources\Shaders\fxaa.frag" />
+    <None Include="Resources\Shaders\Global.frag" />
+    <None Include="Resources\Shaders\Global.vert" />
+    <None Include="Resources\Shaders\Skydome.frag" />
+    <None Include="Resources\Shaders\Skydome.vert" />
+    <None Include="Resources\Json data\Box.json" />
+    <None Include="Resources\Json data\box2.json" />
+    <None Include="Resources\Json data\box4.json" />
+    <None Include="Resources\Json data\box6.json" />
+    <None Include="Resources\Json data\box8.json" />
+    <None Include="Resources\Json data\Camera.json" />
+    <None Include="Resources\Json data\Cloud.json" />
+    <None Include="Resources\Json data\Floor.json" />
+    <None Include="Resources\Json data\Light.json" />
+    <None Include="Resources\Json data\LocalLight.json" />
+    <None Include="Resources\Json data\MiniMapCamera.json" />
+    <None Include="Resources\Json data\NPC.json" />
+    <None Include="Resources\Json data\Plane.json" />
+    <None Include="Resources\Json data\StartMoveButton.json" />
+    <None Include="Resources\Json data\StopMoveButton.json" />
+    <None Include="Resources\Json data\TempObject.json" />
+    <None Include="Resources\Json data\test.json" />
+    <None Include="Resources\Json data\UIButton.json" />
+    <None Include="Resources\Json data\UICamera.json" />
+    <None Include="Resources\Json data\UIElement.json" />
+    <None Include="Resources\Shaders\Bloom.frag" />
+    <None Include="Resources\Shaders\Bloom.vert" />
+    <None Include="Resources\Shaders\CenterParticles.comp" />
+    <None Include="Resources\Shaders\Debug.frag" />
+    <None Include="Resources\Shaders\Debug.vert" />
+    <None Include="Resources\Shaders\Deferred.frag" />
+    <None Include="Resources\Shaders\Deferred.vert" />
+    <None Include="Resources\Shaders\Diffuse.frag" />
+    <None Include="Resources\Shaders\Diffuse.vert" />
+    <None Include="Resources\Shaders\GBuffer.frag" />
+    <None Include="Resources\Shaders\GBuffer.vert" />
+    <None Include="Resources\Shaders\HorizontalBlur.comp" />
+    <None Include="Resources\Shaders\LocalLight.frag" />
+    <None Include="Resources\Shaders\LocalLight.vert" />
+    <None Include="Resources\Shaders\ParticleSystem.frag" />
+    <None Include="Resources\Shaders\ParticleSystem.vert" />
+    <None Include="Resources\Shaders\Phong.frag" />
+    <None Include="Resources\Shaders\Phong.vert" />
+    <None Include="Resources\Shaders\RainParticles.comp" />
+    <None Include="Resources\Shaders\ShadowDebug.frag" />
+    <None Include="Resources\Shaders\ShadowDebug.vert" />
+    <None Include="Resources\Shaders\ShadowMap.frag" />
+    <None Include="Resources\Shaders\ShadowMap.vert" />
+    <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="Resources\Shaders\TextRendering.vert" />
+    <None Include="Resources\Shaders\UIShader.frag" />
+    <None Include="Resources\Shaders\UIShader.vert" />
+    <None Include="Resources\Shaders\VerticalBlur.comp" />
+    <None Include="Resources\State data\npcstate.json" />
+    <None Include="Resources\State data\playerstate.json" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="src\GameMetaData\GameEvents.enum" />
+    <None Include="src\GameMetaData\GameEventsMap.data" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Scripts\test.lua" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

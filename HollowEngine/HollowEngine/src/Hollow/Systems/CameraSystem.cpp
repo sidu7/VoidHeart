@@ -235,13 +235,9 @@ namespace Hollow {
 			{
 				glm::vec3 frontDirection = - pCamera->mOffsetFromAnchor;
 				// Clamp pitch
-				if (pCamera->mPitch > -25.0f)
+				if (pCamera->mPitch > pCamera->mPitchLowerBound)
 				{
-					pCamera->mPitch = -25.0f;
-				}
-				if (pCamera->mPitch < -89.0f)
-				{
-					pCamera->mPitch = -89.0f;
+					pCamera->mPitch = pCamera->mPitchLowerBound;
 				}
 				frontDirection = glm::rotateX(frontDirection, glm::radians(-pCamera->mPitch));
 				frontDirection = glm::rotateY(frontDirection, glm::radians(-pCamera->mYaw));

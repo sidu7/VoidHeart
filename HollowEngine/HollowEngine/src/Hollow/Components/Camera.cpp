@@ -19,7 +19,8 @@ namespace Hollow {
 		
 		mYaw = -90.0f;
 		mPitch = 0.0f;
-
+		mPitchLowerBound = -89.0f;
+		
 		mIsActive = false;
 		
 		mMovementSpeed = 5.0f;
@@ -52,6 +53,10 @@ namespace Hollow {
 		{
 			mPitch = data["Pitch"].GetFloat();
 			mDefaultPitch = mPitch;
+		}
+		if (data.HasMember("PitchLowerBound"))
+		{
+			mPitchLowerBound = data["PitchLowerBound"].GetFloat();
 		}
 		if (data.HasMember("MovementSpeed"))		//TODO: Change the name??
 		{
@@ -167,6 +172,7 @@ namespace Hollow {
 	{
 		JSONHelper::Write("Yaw", mYaw, writer);
 		JSONHelper::Write("Pitch", mPitch, writer);
+		JSONHelper::Write("PitchLowerBound", mPitchLowerBound, writer);
 		JSONHelper::Write("MovementSpeed", mMovementSpeed, writer);
 		JSONHelper::Write("MouseSensitivity", mMouseSensitivity, writer);
 		JSONHelper::Write("Zoom", mZoom, writer);

@@ -24,7 +24,7 @@ namespace Hollow
 		HOLLOW_API  void DeleteAllGameObjectsInSystems();
 
 		template<typename T>
-		System* GetSystem()
+		T* GetSystem()
 		{
 			if (mSystemMap.find(std::type_index(typeid(T))) != mSystemMap.end())
 			{

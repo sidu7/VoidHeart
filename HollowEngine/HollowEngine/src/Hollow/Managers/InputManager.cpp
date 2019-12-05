@@ -107,8 +107,8 @@ namespace Hollow {
 		SDL_memset(mPreviousState, 0, 512 * sizeof(Uint8));
 		SDL_memset(mPrevMouseState, 0, 6 * sizeof(bool));
 		SDL_memset(mCurrentMouseState, 0, 6 * sizeof(bool));
-		SDL_memset(mCurrentControllerState, 0, 12 * sizeof(bool));
-		SDL_memset(mPrevControllerState, 0, 12 * sizeof(bool));
+		SDL_memset(mCurrentControllerState, 0, 15 * sizeof(bool));
+		SDL_memset(mPrevControllerState, 0, 15 * sizeof(bool));
 		mpController = SDL_GameControllerOpen(0);
 	}
 
@@ -231,8 +231,9 @@ namespace Hollow {
 	{
 		SDL_Event e;
 		SDL_memcpy(mPrevMouseState, mCurrentMouseState, 6 * sizeof(bool));
-		SDL_memcpy(mPrevControllerState, mCurrentControllerState, 12 * sizeof(bool));
+
 		SDL_memcpy(mPrevTriggerState, mCurrentTriggerState, 6 * sizeof(bool));
+		SDL_memcpy(mPrevControllerState, mCurrentControllerState, 15 * sizeof(bool));
 
 		xRel = 0.0f; yRel = 0.0f;
 

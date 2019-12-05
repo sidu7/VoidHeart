@@ -461,8 +461,8 @@ namespace Hollow {
 		glm::mat4 LightLookAt, LightProj;
 		// Calculate light up vector
 		//t0 = glm::normalize(glm::vec3(c->collisionNormal.y, -c->collisionNormal.x, 0.0f));
-		LightLookAt = glm::lookAt(light.mPosition, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		LightProj = glm::perspective(glm::radians(45.0f), (float)mpWindow->GetWidth() / (float)mpWindow->GetHeight(), light.mShadowMapNearPlane, light.mShadowMapFarPlane);
+		LightLookAt = glm::lookAt(light.mPosition, light.mLookAtPoint, glm::vec3(0.0f, 1.0f, 0.0f));
+		LightProj = glm::perspective(glm::radians(light.mFOV), (float)mpWindow->GetWidth() / (float)mpWindow->GetHeight(), light.mShadowMapNearPlane, light.mShadowMapFarPlane);
 
 		mpShadowMapShader->SetMat4("Projection", LightProj);
 		mpShadowMapShader->SetMat4("View", LightLookAt);

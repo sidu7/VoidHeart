@@ -55,7 +55,7 @@ namespace Hollow {
 	{
 		if (mpCurrentSong == nullptr)
 		{
-			PlaySong("Resources/Audio/Songs/test.wav");
+			//PlaySong("Resources/Audio/Songs/test.wav");
 		}
 
 		// Check if channels should be muted

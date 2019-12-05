@@ -26,6 +26,11 @@ void Hollow::RenderSystem::Update()
 {
 	for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 	{
+		if(!mGameObjects[i]->mActive)
+		{
+			continue;
+		}
+		
 		RenderData data;
 
 		Transform* trans = mGameObjects[i]->GetComponent<Transform>();

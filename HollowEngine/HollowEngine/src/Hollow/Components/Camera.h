@@ -55,6 +55,8 @@ namespace Hollow
 		std::vector <Transform*> mFocusPositions;
 		std::vector <std::string> mFocusObjects;
 
+		float mPitchLowerBound;
+		
 	private:
 		glm::ivec2 mDViewPortPosition;
 	};

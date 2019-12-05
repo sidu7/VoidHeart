@@ -35,6 +35,7 @@ namespace Hollow {
 	void GameObject::DebugDisplay()
 	{
 		ImGuiHelper::InputText("Type", mDType);
+		ImGui::Checkbox("Active", &mActive);
 		for (std::type_index typeIndex : mIndices)
 		{
 			mComponents[typeIndex]->ShowDebug();
@@ -46,6 +47,8 @@ namespace Hollow {
 		writer.StartObject();
 		writer.Key("Type");
 		writer.String(mDType.c_str());
+		writer.Key("Active");
+		writer.Bool(mActive);
 		writer.Key("Components");
 		writer.StartArray();
 		for (unsigned int i = 0; i < mIndices.size(); ++i)

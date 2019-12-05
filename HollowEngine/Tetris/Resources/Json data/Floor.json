@@ -1,0 +1,21 @@
+{
+    "Type": "FLOOR",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 5.0, -1.0, 5.0 ],
+            "Scale": [ 10.0, 1.0, 10.0 ]
+        },
+        {
+            "Type": "Model",
+            "Shape": "CUBE",
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Diffuse": [ 1.0, 0.0, 0.0 ],
+            "Specular": [ 0.5, 0.5, 0.5 ],
+            "Shininess": 1.0
+        }
+    ]
+}
