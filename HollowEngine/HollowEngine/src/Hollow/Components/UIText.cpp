@@ -12,6 +12,7 @@ namespace Hollow
 		mText = "";
 		mTag = "";
 		mColor = glm::vec3(0.0f);
+		mChangingText = false;
 	}
 
 	void UIText::Serialize(rapidjson::Value::Object data)
@@ -32,6 +33,10 @@ namespace Hollow
 		{
 			mColor = JSONHelper::GetVec3F(data["Color"].GetArray());
 		}
+		if(data.HasMember("ChangingText"))
+		{
+			mChangingText = data["ChangingText"].GetBool();
+		}
 	}
 
 	void UIText::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -40,6 +45,7 @@ namespace Hollow
 		JSONHelper::Write("TextScale", mTextScale, writer);
 		JSONHelper::Write("Tag", mTag, writer);
 		JSONHelper::Write("Color", mColor, writer);
+		JSONHelper::Write("ChangingText", mChangingText, writer);
 	}
 
 	void UIText::Clear()
@@ -53,5 +59,6 @@ namespace Hollow
 		ImGuiHelper::InputText("Tag", mTag);
 		ImGuiHelper::InputText("Text", mText);
 		ImGui::ColorEdit3("Color", &mColor[0], ImGuiColorEditFlags_Float);
+		ImGui::Checkbox("ChangingText", &mChangingText);
 	}
 }

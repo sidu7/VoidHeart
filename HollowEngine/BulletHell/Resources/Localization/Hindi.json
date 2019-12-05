@@ -1,0 +1,7 @@
+{
+  "FontFile": "Resources/Fonts/Devnew.ttf",
+  "PLAYERHP": "Player HP: ",
+  "ENEMYHP": "ENEMY HP: ",
+  "LOSE": "You Lose!",
+  "WIN": "You Win!"
+}

@@ -23,7 +23,7 @@ namespace Hollow
 			UIText* text = mGameObjects[i]->GetComponent<UIText>();
 
 			UITextData uitext;
-			if(text->mTag.size() > 0)
+			if(!text->mChangingText)
 			{
 				uitext.mText = LocalizationManager::Instance().mCurrentLanguageMap[text->mTag];
 			}

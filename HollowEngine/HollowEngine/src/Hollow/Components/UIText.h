@@ -19,5 +19,6 @@ namespace Hollow
 		std::string mText;
 		std::string mTag;
 		glm::vec3 mColor;
+		bool mChangingText;
 	};
 }

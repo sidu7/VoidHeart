@@ -1,9 +1,9 @@
 {
   "Audio": {
     "Volumes": {
-      "Master": 0.0,
-      "Music": 0.0,
-      "SFX": 0.0
+      "Master": 0.3,
+      "Music": 0.2,
+      "SFX": 1.0
     },
     "Background": "Resources/Audio/Songs/test.wav"
   },
@@ -195,7 +195,8 @@
         },
         {
           "Type": "UIText",
-          "Text": "Player HP: 100",
+          "Tag": "PLAYERHP",
+          "ChangingText": true,
           "TextScale": [ 1.0, 1.0 ],
           "OffsetPosition": [ 1.0, 1.0 ],
           "Color": [ 0.0, 0.0, 1.0 ]
@@ -335,7 +336,8 @@
         },
         {
           "Type": "UIText",
-          "Text": "Enemy HP: 100",
+          "Tag": "ENEMYHP",
+          "ChangingText":  true,
           "TextScale": [ 1.0, 1.0 ],
           "OffsetPosition": [ 1.0, 1.0 ],
           "Color": [ 0.0, 0.7, 0.0 ]

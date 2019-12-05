@@ -16,6 +16,10 @@
     "Events": {
         "EventData": "src/GameMetaData/GameEventsMap.data"
     },
+    "Localization": {
+      "LanguageFiles": "Resources/Localization",
+      "DefaultLanguage": "English"
+    },
   "Renderer": {
     "GBufferShader": [ "Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag" ],
     "DeferredShader": [ "Resources/Shaders/Global.vert", "Resources/Shaders/Global.frag" ],
