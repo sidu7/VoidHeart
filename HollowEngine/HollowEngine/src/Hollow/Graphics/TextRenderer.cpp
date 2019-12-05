@@ -6,20 +6,16 @@
 
 namespace Hollow
 {
-	void TextRenderer::Init()
+	void TextRenderer::LoadFont(std::string fontFile)
 	{
+		mCharacters.clear();
 		//Init FreeType
 		if (FT_Init_FreeType(&mft))
 		{
 			HW_CORE_ERROR("Error::Freetype: Could not init FreeType Library");
 		}
-		Load();
-	}
-
-	void TextRenderer::Load()
-	{
 		//Load font as mface
-		if (FT_New_Face(mft, "Resources/Fonts/Kiddish.ttf", 0, &mface))
+		if (FT_New_Face(mft, fontFile.c_str(), 0, &mface))
 		{
 			HW_CORE_ERROR("Error::Freetype: Failed to load font");
 		}

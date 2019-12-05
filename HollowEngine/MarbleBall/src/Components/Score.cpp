@@ -9,6 +9,7 @@ namespace MarbleBall
 	{
 		mScore = 0;
 		mScoreIncrement = 0;
+		mGoalReached = false;
 	}
 
 	void Score::Serialize(rapidjson::Value::Object data)

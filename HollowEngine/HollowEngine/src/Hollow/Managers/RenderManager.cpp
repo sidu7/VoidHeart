@@ -97,7 +97,6 @@ namespace Hollow {
 
 		// Init Text Renderer
 		mpTextRenderer = new TextRenderer();
-		mpTextRenderer->Init();
 	}
 
 	void RenderManager::CleanUp()

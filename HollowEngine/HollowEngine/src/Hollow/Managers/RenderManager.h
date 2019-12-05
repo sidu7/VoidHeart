@@ -90,6 +90,8 @@ namespace Hollow {
 		CameraData mUICamera;
 		std::vector<CameraData> mSecondaryCameras;
 
+
+		friend class LocalizationManager;
 	private:
 		// Transformation matricies
 		glm::mat4 mProjectionMatrix;

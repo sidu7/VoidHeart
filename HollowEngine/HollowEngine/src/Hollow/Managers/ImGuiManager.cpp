@@ -13,6 +13,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
+#include "Hollow/Managers/LocalizationManager.h"
 
 #include "Hollow/Components/Transform.h"
 #include "SceneManager.h"
@@ -113,6 +114,18 @@ namespace Hollow {
 			if (ImGui::BeginTabItem("Audio"))
 			{
 				AudioManager::Instance().DebugDisplay();
+				ImGui::EndTabItem();
+			}
+			if(ImGui::BeginTabItem("Localization"))
+			{
+				if(ImGui::Button("English"))
+				{
+					LocalizationManager::Instance().ChangeLanguage("English");
+				}
+				if(ImGui::Button("Hindi"))
+				{
+					LocalizationManager::Instance().ChangeLanguage("Hindi");
+				}
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Testing"))

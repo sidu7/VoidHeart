@@ -18,6 +18,7 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/SceneManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
+#include "Hollow/Managers/LocalizationManager.h"
 
 
 namespace Hollow {
@@ -61,6 +62,7 @@ namespace Hollow {
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
+		LocalizationManager::Instance().Init(JSONHelper::GetSettings(data, "Localization"));
 		EventManager::Instance().Init(JSONHelper::GetSettings(data, "Events"));
 		ResourceManager::Instance().Init();
 		AudioManager::Instance().Init();

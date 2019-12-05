@@ -17,5 +17,6 @@ namespace MarbleBall
 	public:
 		int mScore;
 		int mScoreIncrement;
+		bool mGoalReached;
 	};
 }

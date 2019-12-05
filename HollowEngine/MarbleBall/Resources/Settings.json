@@ -13,9 +13,13 @@
     "Physics": {
         "CollisionMask": "src/GameMetaData/CollisionMask.data"
     },
-    "Events": {
-        "EventData": "src/GameMetaData/GameEventsMap.data"
-    },
+  "Events": {
+    "EventData": "src/GameMetaData/GameEventsMap.data"
+  },
+  "Localization": {
+    "LanguageFiles": "Resources/Localization",
+    "DefaultLanguage": "Hindi"
+  },
   "Renderer": {
     "GBufferShader": [ "Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag" ],
     "DeferredShader": [ "Resources/Shaders/Global.vert", "Resources/Shaders/Global.frag" ],
@@ -28,6 +32,7 @@
     "BloomShader": [ "Resources/Shaders/Bloom.vert", "Resources/Shaders/Bloom.frag" ],
     "UIShader": [ "Resources/Shaders/UIShader.vert", "Resources/Shaders/UIShader.frag" ],
     "UITextShader": [ "Resources/Shaders/TextRendering.vert", "Resources/Shaders/TextRendering.frag" ],
+    "Fonts": "Resources/Fonts",
     "Skydome": [ "Resources/Skydomes/Milkyway_small.hdr", "Resources/Skydomes/Milkyway_Light.hdr" ],
     "Exposure": 4.0,
     "Contrast": 1.0
