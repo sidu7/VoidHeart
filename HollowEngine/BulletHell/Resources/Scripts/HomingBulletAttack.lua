@@ -8,21 +8,23 @@ function FollowPlayerAttack()
 	xVelocity = xVelocity / totalVelocity
 	zVelocity = zVelocity / totalVelocity
 	
-	local attackSpeed = 8.0
+	local attackSpeed = 10.0
 	body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
 	--]]
 	
-	-- Change Color
+end
+
+function Normal()
+-- Change Color
 	material = followObject:GetMaterial()
-	material.diffuse = vec3.new(2.0, 0.0, 0.0)
+	material.diffuse = vec3.new(1.0, 1.0, 1.0)
 end
 
 function Update()
-if (attack.currentAttackTime >  attack.baseAttackTime) then
-	if (attack.IsFired == false) then
+if (attack.currentAttackTime <  attack.baseAttackTime) then
 		FollowPlayerAttack()
-		attack.IsFired = true
-	end
+		else
+			Normal()
 	end
 end
 

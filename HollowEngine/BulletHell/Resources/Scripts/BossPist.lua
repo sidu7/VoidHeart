@@ -22,7 +22,7 @@ function FireAtPlayer()
 	xVelocity = xVelocity / totalVelocity
 	zVelocity = zVelocity / totalVelocity
 	
-	local attackSpeed = 40.0
+	local attackSpeed = 30.0
 	body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
 	
 	transform = go:GetTransform()
@@ -70,29 +70,32 @@ function FireFollowBullet()
 	transform.position = body.position
 end
 
-function FirePattern (num)
-	--[[
-	if(num < 4.0) then
-	FireAtPlayer()
-	elseif (num < 7.0 ) then
-	VBulletPattern(10.0)
-	elseif (num < 10.0) then
-	SemiCircle(0)
-	else
-	FireAtPlayer()
-	VBulletPattern(10.0)
-	SemiCircle(0)
-	end
-	--]]
-	for i=0,30 do
-	FireFollowBullet()
-	end
-	PlaySFX("Resources/Audio/SFX/1UP.wav")
+function FireHomingBullet()
+local gameObjectPath = "Resources/Json data/HomingBullet.json"
+	go = CreateGameObject(gameObjectPath)
+	body = go:GetBody()
+	body.position = attackPosition + vec3.new(math.random(-2,2),0.0,math.random(-2,2))
+	local theta = math.random(0, 360)
+	theta = theta * 3.141592 / 180.0
+	local speed = 15.0
+	body.velocity = vec3.new(math.cos(theta)*speed, 0.0, math.sin(theta)*speed)
+	transform = go:GetTransform()
+	transform.position = body.position
 end
 
-function Attack(num)
+function FirePattern ()
+	FireAtPlayer() 
+
+	FireFollowBullet()
+	FireFollowBullet()
+
+	FireHomingBullet()
+	FireHomingBullet()
+end
+
+function Attack()
 	if currentAttackTime > baseAttackTime then
-		FirePattern(num)
+		FirePattern()
 		currentAttackTime = 0.0
 	end
 end
@@ -100,7 +103,7 @@ end
 function Update()
 	Move()
 	if transitionTime < 0.0001 then
-		Attack(math.random(10))
+		Attack()
 	end
 end
 
