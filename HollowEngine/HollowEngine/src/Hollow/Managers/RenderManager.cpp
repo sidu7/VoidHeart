@@ -338,7 +338,7 @@ namespace Hollow {
 		CreateSkydomeShader();
 
 		// Set skydome size and angles
-		mSkydomeData.mRadius = 100.0f;
+		mSkydomeData.mRadius = 1000.0f;
 		mSkydomeData.mAngles = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		// Set exposure and contrast

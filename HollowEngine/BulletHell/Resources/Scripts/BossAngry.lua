@@ -1,13 +1,24 @@
 function Move()
 	local speed = 15.0
-	if math.abs(enemyBody.velocity.x) < speed then
+	if math.abs(enemyBody.velocity.x) < 0.001 then
+		enemyBody.velocity.z = speed * enemyBody.velocity.z / math.abs(enemyBody.velocity.z)
+		elseif math.abs(enemyBody.velocity.z) < 0.001 then
 		enemyBody.velocity.x = speed * enemyBody.velocity.x / math.abs(enemyBody.velocity.x)
 	end
 	-- Turn around if past a certain x point
-	local reversePosition = 30.0
-	if 	enemyBody.position.x > reversePosition or
-		enemyBody.position.x < -reversePosition then
-		enemyBody.velocity.x = -enemyBody.velocity.x
+	local reversePositionX = 20.0
+	local reversePositionZ = 20.0
+
+	if 	enemyBody.position.x > reversePositionX or
+		enemyBody.position.x < -reversePositionX then
+		enemyBody.position.x = reversePositionX * enemyBody.velocity.x / math.abs(enemyBody.velocity.x) ;
+		enemyBody.velocity.z = -enemyBody.velocity.x
+		enemyBody.velocity.x = 0.0
+	elseif 	enemyBody.position.z > reversePositionZ or
+		enemyBody.position.z < -reversePositionZ then
+		enemyBody.position.z =reversePositionZ * enemyBody.velocity.z / math.abs(enemyBody.velocity.z)
+		enemyBody.velocity.x = enemyBody.velocity.z
+		enemyBody.velocity.z = 0.0 
 	end
 end
 
@@ -56,6 +67,10 @@ function Attack()
 	end
 end
 
+function TransitionMove()
+	local transitionspeed = -10.0
+	enemyBody.velocity.z = transitionspeed
+end
 function Update()
 	Move()
 	if transitionTime < 0.0001 then

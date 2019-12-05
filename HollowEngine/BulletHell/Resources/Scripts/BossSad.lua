@@ -3,8 +3,11 @@ function Move()
 	if math.abs(enemyBody.velocity.x) < 0.000001 then
 		enemyBody.velocity.x = speed
 	end
+	if math.abs(enemyBody.velocity.z) > 0.0 then
+		 enemyBody.velocity.z = 0.0
+	end
 	-- Turn around if past a certain x point
-	local reversePosition = 15.0
+	local reversePosition = 20.0
 	if 	enemyBody.position.x > reversePosition or
 		enemyBody.position.x < -reversePosition then
 		enemyBody.velocity.x = -enemyBody.velocity.x
@@ -51,10 +54,17 @@ function Attack()
 	end
 end
 
+function TransitionMove()
+	local transitionspeed = -2.0
+	enemyBody.velocity.z = transitionspeed
+end
+
 function Update()
-	Move()
 	if transitionTime < 0.0001 then
+		Move()
 		Attack()
+	else
+		TransitionMove()
 	end
 end
 

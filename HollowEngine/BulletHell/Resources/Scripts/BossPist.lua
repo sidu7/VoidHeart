@@ -1,14 +1,12 @@
 function Move()
-	local speed = 20.0
-	if math.abs(enemyBody.velocity.x) < speed then
-		enemyBody.velocity.x = speed * enemyBody.velocity.x / math.abs(enemyBody.velocity.x)
-	end
-	-- Turn around if past a certain x point
-	local reversePosition = 30.0
-	if 	enemyBody.position.x > reversePosition or
-		enemyBody.position.x < -reversePosition then
-		enemyBody.velocity.x = -enemyBody.velocity.x
-	end
+	local speed = 4.0
+	local xVelocity = playerBody.x - enemyBody.position.x
+	local zVelocity = playerBody.z - enemyBody.position.z
+	local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
+	xVelocity = xVelocity / totalVelocity
+	zVelocity = zVelocity / totalVelocity
+	
+	enemyBody.velocity = speed * vec3.new(xVelocity, 0.0, zVelocity)
 end
 
 function FireAtPlayer()
