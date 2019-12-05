@@ -1,5 +1,6 @@
 #pragma once
 #include "Hollow/Systems/System.h"
+#include "Hollow/Components/Body.h"
 
 namespace BulletHell
 {
@@ -18,5 +19,6 @@ namespace BulletHell
 
 	private:
 		float mDeltaTime;
+		Hollow::Body* mpPlayerBody;
 	};
 }

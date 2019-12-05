@@ -4,8 +4,10 @@
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Camera.h"
 #include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Material.h"
 
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
 
 namespace Hollow
 {
@@ -57,13 +59,21 @@ namespace Hollow
 			"pitch", &Camera::mPitch
 			);
 
+		lua.new_usertype<Material>("Material",
+			sol::constructors<Material()>(),
+			"diffuse", &Material::mDiffuseColor
+			);
+
 		lua.new_usertype<GameObject>("GameObject",
 			sol::constructors<GameObject()>(),
 			"GetBody", &GameObject::GetComponent<Body>,
-			"GetTransform", &GameObject::GetComponent<Transform>
+			"GetTransform", &GameObject::GetComponent<Transform>,
+			"GetMaterial", &GameObject::GetComponent<Material>
 			);
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
+
+		lua.set_function("ApplyLinearImpulse", &PhysicsManager::ApplyLinearImpulse, std::ref(PhysicsManager::Instance()));
 	}
 
 }

@@ -1,3 +1,4 @@
+--[[
 function FirePattern1 ()
 	gameObjectPath = "Resources/Json data/Bullet.json"
 	go = CreateGameObject(gameObjectPath)
@@ -30,3 +31,4 @@ end
 	
 
 FirePattern2()
+--]]

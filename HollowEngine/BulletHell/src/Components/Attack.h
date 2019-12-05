@@ -18,5 +18,7 @@ namespace BulletHell
 		std::string mScriptPath;
 		float mBaseAttackTime;
 		float mCurrentAttackTime;
+		bool mFireOnce;
+		bool mIsFired;
 	};
 }

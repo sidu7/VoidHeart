@@ -10,7 +10,9 @@ namespace BulletHell
 
 	void Attack::Init()
 	{
+		mIsFired = false;
 	}
+
 	void Attack::Serialize(rapidjson::Value::Object data)
 	{
 		if (data.HasMember("Script"))
@@ -21,15 +23,23 @@ namespace BulletHell
 		{
 			mBaseAttackTime = data["BaseAttackTime"].GetFloat();
 		}
+		if (data.HasMember("FireOnce"))
+		{
+			mFireOnce = data["FireOnce"].GetBool();
+		}
 	}
+
 	void Attack::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
 		Hollow::JSONHelper::Write<std::string>("Script", mScriptPath, writer);
 		Hollow::JSONHelper::Write<float>("BaseAttackTime", mBaseAttackTime, writer);
+		Hollow::JSONHelper::Write<bool>("FireOnce", mFireOnce, writer);
 	}
+
 	void Attack::Clear()
 	{
 	}
+
 	void Attack::DebugDisplay()
 	{
 		char* str = (char*)mScriptPath.c_str();

@@ -59,7 +59,21 @@ function SemiCircle(offset)
 	end
 end
 
+function FireFollowBullet()
+	local gameObjectPath = "Resources/Json data/FollowBullet.json"
+	go = CreateGameObject(gameObjectPath)
+	body = go:GetBody()
+	body.position = attackPosition
+	local theta = math.random(0, 360)
+	theta = theta * 3.141592 / 180.0
+	local speed = 10.0
+	body.velocity = vec3.new(math.cos(theta)*speed, 0.0, math.sin(theta)*speed)
+	transform = go:GetTransform()
+	transform.position = body.position
+end
+
 function FirePattern (num)
+	--[[
 	if(num < 4.0) then
 	FireAtPlayer()
 	elseif (num < 7.0 ) then
@@ -70,6 +84,10 @@ function FirePattern (num)
 	FireAtPlayer()
 	VBulletPattern(10.0)
 	SemiCircle(0)
+	end
+	--]]
+	for i=0,30 do
+	FireFollowBullet()
 	end
 end
 

@@ -50,6 +50,10 @@ namespace BulletHell
 	void AttackSystem::AddGameObject(Hollow::GameObject* pGameObject)
 	{
 		CheckAllComponents<Attack, Hollow::Transform>(pGameObject);
+		if (pGameObject->mType == (int)GameObjectType::PLAYER)
+		{
+			mpPlayerBody = pGameObject->GetComponent<Hollow::Body>();
+		}
 	}
 
 	void AttackSystem::HandleBroadcastEvent(Hollow::GameEvent& event)
@@ -80,15 +84,19 @@ namespace BulletHell
 	void AttackSystem::EnemyAttackUpdate(Hollow::GameObject* pEnemy)
 	{
 		Attack* pAttack = pEnemy->GetComponent<Attack>();
-		Hollow::Transform* pTransform = pEnemy->GetComponent<Hollow::Transform>();
 		pAttack->mCurrentAttackTime += mDeltaTime;
-		if (pAttack->mCurrentAttackTime > pAttack->mBaseAttackTime)
+		if (pAttack->mCurrentAttackTime > pAttack->mBaseAttackTime && !pAttack->mIsFired)
 		{
+			if (pAttack->mFireOnce)
+			{
+				pAttack->mIsFired = true;
+			}
+			
 			// Fire attack and reset attack timer
-			//auto& lua = Hollow::ScriptingManager::Instance().lua;
-
-			//lua["attackPosition"] = pTransform->mPosition;
-			//lua.script_file(pAttack->mScriptPath);
+			auto& lua = Hollow::ScriptingManager::Instance().lua;
+			lua["followObject"] = pEnemy;
+			lua["followPosition"] = mpPlayerBody->mPosition;
+			lua.script_file(pAttack->mScriptPath);
 
 			//pAttack->mCurrentAttackTime = 0.0f;
 		}
