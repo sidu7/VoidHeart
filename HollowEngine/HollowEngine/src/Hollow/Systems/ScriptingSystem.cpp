@@ -47,7 +47,7 @@ namespace Hollow
 				pCam->mIsActive = !pCam->mIsActive;
 				if (pCam->mIsActive)
 				{
-					InputManager::Instance().HideMouseCursor();
+					//InputManager::Instance().HideMouseCursor();
 				}
 				else
 				{
@@ -63,6 +63,7 @@ namespace Hollow
 				jump.z *= 2.0f;
 				PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i],jump );
 			}
+			
 			PhysicsManager::Instance().ApplyAngularImpulse(mGameObjects[i], lua.get<glm::vec3>("impulse"));
 		}
 	}

@@ -18,6 +18,7 @@ namespace Hollow
 		}
 		HOLLOW_API virtual ~System() {}
 		HOLLOW_API virtual void Init() {}
+		HOLLOW_API virtual void OnSceneInit() {}
 		HOLLOW_API virtual void Update() = 0;
 		HOLLOW_API virtual void AddGameObject(GameObject* pGameObject) = 0;
 		HOLLOW_API virtual void HandleBroadcastEvent(GameEvent& event) { }

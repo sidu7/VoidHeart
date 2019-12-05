@@ -1,0 +1,39 @@
+{
+  "Type": "FOLLOW_BULLET",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity": false,
+	  "AngularVelocity": [0.0, 15.0, 0.0]
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "Model",
+      "Shape": "SPHERE",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+	  "Diffuse": [2.0, 2.0, 2.0],
+      "Shininess": 1000.0,
+      "Texture": "Resources/Textures/cracks.png"
+    },
+	{
+		"Type": "Attack",
+		"Script": "Resources/Scripts/FollowBulletAttack.lua",
+		"BaseAttackTime": 0.5,
+		"FireOnce": true
+	}
+  ]
+}

@@ -5,7 +5,7 @@ namespace Hollow
 {
 	enum CameraType;
 	enum CameraProjection;
-
+	class Transform;
 	class Camera : public Component
 	{
 		REGISTERCOMPONENT(Camera);
@@ -24,6 +24,14 @@ namespace Hollow
 		glm::vec3 mRight;
 
 		glm::vec3 mOffsetFromAnchor;
+
+		// Top down camera variables
+		glm::vec3 mPreviousPosition;
+		float mLERPFactor;
+		glm::vec2 mXConstraints;
+		glm::vec2 mYConstraints;
+		glm::vec2 mZConstraints;
+		
 		glm::vec3 mAnchorFocusOffset;
 
 		bool mIsActive;
@@ -43,6 +51,9 @@ namespace Hollow
 		float mDefaultZoom;		//Used to reset the values
 		float mDefaultPitch;	//Used to reset the values
 		float mDefaultYaw;		//Used to reset the values
+
+		std::vector <Transform*> mFocusPositions;
+		std::vector <std::string> mFocusObjects;
 
 		float mPitchLowerBound;
 		

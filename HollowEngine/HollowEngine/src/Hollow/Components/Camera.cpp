@@ -37,7 +37,10 @@ namespace Hollow {
 
 		mViewPortPosition = glm::ivec2(0,0);
 		mViewPortSize = glm::ivec2(0, 0);
+
+		mLERPFactor = 1.0f;
 	}
+
 	void Camera::Serialize(rapidjson::Value::Object data)
 	{
 
@@ -108,15 +111,39 @@ namespace Hollow {
 		{
 			mOffsetFromAnchor = JSONHelper::GetVec3F(data["PositionOffset"].GetArray());
 		}
+		if (data.HasMember("LERPFactor"))
+		{
+			mLERPFactor = data["LERPFactor"].GetFloat();
+		}
+		if (data.HasMember("XConstraints"))
+		{
+			mXConstraints = JSONHelper::GetVec2F(data["XConstraints"].GetArray());
+		}
+		if (data.HasMember("YConstraints"))
+		{
+			mYConstraints = JSONHelper::GetVec2F(data["YConstraints"].GetArray());
+		}
+		if (data.HasMember("ZConstraints"))
+		{
+			mZConstraints = JSONHelper::GetVec2F(data["ZConstraints"].GetArray());
+		}
 		if (data.HasMember("AnchorFocusOffset"))
 		{
 			mAnchorFocusOffset = JSONHelper::GetVec3F(data["AnchorFocusOffset"].GetArray());
+		}	
+		if (data.HasMember("FocusObjects"))
+		{
+			auto objects = data["FocusObjects"].GetArray();
+			for (int i = 0; i < objects.Size(); ++i)
+			{
+				mFocusObjects.emplace_back(objects[i].GetString());
+			}
 		}
-		
 	}
 	void Camera::Clear()
 	{
-
+		mFocusObjects.clear();
+		mFocusPositions.clear();
 	}
 	void Camera::DebugDisplay()
 	{
@@ -133,6 +160,10 @@ namespace Hollow {
 		ImGui::InputInt2("ViewPortPosition", &mDViewPortPosition[0]);
 		ImGui::InputInt2("ViewPortSize", &mViewPortSize[0]);
 		ImGui::InputFloat3("PositionOffset", &mOffsetFromAnchor[0]);
+		ImGui::InputFloat("LERP Factor", &mLERPFactor);
+		ImGui::InputFloat2("XConstraints", &mXConstraints[0]);
+		ImGui::InputFloat2("YConstraints", &mYConstraints[0]);
+		ImGui::InputFloat2("ZConstraints", &mZConstraints[0]);
 		ImGui::InputFloat3("AnchorFocusOffset", &mAnchorFocusOffset[0]);
 
 	}
@@ -153,7 +184,18 @@ namespace Hollow {
 		JSONHelper::Write("ViewPortPosition", mDViewPortPosition, writer);
 		JSONHelper::Write("ViewPortSize", mViewPortSize, writer);
 		JSONHelper::Write("PositionOffset", mOffsetFromAnchor, writer);		
+		JSONHelper::Write("LERPFactor", mLERPFactor, writer);
+		JSONHelper::Write("XConstraints", mXConstraints, writer);
+		JSONHelper::Write("YConstraints", mYConstraints, writer);
+		JSONHelper::Write("ZConstraints", mZConstraints, writer);
 		JSONHelper::Write("AnchorFocusOffset", mAnchorFocusOffset, writer);
+		writer.Key("FocusObjects");
+		writer.StartArray();
+		for (int i = 0; i < mFocusObjects.size(); ++i)
+		{
+			writer.String(mFocusObjects[i].c_str());
+		}
+		writer.EndArray();
 		
 	}
 }

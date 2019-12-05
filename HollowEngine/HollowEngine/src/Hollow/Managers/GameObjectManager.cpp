@@ -21,6 +21,19 @@ namespace Hollow {
 		SystemManager::Instance().AddObjectToSystems(GameObject);
 	}
 
+	std::vector<GameObject*> GameObjectManager::GetObjectByType(int ObjectType)
+	{
+		std::vector<GameObject*> list;
+		for (int i = 0; i < mGameObjects.size(); ++i)
+		{
+			if (mGameObjects[i]->mType == ObjectType)
+			{
+				list.emplace_back(mGameObjects[i]);
+			}
+		}
+		return list;
+	}
+
 	void GameObjectManager::DeleteGameObject(GameObject* GameObject)
 	{
 		if (std::find(mDeletionList.begin(), mDeletionList.end(), GameObject) != mDeletionList.end())

@@ -52,66 +52,96 @@
     <None Include="Resources\Shaders\UIShader.frag" />
     <None Include="Resources\Shaders\UIShader.vert" />
     <None Include="Resources\Shaders\VerticalBlur.comp" />
-    <None Include="Resources\Json data\Box.json" />
-    <None Include="Resources\Json data\box2.json" />
-    <None Include="Resources\Json data\box4.json" />
-    <None Include="Resources\Json data\box6.json" />
-    <None Include="Resources\Json data\box8.json" />
     <None Include="Resources\Json data\Camera.json" />
     <None Include="Resources\Json data\Cloud.json" />
     <None Include="Resources\Json data\Floor.json" />
     <None Include="Resources\Json data\Light.json" />
     <None Include="Resources\Json data\LocalLight.json" />
-    <None Include="Resources\Json data\MiniMapCamera.json" />
-    <None Include="Resources\Json data\NPC.json" />
-    <None Include="Resources\Json data\Plane.json" />
-    <None Include="Resources\Json data\StartMoveButton.json" />
-    <None Include="Resources\Json data\StopMoveButton.json" />
-    <None Include="Resources\Json data\TempObject.json" />
-    <None Include="Resources\Json data\test.json" />
-    <None Include="Resources\Json data\UICamera.json" />
-    <None Include="Resources\Json data\UIElement.json" />
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
-    <None Include="src\BulletHell\GameMetaData\CollisionMask.data" />
     <None Include="Resources\Shaders\TextRendering.vert" />
     <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="Resources\Levels\Level3.json" />
+    <None Include="Resources\Scripts\BossAngry.lua" />
+    <None Include="Resources\Scripts\BossHappy.lua" />
+    <None Include="Resources\Scripts\BossPist.lua" />
+    <None Include="Resources\Scripts\BossSad.lua" />
+    <None Include="Resources\Scripts\PlayerAttack.lua" />
+    <None Include="Resources\Scripts\PlayerMovement.lua" />
+    <None Include="Resources\Json data\UIElement.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BulletHell\Main.cpp">
+    <ClCompile Include="src\Components\Attack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Systems\HealthSystem.cpp">
+    <ClCompile Include="src\Components\DestroyTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Components\Health.cpp">
+    <ClCompile Include="src\Components\Health.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Components\Attack.cpp">
+    <ClCompile Include="src\Components\Movement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BulletHell\Systems\AttackSystem.cpp">
+    <ClCompile Include="src\Systems\AttackSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\DestroySystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\HealthSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\MovementSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Behavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\BehaviorSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BulletHell\Systems\HealthSystem.h">
+    <ClInclude Include="src\Components\Attack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Components\Health.h">
+    <ClInclude Include="src\Components\DestroyTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Components\Attack.h">
+    <ClInclude Include="src\Components\Health.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\Systems\AttackSystem.h">
+    <ClInclude Include="src\Components\Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\GameMetaData\GameObjectType.h">
+    <ClInclude Include="src\GameMetaData\GameEventType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BulletHell\GameMetaData\GameEventType.h">
+    <ClInclude Include="src\GameMetaData\GameObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\AttackSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\DestroySystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\HealthSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Behavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\BehaviorSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

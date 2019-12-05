@@ -10,7 +10,7 @@ namespace Hollow
 	void Collider::Init()
 	{
 		mBounciness = 0.2f; // bounce
-		mFriction = 0.75f;
+		mFriction = 0.0f;
 		mpLocalShape = nullptr;
 		mpShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
 		mpLocalShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));

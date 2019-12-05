@@ -415,6 +415,7 @@
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="src\Hollow\Enums\Buttons.enum" />
     <None Include="src\Hollow\Enums\MeshShapes.enum" />
   </ItemGroup>

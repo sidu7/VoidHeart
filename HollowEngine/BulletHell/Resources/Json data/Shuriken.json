@@ -1,0 +1,33 @@
+{
+  "Type": "SHURIKEN",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.5, 10.0, 0.0 ],
+      "Scale": [ 2.0, 0.75, 2.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity": false,
+	  "AngularVelocity": [0.0, 15.0, 0.0]
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "Model",
+      "Shape": "CUBE",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+	  "Diffuse": [2.0, 0.0, 0.0],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    }
+  ]
+}
