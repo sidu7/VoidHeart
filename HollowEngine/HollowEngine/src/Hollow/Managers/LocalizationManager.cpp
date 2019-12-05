@@ -1,8 +1,9 @@
 #include <hollowpch.h>
 #include "LocalizationManager.h"
 #include "RenderManager.h"
-
+#include <rapidjson/encodings.h>
 #include "Hollow/Graphics/TextRenderer.h"
+#include <codecvt>
 
 namespace Hollow
 {
@@ -36,12 +37,16 @@ namespace Hollow
 		std::ifstream file(fileName);
 		std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 		file.close();
-		PARSE_JSON_FILE(contents.c_str());
-
+		rapidjson::Document root; 
+		root.Parse(contents.c_str());
+		
+		if (!root.IsObject()) { HW_CORE_ERROR("Error reading JSON file {0}", contents.c_str()); }
+	
 		RenderManager::Instance().mpTextRenderer->LoadFont(root["FontFile"].GetString());
 		for (rapidjson::Value::ConstMemberIterator itr = root.MemberBegin();
 			itr != root.MemberEnd(); ++itr)
 		{
+			//std::string val(itr->value.GetString(), itr->value.GetStringLength());
 			mCurrentLanguageMap[itr->name.GetString()] = itr->value.GetString();
 		}
 	}

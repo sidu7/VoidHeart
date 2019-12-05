@@ -21,7 +21,9 @@ namespace Hollow
 		HOLLOW_API void RenderText(UITextData& data, Shader* shader);
 
 	private:
-		std::map<GLchar, Character> mCharacters;
+		std::wstring ToWString(std::string& aChars);
+	private:
+		std::map<wchar_t, Character> mCharacters;
 		GLuint mVAO_Text, mVBO_Text;
 		FT_Library mft;
 		FT_Face mface;

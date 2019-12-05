@@ -75,6 +75,7 @@ namespace BulletHell
 
 		// Send values to lua
 		lua["attackPosition"] = pTransform->mPosition;
+		lua["playerBody"] = pPlayer->GetComponent<Hollow::Body>();
 		lua["horizontalAxis"] = rightHorizontalAxis;
 		lua["verticalAxis"] = rightVerticallAxis;
 		lua["attack"] = pAttack;

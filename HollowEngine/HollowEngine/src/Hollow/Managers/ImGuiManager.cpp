@@ -122,6 +122,10 @@ namespace Hollow {
 				{
 					LocalizationManager::Instance().ChangeLanguage("Hindi");
 				}
+				if (ImGui::Button("Japanese"))
+				{
+					LocalizationManager::Instance().ChangeLanguage("Japanese");
+				}
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Testing"))

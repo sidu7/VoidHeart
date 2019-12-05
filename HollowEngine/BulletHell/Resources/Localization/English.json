@@ -1,5 +1,5 @@
 {
-  "FontFile": "Resources/Fonts/Kiddish.ttf",
+  "FontFile": "Resources/Fonts/arial.ttf",
   "PLAYERHP": "Player HP: ",
   "ENEMYHP": "ENEMY HP: ",
   "LOSE": "You Lose!",
