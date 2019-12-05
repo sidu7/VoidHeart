@@ -24,7 +24,8 @@ namespace BulletHell
 		lua.new_usertype<Attack>("Attack",
 			sol::constructors<Attack()>(),
 			"baseAttackTime", &Attack::mBaseAttackTime,
-			"currentAttackTime", &Attack::mCurrentAttackTime
+			"currentAttackTime", &Attack::mCurrentAttackTime,
+			"IsFired", &Attack::mIsFired
 			);
 
 	}
@@ -85,20 +86,12 @@ namespace BulletHell
 	{
 		Attack* pAttack = pEnemy->GetComponent<Attack>();
 		pAttack->mCurrentAttackTime += mDeltaTime;
-		if (pAttack->mCurrentAttackTime > pAttack->mBaseAttackTime && !pAttack->mIsFired)
-		{
-			if (pAttack->mFireOnce)
-			{
-				pAttack->mIsFired = true;
-			}
-			
-			// Fire attack and reset attack timer
-			auto& lua = Hollow::ScriptingManager::Instance().lua;
-			lua["followObject"] = pEnemy;
-			lua["followPosition"] = mpPlayerBody->mPosition;
-			lua.script_file(pAttack->mScriptPath);
+		// Fire attack and reset attack timer
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
 
-			//pAttack->mCurrentAttackTime = 0.0f;
-		}
+		lua["attack"] = pAttack;
+		lua["followObject"] = pEnemy;
+		lua["followPosition"] = mpPlayerBody->mPosition;
+		lua.script_file(pAttack->mScriptPath);
 	}
 }

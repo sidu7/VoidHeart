@@ -55,9 +55,24 @@ function VBulletPattern(zvel)
 	end
 end
 
+function FireFollowBullet()
+	local gameObjectPath = "Resources/Json data/FollowBullet.json"
+	go = CreateGameObject(gameObjectPath)
+	body = go:GetBody()
+	body.position = attackPosition
+	local theta = math.random(0, 360)
+	theta = theta * 3.141592 / 180.0
+	local speed = 10.0
+	body.velocity = vec3.new(math.cos(theta)*speed, 0.0, math.sin(theta)*speed)
+	transform = go:GetTransform()
+	transform.position = body.position
+end
+
 function FirePattern ()
 	FireAtPlayer()
-	VBulletPattern(20.0)
+	for i=0,10 do 
+	FireFollowBullet()
+	end
 end
 
 function Attack()
