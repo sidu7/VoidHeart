@@ -133,6 +133,7 @@ private:
 	
 public:
 	bool mSpawnBlock;
+	Hollow::Camera* mpCam;
 
 private:
 	Tetromino3 mShapes[3]; // L, S, and T
@@ -143,7 +144,6 @@ private:
 
 	LayerSystem* mLayerSystem;
 
-	Hollow::Camera* mpCam;
 	
 	bool mSpawnBox;
 };

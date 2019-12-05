@@ -47,10 +47,11 @@ void LayerSystem::Update()
 
 		mTimePast += Hollow::FrameRateController::Instance().GetFrameTime();
 
-		if (!mDropping)
+		/*if (!mDropping)
 		{
 			mBlockSystem->Updato();
-		}
+		}*/
+		mBlockSystem->Updato();
 
 		if (mTimePast > mInterval)
 		{
@@ -68,6 +69,7 @@ void LayerSystem::Update()
 	{
 		Hollow::UIText* text = mGameObjects[0]->GetComponent<Hollow::UIText>();
 		text->mText = "GAMEOVER!!";
+		mBlockSystem->mpCam->mYaw++;
 	}
 	for (int i = 0; i < mGameObjects.size() - 5; ++i)
 	{
@@ -137,7 +139,7 @@ void LayerSystem::CheckLines()
 	{
 		if (CheckLine(l))
 		{
-			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/1Up.wav");
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lineclear.mp3");
 			// Delete line l
 			for (int m = l + mActiveTetrominoPosition.x; m < 15; ++m)
 			{
@@ -184,11 +186,7 @@ bool LayerSystem::CheckLine(int i)
 
 void LayerSystem::MakeFloor()
 {
-	if(mDropping)
-	{
-		mDropping = false;
-		mInterval = mMoveInterval;
-	}
+	Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/drop.mp3");
 	mBlockSystem->CopyTetromino(*mActiveTetromino, mFloor, mActiveTetrominoPosition);
 	CheckLines();	
 	mBlockSystem->mSpawnBlock = true;

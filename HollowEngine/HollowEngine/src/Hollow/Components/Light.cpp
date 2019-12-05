@@ -19,6 +19,8 @@ namespace Hollow
 		mShadowMapSize = glm::vec2(0.0f);
 		mShadowMapNearPlane = 0.0f;
 		mShadowMapFarPlane = 0.0f;
+		mLookAtPoint = glm::vec3(0.0f);
+		mFOV = 45.0f;
 
 		mBlurDistance = 0;
 		mAlpha = 0.0f;
@@ -67,7 +69,14 @@ namespace Hollow
 		{
 			mRadius = data["Radius"].GetFloat();
 		}
-		
+		if(data.HasMember("LookAtPoint"))
+		{
+			mLookAtPoint = JSONHelper::GetVec3F(data["LookAtPoint"].GetArray());
+		}
+		if(data.HasMember("FOV"))
+		{
+			mFOV = data["FOV"].GetFloat();
+		}
 	}
 
 	void Light::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -82,6 +91,8 @@ namespace Hollow
 			JSONHelper::Write("BlurDistance", mBlurDistance, writer);
 			JSONHelper::Write("Alpha", mAlpha, writer);
 			JSONHelper::Write("MD", mMD, writer);
+			JSONHelper::Write("LookAtPoint", mLookAtPoint,writer);
+			JSONHelper::Write("FOV", mFOV, writer);
 		}
 		JSONHelper::Write<float>("Radius", mRadius, writer);
 	}
@@ -104,6 +115,8 @@ namespace Hollow
 			ImGui::InputScalar("Blur Distance", ImGuiDataType_U32 ,&mBlurDistance);
 			ImGui::InputFloat("Alpha", &mAlpha);
 			ImGui::InputFloat("MD", &mMD);
+			ImGui::InputFloat3("Look At Point", &mLookAtPoint[0]);
+			ImGui::InputFloat("FOV", &mFOV);
 		}
 	}
 }
