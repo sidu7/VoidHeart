@@ -18,6 +18,7 @@ function PlayerAttack ()
 		transform.position = body.position
 		
 		attack.currentAttackTime = 0.0
+		PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
 	end
 end
 

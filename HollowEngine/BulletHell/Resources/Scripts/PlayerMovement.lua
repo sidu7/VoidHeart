@@ -31,6 +31,7 @@ end
 if dash then
 	dashSpeed = 15.0
 	impulse = impulse + direction * dashSpeed
+	PlaySFX("Resources/Audio/SFX/PlayerDash.wav")
 end
 
 impulse = impulse * speed;

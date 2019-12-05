@@ -86,6 +86,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua;$(SolutionDir)$(ProjectName)\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,6 +139,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <AdditionalIncludeDirectories>$(SolutionDir)HollowEngine\src;$(SolutionDir)HollowEngine\vendor\Include;$(SolutionDir)HollowEngine\vendor\Include\lua;$(SolutionDir)$(ProjectName)\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HW_PLATFORM_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

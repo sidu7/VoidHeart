@@ -8,6 +8,7 @@
 
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/AudioManager.h"
 
 namespace Hollow
 {
@@ -74,6 +75,7 @@ namespace Hollow
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
 
 		lua.set_function("ApplyLinearImpulse", &PhysicsManager::ApplyLinearImpulse, std::ref(PhysicsManager::Instance()));
+		lua.set_function("PlaySFX", &AudioManager::PlayEffect, std::ref(AudioManager::Instance()));
 	}
 
 }

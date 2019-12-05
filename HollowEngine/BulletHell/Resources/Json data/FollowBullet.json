@@ -32,7 +32,7 @@
 	{
 		"Type": "Attack",
 		"Script": "Resources/Scripts/FollowBulletAttack.lua",
-		"BaseAttackTime": 1.0,
+		"BaseAttackTime": 0.5,
 		"FireOnce": true
 	}
   ]
