@@ -63,6 +63,13 @@
     <None Include="Resources\Shaders\TextRendering.vert" />
     <None Include="Resources\Shaders\TextRendering.frag" />
     <None Include="src\GameMetaData\CollisionMask.data" />
+    <None Include="Resources\Levels\Level3.json" />
+    <None Include="Resources\Scripts\BossAngry.lua" />
+    <None Include="Resources\Scripts\BossHappy.lua" />
+    <None Include="Resources\Scripts\BossPist.lua" />
+    <None Include="Resources\Scripts\BossSad.lua" />
+    <None Include="Resources\Scripts\PlayerAttack.lua" />
+    <None Include="Resources\Scripts\PlayerMovement.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

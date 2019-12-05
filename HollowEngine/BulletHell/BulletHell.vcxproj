@@ -191,6 +191,13 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\Floor.json" />
     <None Include="Resources\Json data\Light.json" />
     <None Include="Resources\Json data\LocalLight.json" />
+    <None Include="Resources\Levels\Level3.json" />
+    <None Include="Resources\Scripts\BossAngry.lua" />
+    <None Include="Resources\Scripts\BossHappy.lua" />
+    <None Include="Resources\Scripts\BossPist.lua" />
+    <None Include="Resources\Scripts\BossSad.lua" />
+    <None Include="Resources\Scripts\PlayerAttack.lua" />
+    <None Include="Resources\Scripts\PlayerMovement.lua" />
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Ambient.frag" />
