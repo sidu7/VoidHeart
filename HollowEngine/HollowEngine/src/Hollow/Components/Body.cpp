@@ -70,6 +70,10 @@ namespace Hollow {
 		{
 			mUseGravity = data["UseGravity"].GetBool();
 		}
+		if (data.HasMember("AngularVelocity"))
+		{
+			mAngularVelocity = JSONHelper::GetVec3F(data["AngularVelocity"].GetArray());
+		}
 
 		mInverseMass = 1.0f / mMass;
 	}
@@ -91,6 +95,8 @@ namespace Hollow {
 		JSONHelper::Write<std::string>("RigidbodyType", mDRigidbodyType, writer);
 		JSONHelper::Write<bool>("IsFrictionLess", mIsFrictionLess, writer);
 		JSONHelper::Write<bool>("UseGravity", mUseGravity, writer);
+		// TODO: Shantanu can deal with this if it causes problems
+		JSONHelper::Write<glm::vec3>("AngularVelocity", mAngularVelocity, writer);
 	}
 	
 }

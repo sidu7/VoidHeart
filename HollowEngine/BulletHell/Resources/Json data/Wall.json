@@ -1,28 +1,29 @@
 {
-    "Components": [
-        {
-            "Type": "Transform",
-          "Position": [ 0.5, 1.0, 20.0 ],
-          "Scale": [ 70.0, 1.0, 1.0 ]
-        },
-        {
-            "Type": "Body",
-            "RigidbodyType": "STATIC"
-        },
-        {
-          "Type": "Collider",
-          "Shape": "BOX"
-        },
-        {
-            "Type": "Model",
-            "Shape" :  "CUBE",
-            "CastShadow": true
-        },
-        {
-            "Type": "Material",
-            "Specular": [ 1.0, 1.0, 1.0 ],
-            "Shininess": 10.0,
-            "Texture": "Resources/Textures/cracks.png"
-        }
-    ]
+  "Type":  "WALL",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.5, 1.0, 20.0 ],
+      "Scale": [ 70.0, 3.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "RigidbodyType": "STATIC"
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "Model",
+      "Shape": "CUBE",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    }
+  ]
 }

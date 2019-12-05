@@ -26,6 +26,7 @@ namespace Hollow
 		glm::vec3 mPosition; // Position of light or offset from the objects center position ?
 		float mRadius;
 		glm::vec3 mColor;
+		glm::vec3 mLookAtPoint;
 		LightType mType;
 
 		// Shadow information
@@ -34,6 +35,7 @@ namespace Hollow
 		glm::vec2 mShadowMapSize;
 		float mShadowMapNearPlane;
 		float mShadowMapFarPlane;
+		float mFOV;
 
 		// Moment shadow map information
 		unsigned int mBlurDistance;

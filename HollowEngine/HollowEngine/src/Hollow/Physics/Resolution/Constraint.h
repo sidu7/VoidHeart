@@ -93,7 +93,7 @@ namespace Hollow {
 		
 		inline void ApplyImpulse(Body* bodyA, Body* bodyB, VelocityJacobian& mMatxj, float impulse)
 		{
-			VelocityJacobian& dvj = JacobianScalarMult(mMatxj, impulse);
+			VelocityJacobian const& dvj = JacobianScalarMult(mMatxj, impulse);
 
 			bodyA->mVelocity += dvj.velocityA;
 			bodyA->mAngularVelocity += dvj.angularVelocityA;

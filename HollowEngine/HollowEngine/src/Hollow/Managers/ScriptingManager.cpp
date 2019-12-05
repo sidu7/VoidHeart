@@ -1,15 +1,20 @@
 #include <hollowpch.h>
 #include "ScriptingManager.h"
+
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Camera.h"
+#include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Material.h"
 
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/AudioManager.h"
 
 namespace Hollow
 {
 	void ScriptingManager::Init()
 	{
-		lua.open_libraries(sol::lib::base);
+		lua.open_libraries(sol::lib::base, sol::lib::math);
 
 		auto mult_overloads = sol::overload(
 			[](const glm::vec3& v1, const glm::vec3& v2) -> glm::vec3 { return v1 * v2; },
@@ -42,6 +47,11 @@ namespace Hollow
 			"position", &Body::mPosition
 		);
 
+		lua.new_usertype<Transform>("Transform",
+			sol::constructors<Transform()>(),
+			"position", &Transform::mPosition
+			);
+
 		lua.new_usertype<Camera>("Camera",
 			sol::constructors<Camera()>(),
 			"frontDirection", &Camera::mFront,
@@ -50,12 +60,22 @@ namespace Hollow
 			"pitch", &Camera::mPitch
 			);
 
+		lua.new_usertype<Material>("Material",
+			sol::constructors<Material()>(),
+			"diffuse", &Material::mDiffuseColor
+			);
+
 		lua.new_usertype<GameObject>("GameObject",
 			sol::constructors<GameObject()>(),
-			"GetBody", &GameObject::GetComponent<Body>
+			"GetBody", &GameObject::GetComponent<Body>,
+			"GetTransform", &GameObject::GetComponent<Transform>,
+			"GetMaterial", &GameObject::GetComponent<Material>
 			);
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
+
+		lua.set_function("ApplyLinearImpulse", &PhysicsManager::ApplyLinearImpulse, std::ref(PhysicsManager::Instance()));
+		lua.set_function("PlaySFX", &AudioManager::PlayEffect, std::ref(AudioManager::Instance()));
 	}
 
 }

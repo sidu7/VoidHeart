@@ -109,7 +109,7 @@ void BlockSystem::Updato()
 				HW_INFO("GAME OVER!!!");
 				mLayerSystem->mGameOver = true;
 				Hollow::AudioManager::Instance().mMute[Hollow::SOUND_TYPE::SOUND_BACKGROUND];
-				Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/gameover.wav");
+				Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/gameover.mp3");
 			}
 			delete mLayerSystem->mActiveTetromino;
 		}
@@ -125,10 +125,15 @@ void BlockSystem::Updato()
 		mLayerSystem->mActiveTetrominoPosition = glm::ivec3(16 - mLayerSystem->mActiveTetromino->size, 5, 5);
 		mSpawnBlock = false;
 	}
-	if(Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_A))
+	if(Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_A))
 	{
 		mLayerSystem->mDropping = true;
 		mLayerSystem->mInterval = mLayerSystem->mDropInterval;
+	}
+	if (Hollow::InputManager::Instance().IsControllerButtonReleased(SDL_CONTROLLER_BUTTON_A))
+	{
+		mLayerSystem->mDropping = false;
+		mLayerSystem->mInterval = mLayerSystem->mMoveInterval;
 	}
 	if (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_X))
 	{
@@ -242,6 +247,7 @@ void BlockSystem::CopyTetromino2(bool src[2][2][2], bool dest[][12][12], glm::iv
 
 void BlockSystem::Rotate(Tetromino& data, Rotation rotation)
 {
+	Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/rotate.mp3");
 	switch(rotation)
 	{
 	case X:

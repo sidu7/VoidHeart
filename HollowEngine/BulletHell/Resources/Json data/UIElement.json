@@ -1,14 +1,17 @@
 {
+  "Type": "",
   "Components": [
     {
       "Type": "UITransform",
-      "Position": [ 640, 360 ],
-      "Scale": [ 1280, 720 ]
+      "Position": [ 0, 0 ],
+      "Scale": [ 1, 1 ]
     },
     {
-      "Type": "UIImage",
-      "Shape": 3,
-      "Image": "Resources/Textures/HUD.png"
+      "Type": "UIText",
+      "Text": "",
+      "TextScale": [ 1.0, 1.0 ],
+      "OffsetPosition": [ 1.0, 1.0 ],
+      "Color": [ 1.0, 1.0, 1.0 ]
     }
   ]
 }

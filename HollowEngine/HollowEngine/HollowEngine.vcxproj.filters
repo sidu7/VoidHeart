@@ -267,5 +267,6 @@
   <ItemGroup>
     <None Include="src\Hollow\Enums\Buttons.enum" />
     <None Include="src\Hollow\Enums\MeshShapes.enum" />
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

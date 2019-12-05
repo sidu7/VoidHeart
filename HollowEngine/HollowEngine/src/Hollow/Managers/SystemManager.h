@@ -11,10 +11,11 @@ namespace Hollow
 		SINGLETON(SystemManager)
 	public:
 		~SystemManager();
-
+		
 		HOLLOW_API  void RegisterSystem(System* system, std::type_index index);
 		  
 		HOLLOW_API  void Init();
+		HOLLOW_API  void OnSceneInit();
 		HOLLOW_API  void Update();
 		HOLLOW_API  void CleanUp();
 		HOLLOW_API  void AddObjectToSystems(GameObject* GameObject);
