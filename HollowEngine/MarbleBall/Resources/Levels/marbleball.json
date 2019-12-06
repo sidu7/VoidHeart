@@ -102,7 +102,9 @@
           "Scale": [ 2.0, 2.0 ]
         },
         {
-          "Type": "UIText",
+            "Type": "UIText",
+            "Tag": "SCORE",
+            "ChangingText": true,
           "TextScale": [ 1.0, 1.0 ],
           "Color": [ 0.034081459045410159, 0.0, 1.0 ]
         }

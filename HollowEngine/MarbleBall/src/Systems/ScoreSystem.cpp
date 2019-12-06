@@ -11,6 +11,8 @@
 #include "../Components/Score.h"
 #include "Hollow/Components/UIText.h"
 #include "Hollow/Managers/LocalizationManager.h"
+#include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/SceneManager.h"
 
 namespace MarbleBall
 {
@@ -24,6 +26,11 @@ namespace MarbleBall
 
 	void ScoreSystem::Update()
 	{
+		if(Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_Y))
+		{
+			Hollow::SceneManager::Instance().LoadLevel("marbleball");;
+		}
+		
 		for(int i = 0; i < mGameObjects.size(); ++i)
 		{
 			Score* score = mGameObjects[i]->GetComponent<Score>();
