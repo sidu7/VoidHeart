@@ -11,6 +11,9 @@ namespace Hollow
 		std::unordered_map<std::string, int> mMapOfGameObjectTypes;
 		std::unordered_map<std::string, int> mMapOfGameEventTypes;
 		
+		/// <summary>
+		/// Initializes GameMetaData which contains the CollisionMasks.
+		/// </summary>
 		HOLLOW_API void Init();
 	};
 }

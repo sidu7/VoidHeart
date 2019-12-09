@@ -8,10 +8,31 @@ namespace Hollow
 		REGISTERCOMPONENT(Transform);
 	public:
 
+		/// <summary>
+		/// Initializes the Transform component.
+		/// </summary>
 		HOLLOW_API void Init() override;
+
+		/// <summary>
+		/// Clears the Transform component.
+		/// </summary>
 		HOLLOW_API void Clear() override {}
+
+		/// <summary>
+		/// To set the Debug Display for the Transform Component.
+		/// </summary>
 		HOLLOW_API void DebugDisplay() override;
+
+		/// <summary>
+		/// Serializes the specified data of the Transform component from the JSON file.
+		/// </summary>
+		/// <param name="data">JSON object.</param>
 		HOLLOW_API void Serialize(rapidjson::Value::Object data) override;
+
+		/// <summary>
+		/// DeSerialize the current Transform component into a JSON file.
+		/// </summary>
+		/// <param name="writer">The writer of the JSON file.</param>
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
 		glm::vec3 mPosition;					// mPosition is x,y,z
