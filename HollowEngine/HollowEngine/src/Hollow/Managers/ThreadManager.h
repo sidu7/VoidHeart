@@ -6,19 +6,37 @@ namespace Hollow
 {
 #define THREAD_FUNCTION(x,y,z) std::bind(&x,this,y,z)
 	
+	/// <summary>
+	/// Class MultiThread Manager.
+	/// </summary>
 	class ThreadManager
 	{
 		SINGLETON(ThreadManager);
 	public:
+		
+		/// <summary>
+		/// Destructor of manager class.
+		/// </summary>
 		HOLLOW_API  ~ThreadManager()
 		{
 			CleanUp();
 		}
 
+		/// <summary>
+		/// Initializes manager data.
+		/// </summary>
 		HOLLOW_API  void Init();
+		
+		/// <summary>
+		/// Cleans manager data.
+		/// </summary>
 		HOLLOW_API  void CleanUp();
 		
-		// Takes only functions with start and end index 
+		/// <summary>
+		/// Pushes the specified function on task queue.
+		/// </summary>
+		/// <param name="function">The function.</param>
+		/// <returns>std.future.</returns>
 		template<typename FunctionType>
 		HOLLOW_API  std::future<void> Push(const FunctionType& function)
 		{
@@ -28,6 +46,10 @@ namespace Hollow
 			return res;
 		}
 
+		/// <summary>
+		/// Gets the thread count.
+		/// </summary>
+		/// <returns>size_t.</returns>
 		HOLLOW_API  size_t GetThreadCount() const { return mThreads.size(); }
 
 	private:

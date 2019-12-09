@@ -5,9 +5,17 @@
 
 namespace Hollow
 {
+	/// <summary>
+	/// Class GraphicsMath.
+	/// </summary>
 	class GraphicsMath
 	{
 	public:
+		/// <summary>
+		/// Generates Rotation matrix from direction vector.
+		/// </summary>
+		/// <param name="direction">The direction vector.</param>
+		/// <returns>glm.mat4.</returns>
 		HOLLOW_API static glm::mat4 RotationFromDirection(const glm::vec3& direction)
 		{
 			float angle = std::atan2(direction.y, direction.x);
@@ -20,11 +28,21 @@ namespace Hollow
 			return glmrotXY * glmrotZ;
 		}
 
+		/// <summary>
+		/// Gets the Translation vector from Model matrix.
+		/// </summary>
+		/// <param name="matrix">The matrix.</param>
+		/// <returns>glm.vec3.</returns>
 		HOLLOW_API static glm::vec3 TranslateFromMatrix(const glm::mat4& matrix)
 		{
 			return xyz(matrix[3]);
 		}
 
+		/// <summary>
+		/// Gets the Scale vector from Model matrix.
+		/// </summary>
+		/// <param name="matrix">The matrix.</param>
+		/// <returns>glm.vec3.</returns>
 		HOLLOW_API static glm::vec3 ScaleFromMatrix(const glm::mat4& matrix)
 		{
 			glm::vec3 a = xyz(matrix[0]);
@@ -34,6 +52,11 @@ namespace Hollow
 			return glm::vec3(glm::length(a), glm::length(b), glm::length(c));
 		}
 
+		/// <summary>
+		/// Gets the quaternion of Rotations from Model matrix.
+		/// </summary>
+		/// <param name="matrix">The matrix.</param>
+		/// <returns>glm.quat.</returns>
 		HOLLOW_API static glm::quat RotationFromMatrix(glm::mat4 matrix)
 		{
 			matrix[3].x = 0.0f; matrix[3].y = 0.0f; matrix[3].z = 0.0f;
@@ -51,6 +74,11 @@ namespace Hollow
 			return glm::toQuat(matrix);
 		}
 
+		/// <summary>
+		/// Get the Scale vector and the quaternion of rotation from the Model matrix.
+		/// </summary>
+		/// <param name="matrix">The matrix.</param>
+		/// <returns>std.pair&lt;_Ty1, _Ty2&gt;.</returns>
 		HOLLOW_API static std::pair<glm::vec3, glm::quat> ScaleRotationFromMatrix(glm::mat4 matrix)
 		{
 			matrix[3].x = 0.0f; matrix[3].y = 0.0f; matrix[3].z = 0.0f;

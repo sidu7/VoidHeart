@@ -6,11 +6,6 @@
 
 namespace Hollow
 {
-	SystemManager::~SystemManager()
-	{
-		mSystems.clear();
-	}
-
 	void SystemManager::RegisterSystem(System* system,std::type_index index)
 	{
 		mSystems.push_back(system);
@@ -61,7 +56,7 @@ namespace Hollow
 		}
 	}
 
-	void SystemManager::DeleteGameObejectInSystems(GameObject* GameObject)
+	void SystemManager::DeleteGameObjectInSystems(GameObject* GameObject)
 	{
 		for (unsigned int i = 0; i < mSystems.size(); ++i)
 		{

@@ -9,10 +9,17 @@ Author: Shantanu Chauhan
 
 namespace Hollow {
 
+	/// <summary>
+	/// Class FrameRate Controller.
+	/// </summary>
 	class FrameRateController {
 
 		SINGLETON(FrameRateController)
 	public:
+		/// <summary>
+		/// Sets maximum frame rate allowed.
+		/// </summary>
+		/// <param name="MaxFramerate">Max frame rate value.</param>
 		HOLLOW_API void SetMaxFrameRate(Uint64 MaxFramerate)
 		{
 			mMaxFrameRate = MaxFramerate;
@@ -23,27 +30,35 @@ namespace Hollow {
 		}
 
 
+		/// <summary>
+		/// Initializes manager data.
+		/// </summary>
 		HOLLOW_API void Init()
 		{
 			mTickStart = mTickEnd = 0;
 			mFrameTime = 0.0f;
 		}
-
-
-		HOLLOW_API void Close()
-		{
-			
-		}
-
+		
+		
+		/// <summary>
+		/// Gets the frame time.
+		/// </summary>
+		/// <returns>float.</returns>
 		HOLLOW_API float GetFrameTime() {
 			return static_cast<float>(mFrameTime * 1.0f / 1000.0f);
 		}
 
+		/// <summary>
+		/// Records frame start time.
+		/// </summary>
 		HOLLOW_API void FrameStart()
 		{
 			mTickStart = SDL_GetPerformanceCounter();
 		}
 
+		/// <summary>
+		/// Records frame end time and calculates frame time.
+		/// </summary>
 		HOLLOW_API void FrameEnd()
 		{
 			mTickEnd = SDL_GetPerformanceCounter();

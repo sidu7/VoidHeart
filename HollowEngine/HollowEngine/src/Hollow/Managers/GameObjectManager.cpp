@@ -50,7 +50,7 @@ namespace Hollow {
 				
 				// Delete Everywhere
 				mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), GameObject));
-				SystemManager::Instance().DeleteGameObejectInSystems(GameObject);
+				SystemManager::Instance().DeleteGameObjectInSystems(GameObject);
 
 				// Destroy
 				GameObject->Destroy();

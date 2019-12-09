@@ -103,17 +103,43 @@ struct Tetromino2 : Tetromino
 
 class LayerSystem;
 
+/// <summary>
+/// Class Block System.
+/// Implements the "Hollow::System"
+/// </summary>
+/// <seealso cref="Hollow::System" />
 class BlockSystem : public Hollow::System
 {
 	REGISTERSYSTEM(BlockSystem, 2);
 public:
-	~BlockSystem() {}
+	
+	/// <summary>
+	/// Initializes system data.
+	/// </summary>
 	void Init() override;
+	
+	/// <summary>
+	/// Block creation function.
+	/// </summary>
 	void Updato();
+	
+	/// <summary>
+	/// Updates system data.
+	/// </summary>
 	void Update() {}
+	
+	/// <summary>
+	/// Adds the game object.
+	/// </summary>
+	/// <param name="object">The game object.</param>
 	void AddGameObject(Hollow::GameObject* object) override;
-
-
+	
+	/// <summary>
+	/// Copies the tetromino.
+	/// </summary>
+	/// <param name="t">The tetromino.</param>
+	/// <param name="dest">The destination.</param>
+	/// <param name="position">The position.</param>
 	void CopyTetromino(Tetromino& t, bool dest[][12][12], glm::ivec3 position);
 	
 private:

@@ -1,16 +1,37 @@
 #pragma once
 #include "System.h"
 
+/// <summary>
+/// The Hollow namespace.
+/// </summary>
 namespace Hollow
 {
 	class Animator;
 	
+	/// <summary>
+	/// Class AnimationSystem.
+	/// Inherits from <see cref="System" />
+	/// </summary>
+	/// <seealso cref="System" />
 	class AnimationSystem : public System
 	{
+		/// <summary>
+		/// Registers this System with the SystemManager
+		/// </summary>
 		REGISTERSYSTEM(AnimationSystem, 3);
 	public:
-		HOLLOW_API ~AnimationSystem() override {}
+		/// <summary>
+		/// Destructor for AnimationSystem
+		/// </summary>
+		HOLLOW_API ~AnimationSystem() override {}		
+		/// <summary>
+		/// Updates the System every frame.
+		/// </summary>
 		HOLLOW_API void Update() override;
+		/// <summary>
+		/// Adds the game object.
+		/// </summary>
+		/// <param name="object">The object to add.</param>
 		HOLLOW_API void AddGameObject(GameObject* object) override;
 
 	private:
@@ -18,6 +39,7 @@ namespace Hollow
 		void CreateSkeleton(Animator* animator);
 		glm::vec3 Interpolate(std::pair<unsigned, unsigned>& index, double timeFrame, std::vector<std::pair<double, glm::vec3>>& list);
 		glm::quat SInterpolate(std::pair<unsigned, unsigned>& index, double timeFrame, std::vector<std::pair<double, glm::quat>>& list);
+		
 		template<typename T>
 		inline std::pair<unsigned int, unsigned int> BinarySearch(unsigned int start, unsigned int end, double time, const std::vector<std::pair<double, T>>& list)
 		{

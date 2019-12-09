@@ -2,6 +2,9 @@
 
 namespace Hollow
 {
+	/// <summary>
+	/// Class ThreadSafeQueue.
+	/// </summary>
 	template<typename T>
 	class ThreadSafeQueue 
 	{
@@ -10,7 +13,14 @@ namespace Hollow
 		std::queue<T> mDataQueue;    
 		std::condition_variable mDataCondition; 
 	public:    
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ThreadSafeQueue"/> class.
+		/// </summary>
 		HOLLOW_API ThreadSafeQueue() {}
+		/// <summary>
+		/// Pushes the specified new value.
+		/// </summary>
+		/// <param name="new_value">The new value.</param>
 		HOLLOW_API void Push(T new_value)
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
@@ -18,6 +28,11 @@ namespace Hollow
 			mDataCondition.notify_one(); 
 		}   
 
+		/// <summary>
+		/// Tries the pop.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <returns>bool.</returns>
 		HOLLOW_API bool TryPop(T& value)
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
@@ -28,6 +43,10 @@ namespace Hollow
 			return true; 
 		}    
 		
+		/// <summary>
+		/// Tries the pop.
+		/// </summary>
+		/// <returns>std.shared_ptr&lt;_Ty&gt;.</returns>
 		HOLLOW_API std::shared_ptr<T> TryPop()
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
@@ -38,6 +57,10 @@ namespace Hollow
 			return res; 
 		}    
 		
+		/// <summary>
+		/// Empties this instance.
+		/// </summary>
+		/// <returns>bool.</returns>
 		HOLLOW_API bool Empty() const
 		{ 
 			std::lock_guard<std::mutex> lk(mMutex);
