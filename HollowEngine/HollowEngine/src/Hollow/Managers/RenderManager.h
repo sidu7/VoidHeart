@@ -21,14 +21,39 @@ namespace Hollow {
 	class UniformBuffer;
 	class TextRenderer;
 
+	/// <summary>
+	/// Class Rendering Manager.
+	/// </summary>
 	class RenderManager
 	{
 		SINGLETON(RenderManager)
 	public:
+		/// <summary>
+		/// Initializes manager using settings data.
+		/// </summary>
+		/// <param name="data">The settings data.</param>
+		/// <param name="pWindow">The game window.</param>
 		HOLLOW_API void Init(rapidjson::Value::Object& data, GameWindow* pWindow = nullptr);
+		
+		/// <summary>
+		/// Cleans manager data.
+		/// </summary>
 		HOLLOW_API void CleanUp();
+		
+		/// <summary>
+		/// Updates manager data.
+		/// </summary>
 		HOLLOW_API void Update();
+		
+		/// <summary>
+		/// Gets the size of the window.
+		/// </summary>
+		/// <returns>glm.vec2.</returns>
 		HOLLOW_API inline glm::vec2 GetWindowSize();
+		
+		/// <summary>
+		/// Display debug window.
+		/// </summary>
 		HOLLOW_API void DebugDisplay();
 
 	private:

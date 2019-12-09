@@ -23,26 +23,111 @@ namespace Hollow
 		SHAPE_NUM
 	};
 
+	/// <summary>
+	/// Class Resource Manager.
+	/// </summary>
 	class ResourceManager
 	{
 		SINGLETON(ResourceManager)
 	public:
-		HOLLOW_API  ~ResourceManager() {}
-		  
+		/// <summary>
+		/// Initializes manager data.
+		/// </summary> 
 		HOLLOW_API  void Init();
+		
+		/// <summary>
+		/// Cleans manager data.
+		/// </summary>
 		HOLLOW_API  void CleanUp();
+		
+		/// <summary>
+		/// Loads the json file at path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>std.string.</returns>
 		HOLLOW_API  std::string LoadJSONFile(std::string path);
+		
+		/// <summary>
+		/// Loads the game object from file.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>Hollow.GameObject *.</returns>
 		HOLLOW_API  GameObject* LoadGameObjectFromFile(std::string path);
+		
+		/// <summary>
+		/// Loads the texture.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>Hollow.Texture *.</returns>
 		HOLLOW_API  Texture* LoadTexture(std::string path);
+		
+		/// <summary>
+		/// Loads the model.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>List of Meshes.</returns>
 		HOLLOW_API  std::vector<Mesh*> LoadModel(std::string path);
+		
+		/// <summary>
+		/// Loads the materials.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>List of material data.</returns>
 		HOLLOW_API  std::vector<MaterialData*> LoadMaterials(std::string path);
+		
+		/// <summary>
+		/// Loads the bone data.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>pair(modelFactor,List of Bones).</returns>
 		HOLLOW_API  std::pair<float, std::vector<Bone*>> LoadBoneData(std::string path);
-		HOLLOW_API  std::pair<double, double> AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList, 
+		
+		/// <summary>
+		/// Adds animation data to the list of bones.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="name">The name.</param>
+		/// <param name="boneList">The bone list.</param>
+		/// <param name="animationList">The animation list.</param>
+		/// <param name="factor">The factor.</param>
+		/// <returns>pair(animation duration, ticks per second).</returns>
+		HOLLOW_API  std::pair<double, double> AddAnimationData(std::string path, std::string name, std::vector<Bone*>& boneList,
 			std::vector<std::unordered_map<std::string, std::pair<bool, AnimationData>>>& animationList, float factor);
+		
+		/// <summary>
+		/// Gets the shape mesh.
+		/// </summary>
+		/// <param name="type">The type name.</param>
+		/// <returns>Hollow.Mesh *.</returns>
 		HOLLOW_API  Mesh* GetShape(std::string type);
+		
+		/// <summary>
+		/// Gets the shape mesh.
+		/// </summary>
+		/// <param name="type">The type.</param>
+		/// <returns>Hollow.Mesh *.</returns>
 		HOLLOW_API  Mesh* GetShape(Shapes type);
+		
+		/// <summary>
+		/// Loads the sound.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="type">The type.</param>
+		/// <returns>FMOD.Sound *.</returns>
 		HOLLOW_API  FMOD::Sound* LoadSound(const std::string& path, FMOD_MODE type);
+		
+		/// <summary>
+		/// Parses the state machine file.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>List of states.</returns>
 		HOLLOW_API  std::vector<State*> ReadStateMachineFile(std::string path);
+		
+		/// <summary>
+		/// Loads the shader.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>Hollow.Shader *.</returns>
 		HOLLOW_API  Shader* LoadShader(std::string path);
 
 	private:

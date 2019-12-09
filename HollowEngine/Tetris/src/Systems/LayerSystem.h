@@ -3,13 +3,30 @@
 class BlockSystem;
 struct Tetromino;
 
+/// <summary>
+/// Class Layer System.
+/// Implements the "Hollow::System"
+/// </summary>
+/// <seealso cref="Hollow::System" />
 class LayerSystem : public Hollow::System
 {
 	REGISTERSYSTEM(LayerSystem, 2);
 public:
-	~LayerSystem() {}
+	
+	/// <summary>
+	/// Initializes system data.
+	/// </summary>
 	void Init() override;
+	
+	/// <summary>
+	/// Updates system data.
+	/// </summary>
 	void Update() override;
+	
+	/// <summary>
+	/// Adds the game object.
+	/// </summary>
+	/// <param name="object">The game object.</param>
 	void AddGameObject(Hollow::GameObject* object) override;
 
 private:
