@@ -7,7 +7,15 @@ namespace BulletHell
 	{
 		REGISTERSYSTEM(MovementSystem, 2);
 	public:
+		/// <summary>
+		/// Updates the System every frame.
+		/// </summary>
 		void Update();
+
+		/// <summary>
+		/// Adds the game object.
+		/// </summary>
+		/// <param name="pGameObject">The gameObject instance to add.</param>
 		void AddGameObject(Hollow::GameObject* pGameObject);
 	};
 }
