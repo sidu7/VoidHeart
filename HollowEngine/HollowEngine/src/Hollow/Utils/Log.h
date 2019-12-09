@@ -8,11 +8,25 @@
 
 namespace Hollow {
 
+	/// <summary>
+	/// Class Log.
+	/// </summary>
 	class Log
 	{
 	public:
+		/// <summary>
+		/// Initializes this Logger.
+		/// </summary>
 		HOLLOW_API static void Init();
+		/// <summary>
+		/// Gets the core logger.
+		/// </summary>
+		/// <returns>std.shared_ptr of type logger.</returns>
 		HOLLOW_API inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+		/// <summary>
+		/// Gets the client logger.
+		/// </summary>
+		/// <returns>std.shared_ptr of type logger.</returns>
 		HOLLOW_API inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
 		
 	private:

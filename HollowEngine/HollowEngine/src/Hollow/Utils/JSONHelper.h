@@ -12,6 +12,9 @@
 
 namespace Hollow
 {
+	/// <summary>
+	/// Class JSONHelper.
+	/// </summary>
 	class JSONHelper
 	{
 	public:
@@ -20,7 +23,13 @@ namespace Hollow
 		root.Parse(x);\
 		if(!root.IsObject()) { HW_CORE_ERROR("Error reading JSON file {0}",x); }
 
-		//JSON parsing
+		
+		/// <summary>
+		/// Gets the settings object from Settings.json.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <param name="setting">The setting file read as a string.</param>
+		/// <returns>rapidjson.Value.Object.</returns>
 		HOLLOW_API static rapidjson::Value::Object GetSettings(rapidjson::Value::Object& data, const char* setting)
 		{
 			if (!data.HasMember(setting))
@@ -30,26 +39,48 @@ namespace Hollow
 			return data[setting].GetObject();
 		}
 
+		/// <summary>
+		/// Gets the vec3 of floats from json object.
+		/// </summary>
+		/// <param name="arr">The array of data in json object.</param>
+		/// <returns>glm.vec3.</returns>
 		HOLLOW_API static glm::vec3 GetVec3F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec3(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat());
 		}
-
+		/// <summary>
+		/// Gets the vec2 of floats from json object.
+		/// </summary>
+		/// <param name="arr">The array of data in json object.</param>
+		/// <returns>glm.vec2.</returns>
 		HOLLOW_API static glm::vec2 GetVec2F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec2(arr[0].GetFloat(), arr[1].GetFloat());
 		}
-
+		/// <summary>
+		/// Gets the vec4 of floats from json object.
+		/// </summary>
+		/// <param name="arr">The array of data in json object.</param>
+		/// <returns>glm.vec4.</returns>
 		HOLLOW_API static glm::vec4 GetVec4F(const rapidjson::Value::Array& arr)
 		{
 			return glm::vec4(arr[0].GetFloat(), arr[1].GetFloat(), arr[2].GetFloat(), arr[3].GetFloat());
 		}
-
+		/// <summary>
+		/// Gets the vec2 of ints from json object.
+		/// </summary>
+		/// <param name="arr">The array of data in json object.</param>
+		/// <returns>glm.ivec2.</returns>
 		HOLLOW_API static glm::ivec2 GetIVec2(const rapidjson::Value::Array& arr)
 		{
 			return glm::ivec2(arr[0].GetInt(), arr[1].GetInt());
 		}
 
+		/// <summary>
+		/// Gets the array of type T.
+		/// </summary>
+		/// <param name="arr">The array of type T in json object.</param>
+		/// <returns>std.vector of T.</returns>
 		template<typename T>
 		static std::vector<T> GetArray(const rapidjson::Value::Array& arr)
 		{
@@ -87,6 +118,12 @@ namespace Hollow
 		}
 
 		//JSON deserialization
+		/// <summary>
+		/// Writes the specified value for the key.
+		/// </summary>
+		/// <param name="key">The key.</param>
+		/// <param name="value">The value.</param>
+		/// <param name="writer">The writer object.</param>
 		template<typename T>
 		static void Write(const char* key, const T& value, rapidjson::Writer<rapidjson::StringBuffer>& writer)
 		{
