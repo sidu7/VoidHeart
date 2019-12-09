@@ -16,10 +16,31 @@ namespace Hollow
 	{
 		REGISTERCOMPONENT(Light);
 	public:
+		/// <summary>
+		/// Initializes the Light component.
+		/// </summary>
 		HOLLOW_API void Init() override;
+
+		/// <summary>
+		/// Serializes the specified data of the Light component from the JSON file.
+		/// </summary>
+		/// <param name="data">JSON object.</param>
 		HOLLOW_API void Serialize(rapidjson::Value::Object data) override;
+
+		/// <summary>
+		/// DeSerialize the current Light component into a JSON file.
+		/// </summary>
+		/// <param name="writer">The writer of the JSON file.</param>
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
+
+		/// <summary>
+		/// Clears the Light component.
+		/// </summary>
 		HOLLOW_API void Clear() override;
+
+		/// <summary>
+		/// To set the Debug Display for the Light Component.
+		/// </summary>
 		HOLLOW_API void DebugDisplay() override;
 
 	public:
