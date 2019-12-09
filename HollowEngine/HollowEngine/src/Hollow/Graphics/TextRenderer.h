@@ -16,8 +16,22 @@ namespace Hollow
 	class TextRenderer
 	{
 	public:
+		/// <summary>
+		/// Not yet implemented
+		/// </summary>
 		HOLLOW_API void Init();
+
+		/// <summary>
+		/// Loads a font from the specified file
+		/// </summary>
+		/// <param name="fontFile">File path to font texture</param>
 		HOLLOW_API void LoadFont(std::string fontFile);
+
+		/// <summary>
+		/// Renders the text by creating a texture with the specified UITextData
+		/// </summary>
+		/// <param name="data">The UI data to be used when creating the text texture</param>
+		/// <param name="shader">The OpenGL shader to be used when rendering text</param>
 		HOLLOW_API void RenderText(UITextData& data, Shader* shader);
 
 	private:
