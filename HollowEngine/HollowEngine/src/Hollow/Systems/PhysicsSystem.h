@@ -4,14 +4,36 @@
 namespace Hollow {
 	class Camera;
 	
+	/// <summary>
+	/// Class PhysicsSystem.
+	/// Inherits the <see cref="System" /> class.
+	/// </summary>
+	/// <seealso cref="System" />
 	class PhysicsSystem : public System
 	{
 		REGISTERSYSTEM(PhysicsSystem, 2)
 	public:
+		/// <summary>
+		/// Updates the System every frame.
+		/// </summary>
 		HOLLOW_API void Update();
+		/// <summary>
+		/// Adds the game object.
+		/// </summary>
+		/// <param name="object">The object to add.</param>
 		HOLLOW_API void AddGameObject(GameObject* object);
-		HOLLOW_API void DebugContacts();		
+		/// <summary>
+		/// Draws the debug displays for all the contacts.
+		/// </summary>
+		HOLLOW_API void DebugContacts();
+		/// <summary>
+		/// Called when a game object is deleted.
+		/// </summary>
+		/// <param name="pGameObject">The gameObject instance to delete.</param>
 		HOLLOW_API void OnDeleteGameObject(GameObject* pGameObject) override;
+		/// <summary>
+		/// Called when all game objects have to be deleted.
+		/// </summary>
 		HOLLOW_API void OnDeleteAllGameObjects() override;
 		
 	private:

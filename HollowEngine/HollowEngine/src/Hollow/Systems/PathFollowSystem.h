@@ -5,12 +5,27 @@ namespace Hollow
 {
 	class PathFollow;
 	
+	/// <summary>
+	/// Class PathFollowSystem.
+	/// Inherits the <see cref="System" /> class.
+	/// </summary>
+	/// <seealso cref="System" />
 	class PathFollowSystem : public System
 	{
 		REGISTERSYSTEM(PathFollowSystem, 1);
 	public:
+		/// <summary>
+		/// Initializes the System.
+		/// </summary>
 		HOLLOW_API void Init();
+		/// <summary>
+		/// Adds the game object.
+		/// </summary>
+		/// <param name="pGameObject">The gameObject instance to add.</param>
 		HOLLOW_API void AddGameObject(GameObject* pGameObject) override;
+		/// <summary>
+		/// Updates the System every frame.
+		/// </summary>
 		HOLLOW_API void Update() override;
 
 	private:
