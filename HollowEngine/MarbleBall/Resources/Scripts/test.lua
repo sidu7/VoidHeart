@@ -20,6 +20,7 @@ if isStrafeRight then
 end
 if jump then
 	impulse = impulse + vec3.new(0.0, 4.0, 0.0);
+	PlaySFX("Resources/Audio/SFX/whoosh.mp3")
 end
 
 -- Damp Overall Velocity and Rotation
