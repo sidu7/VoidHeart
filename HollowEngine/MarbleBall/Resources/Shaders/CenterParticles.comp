@@ -8,7 +8,7 @@ struct Particle
 	float speed;
 	float life;
 	float currentlife;
-	vec2 padding;
+	vec3 direction;
 };
 
 layout(std430, binding = 2) buffer ParticleDataBlock
@@ -46,9 +46,9 @@ void main()
 	if (each_particle[gid].currentlife > 0)
 	{
 		float vel = each_particle[gid].speed;
-		vec3 dir = normalize(pos);
+		vec3 dir = each_particle[gid].direction;
 
-		pos = pos + vel * dir * DeltaTime;
+		pos += vel * dir * DeltaTime;
 	}
 	else
 	{
@@ -56,6 +56,7 @@ void main()
 		each_particle[gid].life = rand(pos.xy) * (LifeRange.y - LifeRange.x) + LifeRange.x;
 		each_particle[gid].currentlife = each_particle[gid].life;
 		each_particle[gid].speed = rand(pos.yz) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
+		each_particle[gid].direction = normalize(pos);
 	}
 
 	each_particle[gid].mPos = pos;

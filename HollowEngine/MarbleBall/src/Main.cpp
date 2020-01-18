@@ -41,7 +41,7 @@ namespace MarbleBall
 			// Engine Initialization
 			Application::Init("Resources/Settings.json");
 
-			Hollow::SceneManager::Instance().LoadLevel("marbleball");
+			Hollow::SceneManager::Instance().LoadLevel("particletest");
 
 			//73,6.5,-69
 			/*for (int i = 0; i < 33; ++i)
