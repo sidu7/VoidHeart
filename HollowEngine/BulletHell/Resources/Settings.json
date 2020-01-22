@@ -21,7 +21,7 @@
     "DefaultLanguage": "English"
   },
   "Scripting": {
-    "FilePath": "Resources/Scripts",
+    "FilePath": "Resources/Scripts/",
     "FileExtension": ".lua"
   },
   "Renderer": {

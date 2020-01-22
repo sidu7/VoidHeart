@@ -108,6 +108,7 @@ namespace Hollow
 
 		// PHYSICS
 		lua.set_function("ApplyLinearImpulse", &PhysicsManager::ApplyLinearImpulse, std::ref(PhysicsManager::Instance()));
+		lua.set_function("ApplyAngularImpulse", &PhysicsManager::ApplyAngularImpulse, std::ref(PhysicsManager::Instance()));
 
 		// AUDIO
 		lua.set_function("PlaySFX", &AudioManager::PlayEffect, std::ref(AudioManager::Instance()));
