@@ -9,26 +9,26 @@ right.y = 0.0
 
 speed = vec3.new(200.0, 0.0, 200.0)
 
-if isMoveForward then
+if IsKeyPressed("W") or GetAxisValue(CONTROLLER["LY"]) > 16000 then
 	impulse = impulse + front;
 	direction = direction + vec3.new(0.0, 0.0, -1.0)
 end
-if isMoveBackward then
+if IsKeyPressed("S") or GetAxisValue(CONTROLLER["LY"]) < -16000 then
 	impulse = impulse - front;
 	direction = direction + vec3.new(0.0, 0.0, 1.0)
 end
-if isStrafeLeft then
+if IsKeyPressed("A") or GetAxisValue(CONTROLLER["LX"]) < -16000 then
 	impulse = impulse - right;
 	direction = direction + vec3.new(-1.0, 0.0, 0.0)
 end
-if isStrafeRight then
+if IsKeyPressed("D") or GetAxisValue(CONTROLLER["LX"]) > 16000 then
 	impulse = impulse + right;
 	direction = direction + vec3.new(1.0, 0.0, 0.0)
 end
-if jump then
+if IsKeyPressed("SPACE") or IsControllerButtonTriggered(CONTROLLER["A"]) then
 	impulse = impulse + vec3.new(0.0, 20.0, 0.0);
 end
-if dash then
+if IsKeyPressed("L") or IsControllerTriggerTriggered(CONTROLLER["RT"]) then
 	dashSpeed = 15.0
 	impulse = impulse + direction * dashSpeed
 	PlaySFX("Resources/Audio/SFX/PlayerDash.wav")

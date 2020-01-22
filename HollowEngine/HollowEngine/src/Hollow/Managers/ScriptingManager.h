@@ -14,9 +14,12 @@ namespace Hollow {
 		/// <summary>
 		/// Initializes manager data.
 		/// </summary>
-		HOLLOW_API  void Init();
+		HOLLOW_API  void Init(rapidjson::Value::Object& data);
 
 	public:
 		sol::state lua;
+
+		std::string rootPath;
+		std::string ext;
 	};
 }

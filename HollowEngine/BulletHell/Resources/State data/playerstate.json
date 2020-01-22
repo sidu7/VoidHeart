@@ -5,7 +5,7 @@
       "State": "Walking",
       "IsLoop": true,
       "Events": [ "WallHit" ],
-      "Inputs": [ 82, 81 ],
+      "Inputs": [ "W", "S" ],
       "InputCondition": [ 1, 2 ],
       "EventStates": [ "dead" ],
       "InputStates": [ "Running", "Idle" ]
@@ -14,7 +14,7 @@
       "State": "Running",
       "IsLoop": true,
       "Events": [ "WallHit" ],
-      "Inputs": [ 82 ],
+      "Inputs": ["S"],
       "InputCondition": [ 0 ],
       "EventStates": [ "dead" ],
       "InputStates": [ "Walking" ]
@@ -23,7 +23,7 @@
       "State": "Idle",
       "IsLoop": true,
       "Events": [],
-      "Inputs": [ 82, 13 ],
+      "Inputs": [ "W", "Space" ],
       "InputCondition": [ 0, 0 ],
       "EventStates": [],
       "InputStates": [ "Walking", "Jump" ]

@@ -60,7 +60,7 @@ namespace Hollow {
 	{
 		float frameTime = FrameRateController::Instance().GetFrameTime();
 		float velocity = pCamera->mMovementSpeed * frameTime;
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_W)||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_UP))
+		if (InputManager::Instance().IsKeyPressed("W")||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_UP))
 		{
 			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT)|| InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT)>20)
 			{
@@ -71,7 +71,7 @@ namespace Hollow {
 				pTransform->mPosition += pCamera->mFront * velocity;
 			}
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_S)||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
+		if (InputManager::Instance().IsKeyPressed("S")||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 		{
 			if (InputManager::Instance().IsMouseButtonPressed(SDL_BUTTON_RIGHT) || InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20)
 			{
@@ -82,11 +82,11 @@ namespace Hollow {
 				pTransform->mPosition -= pCamera->mFront * velocity;
 			}
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_A)||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
+		if (InputManager::Instance().IsKeyPressed("A")||InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
 		{
 			pTransform->mPosition -= pCamera->mRight * velocity;
 		}
-		if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_D) || InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
+		if (InputManager::Instance().IsKeyPressed("D") || InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
 		{
 			pTransform->mPosition += pCamera->mRight * velocity;
 		}

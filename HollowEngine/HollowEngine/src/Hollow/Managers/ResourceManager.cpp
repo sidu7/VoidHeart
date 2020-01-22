@@ -464,7 +464,7 @@ namespace Hollow
 					state->mEventStates.emplace_back(State::FindState(states,eventState[i].GetString()));
 				}
 
-				state->mInputs = JSONHelper::GetArray<unsigned int>(statecondition["Inputs"].GetArray());
+				state->mInputs = JSONHelper::GetArray<std::string>(statecondition["Inputs"].GetArray());
 				rapidjson::Value::Array inputState = statecondition["InputStates"].GetArray();
 				state->mInputStates.reserve(inputState.Size());
 				for (unsigned int i = 0; i < inputState.Size(); ++i)

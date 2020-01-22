@@ -29,6 +29,14 @@ void Hollow::GameMetaData::Init()
 	}
 }
 
+class GameLayer : public Hollow::Layer
+{
+	void OnUpdate()
+	{
+		// Update Game managers here
+	}
+};
+
 class BulletHellGame : public Hollow::Application
 {
 public:
@@ -40,6 +48,7 @@ public:
 
 		Hollow::SceneManager::Instance().LoadLevel("Level3");
 
+		PushLayer(new GameLayer());
 	}
 
 	~BulletHellGame()

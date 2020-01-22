@@ -356,9 +356,9 @@ namespace Hollow
 
 	void PhysicsSystem::Update()
 	{
-		isPaused = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_P) == true ? !isPaused : isPaused;
+		isPaused = InputManager::Instance().IsKeyTriggered("P") == true ? !isPaused : isPaused;
 
-		nextStep = InputManager::Instance().IsKeyTriggered(SDL_SCANCODE_SPACE);
+		nextStep = InputManager::Instance().IsKeyTriggered("SPACE");
 
 		ImGui::Begin("RayCast Result");
 		ImGui::Text("Mouse X : %f", Hollow::InputManager::Instance().GetMouseX());
