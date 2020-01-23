@@ -29,15 +29,8 @@ namespace BulletHell
 			"IsFired", &Attack::mIsFired
 			);
 
-		// Temporary, find a way to get game component in engine
-		lua.new_usertype<Hollow::GameObject>("GameObject",
-			sol::constructors<Hollow::GameObject()>(),
-			"GetBody", &Hollow::GameObject::GetComponent<Hollow::Body>,
-			"GetTransform", &Hollow::GameObject::GetComponent<Hollow::Transform>,
-			"GetMaterial", &Hollow::GameObject::GetComponent<Hollow::Material>,
-			"GetAttack", &Hollow::GameObject::GetComponent<Attack>
-			);
-
+		// Add get attack component to lua
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetAttack"] = &Hollow::GameObject::GetComponent<Attack>;
 	}
 
 	void AttackSystem::Update()

@@ -20,7 +20,7 @@ namespace Hollow {
 
 	public:
 		sol::state lua;
-
+		sol::usertype<GameObject> mGameObjectType;
 		std::string rootPath;
 		std::string ext;
 	};
