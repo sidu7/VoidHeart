@@ -39,6 +39,7 @@ namespace Hollow {
 		//SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_MOUSE_CAPTURE;
+
 		if (data["Fullscreen"].GetBool())
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;

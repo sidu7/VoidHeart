@@ -17,21 +17,21 @@ namespace Hollow {
 		/// </summary>
 		/// <param name="keycode">The keycode.</param>
 		/// <returns>bool.</returns>
-		HOLLOW_API bool IsKeyPressed(unsigned int keycode);
+		HOLLOW_API bool IsKeyPressed(const std::string& keyName);
 		
 		/// <summary>
 		/// Determines whether [the specified key] is released.
 		/// </summary>
 		/// <param name="keycode">The keycode.</param>
 		/// <returns>bool.</returns>
-		HOLLOW_API bool IsKeyReleased(unsigned int keycode);
+		HOLLOW_API bool IsKeyReleased(const std::string& keyName);
 		
 		/// <summary>
 		/// Determines whether [the specified key] is triggered.
 		/// </summary>
 		/// <param name="keycode">The keycode.</param>
 		/// <returns>bool.</returns>
-		HOLLOW_API bool IsKeyTriggered(unsigned int keycode);
+		HOLLOW_API bool IsKeyTriggered(const std::string& keyName);
 		
 		/// <summary>
 		/// Determines whether [the specified mouse button] is pressed.

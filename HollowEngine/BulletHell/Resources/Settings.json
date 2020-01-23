@@ -16,10 +16,14 @@
     "Events": {
         "EventData": "src/GameMetaData/GameEventsMap.data"
     },
-    "Localization": {
-      "LanguageFiles": "Resources/Localization",
-      "DefaultLanguage": "English"
-    },
+  "Localization": {
+    "LanguageFiles": "Resources/Localization",
+    "DefaultLanguage": "English"
+  },
+  "Scripting": {
+    "FilePath": "Resources/Scripts/",
+    "FileExtension": ".lua"
+  },
   "Renderer": {
     "GBufferShader": [ "Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag" ],
     "DeferredShader": [ "Resources/Shaders/Global.vert", "Resources/Shaders/Global.frag" ],

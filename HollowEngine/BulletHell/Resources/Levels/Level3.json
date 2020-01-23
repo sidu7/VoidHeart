@@ -61,153 +61,153 @@
     },
     {
       "Type": "PLAYER",
-      "Components": [
-        {
-          "Type": "Transform",
-          "Position": [
-            -5.554790496826173,
-            1.499004602432251,
-            18.502750396728517
-          ],
-          "Rotation": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Scale": [
-            2.0,
-            2.0,
-            2.0
-          ]
-        },
-        {
-          "Type": "Body",
-          "Mass": 30.0,
-          "RigidbodyType": "DYNAMIC",
-          "IsFrictionLess": false,
-          "UseGravity": true
-        },
-        {
-          "Type": "Collider",
-          "Bounciness": 0.20000000298023225,
-          "Shape": "BOX",
-          "isTrigger": false
-        },
-        {
-          "Type": "Model",
-          "Model": "Resources/Models/Walking.fbx",
-          "CastShadow": true,
-          "ModelHasOffset": true
-        },
-        {
-          "Type": "Material",
-          "Shininess": 1.0,
-          "MaterialTextures": true,
-          "MaterialData": "Resources/Models/Walking.fbx"
-        },
-        {
-          "Type": "Animator",
-          "BoneData": "Resources/Models/Walking.fbx",
-          "Animations": [
-            [
-              "Walking",
-              "Resources/Models/Walking.fbx"
-            ],
-            [
-              "Idle",
-              "Resources/Models/Idle.fbx"
-            ],
-            [
-              "Running",
-              "Resources/Models/Running.fbx"
-            ],
-            [
-              "Jump",
-              "Resources/Models/Jump.fbx"
-            ]
-          ],
-          "BlendFactor": 1.0
-        },
-        {
-          "Type": "StateMachine",
-          "StateFile": "Resources/State data/playerstate.json",
-          "StartState": "Walking"
-        },
-        {
-          "Type": "Movement",
-          "Script": "Resources/Scripts/PlayerMovement.lua"
-        },
-        {
-          "Type": "Camera",
-          "Yaw": -90.0,
-          "MovementSpeed": 5.0,
-          "MouseSensitivity": 1.600000023841858,
-          "Zoom": 45.0,
-          "Near": 0.10000000149011612,
-          "Far": 1000.0,
-          "IsActive": true,
-          "CameraType": 6,
-          "ProjectionType": 0,
-          "ViewPortPosition": [
-            0,
-            0
-          ],
-          "ViewPortSize": [
-            1280,
-            720
-          ],
-          "PositionOffset": [
-            0.0,
-            7.5,
-            15.0
-          ],
-          "LERPFactor": 0.070000000149011612,
-          "XConstraints": [
-            -20.0,
-            20.0
-          ],
-          "YConstraints": [
-            0.0,
-            100.0
-          ],
-          "ZConstraints": [
-            -30.0,
-            26.0
-          ],
-          "FocusObjects": [ "PLAYER", "ENEMY" ]
-        },
-        {
-          "Type": "Health",
-          "HitPoints": 100,
-          "IsAlive": true,
-          "Invincible": false,
-          "InvincibleTime": 3.0
-        },
-        {
-          "Type": "Attack",
-          "Script": "Resources/Scripts/PlayerAttack.lua",
-          "BaseAttackTime": 0.4
-        },
-        {
-          "Type": "UITransform",
-          "Position": [ 70.0, 600.0 ],
-          "Scale": [ 1.5, 1.5 ]
-        },
-        {
-          "Type": "UIText",
-          "Tag": "PLAYERHP",
-          "ChangingText": true,
-          "TextScale": [ 1.0, 1.0 ],
-          "OffsetPosition": [ 1.0, 1.0 ],
-          "Color": [ 0.0, 0.0, 1.0 ]
-        },
-        {
-          "Type": "Magic",
-          "LeftHandScript": "Resources/Scripts/Left.lua",
-          "RightHandScript": "Resources/Scripts/Right.lua",
-          "CombineHandScript": "Resources/Scripts/Combine.lua"
-        }
-      ]
+        "Components": [
+            {
+                "Type": "Transform",
+                "Position": [
+                    -5.554790496826173,
+                    1.499004602432251,
+                    18.502750396728517
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            {
+                "Type": "Body",
+                "Mass": 30.0,
+                "RigidbodyType": "DYNAMIC",
+                "IsFrictionLess": false,
+                "UseGravity": true
+            },
+            {
+                "Type": "Collider",
+                "Bounciness": 0.20000000298023225,
+                "Shape": "BOX",
+                "isTrigger": false
+            },
+            {
+                "Type": "Model",
+                "Model": "Resources/Models/Walking.fbx",
+                "CastShadow": true,
+                "ModelHasOffset": true
+            },
+            {
+                "Type": "Material",
+                "Shininess": 1.0,
+                "MaterialTextures": true,
+                "MaterialData": "Resources/Models/Walking.fbx"
+            },
+            {
+                "Type": "Animator",
+                "BoneData": "Resources/Models/Walking.fbx",
+                "Animations": [
+                    [
+                        "Walking",
+                        "Resources/Models/Walking.fbx"
+                    ],
+                    [
+                        "Idle",
+                        "Resources/Models/Idle.fbx"
+                    ],
+                    [
+                        "Running",
+                        "Resources/Models/Running.fbx"
+                    ],
+                    [
+                        "Jump",
+                        "Resources/Models/Jump.fbx"
+                    ]
+                ],
+                "BlendFactor": 1.0
+            },
+            {
+                "Type": "StateMachine",
+                "StateFile": "Resources/State data/playerstate.json",
+                "StartState": "Walking"
+            },
+            {
+                "Type": "Script",
+                "Scripts": [ "PlayerMovement"]
+            },
+            {
+                "Type": "Attack",
+                "Script": "Resources/Scripts/PlayerAttack.lua",
+                "BaseAttackTime": 0.4
+            },
+            {
+                "Type": "Camera",
+                "Yaw": -90.0,
+                "MovementSpeed": 5.0,
+                "MouseSensitivity": 1.600000023841858,
+                "Zoom": 45.0,
+                "Near": 0.10000000149011612,
+                "Far": 1000.0,
+                "IsActive": true,
+                "CameraType": 6,
+                "ProjectionType": 0,
+                "ViewPortPosition": [
+                    0,
+                    0
+                ],
+                "ViewPortSize": [
+                    1280,
+                    720
+                ],
+                "PositionOffset": [
+                    0.0,
+                    7.5,
+                    15.0
+                ],
+                "LERPFactor": 0.070000000149011612,
+                "XConstraints": [
+                    -20.0,
+                    20.0
+                ],
+                "YConstraints": [
+                    0.0,
+                    100.0
+                ],
+                "ZConstraints": [
+                    -30.0,
+                    26.0
+                ],
+                "FocusObjects": [ "PLAYER", "ENEMY" ]
+            },
+            {
+                "Type": "Health",
+                "HitPoints": 100,
+                "IsAlive": true,
+                "Invincible": false,
+                "InvincibleTime": 3.0
+            },
+            {
+                "Type": "UITransform",
+                "Position": [ 70.0, 600.0 ],
+                "Scale": [ 1.5, 1.5 ]
+            },
+            {
+                "Type": "UIText",
+                "Tag": "PLAYERHP",
+                "ChangingText": true,
+                "TextScale": [ 1.0, 1.0 ],
+                "OffsetPosition": [ 1.0, 1.0 ],
+                "Color": [ 0.0, 0.0, 1.0 ]
+            },
+          {
+            "Type": "Magic",
+            "LeftHandScript": "Resources/Scripts/Left.lua",
+            "RightHandScript": "Resources/Scripts/Right.lua",
+            "CombineHandScript": "Resources/Scripts/Combine.lua"
+          }
+        ]
     },
     {
       "Type": "UICAMERA",

@@ -18,7 +18,7 @@ namespace Hollow
 		bool mIsLoop;
 		std::vector<std::string> mEvents;
 		std::vector<unsigned int> mEventStates;
-		std::vector<unsigned int> mInputs;
+		std::vector<std::string> mInputs;
 		std::vector<unsigned int> mInputStates;
 		std::vector<StateInputCondition> mInputConditions;
 

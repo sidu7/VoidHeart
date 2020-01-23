@@ -36,7 +36,7 @@ namespace Hollow
 			}
 
 			// Check for state change by inputs
-			std::vector<unsigned int>& inputs = state->mCurrentState->mInputs;
+			std::vector<std::string>& inputs = state->mCurrentState->mInputs;
 			std::vector<State::StateInputCondition>& inputconditions = state->mCurrentState->mInputConditions;
 			for (unsigned int i = 0; i < inputs.size(); ++i)
 			{	
