@@ -16,6 +16,8 @@ namespace Hollow {
 		/// </summary>
 		HOLLOW_API  void Init(rapidjson::Value::Object& data);
 
+		// Add function for calling a script
+
 	public:
 		sol::state lua;
 

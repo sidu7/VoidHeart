@@ -97,12 +97,12 @@ namespace Hollow
 			);
 
 		// GAMEOBJECT
-		lua.new_usertype<GameObject>("GameObject",
+		/*lua.new_usertype<GameObject>("GameObject",
 			sol::constructors<GameObject()>(),
 			"GetBody", &GameObject::GetComponent<Body>,
 			"GetTransform", &GameObject::GetComponent<Transform>,
 			"GetMaterial", &GameObject::GetComponent<Material>
-			);
+			);*/
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
 

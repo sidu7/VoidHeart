@@ -1,4 +1,7 @@
 function PlayerAttack ()
+	attackPosition = gameObject:GetTransform().position
+	---[[
+	attack = gameObject:GetAttack()
 	if attack.currentAttackTime > attack.baseAttackTime then
 		local gameObjectPath = "Resources/Json data/PlayerBullet.json"
 		go = CreateGameObject(gameObjectPath)
@@ -19,14 +22,28 @@ function PlayerAttack ()
 		
 		attack.currentAttackTime = 0.0
 		PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
-	end
+	end--]]
 end
 
 function CheckValidAttack()
 	local hThreshold = 8000
 	local vThreshold = 8000
-	if math.abs(GetAxis(CONTROLLER["RX"])) > hThreshold
-	or math.abs(GetAxis(CONTROLLER["RY"])) > hThreshold then
+	
+	-- May need to rethink this
+	local rightHorizontalAxis = GetAxis(CONTROLLER["RX"])
+	local rightVerticalAxis = GetAxis(CONTROLLER["RY"])
+	
+	-- Debug input for keyboard
+	local debugFire = IsKeyPressed("H")
+	if (debugFire) then
+		rightHorizontalAxis = 10000
+		rightVerticalAxis = 0
+	end
+	
+	
+	if math.abs(rightHorizontalAxis) > hThreshold
+	or math.abs(rightVerticalAxis) > hThreshold 
+	or debugFire then
 		PlayerAttack()
 	end
 end

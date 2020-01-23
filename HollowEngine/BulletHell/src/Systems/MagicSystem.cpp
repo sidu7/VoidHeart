@@ -20,9 +20,9 @@ namespace BulletHell
 			Magic* pMagic = mGameObjects[i]->GetComponent<Magic>();
 
 			// Check if left or right hand should fire
-			bool leftHandPressed = Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_L) ||
+			bool leftHandPressed = Hollow::InputManager::Instance().IsKeyPressed("L") ||
 				Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-			bool rightHandPressed = Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_R) ||
+			bool rightHandPressed = Hollow::InputManager::Instance().IsKeyPressed("R") ||
 				Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
 			// Update attack script based on button pressed
