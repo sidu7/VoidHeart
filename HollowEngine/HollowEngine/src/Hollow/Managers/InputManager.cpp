@@ -10,19 +10,40 @@
 
 namespace Hollow {
 
-	bool InputManager::IsKeyPressed(unsigned int keycode)
+	bool InputManager::IsKeyPressed(const std::string& keyName)
 	{
-		return mCurrentState[keycode];
+		auto key = SDL_GetKeyFromName(keyName.c_str());
+		if (key == SDLK_UNKNOWN)
+		{
+			HW_CORE_ERROR("Unknown Key Name");
+			return false;
+		}
+
+		return mCurrentState[SDL_GetScancodeFromKey(key)];
 	}
 
-	bool InputManager::IsKeyReleased(unsigned int keycode)
+	bool InputManager::IsKeyReleased(const std::string& keyName)
 	{
-		return !mCurrentState[keycode] && mPreviousState[keycode];
+		auto key = SDL_GetKeyFromName(keyName.c_str());
+		if (key == SDLK_UNKNOWN)
+		{
+			HW_CORE_ERROR("Unknown Key Name");
+			return false;
+		}
+
+		return !mCurrentState[key] && mPreviousState[key];
 	}
 
-	bool InputManager::IsKeyTriggered(unsigned int keycode)
+	bool InputManager::IsKeyTriggered(const std::string& keyName)
 	{
-		return mCurrentState[keycode] && !mPreviousState[keycode];
+		auto key = SDL_GetKeyFromName(keyName.c_str());
+		if (key == SDLK_UNKNOWN)
+		{
+			HW_CORE_ERROR("Unknown Key Name");
+			return false;
+		}
+
+		return mCurrentState[key] && !mPreviousState[key];
 	}
 
 	bool InputManager::IsMouseButtonTriggered(unsigned int keycode)

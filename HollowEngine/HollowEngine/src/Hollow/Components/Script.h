@@ -33,6 +33,9 @@ namespace Hollow {
 		/// <param name="writer">The writer of the JSON file.</param>
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
-		std::string mScriptPath;
+		std::vector <std::string> mScripts;
+
+	private:
+		int mScriptCount;
 	};
 }

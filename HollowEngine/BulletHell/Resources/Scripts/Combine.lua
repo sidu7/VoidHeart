@@ -5,8 +5,8 @@ function PlayerAttack ()
 		body = go:GetBody()
 		body.position = attackPosition
 		
-		local xVelocity = GetAxis(CONTROLLER["RX"])
-		local zVelocity = GetAxis(CONTROLLER["RY"])
+		local xVelocity = horizontalAxis
+		local zVelocity = verticalAxis
 		local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
 		xVelocity = xVelocity / totalVelocity
 		zVelocity = zVelocity / totalVelocity
@@ -25,9 +25,21 @@ end
 function CheckValidAttack()
 	local hThreshold = 8000
 	local vThreshold = 8000
-	if math.abs(GetAxis(CONTROLLER["RX"])) > hThreshold
-	or math.abs(GetAxis(CONTROLLER["RY"])) > hThreshold then
-		PlayerAttack()
+	if math.abs(horizontalAxis) > hThreshold
+	or math.abs(verticalAxis) > hThreshold then
+		--PlayerAttack()
+		FirePattern2()
+	end
+end
+
+function FirePattern2 ()
+	gameObjectPath = "Resources/Json data/PlayerBullet.json"
+	local numObj = 3
+	for i=1,numObj do
+		go = CreateGameObject(gameObjectPath)
+		body = go:GetBody()
+		body.position = attackPosition + vec3.new(i*0.1, 0.0, 0.3*i+0.8)
+		body.velocity = vec3.new(0.0, 0.0, 20.0)
 	end
 end
 

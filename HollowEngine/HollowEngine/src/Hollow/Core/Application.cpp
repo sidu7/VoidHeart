@@ -66,7 +66,7 @@ namespace Hollow {
 		EventManager::Instance().Init(JSONHelper::GetSettings(data, "Events"));
 		ResourceManager::Instance().Init();
 		AudioManager::Instance().Init();
-		ScriptingManager::Instance().Init();
+		ScriptingManager::Instance().Init(JSONHelper::GetSettings(data, "Scripting"));
 		UIManager::Instance().Init();
 		PhysicsManager::Instance().Init(JSONHelper::GetSettings(data, "Physics"));
 		SceneManager::Instance().Init();
@@ -120,7 +120,7 @@ namespace Hollow {
 			
 			FrameRateController::Instance().FrameEnd();
 
-			if (InputManager::Instance().IsKeyPressed(SDL_SCANCODE_ESCAPE))
+			if (InputManager::Instance().IsKeyPressed("Escape"))
 				mIsRunning = false;
 		}		
 	}

@@ -91,13 +91,13 @@ namespace BulletHell
 
 			lua["body"] = pBody;
 
-			lua["isMoveForward"] = (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_UP) || Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) < -16000);
+			lua["isMoveForward"] = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) < -16000;
 
-			lua["isMoveBackward"] = (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_DOWN) || Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) > 16000);
+			lua["isMoveBackward"] = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) > 16000;
 
-			lua["isStrafeLeft"] = (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_LEFT) || Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) < -16000);
+			lua["isStrafeLeft"] = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) < -16000;
 
-			lua["isStrafeRight"] = (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_RIGHT) || Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 16000);
+			lua["isStrafeRight"] = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTX) > 16000;
 
 			//lua["dash"] = (Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER));
 			//lua["dash"] = (Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 5000);

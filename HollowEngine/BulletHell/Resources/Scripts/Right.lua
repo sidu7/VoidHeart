@@ -5,13 +5,13 @@ function PlayerAttack ()
 		body = go:GetBody()
 		body.position = attackPosition
 		
-		local xVelocity = GetAxis(CONTROLLER["RX"])
-		local zVelocity = GetAxis(CONTROLLER["RY"])
+		local xVelocity = horizontalAxis
+		local zVelocity = verticalAxis
 		local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
 		xVelocity = xVelocity / totalVelocity
 		zVelocity = zVelocity / totalVelocity
 		
-		local attackSpeed = 70.0
+		local attackSpeed = 15.0
 		body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
 
 		transform = go:GetTransform()
@@ -25,8 +25,8 @@ end
 function CheckValidAttack()
 	local hThreshold = 8000
 	local vThreshold = 8000
-	if math.abs(GetAxis(CONTROLLER["RX"])) > hThreshold
-	or math.abs(GetAxis(CONTROLLER["RY"])) > hThreshold then
+	if math.abs(horizontalAxis) > hThreshold
+	or math.abs(verticalAxis) > hThreshold then
 		PlayerAttack()
 	end
 end
