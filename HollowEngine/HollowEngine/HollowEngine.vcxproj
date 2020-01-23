@@ -428,7 +428,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{C6B9321E-CD01-4F02-AE9C-3885231C8949}</ProjectGuid>
     <RootNamespace>HollowEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

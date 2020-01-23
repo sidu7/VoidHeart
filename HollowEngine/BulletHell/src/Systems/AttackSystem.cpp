@@ -70,14 +70,20 @@ namespace BulletHell
 
 		// Fire player lua script
 		short rightHorizontalAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX);
-		short rightVerticallAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY);
+		short rightVerticalAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY);
+		bool debugFire = Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_H);
+		if (debugFire)
+		{
+			rightHorizontalAxis = 10000;
+			rightVerticalAxis = 0;
+		}
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
 
 		// Send values to lua
 		lua["attackPosition"] = pTransform->mPosition;
 		lua["playerBody"] = pPlayer->GetComponent<Hollow::Body>();
 		lua["horizontalAxis"] = rightHorizontalAxis;
-		lua["verticalAxis"] = rightVerticallAxis;
+		lua["verticalAxis"] = rightVerticalAxis;
 		lua["attack"] = pAttack;
 		lua.script_file(pAttack->mScriptPath);
 
