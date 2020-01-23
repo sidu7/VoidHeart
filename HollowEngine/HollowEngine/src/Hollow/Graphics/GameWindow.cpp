@@ -38,7 +38,11 @@ namespace Hollow {
 		//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 		//SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_MOUSE_CAPTURE | SDL_WINDOW_FULLSCREEN;
+		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_MOUSE_CAPTURE;
+		if (data["Fullscreen"].GetBool())
+		{
+			flags |= SDL_WINDOW_FULLSCREEN;
+		}
 		
 		// Create SDL window
 		mpWindow = SDL_CreateWindow(mTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, flags);
