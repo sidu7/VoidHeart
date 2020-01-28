@@ -34,7 +34,7 @@ function CheckValidAttack()
 	--local rightVerticalAxis = GetAxis(CONTROLLER["LY"])
 	
 	-- Debug input for keyboard
-	local debugFire = IsControllerTriggerTriggered(CONTROLLER["LT"]) 
+	local debugFire = (IsControllerTriggerTriggered(CONTROLLER["LT"]) or IsControllerTriggerTriggered(CONTROLLER["RT"]))
 	if (debugFire) then
 		rightHorizontalAxis = 10000
 		rightVerticalAxis = 0
