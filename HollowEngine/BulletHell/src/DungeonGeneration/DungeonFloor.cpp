@@ -8,6 +8,7 @@ namespace BulletHell
         : mWidth(0)
         , mHeight(0)
         , mFloorNum(0)
+        , mEntranceIndex(-1)
     {
     }
 
@@ -16,7 +17,7 @@ namespace BulletHell
         , mHeight(height)
         , mFloorNum(floorNum)
     {
-        int size = width * height;
+        const int size = width * height;
         mRooms.reserve(size);
         for (int i = 0; i < size; i++)
         {
@@ -24,7 +25,7 @@ namespace BulletHell
         }
     }
 
-    void DungeonFloor::Generate(int numRooms)
+    void DungeonFloor::Generate(int numRooms, unsigned seed)
     {
         if (numRooms < 2)
         {
@@ -37,15 +38,14 @@ namespace BulletHell
             return;
         }
 
-        ////// Room generation
-
-        //// entrance room
-        unsigned seed = 521288629;
         Random::SetSeed(seed);
+
+        ////// Room generation
+        //// entrance room
         auto entranceRow = Random::RangeSeeded(0, mHeight - 1);
         auto entranceCol = Random::RangeSeeded(0, mWidth - 1);
-        const int entranceIndex = Index(entranceRow, entranceCol);
-        mRooms[entranceIndex].Set(DungeonRoomType::ENTRANCE, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, entranceRow, entranceCol);
+        mEntranceIndex = Index(entranceRow, entranceCol);
+        mRooms[mEntranceIndex].Set(DungeonRoomType::ENTRANCE, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, entranceRow, entranceCol);
 
         // precompute distance of other rooms from entrance
         for (int col = 0; col < mWidth; col++)
@@ -111,7 +111,7 @@ namespace BulletHell
         // find furthest away room from the entrance, assign it to boss room 
         // find furthest away dead-end for the boss room
         int biggestDist = 0;
-        int furthestRoom = entranceIndex;
+        int furthestRoom = mEntranceIndex;
         for (unsigned i = 0; i < mRooms.size(); i++)
         {
             const DungeonRoom& room = mRooms[i];
@@ -129,7 +129,7 @@ namespace BulletHell
         mRooms[furthestRoom].mRoomType = DungeonRoomType::BOSS;
     }
 
-    DungeonRoom& DungeonFloor::GetRoom(int row, int col)
+    const DungeonRoom& DungeonFloor::GetRoom(int row, int col) const 
     {
         return mRooms.at(row * mWidth + col);
     }
@@ -141,6 +141,20 @@ namespace BulletHell
             room.mRoomType = DungeonRoomType::EMPTY;
             room.mDoors = 0;
         }
+        mEntranceIndex = -1;
+    }
+
+    const DungeonRoom& DungeonFloor::GetEntrance() const
+    {
+        if (mEntranceIndex > 0 && !mRooms.empty())
+            return mRooms[mEntranceIndex];
+        else
+            return DungeonRoom();
+    }
+
+    int DungeonFloor::GetEntranceIndex()
+    {
+        return mEntranceIndex;
     }
 
     void DungeonFloor::PrintFloor(int printMode) const
