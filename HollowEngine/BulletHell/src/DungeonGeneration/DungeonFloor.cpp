@@ -58,30 +58,8 @@ namespace BulletHell
 
         // generate a pool of rooms to pick from next
         std::vector<int> possibleRoomLocation; // pool of rooms that could be added to the dungeon(indexis to 1D array of rooms)        
-        if (entranceCol > 0)
-        {
-            int roomCandidateIndex = Index(entranceRow, entranceCol - 1); // index of a room that might be added to the pool of room to pick from
-            possibleRoomLocation.push_back(roomCandidateIndex); // left
-            mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-        }
-        if (entranceRow < mHeight - 1)
-        {
-            int roomCandidateIndex = Index(entranceRow + 1, entranceCol); // index of a room that might be added to the pool of room to pick from
-            possibleRoomLocation.push_back(roomCandidateIndex); // down
-            mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-        }
-        if (entranceCol < mWidth - 1)
-        {
-            int roomCandidateIndex = Index(entranceRow, entranceCol + 1); // index of a room that might be added to the pool of room to pick from
-            possibleRoomLocation.push_back(roomCandidateIndex); // right
-            mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-        }
-        if (entranceRow > 0)
-        {
-            int roomCandidateIndex = Index(entranceRow - 1, entranceCol); // index of a room that might be added to the pool of room to pick from
-            possibleRoomLocation.push_back(roomCandidateIndex); // up
-            mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-        }
+        UpdatePossibleRooms(&possibleRoomLocation, entranceRow, entranceCol);
+        
         //// rest of the rooms
         for (int i = 1; i < numRooms; i++)
         {
@@ -120,30 +98,7 @@ namespace BulletHell
             // update the pool of possible places for the rooms 
             possibleRoomLocation.erase(possibleRoomLocation.begin() + possibleRoomIndex); // we just got a room at this pos
 
-            if (row > 0 && mRooms[Index(row - 1, col)].mRoomType == DungeonRoomType::EMPTY)
-            {
-                int roomCandidateIndex = Index(row - 1, col);
-                possibleRoomLocation.push_back(Index(row - 1, col)); // up
-                mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-            }
-            if (col < mWidth - 1 && mRooms[Index(row, col + 1)].mRoomType == DungeonRoomType::EMPTY)
-            {
-                int roomCandidateIndex = Index(row, col + 1);
-                possibleRoomLocation.push_back(Index(row, col + 1)); // right
-                mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-            }
-            if (row < mHeight - 1 && mRooms[Index(row + 1, col)].mRoomType == DungeonRoomType::EMPTY)
-            {
-                int roomCandidateIndex = Index(row + 1, col);
-                possibleRoomLocation.push_back(Index(row + 1, col)); // down
-                mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-            }
-            if (col > 0 && mRooms[Index(row, col - 1)].mRoomType == DungeonRoomType::EMPTY)
-            {
-                int roomCandidateIndex = Index(row, col - 1);
-                possibleRoomLocation.push_back(roomCandidateIndex); // left
-                mRooms[roomCandidateIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
-            }
+            UpdatePossibleRooms(&possibleRoomLocation, row, col);
         }
 
         // reset pending rooms
@@ -174,9 +129,9 @@ namespace BulletHell
         mRooms[furthestRoom].mRoomType = DungeonRoomType::BOSS;
     }
 
-    DungeonRoom& DungeonFloor::GetRoom(int x, int y)
+    DungeonRoom& DungeonFloor::GetRoom(int row, int col)
     {
-        return mRooms.at(x * mWidth + y);
+        return mRooms.at(row * mWidth + col);
     }
 
     void DungeonFloor::ResetFloor()
@@ -219,7 +174,7 @@ namespace BulletHell
             std::cout << "! - boss room" << std::endl;
             std::cout << std::endl;
         }
-        if (printMode & 2)
+        if (printMode & 2) // room type
         {
             for (int i = 0; i < mHeight; i++)
             {
@@ -233,7 +188,7 @@ namespace BulletHell
                 std::cout << std::endl;
             }
         }
-        if (printMode & 4)
+        if (printMode & 4) // distance from entrance
         {
             for (int i = 0; i < mHeight; i++)
             {
@@ -247,7 +202,7 @@ namespace BulletHell
             }
             std::cout << std::endl;
         }
-        if (printMode & 8)
+        if (printMode & 8) // total doors
         {
             for (int i = 0; i < mHeight; i++)
             {
@@ -292,10 +247,10 @@ namespace BulletHell
         col = index1D % mWidth;
     }
 
-    int DungeonFloor::SumDistance(std::vector<int> roomIndices)
+    int DungeonFloor::SumDistance(std::vector<int>* roomIndices)
     {
         int sum = 0;
-        for (int i : roomIndices)
+        for (int i : (*roomIndices))
         {
             sum += mRooms[i].mDistFromEntrance;
         }
@@ -312,33 +267,49 @@ namespace BulletHell
         int downIndex = (row < mHeight - 1) ? Index(row + 1, col) : -1;
         int leftIndex = (col > 0) ? Index(row, col - 1) : -1;
 
-        //up
-        if (upIndex >= 0
-            && (mRooms[upIndex].mRoomType == DungeonRoomType::ENTRANCE || mRooms[upIndex].mRoomType == DungeonRoomType::REGULAR))
+        UpdateDoor(roomIndex, upIndex, DungeonRoom::DoorDirrection::UP, DungeonRoom::DoorDirrection::DOWN);
+        UpdateDoor(roomIndex, rightIndex, DungeonRoom::DoorDirrection::RIGHT, DungeonRoom::DoorDirrection::LEFT);
+        UpdateDoor(roomIndex, downIndex, DungeonRoom::DoorDirrection::DOWN, DungeonRoom::DoorDirrection::UP);
+        UpdateDoor(roomIndex, leftIndex, DungeonRoom::DoorDirrection::LEFT, DungeonRoom::DoorDirrection::RIGHT);
+    }
+
+    void DungeonFloor::UpdateDoor(int parentRoomIndex, int neighborRoomIndex, DungeonRoom::DoorDirrection parentDir, DungeonRoom::DoorDirrection neighborDir)
+    {
+        if (neighborRoomIndex >= 0 &&
+            (mRooms[neighborRoomIndex].mRoomType == DungeonRoomType::ENTRANCE || mRooms[neighborRoomIndex].mRoomType == DungeonRoomType::REGULAR))
         {
-            mRooms[roomIndex].mDoors |= DungeonRoom::DoorDirrection::UP;
-            mRooms[upIndex].mDoors |= DungeonRoom::DoorDirrection::DOWN;
+            mRooms[parentRoomIndex].mDoors |= parentDir;
+            mRooms[neighborRoomIndex].mDoors |= neighborDir;
         }
-        //right
-        if (rightIndex >= 0
-            && (mRooms[rightIndex].mRoomType == DungeonRoomType::ENTRANCE || mRooms[rightIndex].mRoomType == DungeonRoomType::REGULAR))
+    }
+
+    void DungeonFloor::UpdatePossibleRooms(std::vector<int>* possibleRooms, int row, int col)
+    {
+
+        if (row > 0)
         {
-            mRooms[roomIndex].mDoors |= DungeonRoom::DoorDirrection::RIGHT;
-            mRooms[rightIndex].mDoors |= DungeonRoom::DoorDirrection::LEFT;
+            CheckAndAddNeighborOf(possibleRooms, Index(row - 1, col)); // up
         }
-        //down
-        if (downIndex >= 0
-            && (mRooms[downIndex].mRoomType == DungeonRoomType::ENTRANCE || mRooms[downIndex].mRoomType == DungeonRoomType::REGULAR))
+        if (col < mWidth - 1)
         {
-            mRooms[roomIndex].mDoors |= DungeonRoom::DoorDirrection::DOWN;
-            mRooms[downIndex].mDoors |= DungeonRoom::DoorDirrection::UP;
+            CheckAndAddNeighborOf(possibleRooms, Index(row, col + 1)); // right
         }
-        //left
-        if (leftIndex >= 0
-            && (mRooms[leftIndex].mRoomType == DungeonRoomType::ENTRANCE || mRooms[leftIndex].mRoomType == DungeonRoomType::REGULAR))
+        if (row < mHeight - 1)
         {
-            mRooms[roomIndex].mDoors |= DungeonRoom::DoorDirrection::LEFT;
-            mRooms[leftIndex].mDoors |= DungeonRoom::DoorDirrection::RIGHT;
+            CheckAndAddNeighborOf(possibleRooms, Index(row + 1, col)); // down
+        }
+        if (col > 0)
+        {
+            CheckAndAddNeighborOf(possibleRooms, Index(row, col - 1)); // left
+        }
+    }
+    
+    void DungeonFloor::CheckAndAddNeighborOf(std::vector<int>* possibleRooms, int neighborIndex)
+    {
+        if (mRooms[neighborIndex].mRoomType == DungeonRoomType::EMPTY)
+        {
+            (*possibleRooms).push_back(neighborIndex);
+            mRooms[neighborIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
         }
     }
 }
