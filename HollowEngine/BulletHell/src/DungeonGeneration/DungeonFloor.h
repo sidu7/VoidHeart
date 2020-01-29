@@ -10,9 +10,11 @@ namespace BulletHell
     public:
         DungeonFloor();
         DungeonFloor(int width, int height, int floorNum);
-        void Generate(int numRooms);
-        DungeonRoom& GetRoom(int row, int col);
+        void Generate(int numRooms, unsigned seed);
+        const DungeonRoom& GetRoom(int row, int col) const;
         void ResetFloor();
+        const DungeonRoom& GetEntrance() const;
+        int GetEntranceIndex();
 
         void PrintFloor(int printMode = 1) const;
     private:
@@ -34,6 +36,6 @@ namespace BulletHell
         int mWidth;
         int mHeight;
         int mFloorNum;
-
+        int mEntranceIndex;
     };
 }
