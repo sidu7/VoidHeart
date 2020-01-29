@@ -73,6 +73,7 @@
     <None Include="Resources\Json data\UIElement.json" />
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
+    <None Include="Resources\Json data\Rooms\Wall.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">
