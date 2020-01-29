@@ -23,11 +23,12 @@ namespace BulletHell
         for (int i = 0; i < numFloors; i++)
         {
             DungeonFloor dungeonFloor(w, h, 1);
-            const int numRooms = 20;
-            dungeonFloor.Generate(numRooms, mSeed);
-            dungeonFloor.PrintFloor(1);
+            int numRooms = 10 + 2 * i;
+            dungeonFloor.Generate(numRooms, mSeed + i);
             mFloors.push_back(dungeonFloor);
+            dungeonFloor.PrintFloor(1);
         }
+        //system("PAUSE");
     }
 
     void DungeonManager::Regenerate()
@@ -39,6 +40,16 @@ namespace BulletHell
             dungeonFloor.ResetFloor();
         }
         Generate();
+    }
+
+    void DungeonManager::SetSeed(unsigned seed)
+    {
+        mSeed = seed;
+    }
+
+    unsigned DungeonManager::GetSeed()
+    {
+        return mSeed;
     }
 
     std::vector<DungeonFloor> DungeonManager::GetFloors() const

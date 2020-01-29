@@ -16,11 +16,13 @@ namespace BulletHell
         DungeonManager(DungeonManager&&) = delete;
         DungeonManager& operator=(DungeonManager&&) = delete;
         static DungeonManager& Instance();
-
     public:
         void Init();
         void Generate();
         void Regenerate();
+        
+        void SetSeed(unsigned seed);
+        unsigned GetSeed();
 
         std::vector<DungeonFloor> GetFloors() const;
         DungeonFloor GetFloor(int index);
