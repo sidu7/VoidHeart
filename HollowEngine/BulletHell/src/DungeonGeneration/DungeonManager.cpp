@@ -31,6 +31,7 @@ namespace BulletHell
             dungeonFloor.PrintFloor(1);
         }
         //system("PAUSE");
+        Construct();
     }
 
     void DungeonManager::Regenerate()
@@ -47,10 +48,14 @@ namespace BulletHell
     void DungeonManager::SetSeed(unsigned seed)
     {
         mSeed = seed;
+    }
+	
     void DungeonManager::Construct()
     {
         mFloors[0].ConstructFloor();
-        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Player", glm::vec3(15, 5, 0));
+        int startRoom = mFloors[0].GetEntranceIndex();
+        glm::ivec2 coords = mFloors[0].GetEntrance().GetCoords();
+        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Player", glm::vec3(coords.y * 15 +  7.5f, 2.0f, coords.x * 15 + 7.5f));
     }
 
     unsigned DungeonManager::GetSeed()

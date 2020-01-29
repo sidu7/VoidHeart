@@ -1,5 +1,6 @@
 #pragma once
 #include "GameMetaData/DungeonRoomType.h"
+#include <glm/glm.hpp>
 
 namespace BulletHell
 {
@@ -24,7 +25,8 @@ namespace BulletHell
         void Set(DungeonRoomType roomType, int roomID, int doors
             , int floorNum, int xCoord, int yCoord);
         DungeonRoom& operator=(const DungeonRoom& room);
-
+        glm::ivec2 GetCoords() const;
+		
     private:
         int TotalDoors() const;
     public:

@@ -4,6 +4,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 
 #include "Hollow/Components/Body.h"
+#include "Hollow/Components/Material.h"
 
 namespace BulletHell
 {
@@ -54,6 +55,11 @@ namespace BulletHell
         return *this;
     }
 
+	glm::ivec2 DungeonRoom::GetCoords() const
+    {
+        return glm::ivec2(mXcoord, mYcoord);
+    }
+
     int DungeonRoom::TotalDoors() const
     {
         // have to cast to boolean because DOWN==2 and LEFT==4
@@ -85,8 +91,22 @@ namespace BulletHell
             int mDoorBits = mDoors;
 
         Hollow::GameObject* pRoomFloor = 
-            Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Floor", glm::vec3(mRoomY*15 + 7.5, 0.0f, mRoomX * 15 + 7.5));
-       
+            Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Floor", glm::vec3(mRoomY*15 + 7.5, (mFloorNum-1)*10, mRoomX * 15 + 7.5));
+        Hollow::Material* pMat = pRoomFloor->GetComponent<Hollow::Material>();
+    	
+        if(mRoomType == DungeonRoomType::ENTRANCE)
+        {
+            pMat->mDiffuseColor = glm::vec3(0.0f, 1.0f, 0.0f);
+        }
+    	else if (mRoomType == DungeonRoomType::BOSS)
+        {
+            pMat->mDiffuseColor = glm::vec3(1.0f, 0.0f, 0.0f);
+        }
+        else
+        {
+            pMat->mDiffuseColor = glm::vec3(0.8f, 0.8f, 0.8f);
+        }
+    	
     	// Origin of room is in top left corner
             const int numRows = 15;
             const int numCols = 15;
@@ -119,7 +139,7 @@ namespace BulletHell
                         }
                         else
                         {
-                            Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Wall", glm::vec3(colIndex + mRoomY * 15, 0.0f, rowIndex + mRoomX * 15));
+                            Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Wall", glm::vec3(colIndex + mRoomY * 15, (mFloorNum-1) * 10, rowIndex + mRoomX * 15));
                         }
                     }
                 }
