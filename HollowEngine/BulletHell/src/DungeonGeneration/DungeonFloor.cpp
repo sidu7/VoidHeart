@@ -16,7 +16,7 @@ namespace BulletHell
         , mHeight(height)
         , mFloorNum(floorNum)
     {
-        int size = width * height;
+        const int size = width * height;
         mRooms.reserve(size);
         for (int i = 0; i < size; i++)
         {
@@ -24,7 +24,7 @@ namespace BulletHell
         }
     }
 
-    void DungeonFloor::Generate(int numRooms)
+    void DungeonFloor::Generate(int numRooms, unsigned seed)
     {
         if (numRooms < 2)
         {
@@ -37,11 +37,10 @@ namespace BulletHell
             return;
         }
 
-        ////// Room generation
-
-        //// entrance room
-        unsigned seed = 521288629;
         Random::SetSeed(seed);
+
+        ////// Room generation
+        //// entrance room
         auto entranceRow = Random::RangeSeeded(0, mHeight - 1);
         auto entranceCol = Random::RangeSeeded(0, mWidth - 1);
         const int entranceIndex = Index(entranceRow, entranceCol);
@@ -71,6 +70,7 @@ namespace BulletHell
             while (true)
             {
                 possibleRoomIndex = Random::RangeSeeded(0, possibleRoomLocation.size() - 1);
+                std::cout << possibleRoomIndex << std::endl;
                 currentRoomIndex = possibleRoomLocation[possibleRoomIndex];
                 Index2D(currentRoomIndex, row, col);
 

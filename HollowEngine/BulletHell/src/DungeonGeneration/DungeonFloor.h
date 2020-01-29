@@ -10,7 +10,7 @@ namespace BulletHell
     public:
         DungeonFloor();
         DungeonFloor(int width, int height, int floorNum);
-        void Generate(int numRooms);
+        void Generate(int numRooms, unsigned seed);
         DungeonRoom& GetRoom(int row, int col);
         void ResetFloor();
 
