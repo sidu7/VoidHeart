@@ -171,12 +171,17 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="src\Components\Magic.cpp" />
     <ClCompile Include="src\Components\Movement.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonFloor.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Systems\AttackSystem.cpp" />
     <ClCompile Include="src\Systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\Systems\DestroySystem.cpp" />
     <ClCompile Include="src\Systems\HealthSystem.cpp" />
+    <ClCompile Include="src\Systems\MagicSystem.cpp" />
     <ClCompile Include="src\Systems\MovementSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +255,11 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\Components\Behavior.h" />
     <ClInclude Include="src\Components\DestroyTimer.h" />
     <ClInclude Include="src\Components\Health.h" />
+    <ClInclude Include="src\Components\Magic.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonFloor.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
+    <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
     <ClInclude Include="src\GameMetaData\GameObjectType.h" />
     <ClInclude Include="src\Components\Movement.h" />
@@ -257,6 +267,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\Systems\BehaviorSystem.h" />
     <ClInclude Include="src\Systems\DestroySystem.h" />
     <ClInclude Include="src\Systems\HealthSystem.h" />
+    <ClInclude Include="src\Systems\MagicSystem.h" />
     <ClInclude Include="src\Systems\MovementSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

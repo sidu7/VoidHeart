@@ -83,6 +83,7 @@
     <ClCompile Include="src\Hollow\Systems\UITextRenderSystem.cpp" />
     <ClCompile Include="src\Hollow\Graphics\TextRenderer.cpp" />
     <ClCompile Include="src\Hollow\Managers\LocalizationManager.cpp" />
+    <ClCompile Include="src\Hollow\Utils\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hollowpch.cpp">
@@ -260,6 +261,7 @@
     <ClInclude Include="src\Hollow\Graphics\Data\UITextData.h" />
     <ClInclude Include="src\Hollow\Graphics\TextRenderer.h" />
     <ClInclude Include="src\Hollow\Managers\LocalizationManager.h" />
+    <ClInclude Include="src\Hollow\Utils\UniqueID.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

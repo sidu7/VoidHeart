@@ -14,6 +14,8 @@
 #include "GameMetaData/GameEventType.h"
 #include "Hollow/Core/GameMetaData.h"
 
+#include "DungeonGeneration/DungeonManager.h"
+
 #include "Hollow/Components/Body.h"
 
 void Hollow::GameMetaData::Init()
@@ -52,6 +54,8 @@ public:
 		ConstructRoom();
 
 		PushLayer(new GameLayer());
+
+        BulletHell::DungeonManager::Instance().Init();
 	}
 
 	~BulletHellGame()

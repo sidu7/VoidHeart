@@ -5,6 +5,7 @@
 #include "Hollow/Components/Camera.h"
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Material.h"
+#include "Hollow/Components/Light.h"
 
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/InputManager.h"
@@ -97,7 +98,7 @@ namespace Hollow
 			);
 
 		// GAMEOBJECT
-		lua.new_usertype<GameObject>("GameObject",
+		mGameObjectType = lua.new_usertype<GameObject>("GameObject",
 			sol::constructors<GameObject()>(),
 			"GetBody", &GameObject::GetComponent<Body>,
 			"GetTransform", &GameObject::GetComponent<Transform>,
