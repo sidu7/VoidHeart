@@ -28,6 +28,7 @@ namespace BulletHell
     private:
         int TotalDoors() const;
     public:
+        void ConstructRoom();
 
     private:
         DungeonRoomType mRoomType;

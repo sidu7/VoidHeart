@@ -1,25 +1,29 @@
 #include "DungeonManager.h"
+#include <Hollow.h>
+#include "Hollow/Managers/ResourceManager.h"
 
 namespace BulletHell
 {
     void DungeonManager::Init()
     {
-        int w = 10;
-        int h = 10;
+        int w = 5;
+        int h = 5;
         int numFloors = 1;
-        int numRooms = 20;
+        int numRooms = 15;
 
         BulletHell::DungeonFloor dungeonFloor(w, h, 1);
         for (int i = 0; i < numFloors; i++)
         {
             dungeonFloor.Generate(numRooms);
-            dungeonFloor.PrintFloor(1);
+            dungeonFloor.PrintFloor(9);
+            mFloors.push_back(dungeonFloor);
             //dungeonFloor.ResetFloor();
         }
     }
     void DungeonManager::Generate()
     {
-
+        mFloors[0].ConstructFloor();
+        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Player", glm::vec3(15, 5, 0));
     }
 
     void DungeonManager::Regenerate()

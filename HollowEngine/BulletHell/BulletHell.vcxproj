@@ -195,7 +195,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
   <ItemGroup>
     <None Include="Resources\Json data\Camera.json" />
     <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\Floor.json" />
+    <None Include="Resources\Prefabs\Floor.json" />
     <None Include="Resources\Json data\Light.json" />
     <None Include="Resources\Json data\LocalLight.json" />
     <None Include="Resources\Json data\Rooms\Wall.json" />
@@ -203,6 +203,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Levels\Level3.json" />
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
+    <None Include="Resources\Prefabs\Player.json" />
     <None Include="Resources\Scripts\BossAngry.lua" />
     <None Include="Resources\Scripts\BossHappy.lua" />
     <None Include="Resources\Scripts\BossPist.lua" />

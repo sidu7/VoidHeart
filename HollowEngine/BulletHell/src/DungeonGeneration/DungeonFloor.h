@@ -26,6 +26,7 @@ namespace BulletHell
         void CheckAndAddNeighborOf(std::vector<int>* possibleRooms, int neighborIndex);
     
     public:
+        void ConstructFloor();
 
     private:
         std::vector<DungeonRoom> mRooms; // 1D representation of a 2D array
