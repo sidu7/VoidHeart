@@ -70,8 +70,8 @@ namespace BulletHell
 		// Check if either hand spell should cycle
 		bool leftHandCycle = Hollow::InputManager::Instance().IsKeyTriggered("1") ||
 			Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-		bool rightHandCycle = Hollow::InputManager::Instance().IsKeyPressed("2") ||
-			Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+		bool rightHandCycle = Hollow::InputManager::Instance().IsKeyTriggered("2") ||
+			Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
 
 		// Update script paths
 		if (leftHandCycle)
@@ -83,8 +83,8 @@ namespace BulletHell
 		if (rightHandCycle)
 		{
 			// Get next spell
-			pMagic->mRightHandSpell = GetNextSpell(pMagic, pMagic->mLeftHandSpell);
-			pMagic->mRightHandScriptPath = pMagic->mLeftHandSpell->mScriptPath;
+			pMagic->mRightHandSpell = GetNextSpell(pMagic, pMagic->mRightHandSpell);
+			pMagic->mRightHandScriptPath = pMagic->mRightHandSpell->mScriptPath;
 		}
 	}
 
