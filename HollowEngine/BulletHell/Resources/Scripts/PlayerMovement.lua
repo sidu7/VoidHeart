@@ -28,11 +28,6 @@ end
 if IsKeyPressed("SPACE") or IsControllerButtonTriggered(CONTROLLER["A"]) then
 	impulse = impulse + vec3.new(0.0, 20.0, 0.0);
 end
-if IsKeyPressed("L") or IsControllerTriggerTriggered(CONTROLLER["RT"]) then
-	dashSpeed = 15.0
-	impulse = impulse + direction * dashSpeed
-	PlaySFX("Resources/Audio/SFX/PlayerDash.wav")
-end
 
 impulse = impulse * speed;
 

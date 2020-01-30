@@ -140,11 +140,11 @@
             "OffsetPosition": [ 1.0, 1.0 ],
             "Color": [ 0.0, 0.0, 1.0 ]
         },
-        {
-            "Type": "Magic",
-            "LeftHandScript": "Resources/Scripts/Left.lua",
-            "RightHandScript": "Resources/Scripts/Right.lua",
-            "CombineHandScript": "Resources/Scripts/Combine.lua"
-        }
+      {
+        "Type": "Magic",
+        "LeftHandScript": "Resources/Scripts/Spells/Atk_Empty.lua",
+        "RightHandScript": "Resources/Scripts/Spells/Atk_Empty.lua",
+        "CombineHandScript": "Resources/Scripts/Spells/Atk_Empty.lua"
+      }
     ]
 }
