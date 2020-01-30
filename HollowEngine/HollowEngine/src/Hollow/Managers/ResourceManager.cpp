@@ -17,6 +17,7 @@
 #include "Hollow/Graphics/Shader.h"
 
 #include "Hollow/Core/Data/StateData.h"
+#include "Hollow/Components/Body.h"
 
 namespace Hollow
 { 
@@ -80,6 +81,14 @@ namespace Hollow
 		}
 		
 		return nullptr;
+	}
+
+	GameObject* ResourceManager::LoadPrefabAtPosition(std::string prefabName, glm::vec3 pos)
+	{
+		GameObject* pGo = LoadGameObjectFromFile(std::string("Resources/Prefabs/") + prefabName + std::string(".json"));
+		Body* pBody = pGo->GetComponent<Body>();
+		pBody->mPosition = pos;
+		return pGo;
 	}
 
 	Texture* ResourceManager::LoadTexture(std::string path)

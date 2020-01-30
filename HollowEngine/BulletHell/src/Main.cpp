@@ -16,6 +16,8 @@
 
 #include "DungeonGeneration/DungeonManager.h"
 
+#include "Hollow/Components/Body.h"
+
 void Hollow::GameMetaData::Init()
 {
 	{
@@ -53,12 +55,14 @@ public:
 		PushLayer(new GameLayer());
 
         BulletHell::DungeonManager::Instance().Init();
+		BulletHell::DungeonManager::Instance().Generate();
 	}
 
 	~BulletHellGame()
 	{
 		HW_TRACE("BulletHell Prototype Closing");
 	}
+
 };
 
 

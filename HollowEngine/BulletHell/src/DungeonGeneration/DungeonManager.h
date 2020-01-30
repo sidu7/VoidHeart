@@ -20,7 +20,8 @@ namespace BulletHell
         void Init();
         void Generate();
         void Regenerate();
-        
+        void Construct();
+    	
         void SetSeed(unsigned seed);
         unsigned GetSeed();
 

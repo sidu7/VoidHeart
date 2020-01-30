@@ -326,4 +326,13 @@ namespace BulletHell
             mRooms[neighborIndex].mRoomType = DungeonRoomType::PENDING_GENERATION;
         }
     }
+
+    void DungeonFloor::ConstructFloor()
+    {
+    	for(auto room : mRooms)
+    	{
+    		if(room.mRoomType != DungeonRoomType::EMPTY)
+				room.ConstructRoom();
+    	}
+    }
 }
