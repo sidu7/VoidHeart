@@ -53,6 +53,14 @@ namespace Hollow
 		/// <param name="path">The path.</param>
 		/// <returns>Hollow.GameObject *.</returns>
 		HOLLOW_API  GameObject* LoadGameObjectFromFile(std::string path);
+
+		/// <summary>
+		/// Loads the game object from file.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>Hollow.GameObject *.</returns>
+		HOLLOW_API  GameObject* LoadPrefabAtPosition(std::string prefabName, glm::vec3 pos);
+
 		
 		/// <summary>
 		/// Loads the texture.

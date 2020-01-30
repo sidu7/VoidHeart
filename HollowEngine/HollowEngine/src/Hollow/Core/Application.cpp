@@ -95,6 +95,9 @@ namespace Hollow {
 
 	void Application::Run()
 	{
+#ifdef _DEBUG
+        return;
+#else
 		while (mIsRunning)
 		{			
 			FrameRateController::Instance().FrameStart();
@@ -122,7 +125,8 @@ namespace Hollow {
 
 			if (InputManager::Instance().IsKeyPressed("Escape"))
 				mIsRunning = false;
-		}		
+		}
+#endif	
 	}
 
 	void Application::PushLayer(Layer* layer)
