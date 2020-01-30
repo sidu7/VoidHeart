@@ -55,7 +55,9 @@ public:
 		PushLayer(new GameLayer());
 
         BulletHell::DungeonManager::Instance().Init();
-		BulletHell::DungeonManager::Instance().Generate();
+		//BulletHell::DungeonManager::Instance().Generate();
+		// Create temporary spell object
+		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("FireballSpell", glm::vec3(125.0, 1.0, 65.0));
 	}
 
 	~BulletHellGame()
