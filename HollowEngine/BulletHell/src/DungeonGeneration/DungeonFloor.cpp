@@ -46,7 +46,7 @@ namespace BulletHell
         auto entranceCol = Random::RangeSeeded(0, mWidth - 1);
         mEntranceIndex = Index(entranceRow, entranceCol);
         mRooms[mEntranceIndex].Set(DungeonRoomType::ENTRANCE, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, entranceRow, entranceCol);
-
+		mIndexValidRooms.push_back(Index(entranceRow, entranceCol));
         // precompute distance of other rooms from entrance
         for (int col = 0; col < mWidth; col++)
         {
@@ -93,6 +93,7 @@ namespace BulletHell
                 break;
             }
             mRooms[currentRoomIndex].Set(DungeonRoomType::REGULAR, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, row, col);
+			mIndexValidRooms.push_back(currentRoomIndex);
             UpdateDoors(currentRoomIndex);
 
             // update the pool of possible places for the rooms 

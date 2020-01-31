@@ -26,7 +26,7 @@ namespace BulletHell
             , int floorNum, int xCoord, int yCoord);
         DungeonRoom& operator=(const DungeonRoom& room);
         glm::ivec2 GetCoords() const;
-		
+		int GetFloorNum() const { return mFloorNum; }
     private:
         int TotalDoors() const;
     public:

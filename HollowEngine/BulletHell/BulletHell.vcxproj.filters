@@ -75,6 +75,8 @@
     <None Include="Resources\Json data\Rooms\Wall.json" />
     <None Include="Resources\Prefabs\Player.json" />
     <None Include="Resources\Prefabs\Floor.json" />
+    <None Include="Resources\Scripts\SetupLevel.lua" />
+    <None Include="Resources\Scripts\GameConfig.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

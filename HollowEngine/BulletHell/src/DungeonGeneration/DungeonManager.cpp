@@ -1,6 +1,7 @@
 #include "DungeonManager.h"
 #include <Hollow.h>
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 namespace BulletHell
 {
@@ -15,7 +16,29 @@ namespace BulletHell
     {
         //mSeed = 521288629;
         Generate();
+
+		// LUA Bindings for Dungeon Classes
+		// Send attack component to lua
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<DungeonFloor>("DungeonFloor",
+			sol::constructors<DungeonFloor()>(),
+			"GetRoom", &DungeonFloor::GetRoom,
+			"GetRoomFromIndex", &DungeonFloor::GetRoomFromIndex,
+			"GetRoomCount", &DungeonFloor::GetRoomCount,
+			"GetEntrance", &DungeonFloor::GetEntrance,
+			"GetEntranceIndex", &DungeonFloor::GetEntranceIndex
+			);
+
+		lua.new_usertype<DungeonRoom>("DungeonRoom",
+			sol::constructors<DungeonRoom()>(),
+			"GetFloorNum", &DungeonRoom::GetFloorNum,
+			"GetCoords", &DungeonRoom::GetCoords
+			);
+
+		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
     }
+
     void DungeonManager::Generate()
     {
         const int w = 10;
@@ -53,9 +76,6 @@ namespace BulletHell
     void DungeonManager::Construct()
     {
         mFloors[0].ConstructFloor();
-        int startRoom = mFloors[0].GetEntranceIndex();
-        glm::ivec2 coords = mFloors[0].GetEntrance().GetCoords();
-        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Player", glm::vec3(coords.y * 15 +  7.5f, 2.0f, coords.x * 15 + 7.5f));
     }
 
     unsigned DungeonManager::GetSeed()
