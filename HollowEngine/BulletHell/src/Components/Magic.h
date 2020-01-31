@@ -40,6 +40,7 @@ namespace BulletHell
 		struct SpellData {
 			std::string mName;
 			std::string mScriptPath;
+			int mSpellType;
 		};
 
 	public:

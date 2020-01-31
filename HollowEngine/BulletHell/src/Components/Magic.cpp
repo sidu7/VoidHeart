@@ -9,7 +9,7 @@ namespace BulletHell
 	void Magic::Init()
 	{
 		// Set left and right hand spells to empty
-		SpellData* pEmptySpell = new SpellData{ "EMPTY", "Resources/Scripts/Spells/Atk_Empty.lua"};
+		SpellData* pEmptySpell = new SpellData{ "EMPTY", "Resources/Scripts/Spells/Sp_Empty.lua", 0};
 		mSpells.push_back(pEmptySpell);
 		mLeftHandSpell = pEmptySpell;
 		mRightHandSpell = pEmptySpell;
