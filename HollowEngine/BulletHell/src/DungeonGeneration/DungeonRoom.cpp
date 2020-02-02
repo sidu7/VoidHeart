@@ -8,6 +8,14 @@
 
 namespace BulletHell
 {
+    float DungeonRoom::mWallLength = 0;
+    float DungeonRoom::mWallHeight = 0;
+    float DungeonRoom::mRoomSize = 0;
+    float DungeonRoom::mWallThickness = 0;
+    float DungeonRoom::mDoorWidth = 0;
+    float DungeonRoom::mDoorHeight = 0;
+    float DungeonRoom::mDoorThickness = 0;
+	
     DungeonRoom::DungeonRoom()
         : mRoomType(DungeonRoomType::EMPTY)
         //, mRoomShape(DungeonRoomShape::ONE_ONE)
@@ -74,75 +82,116 @@ namespace BulletHell
 
     void DungeonRoom::ConstructRoom()
     {
-        // Programatically create room walls and doors
-        // Do this for all rooms, or when desired for a specific room
-        // {
-        /*	NONE = 0,
-                UP = 1,
-                RIGHT = 2,
-                DOWN = 4,
-                LEFT = 8
-        */
-      
-    	
         //E.x. room at 3,2 in floor grid with doors at left and top
-            int mRoomX = mXcoord;
-            int mRoomY = mYcoord;
-            int mDoorBits = mDoors;
+        int mRoomX = mXcoord;
+        int mRoomY = mYcoord;
+        int mDoorBits = mDoors;
 
-        Hollow::GameObject* pRoomFloor = 
-            Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Floor", glm::vec3(mRoomY*15 + 7.5, (mFloorNum-1)*10, mRoomX * 15 + 7.5));
-        Hollow::Material* pMat = pRoomFloor->GetComponent<Hollow::Material>();
+        float halfRoomSize = mRoomSize/2.0f;
+        float halfWallLength = mWallLength / 2.0f;
+        float halfWallHeight = mWallHeight / 2.0f;
+        float halfDoorHeight = mDoorHeight / 2.0f;
     	
+        Hollow::GameObject* pRoomFloor = 
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Floor", 
+                glm::vec3(mRoomY*mRoomSize + halfRoomSize,
+							(mFloorNum-1)*10,
+							mRoomX * mRoomSize + halfRoomSize),
+                glm::vec3(mRoomSize, 1.0f, mRoomSize));
+
+    	// Basic Debug Like representation of Entrance and Boss
+        Hollow::Material* pMat = pRoomFloor->GetComponent<Hollow::Material>();
         if(mRoomType == DungeonRoomType::ENTRANCE)
         {
+        	// Green
             pMat->mDiffuseColor = glm::vec3(0.0f, 1.0f, 0.0f);
         }
     	else if (mRoomType == DungeonRoomType::BOSS)
         {
+    		// Red
             pMat->mDiffuseColor = glm::vec3(1.0f, 0.0f, 0.0f);
         }
         else
         {
+        	// Grey
             pMat->mDiffuseColor = glm::vec3(0.8f, 0.8f, 0.8f);
         }
     	
     	// Origin of room is in top left corner
-            const int numRows = 15;
-            const int numCols = 15;
-            const int halfRow = 7; // floor(numRows/2)
-            const int halfCol = 7; // floor(numCols/2)
-            for (int rowIndex = 0; rowIndex < numRows; ++rowIndex)
-            {
-                for (int colIndex = 0; colIndex < numCols; ++colIndex)
-                {
-                    if (colIndex % (numCols - 1) == 0 || rowIndex % (numRows - 1) == 0)
-                    {
-                        // Check door positions
-                        // UP
-                        if ((colIndex == halfCol) && (rowIndex == 0) && (mDoorBits & 1))
-                        {
-                            // Create up door
-                        }
-                        else if ((colIndex == 0) && (rowIndex == halfRow) && (mDoorBits & 8))
-                        {
-                            // Create left door
-                        }
-                        else if ((rowIndex == halfRow) && (colIndex == numCols - 1) && (mDoorBits & 2))
-                        {
-                            // Create right door
-                        }
-                        else if ((rowIndex == numRows - 1) && (colIndex == halfRow) && (mDoorBits & 4))
-                        {
-                            // Create down door
-                            int dummy = rowIndex + colIndex;
-                        }
-                        else
-                        {
-                            Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Wall", glm::vec3(colIndex + mRoomY * 15, (mFloorNum-1) * 10, rowIndex + mRoomX * 15));
-                        }
-                    }
-                }
-            }
+    	if(mDoorBits & 1)
+        {
+    		// Don't Make Up Wall with Door
+    	}
+        else
+        {
+            // TOP WALL
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfWallHeight, mRoomX * mRoomSize),
+                glm::vec3(mRoomSize, mWallHeight, mWallThickness));
+
+        }
+
+        if (mDoorBits & 8)
+        {
+            // Don't make Left Wall with Door
+        }
+        else
+        {
+            // LEFT WALL
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize, halfWallHeight, mRoomX * mRoomSize + halfRoomSize),
+                glm::vec3(mWallThickness, mWallHeight, mRoomSize));
+        }
+
+    	if(mDoorBits & 2)
+    	{
+            // RIGHT WALL (first Part)
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + halfWallLength),
+                glm::vec3(mWallThickness, mWallHeight, mWallLength));
+
+    		// DOOR
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
+                glm::vec3(mRoomY * mRoomSize + mRoomSize, halfDoorHeight , mRoomX * mRoomSize + halfRoomSize),
+                glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
+    		
+    		// RIGHT WALL (second Part)
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + (mRoomSize- halfWallLength)),
+                glm::vec3(mWallThickness, mWallHeight, mWallLength));
+    	}
+        else
+        {
+            // RIGHT WALL
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + halfRoomSize),
+                glm::vec3(mWallThickness, mWallHeight, mRoomSize));
+        }
+
+        if (mDoorBits & 4)
+        {
+            // BOTTOM WALL (first Part)
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize + halfWallLength, halfWallHeight, mRoomX * mRoomSize + mRoomSize),
+                glm::vec3(mWallLength, mWallHeight, mWallThickness));
+
+            // DOOR
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
+                glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfDoorHeight, mRoomX * mRoomSize + mRoomSize),
+                glm::vec3(mDoorWidth, mDoorHeight, mDoorThickness));
+
+            // BOTTOM WALL (second Part)
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize + (mRoomSize - halfWallLength), halfWallHeight, mRoomX * mRoomSize + mRoomSize),
+                glm::vec3(mWallLength, mWallHeight, mWallThickness));
+        }
+        else
+        {
+            // BOTTOM WALL
+            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
+                glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfWallHeight, mRoomX * mRoomSize + mRoomSize),
+                glm::vec3(mRoomSize, mWallHeight, mWallThickness));
+        }
+        
     }
 }

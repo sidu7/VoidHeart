@@ -25,7 +25,7 @@ namespace Hollow {
 
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-		
+
 	Application::~Application()
 	{
 		ResourceManager::Instance().CleanUp();
@@ -84,7 +84,7 @@ namespace Hollow {
 
 		//HW_CORE_TRACE("{0}", e);
 
-		for(auto it = mLayerStack.end(); it != mLayerStack.begin();)
+		for (auto it = mLayerStack.end(); it != mLayerStack.begin();)
 		{
 			(*--it)->OnEvent(e);
 
@@ -96,10 +96,10 @@ namespace Hollow {
 	void Application::Run()
 	{
 #ifdef _DEBUG
-        return;
+		return;
 #else
 		while (mIsRunning)
-		{			
+		{
 			FrameRateController::Instance().FrameStart();
 			// Start frame functions
 			ImGuiManager::Instance().StartFrame();
@@ -120,7 +120,7 @@ namespace Hollow {
 			RenderManager::Instance().Update();
 
 			GameObjectManager::Instance().ClearDeletionList();
-			
+
 			FrameRateController::Instance().FrameEnd();
 
 			if (InputManager::Instance().IsKeyPressed("Escape"))

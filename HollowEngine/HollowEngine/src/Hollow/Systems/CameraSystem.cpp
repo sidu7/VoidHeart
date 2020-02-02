@@ -309,7 +309,7 @@ namespace Hollow {
 		ApplyConstraints(pCamera, cameraData);
 		pCamera->mPreviousPosition = cameraData.mEyePosition;
 
-		glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -0.7f, -1.0f));
+		glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -0.9f, -1.0f));
 		pCamera->mFront = frontDirection;
 		pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
 		pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));

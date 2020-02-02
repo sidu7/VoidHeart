@@ -21,7 +21,7 @@ namespace BulletHell
         void Generate();
         void Regenerate();
         void Construct();
-    	
+        void ConfigureDungeon();
         void SetSeed(unsigned seed);
         unsigned GetSeed();
 
@@ -29,7 +29,10 @@ namespace BulletHell
         DungeonFloor GetFloor(int index);
         void Print() const;
     private:
-
+        int length;
+        int breadth;
+        int numFloors;
+        int firstFloorRoomCount;
     public:
 
     private:

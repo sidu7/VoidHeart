@@ -17,7 +17,7 @@ namespace Hollow {
 		HOLLOW_API  void Init(rapidjson::Value::Object& data);
 
 		// Add function for calling a script
-
+		HOLLOW_API void RunScript(std::string name, std::string folderPath = "");
 	public:
 		sol::state lua;
 		sol::usertype<GameObject> mGameObjectType;

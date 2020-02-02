@@ -26,13 +26,20 @@ namespace BulletHell
             , int floorNum, int xCoord, int yCoord);
         DungeonRoom& operator=(const DungeonRoom& room);
         glm::ivec2 GetCoords() const;
-		
+		int GetFloorNum() const { return mFloorNum; }
     private:
         int TotalDoors() const;
     public:
         void ConstructRoom();
 
-    private:
+        static float mWallLength;
+        static float mWallHeight;
+        static float mRoomSize;
+        static float mWallThickness;
+        static float mDoorWidth;
+        static float mDoorHeight;
+        static float mDoorThickness;
+    private:    	
         DungeonRoomType mRoomType;
         //DungeonRoomShape mRoomShape; // ALEKSEY: delete this if we never use this
         int mRoomID;	 // unique id of the room

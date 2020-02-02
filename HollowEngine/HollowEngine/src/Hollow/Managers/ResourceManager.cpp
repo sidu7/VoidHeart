@@ -18,6 +18,8 @@
 
 #include "Hollow/Core/Data/StateData.h"
 #include "Hollow/Components/Body.h"
+#include "Hollow/Components/Transform.h"
+#include "PhysicsManager.h"
 
 namespace Hollow
 { 
@@ -88,6 +90,20 @@ namespace Hollow
 		GameObject* pGo = LoadGameObjectFromFile(std::string("Resources/Prefabs/") + prefabName + std::string(".json"));
 		Body* pBody = pGo->GetComponent<Body>();
 		pBody->mPosition = pos;
+		return pGo;
+	}
+
+	GameObject* ResourceManager::LoadScaledPrefabAtPosition(std::string prefabName, glm::vec3 pos, glm::vec3 scale)
+	{
+		GameObject* pGo = LoadGameObjectFromFile(std::string("Resources/Prefabs/") + prefabName + std::string(".json"));
+		Body* pBody = pGo->GetComponent<Body>();
+		pBody->mPosition = pos;
+		
+		Transform* pTr = pGo->GetComponent<Transform>();
+		pTr->mScale = scale;
+
+		PhysicsManager::Instance().UpdateScale(pGo);
+		
 		return pGo;
 	}
 

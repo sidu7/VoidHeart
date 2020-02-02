@@ -169,4 +169,20 @@ namespace Hollow {
 
 
 	}
+
+	void PhysicsManager::UpdateScale(GameObject* pGo)
+	{
+		Collider* pCol = static_cast<Collider*>(pGo->GetComponent<Collider>());
+		if (pCol->mpShape->mType == ShapeType::BOX)
+		{
+			// update local shape (0.5f because we are updating half extents)
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f * (pCol->mpTr->mScale);
+			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
+		}
+		else if (pCol->mpShape->mType == ShapeType::BALL)
+		{
+			static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpTr->mPosition;
+			static_cast<ShapeCircle*>(pCol->mpShape)->mRadius = pCol->mpTr->mScale.x / 2.0f; // this will only be (x||y||z) as its a sphere!
+		}
+	}
 }

@@ -8,6 +8,7 @@
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 #include "Components/Health.h"
 #include "GameMetaData/GameObjectType.h"
@@ -51,13 +52,16 @@ public:
 		Application::Init("Resources/Settings.json");
 
 		Hollow::SceneManager::Instance().LoadLevel("Level3");
+		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
 
 		PushLayer(new GameLayer());
 
+		BulletHell::DungeonManager::Instance().ConfigureDungeon();
         BulletHell::DungeonManager::Instance().Init();
 		//BulletHell::DungeonManager::Instance().Generate();
-		// Create temporary spell object
-		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("FireballSpell", glm::vec3(125.0, 1.0, 65.0));
+
+		
+		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
 	}
 
 	~BulletHellGame()
