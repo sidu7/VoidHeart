@@ -48,17 +48,7 @@ namespace Hollow {
 		{
 			mRotation = JSONHelper::GetVec3F(data["Rotation"].GetArray());
 		}
-		glm::mat4 rotate = glm::mat4(1.0f);
-		rotate = glm::rotate(rotate, glm::radians(mRotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-		rotate = glm::rotate(rotate, glm::radians(mRotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-		rotate = glm::rotate(rotate, glm::radians(mRotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-		mQuaternion = glm::toQuat(rotate);
-		
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, mPosition);
-		model *= rotate;
-		model = glm::scale(model, mScale);
-		mTransformationMatrix = model;
+        Rotate(mRotation);
 	}
 
 	void Transform::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -68,4 +58,25 @@ namespace Hollow {
 		JSONHelper::Write<glm::vec3>("Scale", mScale, writer);
 	}
 
+    glm::vec3 Transform::GetForward() const
+    {
+        return glm::vec3(mTransformationMatrix[2][0]
+                       , mTransformationMatrix[2][1]
+                       , mTransformationMatrix[2][2]);
+    }
+
+    void Transform::Rotate(const glm::vec3 angles) 
+    {
+        glm::mat4 rotate = glm::mat4(1.0f);
+        rotate = glm::rotate(rotate, glm::radians(angles.x), glm::vec3(1.0f, 0.0f, 0.0f));
+        rotate = glm::rotate(rotate, glm::radians(angles.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        rotate = glm::rotate(rotate, glm::radians(angles.z), glm::vec3(0.0f, 0.0f, 1.0f));
+        mQuaternion = glm::toQuat(rotate);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, mPosition);
+        model *= rotate;
+        model = glm::scale(model, mScale);
+        mTransformationMatrix = model;
+    }
 }

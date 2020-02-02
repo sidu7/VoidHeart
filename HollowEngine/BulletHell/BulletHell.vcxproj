@@ -158,6 +158,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\AISettings.cpp" />
     <ClCompile Include="src\Components\Attack.cpp" />
     <ClCompile Include="src\Components\Behavior.cpp" />
     <ClCompile Include="src\Components\DestroyTimer.cpp" />
@@ -209,6 +210,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\BossHappy.lua" />
     <None Include="Resources\Scripts\BossPist.lua" />
     <None Include="Resources\Scripts\BossSad.lua" />
+    <None Include="Resources\Scripts\Enemies\Attacks\ShootAtThePlayer.lua" />
+    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
     <None Include="Resources\Scripts\PlayerAttack.lua" />
     <None Include="Resources\Scripts\PlayerMovement.lua" />
     <None Include="Resources\Scripts\test.lua" />
@@ -253,6 +256,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="src\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\AISettings.h" />
     <ClInclude Include="src\Components\Attack.h" />
     <ClInclude Include="src\Components\Behavior.h" />
     <ClInclude Include="src\Components\DestroyTimer.h" />

@@ -81,7 +81,10 @@ namespace Hollow
 
 		lua.new_usertype<Transform>("Transform",
 			sol::constructors<Transform()>(),
-			"position", &Transform::mPosition
+			"position", &Transform::mPosition,
+            "rotation", &Transform::mRotation,
+            "forward", &Transform::GetForward,
+            "Rotate", &Transform::Rotate
 			);
 
 		lua.new_usertype<Camera>("Camera",

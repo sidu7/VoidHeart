@@ -26,7 +26,8 @@ namespace BulletHell
 			sol::constructors<Attack()>(),
 			"baseAttackTime", &Attack::mBaseAttackTime,
 			"currentAttackTime", &Attack::mCurrentAttackTime,
-			"IsFired", &Attack::mIsFired
+			"IsFired", &Attack::mIsFired,
+            "target", &Attack::mpTarget
 			);
 
 		// Add get attack component to lua
