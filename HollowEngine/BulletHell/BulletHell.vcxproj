@@ -173,6 +173,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </ClCompile>
     <ClCompile Include="src\Components\Magic.cpp" />
     <ClCompile Include="src\Components\Movement.cpp" />
+    <ClCompile Include="src\Components\ParentOffset.cpp" />
     <ClCompile Include="src\DungeonGeneration\DungeonFloor.cpp" />
     <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp" />
     <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp" />
@@ -181,6 +182,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClCompile Include="src\Systems\AttackSystem.cpp" />
     <ClCompile Include="src\Systems\BehaviorSystem.cpp" />
     <ClCompile Include="src\Systems\DestroySystem.cpp" />
+    <ClCompile Include="src\Systems\HandSystem.cpp" />
     <ClCompile Include="src\Systems\HealthSystem.cpp" />
     <ClCompile Include="src\Systems\MagicSystem.cpp" />
     <ClCompile Include="src\Systems\MovementSystem.cpp" />
@@ -205,6 +207,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
     <None Include="Resources\Prefabs\Player.json" />
+    <None Include="Resources\Prefabs\UIIcon.json" />
     <None Include="Resources\Scripts\BossAngry.lua" />
     <None Include="Resources\Scripts\BossHappy.lua" />
     <None Include="Resources\Scripts\BossPist.lua" />
@@ -258,10 +261,12 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\Components\DestroyTimer.h" />
     <ClInclude Include="src\Components\Health.h" />
     <ClInclude Include="src\Components\Magic.h" />
+    <ClInclude Include="src\Components\ParentOffset.h" />
     <ClInclude Include="src\Components\Spell.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonFloor.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
+    <ClInclude Include="src\Events\CycleSpellEvent.h" />
     <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
     <ClInclude Include="src\GameMetaData\GameObjectType.h" />
@@ -269,6 +274,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\Systems\AttackSystem.h" />
     <ClInclude Include="src\Systems\BehaviorSystem.h" />
     <ClInclude Include="src\Systems\DestroySystem.h" />
+    <ClInclude Include="src\Systems\HandSystem.h" />
     <ClInclude Include="src\Systems\HealthSystem.h" />
     <ClInclude Include="src\Systems\MagicSystem.h" />
     <ClInclude Include="src\Systems\MovementSystem.h" />

@@ -11,6 +11,7 @@ function FireAttack()
 		direction.y = direction.y / magnitude
 		direction.z = direction.z / magnitude
 		impulse = impulse + direction * dashSpeed
+		impulse.y = 0.0
 		PlaySFX("Resources/Audio/SFX/PlayerDash.wav")
 		ApplyLinearImpulse(gameObject, impulse)
 	end

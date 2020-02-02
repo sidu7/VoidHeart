@@ -31,7 +31,7 @@ namespace Hollow {
 			return false;
 		}
 
-		return !mCurrentState[key] && mPreviousState[key];
+		return !mCurrentState[SDL_GetScancodeFromKey(key)] && mPreviousState[SDL_GetScancodeFromKey(key)];
 	}
 
 	bool InputManager::IsKeyTriggered(const std::string& keyName)
@@ -43,7 +43,7 @@ namespace Hollow {
 			return false;
 		}
 
-		return mCurrentState[key] && !mPreviousState[key];
+		return mCurrentState[SDL_GetScancodeFromKey(key)] && !mPreviousState[SDL_GetScancodeFromKey(key)];
 	}
 
 	bool InputManager::IsMouseButtonTriggered(unsigned int keycode)

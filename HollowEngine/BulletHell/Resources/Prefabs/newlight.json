@@ -1,1 +1,16 @@
-{"Components":[{"Type":"Transform","Scale":[1.0,1.0,1.0]},{"Type":"Light","CastShadow":false}]}
+{
+  "Components": [
+    {
+      "Type": "Transform",
+      "Scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "Type": "Light",
+      "CastShadow": false
+    }
+  ]
+}

@@ -4,6 +4,16 @@
 
 namespace BulletHell
 {
+	// Bit field for spell type
+	enum SpellType
+	{
+		EMPTY = 0,
+		FIRE = 1,
+		AIR = 2,
+		EARTH = 4,
+		WATER = 8
+	};
+
 	class Spell : public Hollow::Component
 	{
 		REGISTERCOMPONENT(Spell);
@@ -39,6 +49,9 @@ namespace BulletHell
 	public:
 		std::string mName;
 		std::string mScriptPath;
+		int mSpellType;
+		float mUIRotation;
+		float mParticleSize;
 
 	};
 }

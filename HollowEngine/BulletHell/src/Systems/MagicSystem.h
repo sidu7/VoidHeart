@@ -21,5 +21,12 @@ namespace BulletHell
 		Magic::SpellData* GetNextSpell(Magic* pMagic, Magic::SpellData* pSpellData);
 
 		void OnSpellCollect(Hollow::GameEvent& event);
+
+	private:
+		int mNumberOfFrames = 0;
+		const int mFrameDelay = 5;
+		bool mWaitForInput = false;
+		bool mLeftHandPressed = false;
+		bool mRightHandPressed = false;
 	};
 }

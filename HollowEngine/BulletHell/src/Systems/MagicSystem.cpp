@@ -5,6 +5,8 @@
 #include "Components/Magic.h"
 #include "Components/Spell.h"
 
+#include "Events/CycleSpellEvent.h"
+
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
@@ -35,23 +37,47 @@ namespace BulletHell
 			UpdateSelectedSpells(pMagic);
 
 			// Check if left or right hand should fire
-			bool leftHandPressed = Hollow::InputManager::Instance().IsKeyPressed("L") ||
-				Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-			bool rightHandPressed = Hollow::InputManager::Instance().IsKeyPressed("R") ||
-				Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+			if (!mWaitForInput)
+			{
+				mLeftHandPressed = Hollow::InputManager::Instance().IsKeyPressed("L") ||
+					Hollow::InputManager::Instance().IsControllerTriggerPressed(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+				mRightHandPressed = Hollow::InputManager::Instance().IsKeyPressed("R") ||
+					Hollow::InputManager::Instance().IsControllerTriggerPressed(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+			}
 
-			// Update attack script based on button pressed
-			if (leftHandPressed)
+			// If either trigger is pressed start frame delay
+			if (mLeftHandPressed || mRightHandPressed || mWaitForInput)
 			{
-				pAttack->mScriptPath = pMagic->mLeftHandScriptPath;
+				// Wait a few frames to check if both triggers are pressed
+				mWaitForInput = true;
+				++mNumberOfFrames;
 			}
-			if (rightHandPressed)
+
+			// Set attack scripts based on player input over a few frames
+			if (mNumberOfFrames > mFrameDelay)
 			{
-				pAttack->mScriptPath = pMagic->mRightHandScriptPath;
-			}
-			if (leftHandPressed && rightHandPressed)
-			{
-				pAttack->mScriptPath = pMagic->mCombineHandScriptPath;
+				// Update attack script based on button pressed
+				if (mLeftHandPressed)
+				{
+					pAttack->mScriptPath = pMagic->mLeftHandScriptPath;
+				}
+				if (mRightHandPressed)
+				{
+					pAttack->mScriptPath = pMagic->mRightHandScriptPath;
+				}
+				if (mLeftHandPressed && mRightHandPressed)
+				{
+					pAttack->mScriptPath = pMagic->mCombineHandScriptPath;
+				}
+
+				// Set attack flag
+				pAttack->mShouldAttack = mLeftHandPressed || mRightHandPressed;
+
+				// Reset input tracking
+				mRightHandPressed = false;
+				mLeftHandPressed = false;
+				mWaitForInput = false;
+				mNumberOfFrames = 0;
 			}
 		}
 	}
@@ -79,12 +105,27 @@ namespace BulletHell
 			// Get next spell
 			pMagic->mLeftHandSpell = GetNextSpell(pMagic, pMagic->mLeftHandSpell);
 			pMagic->mLeftHandScriptPath = pMagic->mLeftHandSpell->mScriptPath;
+
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("left");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
 		}
 		if (rightHandCycle)
 		{
 			// Get next spell
 			pMagic->mRightHandSpell = GetNextSpell(pMagic, pMagic->mRightHandSpell);
 			pMagic->mRightHandScriptPath = pMagic->mRightHandSpell->mScriptPath;
+
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("right");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
+		}
+
+		// Update combined spell script
+		int combinedSpell = pMagic->mLeftHandSpell->mSpellType & pMagic->mRightHandSpell->mSpellType;
+		if (combinedSpell == (SpellType::FIRE & SpellType::FIRE))
+		{
+			pMagic->mCombineHandScriptPath = "Resources/Scripts/Spells/Sp_Flames.lua";
 		}
 	}
 
@@ -107,7 +148,7 @@ namespace BulletHell
 
 		// Create new spell to add to player list
 		Spell* pSpell = pSpellObject->GetComponent<Spell>();
-		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath };
+		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation, pSpell->mParticleSize };
 		pPlayerMagic->mSpells.push_back(pSpellToAdd);
 
 		// Destroy spell object
