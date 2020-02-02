@@ -30,6 +30,14 @@ namespace BulletHell
 		{
 			mParticleSize = data["ParticleSize"].GetFloat();
 		}
+		if (data.HasMember("ParticleTexture"))
+		{
+			mParticleTexturePath = data["ParticleTexture"].GetString();
+		}
+		if (data.HasMember("Cooldown"))
+		{
+			mCooldown = data["Cooldown"].GetFloat();
+		}
 	}
 
 	void Spell::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -48,5 +56,7 @@ namespace BulletHell
 		Hollow::ImGuiHelper::InputText("Name", mName);
 		Hollow::ImGuiHelper::InputText("Script Path", mScriptPath);
 		ImGui::InputInt("Spell Type", &mSpellType);
+		Hollow::ImGuiHelper::InputText("Particle Texture", mParticleTexturePath);
+		ImGui::InputFloat("Cooldown", &mCooldown);
 	}
 }

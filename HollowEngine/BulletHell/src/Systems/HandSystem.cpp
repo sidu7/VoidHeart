@@ -37,6 +37,21 @@ namespace BulletHell
 
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
+			//// TEMP
+			Hollow::GameObject* pGameObject = mGameObjects[i];
+			if (pGameObject->mType == (int)GameObjectType::HAND)
+			{
+				if (pGameObject->GetComponent<ParentOffset>()->mTag == "left")
+				{
+					mpLeftHand = pGameObject;
+				}
+				if (pGameObject->GetComponent<ParentOffset>()->mTag == "right")
+				{
+					mpRightHand = pGameObject;
+				}
+			}
+			////
+
 			// Update position based on offset and parent
 			Hollow::Transform* pTr = mGameObjects[i]->GetComponent<Hollow::Transform>();
 			ParentOffset* pParentOffset = mGameObjects[i]->GetComponent<ParentOffset>();
@@ -52,17 +67,6 @@ namespace BulletHell
 		if (pGameObject->mType == (int)GameObjectType::PLAYER)
 		{
 			mpPlayerObject = pGameObject;
-		}
-		if (pGameObject->mType == (int)GameObjectType::HAND)
-		{
-			if (pGameObject->GetComponent<ParentOffset>()->mTag == "left")
-			{
-				mpLeftHand = pGameObject;
-			}
-			if (pGameObject->GetComponent<ParentOffset>()->mTag == "right")
-			{
-				mpRightHand = pGameObject;
-			}
 		}
 	}
 
@@ -143,7 +147,8 @@ namespace BulletHell
 
 		// Update hand particles
 		Hollow::ParticleEmitter* pParticleEmitter = pHandObj->GetComponent<Hollow::ParticleEmitter>();
-		pParticleEmitter->mPixelSize = pSpellData->mParticleSize;
+		pParticleEmitter->mDTexturePath = pSpellData->mParticleTexturePath;
+		pParticleEmitter->mTexture = Hollow::ResourceManager::Instance().LoadTexture(pParticleEmitter->mDTexturePath);
 	}
 
 }

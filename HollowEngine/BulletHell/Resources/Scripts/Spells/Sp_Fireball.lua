@@ -23,7 +23,7 @@ end
 
 function CheckValidAttack()
 	attack = gameObject:GetAttack()
-	if attack.shouldAttack and (attack.currentAttackTime > attack.baseAttackTime) then
+	if attack.shouldAttack then
 		PlayerAttack()
 		attack.currentAttackTime = 0.0
 		attack.shouldAttack = false;

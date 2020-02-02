@@ -25,7 +25,7 @@
       "Speed": [ 1.5, 2.0 ],
       "ComputeShader": "Resources/Shaders/RainParticles.comp",
       "CenterOffset": [ 0.0, 0.0, 0.0 ],
-      "PixelSize": 0.2
+      "PixelSize": 0.1
     },
     {
       "Type": "ParentOffset",

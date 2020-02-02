@@ -34,7 +34,9 @@
       "Script": "Resources/Scripts/Spells/Sp_Fireball.lua",
       "SpellType": 1,
       "UIRotation": 3.1415,
-      "ParticleSize": 10
+      "ParticleSize": 0.0,
+      "ParticleTexture": "Resources/Textures/cracks.png",
+      "Cooldown": 0.5
     }
   ]
 }

@@ -10,6 +10,7 @@
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -26,6 +27,8 @@ namespace BulletHell
 
 	void MagicSystem::Update()
 	{
+		mDeltaTime = Hollow::FrameRateController::Instance().GetFrameTime();
+
 		// Update all objects with magic component
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
@@ -35,6 +38,9 @@ namespace BulletHell
 
 			// Check if player wants to cycle/change spells
 			UpdateSelectedSpells(pMagic);
+
+			// Update spell cooldowns
+			UpdateSpellCooldowns(pMagic);
 
 			// Check if left or right hand should fire
 			if (!mWaitForInput)
@@ -71,7 +77,17 @@ namespace BulletHell
 				}
 
 				// Set attack flag
-				pAttack->mShouldAttack = mLeftHandPressed || mRightHandPressed;
+				//pAttack->mShouldAttack = mLeftHandPressed || mRightHandPressed;
+				if (mLeftHandPressed && (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f))
+				{
+					pAttack->mShouldAttack = true;
+					pMagic->mLeftHandSpell->mLeftHandCooldown = pMagic->mLeftHandSpell->mCooldown * pMagic->mLeftHandSpell->mCooldownModifier;
+				}
+				if (mRightHandPressed && (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f))
+				{
+					pAttack->mShouldAttack = true;
+					pMagic->mRightHandSpell->mRightHandCooldown = pMagic->mRightHandSpell->mCooldown * pMagic->mRightHandSpell->mCooldownModifier;
+				}
 
 				// Reset input tracking
 				mRightHandPressed = false;
@@ -129,6 +145,16 @@ namespace BulletHell
 		}
 	}
 
+	void MagicSystem::UpdateSpellCooldowns(Magic* pMagic)
+	{
+		// Updated all spell cooldowns for left AND right hand
+		for (auto spell : pMagic->mSpells)
+		{
+			spell->mLeftHandCooldown = std::max(0.0f, spell->mLeftHandCooldown - mDeltaTime);
+			spell->mRightHandCooldown = std::max(0.0f, spell->mRightHandCooldown - mDeltaTime);
+		}
+	}
+
 	Magic::SpellData* MagicSystem::GetNextSpell(Magic* pMagic, Magic::SpellData* pSpellData)
 	{
 		// TODO: Find a better way to do this, maybe make circular doubly linked list
@@ -148,8 +174,10 @@ namespace BulletHell
 
 		// Create new spell to add to player list
 		Spell* pSpell = pSpellObject->GetComponent<Spell>();
-		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation, pSpell->mParticleSize };
+		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation, pSpell->mParticleSize, pSpell->mParticleTexturePath, pSpell->mCooldown };
 		pPlayerMagic->mSpells.push_back(pSpellToAdd);
+
+		// Add new spell combinations to combined spell list
 
 		// Destroy spell object
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pSpellObject);
