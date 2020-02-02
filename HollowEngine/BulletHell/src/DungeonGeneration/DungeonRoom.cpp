@@ -17,25 +17,26 @@ namespace BulletHell
     float DungeonRoom::mDoorThickness = 0;
 	
     DungeonRoom::DungeonRoom()
-        : mRoomType(DungeonRoomType::EMPTY)
-        //, mRoomShape(DungeonRoomShape::ONE_ONE)
+        : mEnemyCount(0)
+        , mRoomType(DungeonRoomType::EMPTY)
         , mRoomID(0)
         , mDoors(DoorDirrection::NONE)
         , mFloorNum(0)
-        , mXcoord(0)
-        , mYcoord(0)
+        , mColumn(0)
+        , mRow(0)
         , mDistFromEntrance(0)
     {
     }
 
     DungeonRoom::DungeonRoom(DungeonRoomType roomType, int roomID, int doors
         , int floorNum, int xCoord, int yCoord)
-        : mRoomType(roomType)
+        : mEnemyCount(0)
+        , mRoomType(roomType)
         , mRoomID(roomID)
         , mDoors(doors)
         , mFloorNum(floorNum)
-        , mXcoord(xCoord)
-        , mYcoord(yCoord)
+        , mColumn(xCoord)
+        , mRow(yCoord)
         , mDistFromEntrance(0)
     {
     }
@@ -47,8 +48,8 @@ namespace BulletHell
         mRoomID = roomID;
         mDoors = doors;
         mFloorNum = floorNum;
-        mXcoord = xCoord;
-        mYcoord = yCoord;
+        mColumn = xCoord;
+        mRow = yCoord;
     }
 
     DungeonRoom& DungeonRoom::operator=(const DungeonRoom& room)
@@ -57,15 +58,15 @@ namespace BulletHell
         mRoomID = room.mRoomID;
         mDoors = room.mDoors;
         mFloorNum = room.mFloorNum;
-        mXcoord = room.mXcoord;
-        mYcoord = room.mYcoord;
+        mColumn = room.mColumn;
+        mRow = room.mRow;
         mDistFromEntrance = room.mDistFromEntrance;
         return *this;
     }
 
 	glm::ivec2 DungeonRoom::GetCoords() const
     {
-        return glm::ivec2(mXcoord, mYcoord);
+        return glm::ivec2(mColumn, mRow);
     }
 
     int DungeonRoom::TotalDoors() const
@@ -83,8 +84,8 @@ namespace BulletHell
     void DungeonRoom::ConstructRoom()
     {
         //E.x. room at 3,2 in floor grid with doors at left and top
-        int mRoomX = mXcoord;
-        int mRoomY = mYcoord;
+        int mRoomX = mColumn;
+        int mRoomY = mRow;
         int mDoorBits = mDoors;
 
         float halfRoomSize = mRoomSize/2.0f;
@@ -149,12 +150,12 @@ namespace BulletHell
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + halfWallLength),
                 glm::vec3(mWallThickness, mWallHeight, mWallLength));
-
+             
     		// DOOR
-            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
-                glm::vec3(mRoomY * mRoomSize + mRoomSize, halfDoorHeight , mRoomX * mRoomSize + halfRoomSize),
-                glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
-    		
+            Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
+                                            glm::vec3(mRoomY * mRoomSize + mRoomSize, halfDoorHeight , mRoomX * mRoomSize + halfRoomSize),
+                                            glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
+            mDoorGOs.push_back(door);
     		// RIGHT WALL (second Part)
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + (mRoomSize- halfWallLength)),
@@ -176,10 +177,10 @@ namespace BulletHell
                 glm::vec3(mWallLength, mWallHeight, mWallThickness));
 
             // DOOR
-            Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
-                glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfDoorHeight, mRoomX * mRoomSize + mRoomSize),
-                glm::vec3(mDoorWidth, mDoorHeight, mDoorThickness));
-
+            Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
+                                        glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfDoorHeight, mRoomX * mRoomSize + mRoomSize),
+                                        glm::vec3(mDoorWidth, mDoorHeight, mDoorThickness));
+            mDoorGOs.push_back(door);
             // BOTTOM WALL (second Part)
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + (mRoomSize - halfWallLength), halfWallHeight, mRoomX * mRoomSize + mRoomSize),

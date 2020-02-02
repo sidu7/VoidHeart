@@ -103,7 +103,7 @@ namespace BulletHell
         return mFloors;
     }
 
-    DungeonFloor DungeonManager::GetFloor(int floorNumber)
+    DungeonFloor& DungeonManager::GetFloor(int floorNumber)
     {
         return mFloors[floorNumber];
     }

@@ -130,7 +130,7 @@ namespace BulletHell
         mRooms[furthestRoom].mRoomType = DungeonRoomType::BOSS;
     }
 
-    const DungeonRoom& DungeonFloor::GetRoom(int row, int col) const 
+    DungeonRoom& DungeonFloor::GetRoom(int row, int col) 
     {
         return mRooms.at(row * mWidth + col);
     }
@@ -330,10 +330,25 @@ namespace BulletHell
 
     void DungeonFloor::ConstructFloor()
     {
-    	for(auto room : mRooms)
+    	for(int i = 0; i < mRooms.size(); i++)
     	{
-    		if(room.mRoomType != DungeonRoomType::EMPTY)
+            DungeonRoom& room = mRooms[i];
+            if (room.mRoomType != DungeonRoomType::EMPTY)
+            {
 				room.ConstructRoom();
+                if (room.mDoors & DungeonRoom::DoorDirrection::RIGHT)
+                {
+                    mRooms[i + 1].mDoorGOs.push_back(room.mDoorGOs[0]);
+                    if (room.mDoors & DungeonRoom::DoorDirrection::DOWN)
+                    {
+                        mRooms[i + mWidth].mDoorGOs.push_back(room.mDoorGOs[1]);
+                    }
+                }
+                else if (room.mDoors & DungeonRoom::DoorDirrection::DOWN)
+                {
+                    mRooms[i + mWidth].mDoorGOs.push_back(room.mDoorGOs[0]);
+                }
+            }
     	}
     }
 }

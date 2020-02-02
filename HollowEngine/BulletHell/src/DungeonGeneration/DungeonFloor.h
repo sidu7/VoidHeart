@@ -11,7 +11,7 @@ namespace BulletHell
         DungeonFloor();
         DungeonFloor(int width, int height, int floorNum);
         void Generate(int numRooms, unsigned seed);
-        const DungeonRoom& GetRoom(int row, int col) const;
+        DungeonRoom& GetRoom(int row, int col);
         void ResetFloor();
         const DungeonRoom& GetEntrance() const;
         int GetEntranceIndex();
