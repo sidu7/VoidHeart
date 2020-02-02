@@ -26,6 +26,10 @@ namespace BulletHell
 		{
 			mUIRotation = data["UIRotation"].GetFloat();
 		}
+		if (data.HasMember("ParticleSize"))
+		{
+			mParticleSize = data["ParticleSize"].GetFloat();
+		}
 	}
 
 	void Spell::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)

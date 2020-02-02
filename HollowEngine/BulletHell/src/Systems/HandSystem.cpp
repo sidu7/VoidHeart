@@ -142,7 +142,8 @@ namespace BulletHell
 		//pUITr->mRotation += (3.1419f/2.0f);
 
 		// Update hand particles
-		pHandObj->GetComponent<Hollow::ParticleEmitter>();
+		Hollow::ParticleEmitter* pParticleEmitter = pHandObj->GetComponent<Hollow::ParticleEmitter>();
+		pParticleEmitter->mPixelSize = pSpellData->mParticleSize;
 	}
 
 }

@@ -51,6 +51,7 @@ namespace BulletHell
 		std::string mScriptPath;
 		int mSpellType;
 		float mUIRotation;
+		float mParticleSize;
 
 	};
 }

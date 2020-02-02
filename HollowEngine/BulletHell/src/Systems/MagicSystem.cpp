@@ -148,7 +148,7 @@ namespace BulletHell
 
 		// Create new spell to add to player list
 		Spell* pSpell = pSpellObject->GetComponent<Spell>();
-		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation };
+		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation, pSpell->mParticleSize };
 		pPlayerMagic->mSpells.push_back(pSpellToAdd);
 
 		// Destroy spell object
