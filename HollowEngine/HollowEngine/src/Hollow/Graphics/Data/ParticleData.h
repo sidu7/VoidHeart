@@ -34,19 +34,6 @@ namespace Hollow
 
 	struct ParticleData
 	{
-		std::vector<MaterialData*> mParticleMaterials;
-		std::vector<Mesh*> mParticleModel;
-		VertexArray* mpParticleVAO;
-		unsigned int mParticlesCount;
-		glm::mat4 mModel;
-		Texture* mTex;
-		ParticleType mType;
-		ShaderStorageBuffer* mpParticleDataStorage;
-		glm::vec2 mSpeedRange;
-		glm::vec2 mLifeRange;
-		glm::vec3 mCenter;
-		Shader* mpComputeShader;
-		glm::vec3 mParticleColor;
-		float mPixelSize;
+		ParticleEmitter* emitter;
 	};
 }

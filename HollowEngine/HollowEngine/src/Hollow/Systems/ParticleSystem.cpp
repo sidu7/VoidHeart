@@ -32,28 +32,17 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			ParticleEmitter* emitter = mGameObjects[i]->GetComponent<ParticleEmitter>();
+			if (!emitter->mActive)
+			{
+				continue;
+			}
+
 			Transform* transform = mGameObjects[i]->GetComponent<Transform>();
 			ParticleData particle;
-			//if (emitter->mType == POINT)
-			{	
-				glm::mat4 model = glm::mat4(1.0f);
-				model = glm::translate(model, transform->mPosition + emitter->mCenterOffset);
-				emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
-				particle.mParticleModel = emitter->mParticleModel;
-				particle.mType = emitter->mType;
-				particle.mpParticleVAO = emitter->mpParticlePositionVAO;
-				particle.mCenter = transform->mPosition;
-				particle.mModel = emitter->mModelMatrix;
-				particle.mParticlesCount = emitter->mCount;
-				particle.mpParticleDataStorage = emitter->mpParticleStorage;
-				particle.mLifeRange = emitter->mLifeRange;
-				particle.mSpeedRange = emitter->mSpeedRange;
-				particle.mTex = emitter->mTexture;
-				particle.mpComputeShader = emitter->mpComputeShader;
-				particle.mPixelSize = emitter->mPixelSize;
-				particle.mParticleMaterials = emitter->mParticleMaterials;
-				particle.mParticleColor = emitter->mParticleColor;
-			}
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, transform->mPosition + emitter->mCenterOffset);
+			emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
+			particle.emitter = emitter;
 			
 			RenderManager::Instance().mParticleData.push_back(particle);
 		}

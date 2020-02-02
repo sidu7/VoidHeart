@@ -967,13 +967,16 @@ namespace Hollow {
 	}
 
 	void RenderManager::DrawParticles(CameraData& cameraData)
-	{
-		
+	{		
 
 		// Draw Particles 
 		mpParticleShader->Use();
 		mpParticleShader->SetMat4("View", cameraData.mViewMatrix);
 		mpParticleShader->SetMat4("Projection", cameraData.mProjectionMatrix);
+
+		mpModelParticleShader->Use();
+		mpModelParticleShader->SetMat4("View", cameraData.mViewMatrix);
+		mpModelParticleShader->SetMat4("Projection", cameraData.mProjectionMatrix);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -981,62 +984,55 @@ namespace Hollow {
 		for (unsigned int i = 0; i < mParticleData.size(); ++i)
 		{
 			ParticleData& particle = mParticleData[i];
-			mpParticleShader->SetInt("Type", particle.mType);
-			if (particle.mType == POINT)
+			mpParticleShader->SetInt("Type", particle.emitter->mType);
+			
+			particle.emitter->mpParticleDataStorage->Bind(2);
+			if (particle.emitter->mType == POINT)
 			{
-				//Compute particle positions according to velocities
-				particle.mpParticleDataStorage->Bind(2);
 				mpParticlesPositionStorage->Bind(3);
-
-				particle.mpComputeShader->Use();
-				particle.mpComputeShader->SetVec3("Center", particle.mCenter);
-				particle.mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
-				particle.mpComputeShader->SetVec2("SpeedRange", particle.mSpeedRange);
-				particle.mpComputeShader->SetVec2("LifeRange", particle.mLifeRange);
-				particle.mpComputeShader->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
-				ShaderStorageBuffer::PutMemoryBarrier();
-				particle.mpComputeShader->Unbind();
-				particle.mpParticleDataStorage->Unbind(2);
-
-				mpParticleShader->Use();
-				mpParticleShader->SetMat4("Model", particle.mModel);
-				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
-				mpParticleShader->SetFloat("SpriteSize", particle.mPixelSize);
-
-				particle.mTex->Bind(4);
-				mpParticleShader->SetInt("Texx", 4);
-				particle.mpParticleVAO->Bind();
-
-				GLCall(glDrawArrays(GL_POINTS, 0, particle.mParticlesCount));
-				particle.mTex->Unbind(4);
-				mpParticlesPositionStorage->Unbind(3);
-				particle.mpParticleVAO->Unbind();
 			}
-			else if (particle.mType == MODEL)
+			else if (particle.emitter->mType == MODEL)
 			{
-				particle.mpParticleDataStorage->Bind(2);
 				mpParticlesModelStorage->Bind(3);
+			}
+			
+			particle.emitter->mpComputeShader->Use();
+			particle.emitter->mpComputeShader->SetInt("Pause", PauseParticles);
+			particle.emitter->mpComputeShader->SetVec3("Center", particle.emitter->mCenter);
+			particle.emitter->mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
+			particle.emitter->mpComputeShader->SetVec2("SpeedRange", particle.emitter->mSpeedRange);
+			particle.emitter->mpComputeShader->SetVec2("LifeRange", particle.emitter->mLifeRange);
+			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mParticlesCount / 128, 1, 1);
+			ShaderStorageBuffer::PutMemoryBarrier();
+			particle.emitter->mpComputeShader->Unbind();
+			particle.emitter->mpParticleDataStorage->Unbind(2);
 
-				particle.mpComputeShader->Use();
-				particle.mpComputeShader->SetVec3("Center", particle.mCenter);
-				particle.mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
-				particle.mpComputeShader->SetVec2("SpeedRange", particle.mSpeedRange);
-				particle.mpComputeShader->SetVec2("LifeRange", particle.mLifeRange);
-				particle.mpComputeShader->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
-				ShaderStorageBuffer::PutMemoryBarrier();
-				particle.mpComputeShader->Unbind();
-				particle.mpParticleDataStorage->Unbind(2);
+			if (particle.emitter->mType == POINT)
+			{
+				mpParticleShader->Use();
+				mpParticleShader->SetMat4("Model", particle.emitter->mModel);
+				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
+				mpParticleShader->SetFloat("SpriteSize", particle.emitter->mPixelSize);
 
+				particle.emitter->mTex->Bind(4);
+				mpParticleShader->SetInt("Texx", 4);
+				particle.emitter->mpParticleVAO->Bind();
+
+				GLCall(glDrawArrays(GL_POINTS, 0, particle.emitter->mParticlesCount));
+				particle.emitter->mTex->Unbind(4);
+				mpParticlesPositionStorage->Unbind(3);
+				particle.emitter->mpParticleVAO->Unbind();
+			}
+			else if (particle.emitter->mType == MODEL)
+			{				
 				mpModelParticleShader->Use();
-				mpModelParticleShader->SetMat4("View", cameraData.mViewMatrix);
-				mpModelParticleShader->SetMat4("Projection", cameraData.mProjectionMatrix);
-				mpModelParticleShader->SetMat4("Model", particle.mModel);
-				particle.mpParticleVAO->Bind();
-				for (Mesh* mesh : particle.mParticleModel)
+				mpModelParticleShader->SetMat4("Model", particle.emitter->mModel);
+				particle.emitter->mpParticleVAO->Bind();
+				for (Mesh* mesh : particle.emitter->mParticleModel)
 				{
-					if (mesh->mMaterialIndex != -1 && particle.mParticleMaterials.size() > 0)
+					if (mesh->mMaterialIndex != -1 && particle.emitter->mParticleMaterials.size() > 0)
 					{
-						MaterialData* materialdata = particle.mParticleMaterials[mesh->mMaterialIndex];
+						MaterialData* materialdata = particle.emitter->mParticleMaterials[mesh->mMaterialIndex];
 						if (materialdata->mpDiffuse)
 						{
 							materialdata->mpDiffuse->Bind(3);
@@ -1046,19 +1042,19 @@ namespace Hollow {
 						else
 						{
 							mpModelParticleShader->SetInt("HasTexture", 0);
-							mpModelParticleShader->SetVec3("DiffuseColor", particle.mParticleColor);
+							mpModelParticleShader->SetVec3("DiffuseColor", particle.emitter->mParticleColor);
 						}
 					}
 					mesh->mpVAO->Bind();
 					mesh->mpVBO->Bind();
 					mesh->mpEBO->Bind();
-					GLCall(glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.mParticlesCount));
+					GLCall(glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.emitter->mParticlesCount));
 					mesh->mpEBO->Unbind();
 					mesh->mpVBO->Unbind();
 					mesh->mpVAO->Unbind();
-					if (mesh->mMaterialIndex != -1 && particle.mParticleMaterials.size() > 0)
+					if (mesh->mMaterialIndex != -1 && particle.emitter->mParticleMaterials.size() > 0)
 					{
-						MaterialData* materialdata = particle.mParticleMaterials[mesh->mMaterialIndex];
+						MaterialData* materialdata = particle.emitter->mParticleMaterials[mesh->mMaterialIndex];
 						if (materialdata->mpDiffuse)
 						{
 							materialdata->mpDiffuse->Unbind(3);
@@ -1067,7 +1063,7 @@ namespace Hollow {
 				}
 				mpModelParticleShader->Unbind();
 				mpParticlesModelStorage->Unbind(3);
-				particle.mpParticleVAO->Unbind();
+				particle.emitter->mpParticleVAO->Unbind();
 			}
 		}
 		glDisable(GL_BLEND);
@@ -1282,6 +1278,7 @@ namespace Hollow {
 		DebugDisplayIBL();
 		DebugDisplayPostProcessing();
 		ImGui::Checkbox("Particle System", &ShowParticles);
+		ImGui::Checkbox("Pause Particle System", &PauseParticles);
 		ImGui::Checkbox("Show Debug", &mShowDebugDrawing);
 	}
 

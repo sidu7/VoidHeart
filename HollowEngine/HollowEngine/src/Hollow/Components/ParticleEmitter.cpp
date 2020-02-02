@@ -18,6 +18,7 @@ namespace Hollow
 	void ParticleEmitter::Init()
 	{
 		mCount = 0;
+		mActive = true;
 		mTexture = nullptr;
 		mModelMatrix = glm::mat4(1.0f);
 		mpComputeShader = nullptr;
@@ -27,6 +28,7 @@ namespace Hollow
 		mLifeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
+		mParticleColor = glm::vec3(0.0f);
 		mPixelSize = 0.0f;
 
 		mDType = -1;
@@ -58,6 +60,10 @@ namespace Hollow
 				mParticleModel = ResourceManager::Instance().LoadModel(mDModelPath);
 				mParticleMaterials = ResourceManager::Instance().LoadMaterials(mDModelPath);
 			}
+		}
+		if (data.HasMember("Active"))
+		{
+			mActive = data["Active"].GetBool();
 		}
 		if (data.HasMember("Area"))
 		{

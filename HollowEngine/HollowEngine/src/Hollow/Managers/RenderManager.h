@@ -170,6 +170,7 @@ namespace Hollow {
 		Shader* mpModelParticleShader;
 		ShaderStorageBuffer* mpParticlesModelStorage;
 		bool ShowParticles;
+		bool PauseParticles;
 
 		// Post-Processing
 		Shader* mpAAShader;
