@@ -5,6 +5,7 @@
 #include "ImGuiManager.h"
 
 #include "Hollow/Components/Material.h"
+#include "Hollow/Components/ParticleEmitter.h"
 
 #include "Hollow/Graphics/GameWindow.h"
 #include "Hollow/Graphics/Shader.h"
@@ -986,7 +987,7 @@ namespace Hollow {
 			ParticleData& particle = mParticleData[i];
 			mpParticleShader->SetInt("Type", particle.emitter->mType);
 			
-			particle.emitter->mpParticleDataStorage->Bind(2);
+			particle.emitter->mpParticleStorage->Bind(2);
 			if (particle.emitter->mType == POINT)
 			{
 				mpParticlesPositionStorage->Bind(3);
@@ -998,35 +999,36 @@ namespace Hollow {
 			
 			particle.emitter->mpComputeShader->Use();
 			particle.emitter->mpComputeShader->SetInt("Pause", PauseParticles);
-			particle.emitter->mpComputeShader->SetVec3("Center", particle.emitter->mCenter);
+			particle.emitter->mpComputeShader->SetInt("Active", particle.emitter->mActive);
+			particle.emitter->mpComputeShader->SetVec3("Center", particle.emitter->mCenterOffset);
 			particle.emitter->mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
 			particle.emitter->mpComputeShader->SetVec2("SpeedRange", particle.emitter->mSpeedRange);
 			particle.emitter->mpComputeShader->SetVec2("LifeRange", particle.emitter->mLifeRange);
-			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mParticlesCount / 128, 1, 1);
+			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mCount / 128, 1, 1);
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();
-			particle.emitter->mpParticleDataStorage->Unbind(2);
+			particle.emitter->mpParticleStorage->Unbind(2);
 
 			if (particle.emitter->mType == POINT)
 			{
 				mpParticleShader->Use();
-				mpParticleShader->SetMat4("Model", particle.emitter->mModel);
+				mpParticleShader->SetMat4("Model", particle.emitter->mModelMatrix);
 				mpParticleShader->SetVec2("ScreenSize", glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight()));
 				mpParticleShader->SetFloat("SpriteSize", particle.emitter->mPixelSize);
 
-				particle.emitter->mTex->Bind(4);
+				particle.emitter->mTexture->Bind(4);
 				mpParticleShader->SetInt("Texx", 4);
 				particle.emitter->mpParticleVAO->Bind();
 
-				GLCall(glDrawArrays(GL_POINTS, 0, particle.emitter->mParticlesCount));
-				particle.emitter->mTex->Unbind(4);
+				GLCall(glDrawArrays(GL_POINTS, 0, particle.emitter->mCount));
+				particle.emitter->mTexture->Unbind(4);
 				mpParticlesPositionStorage->Unbind(3);
 				particle.emitter->mpParticleVAO->Unbind();
 			}
 			else if (particle.emitter->mType == MODEL)
 			{				
 				mpModelParticleShader->Use();
-				mpModelParticleShader->SetMat4("Model", particle.emitter->mModel);
+				mpModelParticleShader->SetMat4("Model", particle.emitter->mModelMatrix);
 				particle.emitter->mpParticleVAO->Bind();
 				for (Mesh* mesh : particle.emitter->mParticleModel)
 				{
@@ -1048,7 +1050,7 @@ namespace Hollow {
 					mesh->mpVAO->Bind();
 					mesh->mpVBO->Bind();
 					mesh->mpEBO->Bind();
-					GLCall(glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.emitter->mParticlesCount));
+					GLCall(glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.emitter->mCount));
 					mesh->mpEBO->Unbind();
 					mesh->mpVBO->Unbind();
 					mesh->mpVAO->Unbind();

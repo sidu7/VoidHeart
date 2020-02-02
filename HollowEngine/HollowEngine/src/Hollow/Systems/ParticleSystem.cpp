@@ -32,11 +32,7 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			ParticleEmitter* emitter = mGameObjects[i]->GetComponent<ParticleEmitter>();
-			if (!emitter->mActive)
-			{
-				continue;
-			}
-
+			
 			Transform* transform = mGameObjects[i]->GetComponent<Transform>();
 			ParticleData particle;
 			glm::mat4 model = glm::mat4(1.0f);
@@ -49,28 +45,24 @@ namespace Hollow
 	}
 
 	void ParticleSystem::UpdateAttributes(ParticleEmitter* emitter)
-	{
+	{					
+		emitter->mpParticleStorage = new ShaderStorageBuffer();
+		emitter->mpParticleStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
+		Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer(true));
 
-		//if (emitter->mType == ParticleType::POINT)
-		{			
-			emitter->mpParticleStorage = new ShaderStorageBuffer();
-			emitter->mpParticleStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
-			Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer(true));
+		auto randomizer = Random::Range(-1.0f,1.0f);
 
-			auto randomizer = Random::Range(-1.0f,1.0f);
-
-			for (unsigned int i = 0; i < emitter->mCount; ++i)
-			{
-				float x = randomizer(); float y = randomizer(); float z = randomizer();
-				particles[i].mPosition = glm::vec3(x,y,z);			
-				particles[i].mSpeed = 0.0f;
-				particles[i].mLife = 0.0f;
-				particles[i].mCurrentLife = 0.0f;
-				particles[i].mDirection = glm::vec3(0.0f);
-			}
-
-			emitter->mpParticleStorage->ReleaseBufferPointer();
-			emitter->mpParticlePositionVAO = new VertexArray();			
+		for (unsigned int i = 0; i < emitter->mCount; ++i)
+		{
+			float x = randomizer(); float y = randomizer(); float z = randomizer();
+			particles[i].mPosition = glm::vec3(x,y,z);			
+			particles[i].mSpeed = 0.0f;
+			particles[i].mLife = 0.0f;
+			particles[i].mCurrentLife = 0.0f;
+			particles[i].mDirection = glm::vec3(0.0f);
 		}
+
+		emitter->mpParticleStorage->ReleaseBufferPointer();
+		emitter->mpParticleVAO = new VertexArray();					
 	}
 }

@@ -5,12 +5,7 @@ namespace Hollow
 
 #define MAX_PARTICLES_COUNT 2000000
 
-	class Mesh;
-	class VertexArray;
-	class VertexBuffer;
-	class Texture;
-	class ShaderStorageBuffer;
-	struct MaterialData;
+	class ParticleEmitter;
 
 	struct Particle
 	{

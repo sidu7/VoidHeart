@@ -20,6 +20,7 @@ namespace Hollow {
 	class FrameBuffer;
 	class UniformBuffer;
 	class TextRenderer;
+	class ShaderStorageBuffer;
 
 	/// <summary>
 	/// Class Rendering Manager.

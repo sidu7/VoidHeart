@@ -38,7 +38,7 @@ namespace Hollow
 
 	void ParticleEmitter::Clear()
 	{		
-		delete mpParticlePositionVAO;
+		delete mpParticleVAO;
 		delete mpParticleStorage;
 	}
 
@@ -108,6 +108,7 @@ namespace Hollow
 		JSONHelper::Write("ComputeShader", mComputeShaderPath, writer);
 		JSONHelper::Write("CenterOffset", mCenterOffset, writer);
 		JSONHelper::Write("PixelSize", mPixelSize, writer);
+		JSONHelper::Write("Active", mActive, writer);
 		JSONHelper::Write("ParticleColor", mParticleColor, writer);
 	}
 
@@ -115,6 +116,7 @@ namespace Hollow
 	{
 		ImGui::InputInt("Count", (int*)&mCount);
 		ImGui::InputInt("Shape", (int*)&mDType);
+		ImGui::Checkbox("Active", &mActive);
 		ImGuiHelper::InputText("Texture File", mDTexturePath);
 		ImGuiHelper::InputText("Model File", mDModelPath);
 		ImGui::InputFloat3("Area of Effect", (float*)&mAreaOfEffect);
@@ -123,6 +125,6 @@ namespace Hollow
 		ImGuiHelper::InputText("Compute Shader File", mComputeShaderPath);
 		ImGui::InputFloat3("Center Offset", (float*)&mCenterOffset);
 		ImGui::InputFloat("PixelSize", &mPixelSize);
-		ImGui::ColorPicker3("Particle Color", &mParticleColor[0]);
+		ImGui::ColorEdit3("Particle Color", &mParticleColor[0], ImGuiColorEditFlags_Float);
 	}	
 }

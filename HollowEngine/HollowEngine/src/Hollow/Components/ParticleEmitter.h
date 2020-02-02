@@ -73,7 +73,7 @@ namespace Hollow
 		glm::vec3 mParticleColor;
 		Shader* mpComputeShader;
 		ShaderStorageBuffer* mpParticleStorage;
-		VertexArray* mpParticlePositionVAO;
+		VertexArray* mpParticleVAO;
 		//TODO: direction data and scales
 	};
 }
