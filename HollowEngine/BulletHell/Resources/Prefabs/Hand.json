@@ -7,12 +7,11 @@
     {
       "Type": "UITransform",
       "Position": [ 1200.000, 50.0 ],
-      "Scale": [ 50, 50 ],
-      "Rotation": 3.141592
+      "Scale": [ 50, 50 ]
     },
     {
       "Type": "UIImage",
-      "Image": "Resources/Textures/Sp_Fire.png",
+      "Image": "Resources/Textures/UITest.png",
       "Shape": "QUAD",
       "Color": [ 0.0, 0.0, 1.0 ]
     },
@@ -31,7 +30,8 @@
     {
       "Type": "ParentOffset",
       "Parent": 0,
-      "Offset": [ 0.0, 0.0, 0.0 ]
+      "Offset": [ 0.0, 0.0, 0.0 ],
+      "Tag": "Hand"
     }
   ]
 }

@@ -22,6 +22,10 @@ namespace BulletHell
 		{
 			mSpellType = data["SpellType"].GetInt();
 		}
+		if (data.HasMember("UIRotation"))
+		{
+			mUIRotation = data["UIRotation"].GetFloat();
+		}
 	}
 
 	void Spell::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)

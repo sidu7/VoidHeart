@@ -29,11 +29,16 @@ namespace BulletHell
 		{
 			mOffset = Hollow::JSONHelper::GetVec3F(data["Offset"].GetArray());
 		}
+		if (data.HasMember("Tag"))
+		{
+			mTag = data["Tag"].GetString();
+		}
 	}
 
 	void ParentOffset::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
 		Hollow::JSONHelper::Write<glm::vec3>("Offset", mOffset, writer);
+		Hollow::JSONHelper::Write<std::string>("Tag", mTag, writer);
 	}
 
 	void ParentOffset::Clear()
@@ -44,5 +49,6 @@ namespace BulletHell
 	{
 		ImGui::Text("%i", mpOwner->mType);
 		ImGui::InputFloat3("Offset", &mOffset[0]);
+		Hollow::ImGuiHelper::InputText("Tag", mTag);
 	}
 }

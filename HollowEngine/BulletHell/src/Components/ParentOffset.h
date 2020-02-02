@@ -17,5 +17,6 @@ namespace BulletHell
 	public:
 		Hollow::GameObject* mpParent;
 		glm::vec3 mOffset;
+		std::string mTag;
 	};
 }

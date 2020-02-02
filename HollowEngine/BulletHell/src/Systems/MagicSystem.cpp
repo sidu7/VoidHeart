@@ -5,6 +5,8 @@
 #include "Components/Magic.h"
 #include "Components/Spell.h"
 
+#include "Events/CycleSpellEvent.h"
+
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
@@ -103,12 +105,20 @@ namespace BulletHell
 			// Get next spell
 			pMagic->mLeftHandSpell = GetNextSpell(pMagic, pMagic->mLeftHandSpell);
 			pMagic->mLeftHandScriptPath = pMagic->mLeftHandSpell->mScriptPath;
+
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("left");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
 		}
 		if (rightHandCycle)
 		{
 			// Get next spell
 			pMagic->mRightHandSpell = GetNextSpell(pMagic, pMagic->mRightHandSpell);
 			pMagic->mRightHandScriptPath = pMagic->mRightHandSpell->mScriptPath;
+
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("right");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
 		}
 
 		// Update combined spell script
@@ -138,7 +148,7 @@ namespace BulletHell
 
 		// Create new spell to add to player list
 		Spell* pSpell = pSpellObject->GetComponent<Spell>();
-		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType };
+		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation };
 		pPlayerMagic->mSpells.push_back(pSpellToAdd);
 
 		// Destroy spell object

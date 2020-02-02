@@ -17,6 +17,7 @@
 #include "Hollow/Core/GameMetaData.h"
 
 #include "DungeonGeneration/DungeonManager.h"
+#include "Systems/HandSystem.h"
 
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/UITransform.h"
@@ -61,18 +62,25 @@ public:
 		//BulletHell::DungeonManager::Instance().Generate();
 		// Create temporary spell object
 		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("FireballSpell", glm::vec3(125.0, 1.0, 65.0));
-		Hollow::GameObject* pLeftHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
 		
+		// TODO: Move the hand creation elsewhere, perhaps just after player creation
+		Hollow::GameObject* pLeftHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
 		BulletHell::ParentOffset* pParentOffset = pLeftHand->GetComponent<BulletHell::ParentOffset>();
 		pParentOffset->mOffset = glm::vec3(1.0f, 0.0f, 0.0f);
+		pParentOffset->mTag = "left";
 
 		Hollow::UITransform* pUITr = pLeftHand->GetComponent<Hollow::UITransform>();
-		pUITr->mPosition.x = 1100.0f;
+		pUITr->mScale = glm::vec2(128, 128);
+		pUITr->mPosition = glm::vec2(128, 128);
 
 		Hollow::GameObject* pRightHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
-
 		pParentOffset = pRightHand->GetComponent<BulletHell::ParentOffset>();
 		pParentOffset->mOffset = glm::vec3(-1.0f, 0.0f, 0.0f);
+		pParentOffset->mTag = "right";
+
+		pUITr = pRightHand->GetComponent<Hollow::UITransform>();
+		pUITr->mScale = glm::vec2(128, 128);
+		pUITr->mPosition = glm::vec2(1150, 128);
 
 	}
 

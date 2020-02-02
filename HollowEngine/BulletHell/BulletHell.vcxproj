@@ -207,6 +207,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
     <None Include="Resources\Prefabs\Player.json" />
+    <None Include="Resources\Prefabs\UIIcon.json" />
     <None Include="Resources\Scripts\BossAngry.lua" />
     <None Include="Resources\Scripts\BossHappy.lua" />
     <None Include="Resources\Scripts\BossPist.lua" />
@@ -265,6 +266,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\DungeonGeneration\DungeonFloor.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
+    <ClInclude Include="src\Events\CycleSpellEvent.h" />
     <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
     <ClInclude Include="src\GameMetaData\GameObjectType.h" />
