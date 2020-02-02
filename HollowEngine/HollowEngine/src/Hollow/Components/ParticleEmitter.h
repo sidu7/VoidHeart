@@ -12,6 +12,7 @@ namespace Hollow
 	class ShaderStorageBuffer;
 	struct Particle;
 	class Shader;
+	struct MaterialData;
 
 	class ParticleEmitter : public Component
 	{
@@ -49,23 +50,29 @@ namespace Hollow
 		unsigned int mDType;
 		std::string mComputeShaderPath;
 		std::string mDTexturePath;
+		std::string mDModelPath;
 		
 	public:
 		unsigned long mCount;
 		
 		// For Point particles
-		VertexArray* mpParticlePositionVAO;
 		Texture* mTexture;
 		glm::mat4 mModelMatrix;
-		ShaderStorageBuffer* mpParticleStorage;
-		Shader* mpComputeShader;
+		float mPixelSize;
+
+		// For Model particles
+		std::vector<Mesh*> mParticleModel;
+		std::vector<MaterialData*> mParticleMaterials;
 
 		ParticleType mType;
 		glm::vec2 mSpeedRange;
 		glm::vec2 mLifeRange;
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
-		float mPixelSize;
+		glm::vec3 mParticleColor;
+		Shader* mpComputeShader;
+		ShaderStorageBuffer* mpParticleStorage;
+		VertexArray* mpParticlePositionVAO;
 		//TODO: direction data and scales
 	};
 }

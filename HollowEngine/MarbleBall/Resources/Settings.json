@@ -13,12 +13,16 @@
     "Physics": {
         "CollisionMask": "src/GameMetaData/CollisionMask.data"
     },
-  "Events": {
-    "EventData": "src/GameMetaData/GameEventsMap.data"
-  },
+    "Events": {
+        "EventData": "src/GameMetaData/GameEventsMap.data"
+    },
   "Localization": {
     "LanguageFiles": "Resources/Localization",
     "DefaultLanguage": "English"
+  },
+  "Scripting": {
+    "FilePath": "Resources/Scripts/",
+    "FileExtension": ".lua"
   },
   "Renderer": {
     "GBufferShader": [ "Resources/Shaders/GBuffer.vert", "Resources/Shaders/GBuffer.frag" ],
@@ -26,19 +30,22 @@
     "ShadowMapShader": [ "Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag" ],
     "DebugShader": [ "Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag" ],
     "ParticleShader": [ "Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag" ],
+    "ModelParticleShader": [ "Resources/Shaders/ModelParticleSystem.vert", "Resources/Shaders/ModelParticleSystem.frag" ],
     "DebugShadowMapShader": [ "Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag" ],
     "BlurComputeShaders": [ "Resources/Shaders/HorizontalBlur.comp", "Resources/Shaders/VerticalBlur.comp" ],
     "LocalLightShader": [ "Resources/Shaders/LocalLight.vert", "Resources/Shaders/LocalLight.frag" ],
     "BloomShader": [ "Resources/Shaders/Bloom.vert", "Resources/Shaders/Bloom.frag" ],
     "UIShader": [ "Resources/Shaders/UIShader.vert", "Resources/Shaders/UIShader.frag" ],
     "UITextShader": [ "Resources/Shaders/TextRendering.vert", "Resources/Shaders/TextRendering.frag" ],
-    "Skydome": [ "Resources/Skydomes/Milkyway_small.hdr", "Resources/Skydomes/Milkyway_Light.hdr" ],
-    "Exposure": 4.0,
-    "Contrast": 1.0
+    "Skydome": [ "Resources/Skydomes/Newport_Loft_Ref.hdr", "Resources/Skydomes/Newport_Loft_Ref.irr.hdr" ]
   },
     "Memory":
     {
-            "GameobjectsPool": 2000,
-            "ComponentsPool": 2000
+        "GameobjectsPool": 2000,
+        "ComponentsPool": 2000,
+      "CustomPool": [
+        [ "Transform", 3000 ],
+        [ "Body", 1500 ]
+      ]
     }
 }

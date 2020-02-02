@@ -10,6 +10,7 @@ namespace Hollow
 	class VertexBuffer;
 	class Texture;
 	class ShaderStorageBuffer;
+	struct MaterialData;
 
 	struct Particle
 	{
@@ -20,7 +21,7 @@ namespace Hollow
 		float mSpeed;
 		float mLife;
 		float mCurrentLife;
-		glm::vec2 mPadding;
+		glm::vec3 mDirection;
 		//glm::vec3 mColor;
 	};
 
@@ -33,20 +34,19 @@ namespace Hollow
 
 	struct ParticleData
 	{
+		std::vector<MaterialData*> mParticleMaterials;
 		std::vector<Mesh*> mParticleModel;
 		VertexArray* mpParticleVAO;
-		VertexBuffer* mpParticleVBO;
 		unsigned int mParticlesCount;
 		glm::mat4 mModel;
 		Texture* mTex;
 		ParticleType mType;
-		std::vector<glm::vec4> mParticlePositionList;
-		std::vector<glm::mat4> mParticleModelMatrices;
 		ShaderStorageBuffer* mpParticleDataStorage;
 		glm::vec2 mSpeedRange;
 		glm::vec2 mLifeRange;
 		glm::vec3 mCenter;
 		Shader* mpComputeShader;
+		glm::vec3 mParticleColor;
 		float mPixelSize;
 	};
 }

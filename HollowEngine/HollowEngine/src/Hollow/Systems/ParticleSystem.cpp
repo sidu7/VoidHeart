@@ -34,13 +34,13 @@ namespace Hollow
 			ParticleEmitter* emitter = mGameObjects[i]->GetComponent<ParticleEmitter>();
 			Transform* transform = mGameObjects[i]->GetComponent<Transform>();
 			ParticleData particle;
-			if (emitter->mType == POINT)
+			//if (emitter->mType == POINT)
 			{	
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model, transform->mPosition + emitter->mCenterOffset);
 				emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
-				
-				particle.mType = POINT;
+				particle.mParticleModel = emitter->mParticleModel;
+				particle.mType = emitter->mType;
 				particle.mpParticleVAO = emitter->mpParticlePositionVAO;
 				particle.mCenter = transform->mPosition;
 				particle.mModel = emitter->mModelMatrix;
@@ -51,6 +51,8 @@ namespace Hollow
 				particle.mTex = emitter->mTexture;
 				particle.mpComputeShader = emitter->mpComputeShader;
 				particle.mPixelSize = emitter->mPixelSize;
+				particle.mParticleMaterials = emitter->mParticleMaterials;
+				particle.mParticleColor = emitter->mParticleColor;
 			}
 			
 			RenderManager::Instance().mParticleData.push_back(particle);
@@ -60,7 +62,7 @@ namespace Hollow
 	void ParticleSystem::UpdateAttributes(ParticleEmitter* emitter)
 	{
 
-		if (emitter->mType == ParticleType::POINT)
+		//if (emitter->mType == ParticleType::POINT)
 		{			
 			emitter->mpParticleStorage = new ShaderStorageBuffer();
 			emitter->mpParticleStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
@@ -75,7 +77,7 @@ namespace Hollow
 				particles[i].mSpeed = 0.0f;
 				particles[i].mLife = 0.0f;
 				particles[i].mCurrentLife = 0.0f;
-				particles[i].mPadding = glm::vec2(0.0f);
+				particles[i].mDirection = glm::vec3(0.0f);
 			}
 
 			emitter->mpParticleStorage->ReleaseBufferPointer();

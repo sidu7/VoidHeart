@@ -52,6 +52,12 @@ namespace Hollow
 				mDTexturePath = data["Texture"].GetString();
 				mTexture = ResourceManager::Instance().LoadTexture(mDTexturePath);
 			}
+			else if (mType == MODEL)
+			{
+				mDModelPath = data["Model"].GetString();
+				mParticleModel = ResourceManager::Instance().LoadModel(mDModelPath);
+				mParticleMaterials = ResourceManager::Instance().LoadMaterials(mDModelPath);
+			}
 		}
 		if (data.HasMember("Area"))
 		{
@@ -78,6 +84,10 @@ namespace Hollow
 		{
 			mPixelSize = data["PixelSize"].GetFloat();
 		}
+		if (data.HasMember("ParticleColor"))
+		{
+			mParticleColor = JSONHelper::GetVec3F(data["ParticleColor"].GetArray());
+		}
 	}
 
 	void ParticleEmitter::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -85,12 +95,14 @@ namespace Hollow
 		JSONHelper::Write("Count", mCount, writer);
 		JSONHelper::Write("Shape", mDType, writer);
 		JSONHelper::Write("Texture", mDTexturePath, writer);
+		JSONHelper::Write("Model", mDModelPath, writer);
 		JSONHelper::Write("Area", mAreaOfEffect, writer);
 		JSONHelper::Write("Speed", mSpeedRange, writer);
 		JSONHelper::Write("Life", mLifeRange, writer);
 		JSONHelper::Write("ComputeShader", mComputeShaderPath, writer);
 		JSONHelper::Write("CenterOffset", mCenterOffset, writer);
 		JSONHelper::Write("PixelSize", mPixelSize, writer);
+		JSONHelper::Write("ParticleColor", mParticleColor, writer);
 	}
 
 	void ParticleEmitter::DebugDisplay()
@@ -98,11 +110,13 @@ namespace Hollow
 		ImGui::InputInt("Count", (int*)&mCount);
 		ImGui::InputInt("Shape", (int*)&mDType);
 		ImGuiHelper::InputText("Texture File", mDTexturePath);
+		ImGuiHelper::InputText("Model File", mDModelPath);
 		ImGui::InputFloat3("Area of Effect", (float*)&mAreaOfEffect);
 		ImGui::InputFloat2("Speed Range", (float*)&mSpeedRange);
 		ImGui::InputFloat2("Life Range", (float*)&mLifeRange);
 		ImGuiHelper::InputText("Compute Shader File", mComputeShaderPath);
 		ImGui::InputFloat3("Center Offset", (float*)&mCenterOffset);
 		ImGui::InputFloat("PixelSize", &mPixelSize);
+		ImGui::ColorPicker3("Particle Color", &mParticleColor[0]);
 	}	
 }

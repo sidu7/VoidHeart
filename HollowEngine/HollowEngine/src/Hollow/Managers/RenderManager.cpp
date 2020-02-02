@@ -77,11 +77,24 @@ namespace Hollow {
 		mShowDebugDrawing = false;
 
 		// Init Particle Shader
+		// Point Particles
 		mpParticleShader = new Shader(data["ParticleShader"].GetArray()[0].GetString(), data["ParticleShader"].GetArray()[1].GetString());
 		mpParticlesPositionStorage = new ShaderStorageBuffer();
 		mpParticlesPositionStorage->CreateBuffer(MAX_PARTICLES_COUNT * sizeof(glm::vec4));
 		ShowParticles = true;
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
+
+		// Model Particles
+		if (data.HasMember("ModelParticleShader"))
+		{
+			mpModelParticleShader = new Shader(data["ModelParticleShader"].GetArray()[0].GetString(), data["ModelParticleShader"].GetArray()[1].GetString());
+			mpParticlesModelStorage = new ShaderStorageBuffer();
+			mpParticlesModelStorage->CreateBuffer(MAX_PARTICLES_COUNT * 0.5f * sizeof(glm::mat4));
+		}
+		else
+		{
+			mpModelParticleShader = mpParticleShader;
+		}
 
 		// Init AA Shader
 		mpAAShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/fxaa.frag");
@@ -1001,22 +1014,60 @@ namespace Hollow {
 			}
 			else if (particle.mType == MODEL)
 			{
-				particle.mpParticleVBO->AddSubData(
-					&particle.mParticleModelMatrices[0], // data
-					static_cast<unsigned>(particle.mParticleModelMatrices.size()), static_cast<unsigned>(sizeof(glm::mat4))); // size of data to be sent
+				particle.mpParticleDataStorage->Bind(2);
+				mpParticlesModelStorage->Bind(3);
 
+				particle.mpComputeShader->Use();
+				particle.mpComputeShader->SetVec3("Center", particle.mCenter);
+				particle.mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
+				particle.mpComputeShader->SetVec2("SpeedRange", particle.mSpeedRange);
+				particle.mpComputeShader->SetVec2("LifeRange", particle.mLifeRange);
+				particle.mpComputeShader->DispatchCompute(particle.mParticlesCount / 128, 1, 1);
+				ShaderStorageBuffer::PutMemoryBarrier();
+				particle.mpComputeShader->Unbind();
+				particle.mpParticleDataStorage->Unbind(2);
+
+				mpModelParticleShader->Use();
+				mpModelParticleShader->SetMat4("View", cameraData.mViewMatrix);
+				mpModelParticleShader->SetMat4("Projection", cameraData.mProjectionMatrix);
+				mpModelParticleShader->SetMat4("Model", particle.mModel);
+				particle.mpParticleVAO->Bind();
 				for (Mesh* mesh : particle.mParticleModel)
 				{
+					if (mesh->mMaterialIndex != -1 && particle.mParticleMaterials.size() > 0)
+					{
+						MaterialData* materialdata = particle.mParticleMaterials[mesh->mMaterialIndex];
+						if (materialdata->mpDiffuse)
+						{
+							materialdata->mpDiffuse->Bind(3);
+							mpModelParticleShader->SetInt("DiffuseTexture", 3);
+							mpModelParticleShader->SetInt("HasTexture", 1);
+						}
+						else
+						{
+							mpModelParticleShader->SetInt("HasTexture", 0);
+							mpModelParticleShader->SetVec3("DiffuseColor", particle.mParticleColor);
+						}
+					}
 					mesh->mpVAO->Bind();
 					mesh->mpVBO->Bind();
 					mesh->mpEBO->Bind();
-					particle.mpParticleVBO->Bind();
-					glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.mParticlesCount);
-					particle.mpParticleVBO->Unbind();
+					GLCall(glDrawElementsInstanced(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0, particle.mParticlesCount));
 					mesh->mpEBO->Unbind();
 					mesh->mpVBO->Unbind();
 					mesh->mpVAO->Unbind();
+					if (mesh->mMaterialIndex != -1 && particle.mParticleMaterials.size() > 0)
+					{
+						MaterialData* materialdata = particle.mParticleMaterials[mesh->mMaterialIndex];
+						if (materialdata->mpDiffuse)
+						{
+							materialdata->mpDiffuse->Unbind(3);
+						}
+					}
 				}
+				mpModelParticleShader->Unbind();
+				mpParticlesModelStorage->Unbind(3);
+				particle.mpParticleVAO->Unbind();
 			}
 		}
 		glDisable(GL_BLEND);
