@@ -48,6 +48,7 @@ namespace Hollow
 		/// <param name="data">The settings data.</param>
 		HOLLOW_API void Init(rapidjson::Value::Object& data);
 
+		HOLLOW_API void UpdateScale(GameObject* pGo);
 	public:
 		// Data
 		DynamicAABBTree mTree;

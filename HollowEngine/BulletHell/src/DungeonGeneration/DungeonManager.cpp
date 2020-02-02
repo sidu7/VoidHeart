@@ -41,14 +41,11 @@ namespace BulletHell
 
     void DungeonManager::Generate()
     {
-        const int w = 10;
-        const int h = 10;
-        const int numFloors = 10;
 
         for (int i = 0; i < numFloors; i++)
         {
-            DungeonFloor dungeonFloor(w, h, 1);
-            int numRooms = 10 + 2 * i;
+            DungeonFloor dungeonFloor(length, breadth, 1);
+            int numRooms = firstFloorRoomCount + 2 * i;
             dungeonFloor.Generate(numRooms, mSeed + i);
             mFloors.push_back(dungeonFloor);
             dungeonFloor.PrintFloor(1);
@@ -76,6 +73,24 @@ namespace BulletHell
     void DungeonManager::Construct()
     {
         mFloors[0].ConstructFloor();
+    }
+
+    void DungeonManager::ConfigureDungeon()
+    {
+    	// Set the configuration values read from GameConfig.lua into DungeonManager class
+        auto& luaState = Hollow::ScriptingManager::Instance().lua;
+        firstFloorRoomCount = luaState["firstFloorRoomCount"];
+        numFloors = luaState["numFloors"];
+        length = luaState["dungeonLength"];
+        breadth = luaState["dungeonBreadth"];
+
+        DungeonRoom::mWallLength = luaState["wallLength"];
+        DungeonRoom::mWallHeight = luaState["wallHeight"];
+        DungeonRoom::mWallThickness = luaState["wallThickness"];
+        DungeonRoom::mRoomSize = luaState["roomSize"];
+        DungeonRoom::mDoorWidth = luaState["doorWidth"];
+        DungeonRoom::mDoorHeight = luaState["doorHeight"];
+        DungeonRoom::mDoorThickness = luaState["doorThickness"];
     }
 
     unsigned DungeonManager::GetSeed()

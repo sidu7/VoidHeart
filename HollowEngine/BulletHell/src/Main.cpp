@@ -52,13 +52,15 @@ public:
 		Application::Init("Resources/Settings.json");
 
 		Hollow::SceneManager::Instance().LoadLevel("Level3");
+		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
 
 		PushLayer(new GameLayer());
 
+		BulletHell::DungeonManager::Instance().ConfigureDungeon();
         BulletHell::DungeonManager::Instance().Init();
 		//BulletHell::DungeonManager::Instance().Generate();
 
-		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
+		
 		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
 	}
 

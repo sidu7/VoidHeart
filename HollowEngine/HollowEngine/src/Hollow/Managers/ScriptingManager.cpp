@@ -134,6 +134,7 @@ namespace Hollow
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));
 		lua.set_function("CreatePrefabAtPosition", &ResourceManager::LoadPrefabAtPosition, std::ref(ResourceManager::Instance()));
+		lua.set_function("CreateScaledPrefabAtPosition", &ResourceManager::LoadScaledPrefabAtPosition, std::ref(ResourceManager::Instance()));
 
 		// PHYSICS
 		lua.set_function("ApplyLinearImpulse", &PhysicsManager::ApplyLinearImpulse, std::ref(PhysicsManager::Instance()));
