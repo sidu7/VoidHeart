@@ -26,7 +26,8 @@ namespace BulletHell
 			sol::constructors<Attack()>(),
 			"baseAttackTime", &Attack::mBaseAttackTime,
 			"currentAttackTime", &Attack::mCurrentAttackTime,
-			"IsFired", &Attack::mIsFired
+			"IsFired", &Attack::mIsFired,
+			"shouldAttack", &Attack::mShouldAttack
 			);
 
 		// Add get attack component to lua
@@ -38,16 +39,8 @@ namespace BulletHell
 		mDeltaTime = Hollow::FrameRateController::Instance().GetFrameTime();
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			// Handle player attack script
-			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
-			{
-				PlayerAttackUpdate(mGameObjects[i]);
-			}
-			// Handle enemy attack script for now
-			else
-			{
-				EnemyAttackUpdate(mGameObjects[i]);
-			}
+			// Run attack script for game object
+			FireAttack(mGameObjects[i]);
 		}
 	}
 
@@ -64,31 +57,14 @@ namespace BulletHell
 	{
 	}
 
-	void AttackSystem::PlayerAttackUpdate(Hollow::GameObject* pPlayer)
+	void AttackSystem::FireAttack(Hollow::GameObject* pGameObject)
 	{
 		// Check buttons/axis directions and fire player attack script
-		Attack* pAttack = pPlayer->GetComponent<Attack>();
+		Attack* pAttack = pGameObject->GetComponent<Attack>();
 		pAttack->mCurrentAttackTime += mDeltaTime;
 
 		// Fire player lua script
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
 		lua.script_file(pAttack->mScriptPath);
-
-	}
-
-	void AttackSystem::EnemyAttackUpdate(Hollow::GameObject* pEnemy)
-	{
-		Attack* pAttack = pEnemy->GetComponent<Attack>();
-		pAttack->mCurrentAttackTime += mDeltaTime;
-		// Fire attack and reset attack timer
-		if (mpPlayerBody != nullptr)
-		{
-			auto& lua = Hollow::ScriptingManager::Instance().lua;
-
-			lua["attack"] = pAttack;
-			lua["followObject"] = pEnemy;
-			lua["followPosition"] = mpPlayerBody->mPosition;
-			lua.script_file(pAttack->mScriptPath);
-		}
 	}
 }
