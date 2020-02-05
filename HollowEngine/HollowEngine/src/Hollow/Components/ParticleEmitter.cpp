@@ -18,6 +18,10 @@ namespace Hollow
 	void ParticleEmitter::Init()
 	{
 		mCount = 0;
+		mMaxCount = 0;
+		mEmissionRate = 0;
+		mDrawCount = 0;
+		
 		mActive = true;
 		mTexture = nullptr;
 		mModelMatrix = glm::mat4(1.0f);
@@ -26,6 +30,7 @@ namespace Hollow
 		
 		mSpeedRange = glm::vec2(0.0f);
 		mLifeRange = glm::vec2(0.0f);
+		mSizeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(0.0f);
 		mParticleColor = glm::vec3(0.0f);
@@ -44,7 +49,14 @@ namespace Hollow
 
 	void ParticleEmitter::Serialize(rapidjson::Value::Object data)
 	{
-		mCount = static_cast<unsigned long>(data["Count"].GetUint64());
+		if (data.HasMember("MaxCount"))
+		{
+			mMaxCount = static_cast<unsigned long>(data["MaxCount"].GetUint64());
+		}
+		if(data.HasMember("EmissionRate"))
+		{
+			mEmissionRate = static_cast<unsigned long>(data["EmissionRate"].GetUint64());
+		}
 		if (data.HasMember("Shape"))
 		{
 			mDType = data["Shape"].GetUint();
@@ -94,17 +106,23 @@ namespace Hollow
 		{
 			mParticleColor = JSONHelper::GetVec3F(data["ParticleColor"].GetArray());
 		}
+		if(data.HasMember("Size"))
+		{
+			mSizeRange = JSONHelper::GetVec2F(data["Size"].GetArray());
+		}
 	}
 
 	void ParticleEmitter::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
-		JSONHelper::Write("Count", mCount, writer);
+		JSONHelper::Write("MaxCount", mMaxCount, writer);
+		JSONHelper::Write("EmissionRate", mEmissionRate, writer);
 		JSONHelper::Write("Shape", mDType, writer);
 		JSONHelper::Write("Texture", mDTexturePath, writer);
 		JSONHelper::Write("Model", mDModelPath, writer);
 		JSONHelper::Write("Area", mAreaOfEffect, writer);
 		JSONHelper::Write("Speed", mSpeedRange, writer);
 		JSONHelper::Write("Life", mLifeRange, writer);
+		JSONHelper::Write("Size", mSizeRange, writer);
 		JSONHelper::Write("ComputeShader", mComputeShaderPath, writer);
 		JSONHelper::Write("CenterOffset", mCenterOffset, writer);
 		JSONHelper::Write("PixelSize", mPixelSize, writer);
@@ -114,14 +132,16 @@ namespace Hollow
 
 	void ParticleEmitter::DebugDisplay()
 	{
-		ImGui::InputInt("Count", (int*)&mCount);
+		ImGui::InputInt("MaxCount", (int*)&mMaxCount);
+		ImGui::InputInt("EmissionRate", (int*)&mEmissionRate);
 		ImGui::InputInt("Shape", (int*)&mDType);
 		ImGui::Checkbox("Active", &mActive);
 		ImGuiHelper::InputText("Texture File", mDTexturePath);
 		ImGuiHelper::InputText("Model File", mDModelPath);
 		ImGui::InputFloat3("Area of Effect", (float*)&mAreaOfEffect);
-		ImGui::InputFloat2("Speed Range", (float*)&mSpeedRange);
-		ImGui::InputFloat2("Life Range", (float*)&mLifeRange);
+		ImGui::InputFloat2("Speed Range", &mSpeedRange[0]);
+		ImGui::InputFloat2("Life Range", &mLifeRange[0]);
+		ImGui::InputFloat2("Size Range", &mSizeRange[0]);
 		ImGuiHelper::InputText("Compute Shader File", mComputeShaderPath);
 		ImGui::InputFloat3("Center Offset", (float*)&mCenterOffset);
 		ImGui::InputFloat("PixelSize", &mPixelSize);

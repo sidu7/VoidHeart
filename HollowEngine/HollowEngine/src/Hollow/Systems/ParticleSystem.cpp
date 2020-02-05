@@ -32,7 +32,22 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			ParticleEmitter* emitter = mGameObjects[i]->GetComponent<ParticleEmitter>();
-			
+
+			float fps = 1.0f / FrameRateController::Instance().GetFrameTime();
+			float deltaParticles = emitter->mEmissionRate / fps;		
+			if (emitter->mDrawCount + deltaParticles < emitter->mMaxCount)
+			{
+				emitter->mDrawCount += deltaParticles;
+			}
+			if(emitter->mActive)
+			{
+				emitter->mCount = emitter->mDrawCount;
+			}
+			else
+			{
+				emitter->mDrawCount = 0;
+			}
+
 			Transform* transform = mGameObjects[i]->GetComponent<Transform>();
 			ParticleData particle;
 			glm::mat4 model = glm::mat4(1.0f);
@@ -47,12 +62,12 @@ namespace Hollow
 	void ParticleSystem::UpdateAttributes(ParticleEmitter* emitter)
 	{					
 		emitter->mpParticleStorage = new ShaderStorageBuffer();
-		emitter->mpParticleStorage->CreateBuffer(emitter->mCount * sizeof(Particle));
+		emitter->mpParticleStorage->CreateBuffer(emitter->mMaxCount * sizeof(Particle));
 		Particle* particles = static_cast<Particle*>(emitter->mpParticleStorage->GetBufferWritePointer(true));
 
 		auto randomizer = Random::Range(-1.0f,1.0f);
 
-		for (unsigned int i = 0; i < emitter->mCount; ++i)
+		for (unsigned int i = 0; i < emitter->mMaxCount; ++i)
 		{
 			float x = randomizer(); float y = randomizer(); float z = randomizer();
 			particles[i].mPosition = glm::vec3(x,y,z);			

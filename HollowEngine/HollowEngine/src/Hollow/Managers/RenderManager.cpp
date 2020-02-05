@@ -90,7 +90,7 @@ namespace Hollow {
 		{
 			mpModelParticleShader = new Shader(data["ModelParticleShader"].GetArray()[0].GetString(), data["ModelParticleShader"].GetArray()[1].GetString());
 			mpParticlesModelStorage = new ShaderStorageBuffer();
-			mpParticlesModelStorage->CreateBuffer(MAX_PARTICLES_COUNT * 0.5f * sizeof(glm::mat4));
+			mpParticlesModelStorage->CreateBuffer(MAX_PARTICLES_COUNT * 0.5f * (sizeof(glm::mat4) + sizeof(glm::vec4)));
 		}
 		else
 		{
@@ -1004,7 +1004,8 @@ namespace Hollow {
 			particle.emitter->mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
 			particle.emitter->mpComputeShader->SetVec2("SpeedRange", particle.emitter->mSpeedRange);
 			particle.emitter->mpComputeShader->SetVec2("LifeRange", particle.emitter->mLifeRange);
-			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mCount / 128, 1, 1);
+			particle.emitter->mpComputeShader->SetVec2("ScaleRange", particle.emitter->mSizeRange);			
+			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mMaxCount / 128, 1, 1);
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();
 			particle.emitter->mpParticleStorage->Unbind(2);

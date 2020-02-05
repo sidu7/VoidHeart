@@ -54,6 +54,9 @@ namespace Hollow
 		
 	public:
 		unsigned long mCount;
+		unsigned long mDrawCount;
+		unsigned long mMaxCount;
+		unsigned long mEmissionRate;
 		
 		// For Point particles
 		Texture* mTexture;
@@ -68,6 +71,7 @@ namespace Hollow
 		bool mActive;
 		glm::vec2 mSpeedRange;
 		glm::vec2 mLifeRange;
+		glm::vec2 mSizeRange;
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
 		glm::vec3 mParticleColor;

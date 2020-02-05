@@ -8951,12 +8951,14 @@
         },
         {
           "Type": "ParticleEmitter",
-          "Count": 1000,
+          "MaxCount": 1000,
+          "EmissionRate": 100,
           "Shape": 1,
           "Model": "Resources/Models/Plane.fbx",
           "Area": [ 5.0, 5.0, 5.0 ],
           "Speed": [ 2.0, 5.0 ],
           "Life": [ 2.0, 6.0 ],
+          "Size": [0.1,0.5],
           "ComputeShader": "Resources/Shaders/CenterModelParticles.comp",
           "PixelSize": 0.5
         }
