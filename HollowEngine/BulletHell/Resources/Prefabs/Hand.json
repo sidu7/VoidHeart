@@ -1,0 +1,37 @@
+{
+  "Type": "HAND",
+  "Components": [
+    {
+      "Type": "Transform"
+    },
+    {
+      "Type": "UITransform",
+      "Position": [ 1200.000, 50.0 ],
+      "Scale": [ 50, 50 ]
+    },
+    {
+      "Type": "UIImage",
+      "Image": "Resources/Textures/UITest.png",
+      "Shape": "QUAD",
+      "Color": [ 0.0, 0.0, 1.0 ]
+    },
+    {
+      "Type": "ParticleEmitter",
+      "Shape": 0,
+      "Texture": "Resources/Textures/star.png",
+      "Count": 100000,
+      "Area": [ 0.2, 0.2, 0.2 ],
+      "Life": [ 4.0, 9.0 ],
+      "Speed": [ 1.5, 2.0 ],
+      "ComputeShader": "Resources/Shaders/RainParticles.comp",
+      "CenterOffset": [ 0.0, 0.0, 0.0 ],
+      "PixelSize": 0.1
+    },
+    {
+      "Type": "ParentOffset",
+      "Parent": 0,
+      "Offset": [ 0.0, 0.0, 0.0 ],
+      "Tag": "Hand"
+    }
+  ]
+}

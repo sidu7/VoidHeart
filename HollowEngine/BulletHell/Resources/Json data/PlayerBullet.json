@@ -24,9 +24,13 @@
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-	  "Diffuse": [0.0, 2.0, 0.0],
+      "Diffuse": [ 0.0, 2.0, 0.0 ],
       "Shininess": 10.0,
       "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime":  0.5
     }
   ]
 }

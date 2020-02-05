@@ -54,7 +54,6 @@
     <None Include="Resources\Shaders\VerticalBlur.comp" />
     <None Include="Resources\Json data\Camera.json" />
     <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\Floor.json" />
     <None Include="Resources\Json data\Light.json" />
     <None Include="Resources\Json data\LocalLight.json" />
     <None Include="Resources\Scripts\test.lua" />
@@ -73,6 +72,10 @@
     <None Include="Resources\Json data\UIElement.json" />
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
+    <None Include="Resources\Json data\Rooms\Wall.json" />
+    <None Include="Resources\Prefabs\Player.json" />
+    <None Include="Resources\Prefabs\Floor.json" />
+    <None Include="Resources\Prefabs\UIIcon.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">
@@ -112,6 +115,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Systems\MagicSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DungeonGeneration\DungeonFloor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Spell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\ParentOffset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\HandSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -156,6 +177,30 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Systems\MagicSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DungeonGeneration\DungeonFloor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DungeonGeneration\DungeonManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DungeonGeneration\DungeonRoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameMetaData\DungeonRoomType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Spell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\ParentOffset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\HandSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\CycleSpellEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

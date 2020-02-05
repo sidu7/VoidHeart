@@ -8,7 +8,11 @@ namespace BulletHell
 
 	void Magic::Init()
 	{
-
+		// Set left and right hand spells to empty
+		SpellData* pEmptySpell = new SpellData{ "EMPTY", "Resources/Scripts/Spells/Sp_Empty.lua", 0, 0.0f, 0.1f, "Resources/Textures/star.png", 1.0f};
+		mSpells.push_back(pEmptySpell);
+		mLeftHandSpell = pEmptySpell;
+		mRightHandSpell = pEmptySpell;
 	}
 
 	void Magic::Serialize(rapidjson::Value::Object data)
@@ -45,13 +49,18 @@ namespace BulletHell
 		Hollow::ImGuiHelper::InputText("Right Hand Path", mRightHandScriptPath);
 		Hollow::ImGuiHelper::InputText("Combine Hand Path", mCombineHandScriptPath);
 
-		/*ImGui::Columns(2, 0, true);
-		ImGui::Separator();
-		ImGui::Text("ID"); ImGui::NextColumn();
+		ImGui::Text("Right Hand Spell %s", mRightHandSpell->mName.c_str());
+		ImGui::Text("Left Hand Spell %s", mLeftHandSpell->mName.c_str());
+
+		//ImGui::Columns(2, 0, true);
+		//ImGui::Separator();
+		//ImGui::Text("ID"); ImGui::NextColumn();
 		for (auto& spell : mSpells)
 		{
-			ImGui::Text("");
-		}*/
+			ImGui::Text("%s", spell->mName);
+			ImGui::Text("RH CD: %f", spell->mRightHandCooldown); ImGui::SameLine();
+			ImGui::Text("LH CD: %f", spell->mLeftHandCooldown);
+		}
 	}
 	
 }
