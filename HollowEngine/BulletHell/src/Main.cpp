@@ -36,9 +36,13 @@ void Hollow::GameMetaData::Init()
 
 class GameLayer : public Hollow::Layer
 {
-	void OnUpdate()
+	void OnUpdate(float dt)
 	{
 		// Update Game managers here
+        ImGui::Begin("Seed");
+        ImGui::Text("%u", BulletHell::DungeonManager::Instance().GetSeed());
+        ImGui::End();
+
 	}
 };
 

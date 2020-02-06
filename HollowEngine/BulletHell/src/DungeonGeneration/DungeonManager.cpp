@@ -15,6 +15,8 @@ namespace BulletHell
     void DungeonManager::Init()
     {
         //mSeed = 521288629;
+        auto randomizer = Random::Range(0, MAXINT);
+        mSeed = randomizer();
         Generate();
 
 		// LUA Bindings for Dungeon Classes
