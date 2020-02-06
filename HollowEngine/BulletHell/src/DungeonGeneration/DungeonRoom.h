@@ -1,10 +1,13 @@
 #pragma once
 #include "GameMetaData/DungeonRoomType.h"
 #include <glm/glm.hpp>
+#include "Hollow.h"
+#include "Hollow/Core/GameObject.h"
 
 namespace BulletHell
 {
     class DungeonFloor;
+    class DungeonManager;
     class DungeonRoom
     {
         friend DungeonFloor;
@@ -26,20 +29,28 @@ namespace BulletHell
             , int floorNum, int xCoord, int yCoord);
         DungeonRoom& operator=(const DungeonRoom& room);
         glm::ivec2 GetCoords() const;
-		
+		int GetFloorNum() const { return mFloorNum; }
     private:
         int TotalDoors() const;
     public:
         void ConstructRoom();
 
-    private:
+        static float mWallLength;
+        static float mWallHeight;
+        static float mRoomSize;
+        static float mWallThickness;
+        static float mDoorWidth;
+        static float mDoorHeight;
+        static float mDoorThickness;
+        int mEnemyCount;
+        std::vector<Hollow::GameObject*> mDoorGOs;
+    private:    	
         DungeonRoomType mRoomType;
-        //DungeonRoomShape mRoomShape; // ALEKSEY: delete this if we never use this
-        int mRoomID;	 // unique id of the room
+        int mRoomID;   // unique id of the room
         int mDoors;    // flag field for 4 doors
         int mFloorNum; // floor number of the room (owner id)
-        int mXcoord;   // position in the grid of the floor
-        int mYcoord;   // position in the grid of the floor
+        int mColumn;   // position in the grid of the floor
+        int mRow;      // position in the grid of the floor
         int mDistFromEntrance;
     };
 }

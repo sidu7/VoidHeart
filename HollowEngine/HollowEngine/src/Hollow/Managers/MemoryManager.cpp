@@ -78,13 +78,28 @@ namespace Hollow
 
 	void MemoryManager::Init(rapidjson::Value::Object& data)
 	{
+		std::unordered_map<std::string, int> customComponentPool;
+
+		auto components = data["CustomPool"].GetArray();
+
+		for (int i = 0; i < components.Size(); ++i)
+		{
+			auto comp = components[i].GetArray();
+			customComponentPool[comp[0].GetString()] = comp[1].GetInt();
+		}
+
 		// Create Components Pool
 		unsigned int maxComponents = data["ComponentsPool"].GetUint();
 		for (unsigned int i = 0; i < mComponents.size(); ++i)
 		{
 			Component* component = mComponents[i].second->CreateComponent();
 			std::list<Component*> newlist;
-			for (unsigned int i = 0; i < maxComponents; ++i)
+			unsigned int size = maxComponents;
+			if (customComponentPool.find(component->mComponentName) != customComponentPool.end())
+			{
+				size = customComponentPool[component->mComponentName];
+			}
+			for (unsigned int i = 0; i < size; ++i)
 			{
 				newlist.push_back(component->CreateComponent());
 			}

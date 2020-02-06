@@ -1,6 +1,7 @@
 #include "DungeonManager.h"
 #include <Hollow.h>
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 namespace BulletHell
 {
@@ -14,18 +15,39 @@ namespace BulletHell
     void DungeonManager::Init()
     {
         //mSeed = 521288629;
+        auto randomizer = Random::Range(0, MAXINT);
+        mSeed = randomizer();
         Generate();
+
+		// LUA Bindings for Dungeon Classes
+		// Send attack component to lua
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<DungeonFloor>("DungeonFloor",
+			sol::constructors<DungeonFloor()>(),
+			"GetRoom", &DungeonFloor::GetRoom,
+			"GetRoomFromIndex", &DungeonFloor::GetRoomFromIndex,
+			"GetRoomCount", &DungeonFloor::GetRoomCount,
+			"GetEntrance", &DungeonFloor::GetEntrance,
+			"GetEntranceIndex", &DungeonFloor::GetEntranceIndex
+			);
+
+		lua.new_usertype<DungeonRoom>("DungeonRoom",
+			sol::constructors<DungeonRoom()>(),
+			"GetFloorNum", &DungeonRoom::GetFloorNum,
+			"GetCoords", &DungeonRoom::GetCoords
+			);
+
+		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
     }
+
     void DungeonManager::Generate()
     {
-        const int w = 10;
-        const int h = 10;
-        const int numFloors = 10;
 
         for (int i = 0; i < numFloors; i++)
         {
-            DungeonFloor dungeonFloor(w, h, 1);
-            int numRooms = 10 + 2 * i;
+            DungeonFloor dungeonFloor(length, breadth, 1);
+            int numRooms = firstFloorRoomCount + 2 * i;
             dungeonFloor.Generate(numRooms, mSeed + i);
             mFloors.push_back(dungeonFloor);
             dungeonFloor.PrintFloor(1);
@@ -53,9 +75,24 @@ namespace BulletHell
     void DungeonManager::Construct()
     {
         mFloors[0].ConstructFloor();
-        int startRoom = mFloors[0].GetEntranceIndex();
-        glm::ivec2 coords = mFloors[0].GetEntrance().GetCoords();
-        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Player", glm::vec3(coords.y * 15 +  7.5f, 2.0f, coords.x * 15 + 7.5f));
+    }
+
+    void DungeonManager::ConfigureDungeon()
+    {
+    	// Set the configuration values read from GameConfig.lua into DungeonManager class
+        auto& luaState = Hollow::ScriptingManager::Instance().lua;
+        firstFloorRoomCount = luaState["firstFloorRoomCount"];
+        numFloors = luaState["numFloors"];
+        length = luaState["dungeonLength"];
+        breadth = luaState["dungeonBreadth"];
+
+        DungeonRoom::mWallLength = luaState["wallLength"];
+        DungeonRoom::mWallHeight = luaState["wallHeight"];
+        DungeonRoom::mWallThickness = luaState["wallThickness"];
+        DungeonRoom::mRoomSize = luaState["roomSize"];
+        DungeonRoom::mDoorWidth = luaState["doorWidth"];
+        DungeonRoom::mDoorHeight = luaState["doorHeight"];
+        DungeonRoom::mDoorThickness = luaState["doorThickness"];
     }
 
     unsigned DungeonManager::GetSeed()
@@ -68,7 +105,7 @@ namespace BulletHell
         return mFloors;
     }
 
-    DungeonFloor DungeonManager::GetFloor(int floorNumber)
+    DungeonFloor& DungeonManager::GetFloor(int floorNumber)
     {
         return mFloors[floorNumber];
     }

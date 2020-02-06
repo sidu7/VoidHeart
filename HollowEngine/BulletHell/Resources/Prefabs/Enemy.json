@@ -8,10 +8,9 @@
     },
     {
       "Type": "Body",
-      "Mass": 1000000.0,
+      "Mass": 10.0,
       "isFrictionLess": true,
-      "RigidbodyType":  "DYNAMIC",
-      "Velocity": [ 0.0, 0.0, 4.0 ]
+      "RigidbodyType":  "DYNAMIC"
     },
     {
       "Type": "Collider",
@@ -29,19 +28,8 @@
       "MaterialData": "Resources/Models/Walking.fbx"
     },
     {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Walking.fbx",
-      "Animations": [ [ "Walking", "Resources/Models/NarutoRun.fbx" ] ]
-    },
-    {
-      "Type": "StateMachine",
-      "StateFile": "Resources/State data/npcstate.json",
-      "StartState": "Walking"
-    },
-    {
-      "Type": "Attack",
-      "Script": "Resources/Scripts/ShootAtThePlayer.lua",
-      "BaseAttackTime": 100.0
+      "Type": "Script",
+      "Scripts": [ "ShootAtThePlayer" ]
     }
   ]
 }

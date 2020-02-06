@@ -46,7 +46,7 @@ namespace BulletHell
         auto entranceCol = Random::RangeSeeded(0, mWidth - 1);
         mEntranceIndex = Index(entranceRow, entranceCol);
         mRooms[mEntranceIndex].Set(DungeonRoomType::ENTRANCE, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, entranceRow, entranceCol);
-
+		mIndexValidRooms.push_back(Index(entranceRow, entranceCol));
         // precompute distance of other rooms from entrance
         for (int col = 0; col < mWidth; col++)
         {
@@ -93,6 +93,7 @@ namespace BulletHell
                 break;
             }
             mRooms[currentRoomIndex].Set(DungeonRoomType::REGULAR, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, row, col);
+			mIndexValidRooms.push_back(currentRoomIndex);
             UpdateDoors(currentRoomIndex);
 
             // update the pool of possible places for the rooms 
@@ -129,7 +130,7 @@ namespace BulletHell
         mRooms[furthestRoom].mRoomType = DungeonRoomType::BOSS;
     }
 
-    const DungeonRoom& DungeonFloor::GetRoom(int row, int col) const 
+    DungeonRoom& DungeonFloor::GetRoom(int row, int col) 
     {
         return mRooms.at(row * mWidth + col);
     }
@@ -329,10 +330,25 @@ namespace BulletHell
 
     void DungeonFloor::ConstructFloor()
     {
-    	for(auto room : mRooms)
+    	for(int i = 0; i < mRooms.size(); i++)
     	{
-    		if(room.mRoomType != DungeonRoomType::EMPTY)
+            DungeonRoom& room = mRooms[i];
+            if (room.mRoomType != DungeonRoomType::EMPTY)
+            {
 				room.ConstructRoom();
+                if (room.mDoors & DungeonRoom::DoorDirrection::RIGHT)
+                {
+                    mRooms[i + 1].mDoorGOs.push_back(room.mDoorGOs[0]);
+                    if (room.mDoors & DungeonRoom::DoorDirrection::DOWN)
+                    {
+                        mRooms[i + mWidth].mDoorGOs.push_back(room.mDoorGOs[1]);
+                    }
+                }
+                else if (room.mDoors & DungeonRoom::DoorDirrection::DOWN)
+                {
+                    mRooms[i + mWidth].mDoorGOs.push_back(room.mDoorGOs[0]);
+                }
+            }
     	}
     }
 }

@@ -1,6 +1,6 @@
 {
     
-    "Type": "WALL",
+    "Type": "DOOR",
     "Active": true,
     "Components": [
         {
@@ -26,19 +26,19 @@
             "isTrigger": false
         },
         {
-            "Type": "Material",
-            "Diffuse": [
-                0.8,
-                0.8,
-                0.8
-            ],
-            "Specular": [
-                0.5,
-                0.5,
-                0.5
-            ],
-            "Shininess": 10.0,
-            "MaterialTextures": true
+          "Type": "Material",
+          "Diffuse": [
+            1.0,
+            0.65,
+            0.0
+          ],
+          "Specular": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "Shininess": 1000.0,
+          "MaterialTextures": true
         }
     ]
 }

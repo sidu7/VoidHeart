@@ -4,6 +4,8 @@
 
 #include "Hollow/Components/Transform.h"
 
+#include "Hollow/Managers/GameObjectManager.h"
+
 namespace BulletHell
 {
 	Attack Attack::instance;
@@ -27,6 +29,19 @@ namespace BulletHell
 		{
 			mFireOnce = data["FireOnce"].GetBool();
 		}
+        if (data.HasMember("Target"))
+        {
+            int targetType = data["Target"].GetInt();
+            std::vector<Hollow::GameObject*> possibleTarget = Hollow::GameObjectManager::Instance().GetObjectByType(targetType);
+            if (possibleTarget.empty())
+            {
+                mpTarget = nullptr;
+            }
+            else
+            {
+                mpTarget = possibleTarget[0];
+            }
+        }
 	}
 
 	void Attack::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -57,4 +72,4 @@ namespace BulletHell
 			lua.script_file(mScriptPath);
 		}
 	}
-}
+} 

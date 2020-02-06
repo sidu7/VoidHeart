@@ -178,6 +178,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\Ambient.vert" />
     <None Include="Resources\Shaders\Bloom.frag" />
     <None Include="Resources\Shaders\Bloom.vert" />
+    <None Include="Resources\Shaders\CenterModelParticles.comp" />
     <None Include="Resources\Shaders\CenterParticles.comp" />
     <None Include="Resources\Shaders\Debug.frag" />
     <None Include="Resources\Shaders\Debug.vert" />
@@ -193,6 +194,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\HorizontalBlur.comp" />
     <None Include="Resources\Shaders\LocalLight.frag" />
     <None Include="Resources\Shaders\LocalLight.vert" />
+    <None Include="Resources\Shaders\ModelParticleSystem.frag" />
+    <None Include="Resources\Shaders\ModelParticleSystem.vert" />
     <None Include="Resources\Shaders\ParticleSystem.frag" />
     <None Include="Resources\Shaders\ParticleSystem.vert" />
     <None Include="Resources\Shaders\Phong.frag" />

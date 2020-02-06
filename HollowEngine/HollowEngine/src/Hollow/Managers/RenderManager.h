@@ -20,6 +20,7 @@ namespace Hollow {
 	class FrameBuffer;
 	class UniformBuffer;
 	class TextRenderer;
+	class ShaderStorageBuffer;
 
 	/// <summary>
 	/// Class Rendering Manager.
@@ -167,7 +168,10 @@ namespace Hollow {
 		// ParticleSystem
 		Shader* mpParticleShader;
 		ShaderStorageBuffer* mpParticlesPositionStorage;
+		Shader* mpModelParticleShader;
+		ShaderStorageBuffer* mpParticlesModelStorage;
 		bool ShowParticles;
+		bool PauseParticles;
 
 		// Post-Processing
 		Shader* mpAAShader;

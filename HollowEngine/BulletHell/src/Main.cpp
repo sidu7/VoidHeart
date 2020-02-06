@@ -8,6 +8,7 @@
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 #include "Components/Health.h"
 #include "Components/ParentOffset.h"
@@ -39,9 +40,13 @@ void Hollow::GameMetaData::Init()
 
 class GameLayer : public Hollow::Layer
 {
-	void OnUpdate()
+	void OnUpdate(float dt)
 	{
 		// Update Game managers here
+        ImGui::Begin("Seed");
+        ImGui::Text("%u", BulletHell::DungeonManager::Instance().GetSeed());
+        ImGui::End();
+
 	}
 };
 
@@ -55,34 +60,16 @@ public:
 		Application::Init("Resources/Settings.json");
 
 		Hollow::SceneManager::Instance().LoadLevel("Level3");
+		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
 
 		PushLayer(new GameLayer());
 
+		BulletHell::DungeonManager::Instance().ConfigureDungeon();
         BulletHell::DungeonManager::Instance().Init();
 		//BulletHell::DungeonManager::Instance().Generate();
-		// Create temporary spell object
-		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("FireSpell", glm::vec3(125.0, 1.0, 65.0));
-		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("AirSpell", glm::vec3(115.0, 1.0, 65.0));
+
 		
-		// TODO: Move the hand creation elsewhere, perhaps just after player creation
-		Hollow::GameObject* pLeftHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
-		BulletHell::ParentOffset* pParentOffset = pLeftHand->GetComponent<BulletHell::ParentOffset>();
-		pParentOffset->mOffset = glm::vec3(1.0f, 0.0f, 0.0f);
-		pParentOffset->mTag = "left";
-
-		Hollow::UITransform* pUITr = pLeftHand->GetComponent<Hollow::UITransform>();
-		pUITr->mScale = glm::vec2(128, 128);
-		pUITr->mPosition = glm::vec2(128, 128);
-
-		Hollow::GameObject* pRightHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
-		pParentOffset = pRightHand->GetComponent<BulletHell::ParentOffset>();
-		pParentOffset->mOffset = glm::vec3(-1.0f, 0.0f, 0.0f);
-		pParentOffset->mTag = "right";
-
-		pUITr = pRightHand->GetComponent<Hollow::UITransform>();
-		pUITr->mScale = glm::vec2(128, 128);
-		pUITr->mPosition = glm::vec2(1150, 128);
-
+		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
 	}
 
 	~BulletHellGame()

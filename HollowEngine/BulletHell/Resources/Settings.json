@@ -40,7 +40,11 @@
   },
     "Memory":
     {
-            "GameobjectsPool": 2000,
-            "ComponentsPool": 2000
+        "GameobjectsPool": 2000,
+        "ComponentsPool": 2000,
+      "CustomPool": [
+        [ "Transform", 3000 ],
+        [ "Body", 1500 ]
+      ]
     }
 }

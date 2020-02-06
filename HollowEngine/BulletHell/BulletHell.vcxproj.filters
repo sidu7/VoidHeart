@@ -75,6 +75,11 @@
     <None Include="Resources\Json data\Rooms\Wall.json" />
     <None Include="Resources\Prefabs\Player.json" />
     <None Include="Resources\Prefabs\Floor.json" />
+    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
+    <None Include="Resources\Scripts\SetupLevel.lua" />
+    <None Include="Resources\Scripts\GameConfig.lua" />
+    <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
+    <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Prefabs\UIIcon.json" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +138,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Systems\HandSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\AISettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -201,6 +209,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\CycleSpellEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\AISettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
