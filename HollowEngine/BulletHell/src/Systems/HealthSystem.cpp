@@ -36,8 +36,8 @@ namespace BulletHell
 
 			// Update player HP bar
 			Hollow::UIText* pHPText = mGameObjects[i]->GetComponent<Hollow::UIText>();
-			std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap[pHPText->mTag];
-			pHPText->mText = ss + std::to_string(pHealth->mHitPoints);
+			//std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap[pHPText->mTag];
+			//pHPText->mText = ss + std::to_string(pHealth->mHitPoints);
 			
 			// Update invincibility time
 			if (pHealth->mInvincible)
@@ -84,12 +84,12 @@ namespace BulletHell
 
 				// Create new UI object
 				// TODO: Fix how this is being done
-				Hollow::GameObject* pUI = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json Data/UIElement.json");
+				/*Hollow::GameObject* pUI = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json Data/UIElement.json");
 				Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
 				pUIText->mOffsetPosition = glm::vec2(400.0f, 300.0f);
 				pUIText->mTextScale = glm::vec2(4.0f, 4.0f);
 				pUIText->mText = gameEndText;
-				pUIText->mChangingText = true;
+				pUIText->mChangingText = true;*/
 			}
 		}
 	}

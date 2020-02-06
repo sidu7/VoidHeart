@@ -189,7 +189,7 @@ namespace Hollow
 			}
 		}
 		HW_CORE_INFO("Scene {0} has been loaded", LevelFile);
-		SystemManager::Instance().OnSceneInit();
+		//SystemManager::Instance().OnSceneInit();
 	}
 
 	void SceneManager::DeserializeGameObject()

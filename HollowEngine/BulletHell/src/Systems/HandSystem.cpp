@@ -30,6 +30,28 @@ namespace BulletHell
 		SubscribeToEvents();
 	}
 
+	void HandSystem::OnSceneInit()
+	{
+		// TODO: Move the hand creation elsewhere, perhaps just after player creation
+		Hollow::GameObject* pLeftHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
+		BulletHell::ParentOffset* pParentOffset = pLeftHand->GetComponent<BulletHell::ParentOffset>();
+		pParentOffset->mOffset = glm::vec3(1.0f, 0.0f, 0.0f);
+		pParentOffset->mTag = "left";
+
+		Hollow::UITransform* pUITr = pLeftHand->GetComponent<Hollow::UITransform>();
+		pUITr->mScale = glm::vec2(128, 128);
+		pUITr->mPosition = glm::vec2(128, 128);
+
+		Hollow::GameObject* pRightHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
+		pParentOffset = pRightHand->GetComponent<BulletHell::ParentOffset>();
+		pParentOffset->mOffset = glm::vec3(-1.0f, 0.0f, 0.0f);
+		pParentOffset->mTag = "right";
+
+		pUITr = pRightHand->GetComponent<Hollow::UITransform>();
+		pUITr->mScale = glm::vec2(128, 128);
+		pUITr->mPosition = glm::vec2(1150, 128);
+	}
+
 	void HandSystem::Update()
 	{
 		// Check if UI objects have been/should be created

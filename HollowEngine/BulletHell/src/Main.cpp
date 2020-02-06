@@ -43,9 +43,7 @@ class GameLayer : public Hollow::Layer
 	void OnUpdate(float dt)
 	{
 		// Update Game managers here
-        ImGui::Begin("Seed");
-        ImGui::Text("%u", BulletHell::DungeonManager::Instance().GetSeed());
-        ImGui::End();
+        
 
 	}
 };
@@ -66,10 +64,9 @@ public:
 
 		BulletHell::DungeonManager::Instance().ConfigureDungeon();
         BulletHell::DungeonManager::Instance().Init();
-		//BulletHell::DungeonManager::Instance().Generate();
-
 		
 		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
+		Hollow::SystemManager::Instance().OnSceneInit();
 	}
 
 	~BulletHellGame()

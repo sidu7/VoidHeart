@@ -8,6 +8,7 @@ namespace BulletHell
 		REGISTERSYSTEM(HandSystem, 4);
 	public:
 		void Init() override;
+		void OnSceneInit() override;
 		void Update() override;
 		void AddGameObject(Hollow::GameObject* pGameObject) override;
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
