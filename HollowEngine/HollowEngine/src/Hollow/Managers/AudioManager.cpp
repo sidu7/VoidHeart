@@ -2,6 +2,7 @@
 
 #include "AudioManager.h"
 #include "ResourceManager.h"
+#include "ImGuiManager.h"
 
 namespace Hollow {
 	void AudioManager::Init() 
@@ -42,7 +43,10 @@ namespace Hollow {
 		// Set sound modes for each category
 		mModes[SOUND_EFFECT] = FMOD_DEFAULT | FMOD_LOOP_OFF;
 		mModes[SOUND_BACKGROUND] = FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL;
-		mModes[SOUND_UI] = FMOD_DEFAULT | FMOD_LOOP_OFF;		
+		mModes[SOUND_UI] = FMOD_DEFAULT | FMOD_LOOP_OFF;
+
+		// Add to ImGui debug display
+		ImGuiManager::Instance().AddDisplayFunction("Audio", std::bind(&AudioManager::DebugDisplay, &AudioManager::Instance()));
 	}
 
 	void AudioManager::CleanUp()

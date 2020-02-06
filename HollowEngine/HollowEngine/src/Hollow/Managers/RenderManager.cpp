@@ -97,6 +97,9 @@ namespace Hollow {
 
 		// Init Text Renderer
 		mpTextRenderer = new TextRenderer();
+
+		// Add to ImGui debug display
+		ImGuiManager::Instance().AddDisplayFunction("Renderer", std::bind(&RenderManager::DebugDisplay, &RenderManager::Instance()));
 	}
 
 	void RenderManager::CleanUp()

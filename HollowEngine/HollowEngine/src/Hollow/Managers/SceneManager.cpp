@@ -18,6 +18,9 @@ namespace Hollow
 		mSelectedComponentName = "";
 		mSelectedComponent = nullptr;
 		mSelectedGameObject = nullptr;
+
+		// Add to ImGui debug display
+		ImGuiManager::Instance().AddDisplayFunction("Scene", std::bind(&SceneManager::DebugDisplay, &SceneManager::Instance()));
 	}
 
 	void SceneManager::CleanUp()
