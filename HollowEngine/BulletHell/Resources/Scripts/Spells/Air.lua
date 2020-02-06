@@ -1,4 +1,3 @@
---Default attack script before gaining any spells
 function FireAttack()
 	local impulse = vec3.new()
 	local dashSpeed = 1500.0
@@ -16,11 +15,11 @@ function FireAttack()
 end
 
 function CheckValidAttack()
-	attack = gameObject:GetAttack()
+	local attack = gameObject:GetAttack()
 	if attack.shouldAttack then
 		FireAttack()
 		attack.currentAttackTime = 0.0
-		attack.shouldAttack = false;
+		attack.shouldAttack = false
 	end
 end
 

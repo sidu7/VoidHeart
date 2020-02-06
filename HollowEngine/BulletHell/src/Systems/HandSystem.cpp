@@ -59,6 +59,14 @@ namespace BulletHell
 
 			pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition;
 		}
+
+		// Update combined spell UI image
+		Magic* pMagic = mpPlayerObject->GetComponent<Magic>();
+		if (pMagic->mCombinedSpell != nullptr)
+		{
+			Hollow::UIImage* pUIImg = mpCombinedHandUI->GetComponent<Hollow::UIImage>();
+			pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pMagic->mCombinedSpell->mUITexturePath);
+		}
 	}
 
 	void HandSystem::AddGameObject(Hollow::GameObject* pGameObject)
@@ -84,7 +92,7 @@ namespace BulletHell
 		mpLeftHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(128, 128), "Resources/Textures/UIHightlight.png");
 
 		// Create combined hand UI
-		mpCombinedHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(600, 128), "Resources/Textures/UIHightlight.png");
+		mpCombinedHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(600, 128), "Resources/Textures/UICombined.png");
 	}
 
 	void HandSystem::SubscribeToEvents()
@@ -121,7 +129,7 @@ namespace BulletHell
 	{
 		// Convert event to cycle spell event
 		CycleSpellEvent& pCycleSpellEvent = dynamic_cast<CycleSpellEvent&>(event);
-		
+
 		// Get spell rotation value from the player object
 		Hollow::GameObject* pHandUIObj = nullptr;
 		Hollow::GameObject* pHandObj = nullptr;
@@ -139,7 +147,7 @@ namespace BulletHell
 			pSpellData = pMagic->mRightHandSpell;
 			pHandObj = mpRightHand;
 		}
-		
+
 		// Update rotation of the hightlight icon
 		Hollow::UITransform* pUITr = pHandUIObj->GetComponent<Hollow::UITransform>();
 		pUITr->mRotation = pSpellData->mUIRotation;

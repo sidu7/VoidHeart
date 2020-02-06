@@ -1,0 +1,40 @@
+{
+  "Type": "PLAYER_AOE",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Model",
+      "Shape": "BALL",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 10.0, 10.0, 10.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 5.5
+    },
+    {
+      "Type": "Script",
+      "Scripts": ["Grow"]
+    }
+  ]
+}

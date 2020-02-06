@@ -1,0 +1,42 @@
+{
+  "Type": "SPELL",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 0.75, 0.75, 0.75 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Model",
+      "Shape": "BALL",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 30.0, 30.0, 30.0 ],
+      "Shininess": 10000.0,
+      "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "Spell",
+      "Name": "Air",
+      "Script": "Resources/Scripts/Spells/Air.lua",
+      "SpellType": 2,
+      "UIRotation": 3.14159,
+      "ParticleSize": 0.0,
+      "ParticleTexture": "Resources/Textures/cracks.png",
+      "Cooldown": 0.5
+    }
+  ]
+}

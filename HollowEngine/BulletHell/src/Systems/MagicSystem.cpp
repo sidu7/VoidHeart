@@ -36,6 +36,11 @@ namespace BulletHell
 			Attack* pAttack = mGameObjects[i]->GetComponent<Attack>();
 			Magic* pMagic = mGameObjects[i]->GetComponent<Magic>();
 
+			if (pMagic->mLeftHandSpell == nullptr || pMagic->mRightHandSpell == nullptr)
+			{
+				continue;
+			}
+
 			// Check if player wants to cycle/change spells
 			UpdateSelectedSpells(pMagic);
 
@@ -77,13 +82,18 @@ namespace BulletHell
 				}
 
 				// Set attack flag
-				//pAttack->mShouldAttack = mLeftHandPressed || mRightHandPressed;
-				if (mLeftHandPressed && (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f))
+				// Check combined spell first
+				if (mLeftHandPressed && mRightHandPressed && (pMagic->mCombinedSpell->mCombinedCooldown < 0.016f))
+				{
+					pAttack->mShouldAttack = true;
+					pMagic->mCombinedSpell->mCombinedCooldown = pMagic->mCombinedSpell->mCooldown * pMagic->mCombinedSpell->mCooldownModifier;
+				}
+				else if (mLeftHandPressed && (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f))
 				{
 					pAttack->mShouldAttack = true;
 					pMagic->mLeftHandSpell->mLeftHandCooldown = pMagic->mLeftHandSpell->mCooldown * pMagic->mLeftHandSpell->mCooldownModifier;
 				}
-				if (mRightHandPressed && (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f))
+				else if (mRightHandPressed && (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f))
 				{
 					pAttack->mShouldAttack = true;
 					pMagic->mRightHandSpell->mRightHandCooldown = pMagic->mRightHandSpell->mCooldown * pMagic->mRightHandSpell->mCooldownModifier;
@@ -138,20 +148,24 @@ namespace BulletHell
 		}
 
 		// Update combined spell script
-		int combinedSpell = pMagic->mLeftHandSpell->mSpellType & pMagic->mRightHandSpell->mSpellType;
-		if (combinedSpell == (SpellType::FIRE & SpellType::FIRE))
-		{
-			pMagic->mCombineHandScriptPath = "Resources/Scripts/Spells/Sp_Flames.lua";
-		}
+		int combinedSpell = pMagic->mLeftHandSpell->mSpellType | pMagic->mRightHandSpell->mSpellType;
+		pMagic->mCombinedSpell = pMagic->mCombinedSpells.at(combinedSpell);
+		pMagic->mCombineHandScriptPath = pMagic->mCombinedSpell->mScriptPath;
 	}
 
 	void MagicSystem::UpdateSpellCooldowns(Magic* pMagic)
 	{
 		// Updated all spell cooldowns for left AND right hand
-		for (auto spell : pMagic->mSpells)
+		for (auto& spell : pMagic->mSpells)
 		{
 			spell->mLeftHandCooldown = std::max(0.0f, spell->mLeftHandCooldown - mDeltaTime);
 			spell->mRightHandCooldown = std::max(0.0f, spell->mRightHandCooldown - mDeltaTime);
+		}
+
+		// Update all combined spell cooldowns
+		for (auto& spell : pMagic->mCombinedSpells)
+		{
+			spell.second->mCombinedCooldown = std::max(0.0f, spell.second->mCombinedCooldown - mDeltaTime);
 		}
 	}
 
@@ -177,7 +191,20 @@ namespace BulletHell
 		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation, pSpell->mParticleSize, pSpell->mParticleTexturePath, pSpell->mCooldown };
 		pPlayerMagic->mSpells.push_back(pSpellToAdd);
 
-		// Add new spell combinations to combined spell list
+		// Check if player has initial spell values set
+		if (pPlayerMagic->mLeftHandSpell == nullptr)
+		{
+			pPlayerMagic->mLeftHandSpell = pPlayerMagic->mSpells[0];
+		}
+		if (pPlayerMagic->mRightHandSpell == nullptr)
+		{
+			pPlayerMagic->mRightHandSpell = pPlayerMagic->mSpells[0];
+		}
+		if (pPlayerMagic->mCombinedSpell == nullptr)
+		{
+			int combinedSpellIndex = pPlayerMagic->mRightHandSpell->mSpellType & pPlayerMagic->mLeftHandSpell->mSpellType;
+			//pPlayerMagic->mCombinedSpell = mpCombinedSpellMap.at(combinedSpellIndex);
+		}
 
 		// Destroy spell object
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pSpellObject);

@@ -11,7 +11,8 @@ namespace BulletHell
 		FIRE = 1,
 		AIR = 2,
 		EARTH = 4,
-		WATER = 8
+		WATER = 8,
+		COMBINED = 16
 	};
 
 	class Spell : public Hollow::Component

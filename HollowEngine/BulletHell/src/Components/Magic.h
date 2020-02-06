@@ -23,8 +23,11 @@ namespace BulletHell
 			float mParticleSize;
 			std::string mParticleTexturePath;
 			float mCooldown;
+			std::string mUITexturePath;
+
 			float mRightHandCooldown;
 			float mLeftHandCooldown;
+			float mCombinedCooldown;
 			float mCooldownModifier = 1.0f;
 		};
 
@@ -38,7 +41,10 @@ namespace BulletHell
 		SpellData* mCombinedSpell;
 
 		std::vector<SpellData*> mSpells;
-		std::vector<SpellData*> mCombinedSpells;
+		static std::unordered_map<int, SpellData*> mCombinedSpells;
+
+	private:
+		static std::unordered_map<int, SpellData*> CreateSpellMap();
 
 	};
 }

@@ -65,6 +65,7 @@ namespace BulletHell
 
 		// Fire player lua script
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
+		lua["gameObject"] = pAttack->mpOwner;
 		lua.script_file(pAttack->mScriptPath);
 	}
 }

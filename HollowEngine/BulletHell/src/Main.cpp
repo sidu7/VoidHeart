@@ -61,7 +61,8 @@ public:
         BulletHell::DungeonManager::Instance().Init();
 		//BulletHell::DungeonManager::Instance().Generate();
 		// Create temporary spell object
-		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("FireballSpell", glm::vec3(125.0, 1.0, 65.0));
+		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("FireSpell", glm::vec3(125.0, 1.0, 65.0));
+		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("AirSpell", glm::vec3(115.0, 1.0, 65.0));
 		
 		// TODO: Move the hand creation elsewhere, perhaps just after player creation
 		Hollow::GameObject* pLeftHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");

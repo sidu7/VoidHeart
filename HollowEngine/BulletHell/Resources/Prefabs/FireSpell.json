@@ -31,11 +31,11 @@
     {
       "Type": "Spell",
       "Name": "Fireball",
-      "Script": "Resources/Scripts/Spells/Sp_Fireball.lua",
+      "Script": "Resources/Scripts/Spells/Fire.lua",
       "SpellType": 1,
-      "UIRotation": 3.1415,
+      "UIRotation": 1.570796,
       "ParticleSize": 0.0,
-      "ParticleTexture": "Resources/Textures/cracks.png",
+      "ParticleTexture": "Resources/Textures/star.png",
       "Cooldown": 0.5
     }
   ]
