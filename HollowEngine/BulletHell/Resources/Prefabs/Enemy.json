@@ -10,7 +10,7 @@
       "Type": "Body",
       "Mass": 10.0,
       "isFrictionLess": true,
-      "RigidbodyType":  "DYNAMIC"
+      "RigidbodyType": "DYNAMIC"
     },
     {
       "Type": "Collider",
@@ -30,6 +30,13 @@
     {
       "Type": "Script",
       "Scripts": [ "ShootAtThePlayer" ]
+    },
+    {
+      "Type": "Health",
+      "HitPoints": 100,
+      "IsAlive": true,
+      "Invincible": false,
+      "InvincibleTime": 3.0
     }
   ]
 }

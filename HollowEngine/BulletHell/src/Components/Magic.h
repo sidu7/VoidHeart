@@ -8,38 +8,27 @@ namespace BulletHell
 	{
 		REGISTERCOMPONENT(Magic);
 	public:
-		
-		/// <summary>
-		/// Initializes the Attack component.
-		/// </summary>
 		void Init();
-
-		/// <summary>
-		/// Serializes the specified data of the Attack component from the JSON file.
-		/// </summary>
-		/// <param name="data">JSON object.</param>
 		void Serialize(rapidjson::Value::Object data);
-
-		/// <summary>
-		/// DeSerialize the current Attack component into a JSON file.
-		/// </summary>
-		/// <param name="writer">The writer of the JSON file.</param>
 		void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer);
-
-		/// <summary>
-		/// Clears the Magic component.
-		/// </summary>
 		void Clear();
-
-		/// <summary>
-		/// To set the Debug Display for the Attack Component.
-		/// </summary>
 		void DebugDisplay();
 
 	public:
 		struct SpellData {
 			std::string mName;
 			std::string mScriptPath;
+			int mSpellType;
+			float mUIRotation;
+			float mParticleSize;
+			std::string mParticleTexturePath;
+			float mCooldown;
+			std::string mUITexturePath;
+
+			float mRightHandCooldown;
+			float mLeftHandCooldown;
+			float mCombinedCooldown;
+			float mCooldownModifier = 1.0f;
 		};
 
 	public:
@@ -52,6 +41,10 @@ namespace BulletHell
 		SpellData* mCombinedSpell;
 
 		std::vector<SpellData*> mSpells;
+		static std::unordered_map<int, SpellData*> mCombinedSpells;
+
+	private:
+		static std::unordered_map<int, SpellData*> CreateSpellMap();
 
 	};
 }

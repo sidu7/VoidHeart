@@ -11,13 +11,17 @@
 #include "Hollow/Managers/ScriptingManager.h"
 
 #include "Components/Health.h"
+#include "Components/ParentOffset.h"
+
 #include "GameMetaData/GameObjectType.h"
 #include "GameMetaData/GameEventType.h"
 #include "Hollow/Core/GameMetaData.h"
 
 #include "DungeonGeneration/DungeonManager.h"
+#include "Systems/HandSystem.h"
 
 #include "Hollow/Components/Body.h"
+#include "Hollow/Components/UITransform.h"
 
 void Hollow::GameMetaData::Init()
 {
@@ -39,9 +43,7 @@ class GameLayer : public Hollow::Layer
 	void OnUpdate(float dt)
 	{
 		// Update Game managers here
-        ImGui::Begin("Seed");
-        ImGui::Text("%u", BulletHell::DungeonManager::Instance().GetSeed());
-        ImGui::End();
+        
 
 	}
 };
@@ -62,10 +64,9 @@ public:
 
 		BulletHell::DungeonManager::Instance().ConfigureDungeon();
         BulletHell::DungeonManager::Instance().Init();
-		//BulletHell::DungeonManager::Instance().Generate();
-
 		
 		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
+		Hollow::SystemManager::Instance().OnSceneInit();
 	}
 
 	~BulletHellGame()

@@ -50,5 +50,7 @@ namespace Hollow
 		ImGuiHelper::InputText("Image File", TexturePath);
 		ImGuiHelper::InputText("Shape", mShapeType);
 		ImGui::InputFloat3("Color", (float*)&mColor);
+		// TODO: Find better place to update UI image
+		mpTexture = ResourceManager::Instance().LoadTexture(TexturePath);
 	}
 }

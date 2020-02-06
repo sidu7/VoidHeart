@@ -142,9 +142,9 @@
         },
       {
         "Type": "Magic",
-        "LeftHandScript": "Resources/Scripts/Spells/Atk_Empty.lua",
-        "RightHandScript": "Resources/Scripts/Spells/Atk_Empty.lua",
-        "CombineHandScript": "Resources/Scripts/Spells/Atk_Empty.lua"
+        "LeftHandScript": "Resources/Scripts/Spells/Empty.lua",
+        "RightHandScript": "Resources/Scripts/Spells/Empty.lua",
+        "CombineHandScript": "Resources/Scripts/Spells/Empty.lua"
       }
     ]
 }

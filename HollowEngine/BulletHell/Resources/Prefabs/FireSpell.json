@@ -24,14 +24,19 @@
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 3.0, 0.0, 0.0 ],
-      "Shininess": 10.0,
+      "Diffuse": [ 30.0, 0.0, 0.0 ],
+      "Shininess": 1000.0,
       "Texture": "Resources/Textures/cracks.png"
     },
     {
       "Type": "Spell",
       "Name": "Fireball",
-      "Script":  "Resources/Scripts/Spells/Atk_Fireball.lua"
+      "Script": "Resources/Scripts/Spells/Fire.lua",
+      "SpellType": 1,
+      "UIRotation": 1.570796,
+      "ParticleSize": 0.0,
+      "ParticleTexture": "Resources/Textures/star.png",
+      "Cooldown": 0.5
     }
   ]
 }

@@ -5,9 +5,12 @@
 #include "Components/Magic.h"
 #include "Components/Spell.h"
 
+#include "Events/CycleSpellEvent.h"
+
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -24,6 +27,8 @@ namespace BulletHell
 
 	void MagicSystem::Update()
 	{
+		mDeltaTime = Hollow::FrameRateController::Instance().GetFrameTime();
+
 		// Update all objects with magic component
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
@@ -31,27 +36,74 @@ namespace BulletHell
 			Attack* pAttack = mGameObjects[i]->GetComponent<Attack>();
 			Magic* pMagic = mGameObjects[i]->GetComponent<Magic>();
 
+			if (pMagic->mLeftHandSpell == nullptr || pMagic->mRightHandSpell == nullptr)
+			{
+				continue;
+			}
+
 			// Check if player wants to cycle/change spells
 			UpdateSelectedSpells(pMagic);
 
-			// Check if left or right hand should fire
-			bool leftHandPressed = Hollow::InputManager::Instance().IsKeyPressed("L") ||
-				Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-			bool rightHandPressed = Hollow::InputManager::Instance().IsKeyPressed("R") ||
-				Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+			// Update spell cooldowns
+			UpdateSpellCooldowns(pMagic);
 
-			// Update attack script based on button pressed
-			if (leftHandPressed)
+			// Check if left or right hand should fire
+			if (!mWaitForInput)
 			{
-				pAttack->mScriptPath = pMagic->mLeftHandScriptPath;
+				mLeftHandPressed = Hollow::InputManager::Instance().IsKeyPressed("L") ||
+					Hollow::InputManager::Instance().IsControllerTriggerPressed(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+				mRightHandPressed = Hollow::InputManager::Instance().IsKeyPressed("R") ||
+					Hollow::InputManager::Instance().IsControllerTriggerPressed(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 			}
-			if (rightHandPressed)
+
+			// If either trigger is pressed start frame delay
+			if (mLeftHandPressed || mRightHandPressed || mWaitForInput)
 			{
-				pAttack->mScriptPath = pMagic->mRightHandScriptPath;
+				// Wait a few frames to check if both triggers are pressed
+				mWaitForInput = true;
+				++mNumberOfFrames;
 			}
-			if (leftHandPressed && rightHandPressed)
+
+			// Set attack scripts based on player input over a few frames
+			if (mNumberOfFrames > mFrameDelay)
 			{
-				pAttack->mScriptPath = pMagic->mCombineHandScriptPath;
+				// Update attack script based on button pressed
+				if (mLeftHandPressed)
+				{
+					pAttack->mScriptPath = pMagic->mLeftHandScriptPath;
+				}
+				if (mRightHandPressed)
+				{
+					pAttack->mScriptPath = pMagic->mRightHandScriptPath;
+				}
+				if (mLeftHandPressed && mRightHandPressed)
+				{
+					pAttack->mScriptPath = pMagic->mCombineHandScriptPath;
+				}
+
+				// Set attack flag
+				// Check combined spell first
+				if (mLeftHandPressed && mRightHandPressed && (pMagic->mCombinedSpell->mCombinedCooldown < 0.016f))
+				{
+					pAttack->mShouldAttack = true;
+					pMagic->mCombinedSpell->mCombinedCooldown = pMagic->mCombinedSpell->mCooldown * pMagic->mCombinedSpell->mCooldownModifier;
+				}
+				else if (mLeftHandPressed && (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f))
+				{
+					pAttack->mShouldAttack = true;
+					pMagic->mLeftHandSpell->mLeftHandCooldown = pMagic->mLeftHandSpell->mCooldown * pMagic->mLeftHandSpell->mCooldownModifier;
+				}
+				else if (mRightHandPressed && (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f))
+				{
+					pAttack->mShouldAttack = true;
+					pMagic->mRightHandSpell->mRightHandCooldown = pMagic->mRightHandSpell->mCooldown * pMagic->mRightHandSpell->mCooldownModifier;
+				}
+
+				// Reset input tracking
+				mRightHandPressed = false;
+				mLeftHandPressed = false;
+				mWaitForInput = false;
+				mNumberOfFrames = 0;
 			}
 		}
 	}
@@ -79,12 +131,41 @@ namespace BulletHell
 			// Get next spell
 			pMagic->mLeftHandSpell = GetNextSpell(pMagic, pMagic->mLeftHandSpell);
 			pMagic->mLeftHandScriptPath = pMagic->mLeftHandSpell->mScriptPath;
+
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("left");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
 		}
 		if (rightHandCycle)
 		{
 			// Get next spell
 			pMagic->mRightHandSpell = GetNextSpell(pMagic, pMagic->mRightHandSpell);
 			pMagic->mRightHandScriptPath = pMagic->mRightHandSpell->mScriptPath;
+
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("right");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
+		}
+
+		// Update combined spell script
+		int combinedSpell = pMagic->mLeftHandSpell->mSpellType | pMagic->mRightHandSpell->mSpellType;
+		pMagic->mCombinedSpell = pMagic->mCombinedSpells.at(combinedSpell);
+		pMagic->mCombineHandScriptPath = pMagic->mCombinedSpell->mScriptPath;
+	}
+
+	void MagicSystem::UpdateSpellCooldowns(Magic* pMagic)
+	{
+		// Updated all spell cooldowns for left AND right hand
+		for (auto& spell : pMagic->mSpells)
+		{
+			spell->mLeftHandCooldown = std::max(0.0f, spell->mLeftHandCooldown - mDeltaTime);
+			spell->mRightHandCooldown = std::max(0.0f, spell->mRightHandCooldown - mDeltaTime);
+		}
+
+		// Update all combined spell cooldowns
+		for (auto& spell : pMagic->mCombinedSpells)
+		{
+			spell.second->mCombinedCooldown = std::max(0.0f, spell.second->mCombinedCooldown - mDeltaTime);
 		}
 	}
 
@@ -107,8 +188,23 @@ namespace BulletHell
 
 		// Create new spell to add to player list
 		Spell* pSpell = pSpellObject->GetComponent<Spell>();
-		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath };
+		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation, pSpell->mParticleSize, pSpell->mParticleTexturePath, pSpell->mCooldown };
 		pPlayerMagic->mSpells.push_back(pSpellToAdd);
+
+		// Check if player has initial spell values set
+		if (pPlayerMagic->mLeftHandSpell == nullptr)
+		{
+			pPlayerMagic->mLeftHandSpell = pPlayerMagic->mSpells[0];
+		}
+		if (pPlayerMagic->mRightHandSpell == nullptr)
+		{
+			pPlayerMagic->mRightHandSpell = pPlayerMagic->mSpells[0];
+		}
+		if (pPlayerMagic->mCombinedSpell == nullptr)
+		{
+			int combinedSpellIndex = pPlayerMagic->mRightHandSpell->mSpellType & pPlayerMagic->mLeftHandSpell->mSpellType;
+			//pPlayerMagic->mCombinedSpell = mpCombinedSpellMap.at(combinedSpellIndex);
+		}
 
 		// Destroy spell object
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pSpellObject);

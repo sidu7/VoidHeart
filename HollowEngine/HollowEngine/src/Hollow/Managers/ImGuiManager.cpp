@@ -97,20 +97,13 @@ namespace Hollow {
 		ImGui::Begin("Managers");
 		if (ImGui::BeginTabBar("Manager Tab Bar"))
 		{
-			if(ImGui::BeginTabItem("Renderer"))
+			for (auto display : mDisplayFunctions)
 			{
-				RenderManager::Instance().DebugDisplay();
-				ImGui::EndTabItem();
-			}
-			if(ImGui::BeginTabItem("Scene"))
-			{
-				SceneManager::Instance().DebugDisplay();
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("Audio"))
-			{
-				AudioManager::Instance().DebugDisplay();
-				ImGui::EndTabItem();
+				if (ImGui::BeginTabItem(display.first.c_str()))
+				{
+					display.second();
+					ImGui::EndTabItem();
+				}
 			}
 			if(ImGui::BeginTabItem("Localization"))
 			{
@@ -148,6 +141,11 @@ namespace Hollow {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplSDL2_NewFrame(mpWindow->GetWindow());
 		ImGui::NewFrame();
+	}
+
+	void ImGuiManager::AddDisplayFunction(const std::string& name, std::function<void()> function)
+	{
+		mDisplayFunctions.push_back(std::make_pair(name, function));
 	}
 
 	void ImGuiManager::Render()

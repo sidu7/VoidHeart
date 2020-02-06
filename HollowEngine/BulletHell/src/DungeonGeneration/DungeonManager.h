@@ -28,6 +28,8 @@ namespace BulletHell
         std::vector<DungeonFloor> GetFloors() const;
         DungeonFloor& GetFloor(int index);
         void Print() const;
+
+		void DebugDisplay();
     private:
         int length;
         int breadth;

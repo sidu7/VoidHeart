@@ -30,6 +30,8 @@ namespace Hollow {
 		/// Starts the Debug GUI frame.
 		/// </summary>
 		HOLLOW_API void StartFrame();
+
+		HOLLOW_API void AddDisplayFunction(const std::string& name, std::function<void()> function);
 		
 		GameObject* mpSelectedGameObject;
 		unsigned int mSelectedGameObjectID;
@@ -40,5 +42,6 @@ namespace Hollow {
 		
 	private:
 		GameWindow* mpWindow;
+		std::vector<std::pair<const std::string, std::function<void()>>> mDisplayFunctions;
 	};
 }

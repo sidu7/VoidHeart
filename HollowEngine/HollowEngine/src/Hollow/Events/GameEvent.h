@@ -12,6 +12,7 @@ namespace Hollow {
 		GameEvent(int type) {
 			mType = type;
 		}
+		virtual ~GameEvent() {}
 		float mTimer = 0.0f;
 		int mType; // identifier for event type
 
