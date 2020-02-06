@@ -26,7 +26,7 @@ namespace BulletHell
         unsigned GetSeed();
 
         std::vector<DungeonFloor> GetFloors() const;
-        DungeonFloor GetFloor(int index);
+        DungeonFloor& GetFloor(int index);
         void Print() const;
     private:
         int length;

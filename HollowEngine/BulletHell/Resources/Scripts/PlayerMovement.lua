@@ -1,13 +1,13 @@
-impulse = vec3.new()
-direction = vec3.new();
+local impulse = vec3.new()
+local direction = vec3.new();
 
-front = vec3.new(0.0, 0.0, -1.0)
-right = vec3.new(1.0, 0.0, 0.0)
+local front = vec3.new(0.0, 0.0, -1.0)
+local right = vec3.new(1.0, 0.0, 0.0)
 
 front.y = 0.0
 right.y = 0.0
 
-speed = vec3.new(1000.0, 0.0, 1000.0)
+local speed = vec3.new(1000.0, 0.0, 1000.0)
 
 local transform = gameObject:GetTransform()
 if IsKeyPressed("W") or GetAxis(CONTROLLER["LY"]) < -16000 then
@@ -71,7 +71,7 @@ impulse = impulse * speed;
 
 ApplyLinearImpulse(gameObject, impulse)
 
-body = gameObject:GetBody()
+local body = gameObject:GetBody()
 
 -- Damp Overall Velocity and Rotation
 body.velocity = body.velocity - 0.8 * body.velocity 

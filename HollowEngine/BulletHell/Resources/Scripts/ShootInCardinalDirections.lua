@@ -1,16 +1,11 @@
 function Shoot()
-    local transform = gameObject:GetTransform()
-	attackPosition = transform.position
-
-    local target = player
+    local attackComp = gameObject:GetAttack()
+    local target = attackComp.followObject
     local targetTransform = target:GetTransform()
     local targetPos = transformPlayer.position
     
-	body = go:GetBody()
-	body.position = attackPosition
-    
-    local xVelocity = targetPos.x - body.position.x
-	local zVelocity = targetPos.z - body.position.z
+	local xVelocity = followPosition.x - body.position.x
+	local zVelocity = followPosition.z - body.position.z
 	local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
 	local xVelocityNorm = xVelocity / totalVelocity
 	local zVelocityNorm = zVelocity / totalVelocity
@@ -19,6 +14,7 @@ function Shoot()
 	body.velocity = attackSpeed * vec3.new(xVelocityNorm, 0.0, zVelocityNorm)
 
     -- look at the target
+    local transform = gameObject:GetTransform()
     local rot = vec3.new(0.0, 0.0, 0.0)
     local tangent = xVelocityNorm / zVelocityNorm
     local radians = math.atan(tangent)
@@ -32,15 +28,12 @@ function Shoot()
         transform:Rotate(rot)
     end
 
-    
-	local gameObjectPath = "Resources/Json data/PlayerBullet.json"
-	go = CreateGameObject(gameObjectPath)
-
-    
 end
 
 function Update()
-	Shoot()
+    if (attack.currentAttackTime <  attack.baseAttackTime) then
+		Shoot()
+	end
 end
 
 Update()

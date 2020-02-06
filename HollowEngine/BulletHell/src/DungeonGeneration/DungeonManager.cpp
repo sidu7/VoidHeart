@@ -15,6 +15,8 @@ namespace BulletHell
     void DungeonManager::Init()
     {
         //mSeed = 521288629;
+        auto randomizer = Random::Range(0, MAXINT);
+        mSeed = randomizer();
         Generate();
 
 		// LUA Bindings for Dungeon Classes
@@ -103,7 +105,7 @@ namespace BulletHell
         return mFloors;
     }
 
-    DungeonFloor DungeonManager::GetFloor(int floorNumber)
+    DungeonFloor& DungeonManager::GetFloor(int floorNumber)
     {
         return mFloors[floorNumber];
     }
