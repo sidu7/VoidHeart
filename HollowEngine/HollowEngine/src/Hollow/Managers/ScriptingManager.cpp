@@ -6,6 +6,7 @@
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Light.h"
+#include "Hollow/Components/Script.h"
 
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/InputManager.h"
@@ -111,7 +112,8 @@ namespace Hollow
 			"position", &Transform::mPosition,
             "rotation", &Transform::mRotation,
             "forward", &Transform::GetForward,
-            "Rotate", &Transform::Rotate
+            "Rotate", &Transform::Rotate,
+			"scale", &Transform::mScale
 			);
 
 		lua.new_usertype<Camera>("Camera",
@@ -128,11 +130,14 @@ namespace Hollow
 			);
 
 		// GAMEOBJECT
-		mGameObjectType = lua.new_usertype<GameObject>("GameObject",
-			sol::constructors<GameObject()>(),
-			"GetBody", &GameObject::GetComponent<Body>,
-			"GetTransform", &GameObject::GetComponent<Transform>,
-			"GetMaterial", &GameObject::GetComponent<Material>
+        mGameObjectType = lua.new_usertype<GameObject>("GameObject",
+            sol::constructors<GameObject()>(),
+            "GetBody", &GameObject::GetComponent<Body>,
+            "GetTransform", &GameObject::GetComponent<Transform>,
+            "GetMaterial", &GameObject::GetComponent<Material>,
+            "GetScript", &GameObject::GetComponent<Script>,
+            "isActive", &GameObject::mActive
+
 			);
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));

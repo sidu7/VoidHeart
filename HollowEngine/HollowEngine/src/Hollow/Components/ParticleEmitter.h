@@ -49,14 +49,14 @@ namespace Hollow
 	private:
 		unsigned int mDType;
 		std::string mComputeShaderPath;
-		std::string mDTexturePath;
 		std::string mDModelPath;
 		
 	public:
-		unsigned long mCount;
+		std::string mDTexturePath;
 		unsigned long mDrawCount;
 		unsigned long mMaxCount;
 		unsigned long mEmissionRate;
+		unsigned long mCount;
 		
 		// For Point particles
 		Texture* mTexture;

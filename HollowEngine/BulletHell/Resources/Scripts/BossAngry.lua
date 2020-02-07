@@ -43,7 +43,7 @@ function FireAtPlayer()
 end
 
 function VBulletPattern(zvel)
-	gameObjectPath = "Resources/Json data/Bullet.json"
+	local gameObjectPath = "Resources/Json data/Bullet.json"
 	local numObj = 5
 	for i=1,numObj do
 		go = CreateGameObject(gameObjectPath)

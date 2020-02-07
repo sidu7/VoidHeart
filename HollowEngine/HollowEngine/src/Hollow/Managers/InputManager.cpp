@@ -31,7 +31,7 @@ namespace Hollow {
 			return false;
 		}
 
-		return !mCurrentState[key] && mPreviousState[key];
+		return !mCurrentState[SDL_GetScancodeFromKey(key)] && mPreviousState[SDL_GetScancodeFromKey(key)];
 	}
 
 	bool InputManager::IsKeyTriggered(const std::string& keyName)
@@ -43,7 +43,7 @@ namespace Hollow {
 			return false;
 		}
 
-		return mCurrentState[key] && !mPreviousState[key];
+		return mCurrentState[SDL_GetScancodeFromKey(key)] && !mPreviousState[SDL_GetScancodeFromKey(key)];
 	}
 
 	bool InputManager::IsMouseButtonTriggered(unsigned int keycode)
@@ -182,6 +182,16 @@ namespace Hollow {
 			}
 			break;
 		}
+		case SDL_CONTROLLERDEVICEREMOVED:
+		{
+			HW_CORE_WARN("Controller disconnected");
+			SDL_GameControllerClose(mpController);
+			break;
+		}
+		case SDL_CONTROLLERDEVICEADDED:
+			HW_CORE_INFO("Controller reconnected");
+			mpController = SDL_GameControllerOpen(0);
+			break;
 		}
 	}
 

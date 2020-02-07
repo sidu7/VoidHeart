@@ -39,18 +39,8 @@
       "StartState": "Walking"
     },
     {
-      "Type": "PathFollow",
-      "Move": true,
-      "ControlPoints": [
-        [ 15.0, 0.5, -10.0 ],
-        [ 5.0, 0.5, -10.0 ],
-        [ -5.0, 0.5, -10.0 ],
-        [ -15.0, 0.5, -10.0 ]
-      ]
-    },
-    {
       "Type": "Attack",
-      "Script": "Resources/Scripts/EnemyAttack.lua",
+      "Script": "Resources/Scripts/ShootAtThePlayer.lua",
       "BaseAttackTime": 100.0
     }
   ]

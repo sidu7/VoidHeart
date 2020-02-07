@@ -18,6 +18,9 @@ namespace Hollow
 		mSelectedComponentName = "";
 		mSelectedComponent = nullptr;
 		mSelectedGameObject = nullptr;
+
+		// Add to ImGui debug display
+		ImGuiManager::Instance().AddDisplayFunction("Scene", std::bind(&SceneManager::DebugDisplay, &SceneManager::Instance()));
 	}
 
 	void SceneManager::CleanUp()
@@ -186,7 +189,7 @@ namespace Hollow
 			}
 		}
 		HW_CORE_INFO("Scene {0} has been loaded", LevelFile);
-		SystemManager::Instance().OnSceneInit();
+		//SystemManager::Instance().OnSceneInit();
 	}
 
 	void SceneManager::DeserializeGameObject()

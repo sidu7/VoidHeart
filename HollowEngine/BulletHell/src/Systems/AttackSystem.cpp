@@ -27,7 +27,8 @@ namespace BulletHell
 			"baseAttackTime", &Attack::mBaseAttackTime,
 			"currentAttackTime", &Attack::mCurrentAttackTime,
 			"IsFired", &Attack::mIsFired,
-            "target", &Attack::mpTarget
+			"shouldAttack", &Attack::mShouldAttack,
+			"target", &Attack::mpTarget
 			);
 
 		// Add get attack component to lua
@@ -65,6 +66,7 @@ namespace BulletHell
 
 		// Fire player lua script
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
+        lua["gameObject"] = pAttack->mpOwner;
 		lua.script_file(pAttack->mScriptPath);
 	}
 }

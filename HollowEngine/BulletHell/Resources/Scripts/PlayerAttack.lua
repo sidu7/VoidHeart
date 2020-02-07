@@ -1,11 +1,11 @@
 function PlayerAttack ()
-	attackPosition = gameObject:GetTransform().position
+	local attackPosition = gameObject:GetTransform().position
 	---[[
-	attack = gameObject:GetAttack()
+	local attack = gameObject:GetAttack()
 	if attack.currentAttackTime > attack.baseAttackTime then
 		local gameObjectPath = "Resources/Json data/PlayerBullet.json"
-		go = CreateGameObject(gameObjectPath)
-		body = go:GetBody()
+		local go = CreateGameObject(gameObjectPath)
+		local body = go:GetBody()
 		body.position = attackPosition
 		
 		local xVelocity = GetAxis(CONTROLLER["RX"])
@@ -17,7 +17,7 @@ function PlayerAttack ()
 		local attackSpeed = 70.0
 		body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
 
-		transform = go:GetTransform()
+		local transform = go:GetTransform()
 		transform.position = body.position
 		
 		attack.currentAttackTime = 0.0

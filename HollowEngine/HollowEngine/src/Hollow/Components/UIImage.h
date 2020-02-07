@@ -39,10 +39,10 @@ namespace Hollow
 		HOLLOW_API void DebugDisplay() override;
 		
 	private:
-		std::string TexturePath;
 		std::string mShapeType;
 		
 	public:
+		std::string TexturePath;
 		Texture* mpTexture;
 		glm::vec3 mColor;
 		Mesh* mpShapeData;

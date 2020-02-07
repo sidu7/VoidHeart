@@ -25,6 +25,7 @@ namespace BulletHell
 		// Set event callback functions
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnBulletHitPlayer));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
 	}
 
@@ -36,8 +37,8 @@ namespace BulletHell
 
 			// Update player HP bar
 			Hollow::UIText* pHPText = mGameObjects[i]->GetComponent<Hollow::UIText>();
-			std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap[pHPText->mTag];
-			pHPText->mText = ss + std::to_string(pHealth->mHitPoints);
+			//std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap[pHPText->mTag];
+			//pHPText->mText = ss + std::to_string(pHealth->mHitPoints);
 			
 			// Update invincibility time
 			if (pHealth->mInvincible)
@@ -84,12 +85,12 @@ namespace BulletHell
 
 				// Create new UI object
 				// TODO: Fix how this is being done
-				Hollow::GameObject* pUI = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json Data/UIElement.json");
+				/*Hollow::GameObject* pUI = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json Data/UIElement.json");
 				Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
 				pUIText->mOffsetPosition = glm::vec2(400.0f, 300.0f);
 				pUIText->mTextScale = glm::vec2(4.0f, 4.0f);
 				pUIText->mText = gameEndText;
-				pUIText->mChangingText = true;
+				pUIText->mChangingText = true;*/
 			}
 		}
 	}
@@ -130,6 +131,18 @@ namespace BulletHell
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
 		}
 	}
+
+    void HealthSystem::OnBulletHitDoor(Hollow::GameEvent& event)
+    {
+        if (event.mpObject1->mType == (int)GameObjectType::DOOR)
+        {
+            Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
+        }
+        else
+        {
+            Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
+        }
+    }
 
 	void HealthSystem::OnPlayerBulletHitEnemy(Hollow::GameEvent& event)
 	{		

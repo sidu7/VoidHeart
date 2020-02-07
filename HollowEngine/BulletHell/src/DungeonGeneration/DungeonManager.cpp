@@ -2,6 +2,7 @@
 #include <Hollow.h>
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
+#include "Hollow/Managers/ImGuiManager.h"
 
 namespace BulletHell
 {
@@ -15,6 +16,8 @@ namespace BulletHell
     void DungeonManager::Init()
     {
         //mSeed = 521288629;
+        auto randomizer = Random::Range(0, MAXINT);
+        mSeed = randomizer();
         Generate();
 
 		// LUA Bindings for Dungeon Classes
@@ -37,6 +40,9 @@ namespace BulletHell
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
+
+		// Add to ImGui display
+		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
     }
 
     void DungeonManager::Generate()
@@ -103,7 +109,7 @@ namespace BulletHell
         return mFloors;
     }
 
-    DungeonFloor DungeonManager::GetFloor(int floorNumber)
+    DungeonFloor& DungeonManager::GetFloor(int floorNumber)
     {
         return mFloors[floorNumber];
     }
@@ -115,4 +121,8 @@ namespace BulletHell
             floor.PrintFloor();
         }
     }
+	void DungeonManager::DebugDisplay()
+	{
+		ImGui::Text("Seed: %u", mSeed);
+	}
 }
