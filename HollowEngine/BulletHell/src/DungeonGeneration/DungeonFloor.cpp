@@ -46,7 +46,7 @@ namespace BulletHell
         auto entranceCol = Random::RangeSeeded(0, mWidth - 1);
         mEntranceIndex = Index(entranceRow, entranceCol);
         mRooms[mEntranceIndex].Set(DungeonRoomType::ENTRANCE, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, entranceRow, entranceCol);
-		mIndexValidRooms.push_back(Index(entranceRow, entranceCol));
+		
         // precompute distance of other rooms from entrance
         for (int col = 0; col < mWidth; col++)
         {
@@ -93,7 +93,7 @@ namespace BulletHell
                 break;
             }
             mRooms[currentRoomIndex].Set(DungeonRoomType::REGULAR, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, row, col);
-			mIndexValidRooms.push_back(currentRoomIndex);
+			mIndexFillableRooms.push_back(currentRoomIndex);
             UpdateDoors(currentRoomIndex);
 
             // update the pool of possible places for the rooms 
@@ -128,6 +128,15 @@ namespace BulletHell
         }
 
         mRooms[furthestRoom].mRoomType = DungeonRoomType::BOSS;
+		mBossIndex = furthestRoom;
+
+		// Remove boss room from fillable rooms as that will be handled separately
+		mIndexFillableRooms.erase(std::find(mIndexFillableRooms.begin(), mIndexFillableRooms.end(), mBossIndex));
+
+		// shuffle the rooms
+		std::random_device rd;
+		std::mt19937 g(rd());
+		std::shuffle(mIndexFillableRooms.begin(), mIndexFillableRooms.end(), g);
     }
 
     DungeonRoom& DungeonFloor::GetRoom(int row, int col) 
@@ -158,7 +167,21 @@ namespace BulletHell
         return mEntranceIndex;
     }
 
-    void DungeonFloor::PrintFloor(int printMode) const
+	const DungeonRoom& DungeonFloor::GetRoomFromIndex(int index) const
+	{
+		if (index == mEntranceIndex)
+		{
+			return mRooms[mEntranceIndex];
+		}
+		else if (index == mBossIndex)
+		{
+			return mRooms[mBossIndex];
+		}
+		
+		return mRooms[mIndexFillableRooms[index]]; 
+	}
+
+	void DungeonFloor::PrintFloor(int printMode) const
     {
         if (printMode & 1)
         {

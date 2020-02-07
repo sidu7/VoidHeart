@@ -81,6 +81,7 @@
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Prefabs\UIIcon.json" />
+    <None Include="Resources\Scripts\GameLogic.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

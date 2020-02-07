@@ -20,12 +20,18 @@ namespace Hollow
 		lua.script_file(rootPath + folderName + name + ext);
 	}
 
+	void ScriptingManager::RunScriptOnGameObject(std::string name, GameObject* go, std::string folderPath)
+	{
+		lua["gameObject"] = go;
+		lua.script_file(rootPath + folderPath + name + ext);
+	}
+
 	void ScriptingManager::Init(rapidjson::Value::Object& data)
 	{
 		rootPath = data["FilePath"].GetString();
 		ext = data["FileExtension"].GetString();
 
-		lua.open_libraries(sol::lib::base, sol::lib::math);
+		lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::bit32);
 
 		// Controller
 		lua["CONTROLLER"] = lua.create_table_with(

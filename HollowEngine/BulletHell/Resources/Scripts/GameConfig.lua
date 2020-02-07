@@ -15,6 +15,9 @@ doorWidth = 4
 doorHeight = 4
 doorThickness = 0.5
 
+-- Enemy
+firstFloorEnemyCount = 2
+
 -- Globals
 currentFloor = 0
 currentRoom = 0

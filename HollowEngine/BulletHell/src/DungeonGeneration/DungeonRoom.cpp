@@ -195,4 +195,29 @@ namespace BulletHell
         }
         
     }
+	bool DungeonRoom::IsCleared()
+	{
+		if (mEnemyCount == 0)
+			return true;
+
+		return false;
+	}
+	void DungeonRoom::UnlockRoom()
+	{
+		// TODO Replace with a nice animation of doors opening
+		for (auto door : mDoorGOs)
+		{
+			Hollow::Body* pB = door->GetComponent<Hollow::Body>();
+			pB->mPosition.y = 4.0f;
+		}
+	}
+	void DungeonRoom::LockDownRoom()
+	{
+		// TODO Replace with a nice animation of doors closing
+		for (auto door : mDoorGOs)
+		{
+			Hollow::Body* pB = door->GetComponent<Hollow::Body>();
+			pB->mPosition.y = 0.0f;
+		}
+	}
 }

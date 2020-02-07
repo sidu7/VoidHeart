@@ -3,6 +3,9 @@
 //#include "Hollow/Common.h"
 #include "DungeonFloor.h"
 #include "Hollow/Utils/Singleton.h"
+#include <Hollow.h>
+#include <Hollow/Core/GameObject.h>
+
 
 namespace BulletHell
 {
@@ -36,7 +39,7 @@ namespace BulletHell
         int numFloors;
         int firstFloorRoomCount;
     public:
-
+		Hollow::GameObject* mpPlayerGo;
     private:
         std::vector<DungeonFloor> mFloors;
         unsigned mSeed;

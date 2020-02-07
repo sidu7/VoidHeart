@@ -1,5 +1,6 @@
 #include "DungeonManager.h"
-#include <Hollow.h>
+
+#include "Hollow/Components/Transform.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/ImGuiManager.h"
@@ -36,7 +37,9 @@ namespace BulletHell
 		lua.new_usertype<DungeonRoom>("DungeonRoom",
 			sol::constructors<DungeonRoom()>(),
 			"GetFloorNum", &DungeonRoom::GetFloorNum,
-			"GetCoords", &DungeonRoom::GetCoords
+			"GetDoorBits", &DungeonRoom::GetDoorBits,
+			"GetCoords", &DungeonRoom::GetCoords,
+			"IsCleared", &DungeonRoom::IsCleared
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
