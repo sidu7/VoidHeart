@@ -34,7 +34,7 @@
     {
       "Type": "Attack",
       "Script": "Resources/Scripts/ShootInCardinalDirections.lua",
-      "BaseAttackTime": 0.4
+      "BaseAttackTime": 0.7
     },
     {
       "Type": "Health",

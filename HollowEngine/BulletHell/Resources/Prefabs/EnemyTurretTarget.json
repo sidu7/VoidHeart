@@ -29,12 +29,12 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "ShootInCardinalDirections" ]
+      "Scripts": [ "ShootAtThePlayer" ]
     },
     {
       "Type": "Attack",
-      "Script": "Resources/Scripts/ShootInCardinalDirections.lua",
-      "BaseAttackTime": 0.4
+      "Script": "Resources/Scripts/ShootAtThePlayer.lua",
+      "BaseAttackTime": 0.7
     },
     {
       "Type": "Health",
