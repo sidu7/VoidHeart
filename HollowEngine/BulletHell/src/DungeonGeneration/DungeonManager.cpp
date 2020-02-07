@@ -29,6 +29,7 @@ namespace BulletHell
 			sol::constructors<DungeonFloor()>(),
 			"GetRoom", &DungeonFloor::GetRoom,
 			"GetRoomFromIndex", &DungeonFloor::GetRoomFromIndex,
+			"GetRegularRoom", &DungeonFloor::GetRegularRoom,
 			"GetRoomCount", &DungeonFloor::GetRoomCount,
 			"GetEntrance", &DungeonFloor::GetEntrance,
 			"GetEntranceIndex", &DungeonFloor::GetEntranceIndex
@@ -39,7 +40,10 @@ namespace BulletHell
 			"GetFloorNum", &DungeonRoom::GetFloorNum,
 			"GetDoorBits", &DungeonRoom::GetDoorBits,
 			"GetCoords", &DungeonRoom::GetCoords,
-			"IsCleared", &DungeonRoom::IsCleared
+			"IsCleared", &DungeonRoom::IsCleared,
+            "UnlockRoom", &DungeonRoom::UnlockRoom,
+            "LockDownRoom", &DungeonRoom::LockDownRoom,
+            "enemyCount", &DungeonRoom::mEnemyCount
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));

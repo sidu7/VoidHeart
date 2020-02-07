@@ -93,7 +93,7 @@ namespace BulletHell
                 break;
             }
             mRooms[currentRoomIndex].Set(DungeonRoomType::REGULAR, Hollow::GenerateUniqueID<DungeonRoom>(), 0, mFloorNum, row, col);
-			mIndexFillableRooms.push_back(currentRoomIndex);
+			mIndexRegularRooms.push_back(currentRoomIndex);
             UpdateDoors(currentRoomIndex);
 
             // update the pool of possible places for the rooms 
@@ -131,12 +131,12 @@ namespace BulletHell
 		mBossIndex = furthestRoom;
 
 		// Remove boss room from fillable rooms as that will be handled separately
-		mIndexFillableRooms.erase(std::find(mIndexFillableRooms.begin(), mIndexFillableRooms.end(), mBossIndex));
+		mIndexRegularRooms.erase(std::find(mIndexRegularRooms.begin(), mIndexRegularRooms.end(), mBossIndex));
 
 		// shuffle the rooms
 		std::random_device rd;
 		std::mt19937 g(rd());
-		std::shuffle(mIndexFillableRooms.begin(), mIndexFillableRooms.end(), g);
+		std::shuffle(mIndexRegularRooms.begin(), mIndexRegularRooms.end(), g);
     }
 
     DungeonRoom& DungeonFloor::GetRoom(int row, int col) 
@@ -169,17 +169,13 @@ namespace BulletHell
 
 	const DungeonRoom& DungeonFloor::GetRoomFromIndex(int index) const
 	{
-		if (index == mEntranceIndex)
-		{
-			return mRooms[mEntranceIndex];
-		}
-		else if (index == mBossIndex)
-		{
-			return mRooms[mBossIndex];
-		}
-		
-		return mRooms[mIndexFillableRooms[index]]; 
+		return mRooms[index]; 
 	}
+
+    const DungeonRoom& DungeonFloor::GetRegularRoom(int index) const
+    {
+        return mRooms[mIndexRegularRooms[index]];
+    }
 
 	void DungeonFloor::PrintFloor(int printMode) const
     {
@@ -359,18 +355,19 @@ namespace BulletHell
             if (room.mRoomType != DungeonRoomType::EMPTY)
             {
 				room.ConstructRoom();
+
+            	// copy already constructed doors to adjacent rooms
                 if (room.mDoors & DungeonRoom::DoorDirrection::RIGHT)
                 {
-                    mRooms[i + 1].mDoorGOs.push_back(room.mDoorGOs[0]);
-                    if (room.mDoors & DungeonRoom::DoorDirrection::DOWN)
-                    {
-                        mRooms[i + mWidth].mDoorGOs.push_back(room.mDoorGOs[1]);
-                    }
+                    mRooms[i + 1].mDoorGOs[DungeonRoom::DoorDirrection::LEFT]
+                		= room.mDoorGOs[DungeonRoom::DoorDirrection::RIGHT];
                 }
-                else if (room.mDoors & DungeonRoom::DoorDirrection::DOWN)
+                if (room.mDoors & DungeonRoom::DoorDirrection::DOWN)
                 {
-                    mRooms[i + mWidth].mDoorGOs.push_back(room.mDoorGOs[0]);
+                    mRooms[i + mWidth].mDoorGOs[DungeonRoom::DoorDirrection::UP]
+                		= room.mDoorGOs[DungeonRoom::DoorDirrection::DOWN];
                 }
+                
             }
     	}
     }

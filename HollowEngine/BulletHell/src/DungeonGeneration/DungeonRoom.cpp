@@ -25,6 +25,8 @@ namespace BulletHell
         , mColumn(0)
         , mRow(0)
         , mDistFromEntrance(0)
+		, mDoorGOs{ nullptr }
+		, mIsUnlocked(false)
     {
     }
 
@@ -38,6 +40,8 @@ namespace BulletHell
         , mColumn(xCoord)
         , mRow(yCoord)
         , mDistFromEntrance(0)
+        , mDoorGOs{ nullptr }
+        , mIsUnlocked(false)
     {
     }
 
@@ -155,7 +159,7 @@ namespace BulletHell
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
                                             glm::vec3(mRoomY * mRoomSize + mRoomSize, halfDoorHeight , mRoomX * mRoomSize + halfRoomSize),
                                             glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
-            mDoorGOs.push_back(door);
+            mDoorGOs[2] = door;
     		// RIGHT WALL (second Part)
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + (mRoomSize- halfWallLength)),
@@ -180,7 +184,7 @@ namespace BulletHell
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
                                         glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfDoorHeight, mRoomX * mRoomSize + mRoomSize),
                                         glm::vec3(mDoorWidth, mDoorHeight, mDoorThickness));
-            mDoorGOs.push_back(door);
+            mDoorGOs[4] = door;
             // BOTTOM WALL (second Part)
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + (mRoomSize - halfWallLength), halfWallHeight, mRoomX * mRoomSize + mRoomSize),
@@ -199,25 +203,36 @@ namespace BulletHell
 	{
 		if (mEnemyCount == 0)
 			return true;
-
+    	
 		return false;
 	}
 	void DungeonRoom::UnlockRoom()
 	{
 		// TODO Replace with a nice animation of doors opening
-		for (auto door : mDoorGOs)
-		{
-			Hollow::Body* pB = door->GetComponent<Hollow::Body>();
-			pB->mPosition.y = 4.0f;
-		}
+        if (!mIsUnlocked)
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                if (mDoorGOs[1 << i] != nullptr)
+                {
+                    Hollow::Body* pB = mDoorGOs[1 << i]->GetComponent<Hollow::Body>();
+                    pB->mPosition.y = 6.0f;
+                    HW_TRACE("Door Opened {0}", 1 << i);
+                }
+            }
+            mIsUnlocked = true;
+        }
 	}
 	void DungeonRoom::LockDownRoom()
 	{
 		// TODO Replace with a nice animation of doors closing
-		for (auto door : mDoorGOs)
-		{
-			Hollow::Body* pB = door->GetComponent<Hollow::Body>();
-			pB->mPosition.y = 0.0f;
+        for (int i = 0; i < 4; ++i)
+        {
+            if (mDoorGOs[1 << i] != nullptr)
+            {
+                Hollow::Body* pB = mDoorGOs[1 << i]->GetComponent<Hollow::Body>();
+                pB->mPosition.y = 2.0f;
+            }
 		}
 	}
 }

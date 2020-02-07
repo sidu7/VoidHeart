@@ -12,10 +12,12 @@ end
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
 local roomCount = firstFloor:GetRoomCount() - 2 - 1 - 1
 for i=0, roomCount do
-    coords = firstFloor:GetRoomFromIndex(i):GetCoords()
+    local room = firstFloor:GetRegularRoom(i)
+    coords = room:GetCoords()
 	-- get a random enemy type and set count and difficulty according to floor
-    CreatePrefabAtPosition("Enemy", vec3.new(coords.y * roomSize + roomSize/2 + 10, 1.0, coords.x * roomSize + roomSize/2))
-    CreatePrefabAtPosition("Enemy", vec3.new(coords.y * roomSize + roomSize/2 - 10, 1.0, coords.x * roomSize + roomSize/2))
+    CreatePrefabAtPosition("Enemy", vec3.new(coords.y * roomSize + roomSize/2 + 10, 1.5, coords.x * roomSize + roomSize/2))
+    CreatePrefabAtPosition("Enemy", vec3.new(coords.y * roomSize + roomSize/2 - 10, 1.5, coords.x * roomSize + roomSize/2))
+    room.enemyCount = 2
 end
 
 -- generate random valid pickup
