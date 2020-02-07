@@ -3,7 +3,7 @@
   "Components": [
     {
       "Type": "Transform",
-      "Position": [ 0.5, 10.0, 0.0 ],
+      "Position": [ 0.0, 0.0, 0.0 ],
       "Scale": [ 0.75, 0.75, 0.75 ]
     },
     {
@@ -24,19 +24,19 @@
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 30.0, 0.0, 0.0 ],
+      "Diffuse": [ 0.0, 1.0, 0.0 ],
       "Shininess": 1000.0,
       "Texture": "Resources/Textures/cracks.png"
     },
     {
       "Type": "Spell",
-      "Name": "Fireball",
-      "Script": "Resources/Scripts/Spells/Fire.lua",
-      "SpellType": 1,
-      "UIRotation": 1.570796,
+      "Name": "Earth",
+      "Script": "Resources/Scripts/Spells/Earth.lua",
+      "SpellType": 4,
+      "UIRotation": 0.0,
       "ParticleSize": 0.0,
-      "ParticleTexture": "Resources/Textures/star.png",
-      "Cooldown": 0.5
+      "ParticleTexture": "Resources/Textures/rocks.png",
+      "Cooldown": 1.0
     }
   ]
 }

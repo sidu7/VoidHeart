@@ -94,13 +94,21 @@ namespace BulletHell
 				}
 				else if (mLeftHandPressed)
 				{
-					pAttack->mShouldAttack = (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f);
-					pMagic->mLeftHandSpell->mLeftHandCooldown = pMagic->mLeftHandSpell->mCooldown * pMagic->mLeftHandSpell->mCooldownModifier;
+					bool shouldAttack = (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f);
+					pAttack->mShouldAttack = shouldAttack;
+					if (shouldAttack)
+					{
+						pMagic->mLeftHandSpell->mLeftHandCooldown = pMagic->mLeftHandSpell->mCooldown * pMagic->mLeftHandSpell->mCooldownModifier;
+					}
 				}
 				else if (mRightHandPressed)
 				{
-					pAttack->mShouldAttack = (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f);
-					pMagic->mRightHandSpell->mRightHandCooldown = pMagic->mRightHandSpell->mCooldown * pMagic->mRightHandSpell->mCooldownModifier;
+					bool shouldAttack = (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f);
+					pAttack->mShouldAttack = shouldAttack;
+					if (shouldAttack)
+					{
+						pMagic->mRightHandSpell->mRightHandCooldown = pMagic->mRightHandSpell->mCooldown * pMagic->mRightHandSpell->mCooldownModifier;
+					}
 				}
 
 				// Reset input tracking
@@ -194,6 +202,11 @@ namespace BulletHell
 		Spell* pSpell = pSpellObject->GetComponent<Spell>();
 		Magic::SpellData* pSpellToAdd = new Magic::SpellData{ pSpell->mName, pSpell->mScriptPath, pSpell->mSpellType,  pSpell->mUIRotation, pSpell->mParticleSize, pSpell->mParticleTexturePath, pSpell->mCooldown };
 		pPlayerMagic->mSpells.push_back(pSpellToAdd);
+
+		// Sort spells based on rotation value to get clockwise spell rotation
+		std::sort(pPlayerMagic->mSpells.begin(), pPlayerMagic->mSpells.end(), [](const Magic::SpellData* sp1, const Magic::SpellData* sp2) -> bool {
+			return sp1->mUIRotation > sp2->mUIRotation;
+			});
 
 		// Check if player has initial spell values set
 		if (pPlayerMagic->mLeftHandSpell == nullptr)
