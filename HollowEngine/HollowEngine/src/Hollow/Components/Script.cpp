@@ -22,6 +22,11 @@ namespace Hollow {
 		{
 			ImGuiHelper::InputText("File: ", mScripts[i]);
 		}
+		ImGui::InputInt("Destroy Scripts Count", &mDestroyScriptCount);
+		for (int i = 0; i < mDestroyScriptCount; ++i)
+		{
+			ImGuiHelper::InputText("File: ", mDestroyScripts[i]);
+		}
 	}
 
 	void Script::Serialize(rapidjson::Value::Object data)
@@ -35,6 +40,15 @@ namespace Hollow {
 			}
 			mScriptCount = mScripts.size();
 		}
+		if (data.HasMember("DestroyScripts"))
+		{
+			auto scripts = data["DestroyScripts"].GetArray();
+			for (int i = 0; i < scripts.Size(); ++i)
+			{
+				mDestroyScripts.push_back(scripts[i].GetString());
+			}
+			mDestroyScriptCount = mDestroyScripts.size();
+		}
 	}
 
 	void Script::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -45,6 +59,14 @@ namespace Hollow {
 		for (auto s : mScripts)
 		{
 			writer.String(s.c_str());
+		}
+		writer.EndArray();
+
+		writer.Key("DestroyScripts");
+		writer.StartArray();
+		for (auto script : mDestroyScripts)
+		{
+			writer.String(script.c_str());
 		}
 		writer.EndArray();
 	}

@@ -83,19 +83,23 @@ namespace BulletHell
 
 				// Set attack flag
 				// Check combined spell first
-				if (mLeftHandPressed && mRightHandPressed && (pMagic->mCombinedSpell->mCombinedCooldown < 0.016f))
+				if (mLeftHandPressed && mRightHandPressed)
 				{
-					pAttack->mShouldAttack = true;
-					pMagic->mCombinedSpell->mCombinedCooldown = pMagic->mCombinedSpell->mCooldown * pMagic->mCombinedSpell->mCooldownModifier;
+					bool shouldAttack = (pMagic->mCombinedSpell->mCombinedCooldown < 0.016f);
+					pAttack->mShouldAttack = shouldAttack;
+					if (shouldAttack)
+					{
+						pMagic->mCombinedSpell->mCombinedCooldown = pMagic->mCombinedSpell->mCooldown * pMagic->mCombinedSpell->mCooldownModifier;
+					}
 				}
-				else if (mLeftHandPressed && (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f))
+				else if (mLeftHandPressed)
 				{
-					pAttack->mShouldAttack = true;
+					pAttack->mShouldAttack = (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f);
 					pMagic->mLeftHandSpell->mLeftHandCooldown = pMagic->mLeftHandSpell->mCooldown * pMagic->mLeftHandSpell->mCooldownModifier;
 				}
-				else if (mRightHandPressed && (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f))
+				else if (mRightHandPressed)
 				{
-					pAttack->mShouldAttack = true;
+					pAttack->mShouldAttack = (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f);
 					pMagic->mRightHandSpell->mRightHandCooldown = pMagic->mRightHandSpell->mCooldown * pMagic->mRightHandSpell->mCooldownModifier;
 				}
 
@@ -199,11 +203,6 @@ namespace BulletHell
 		if (pPlayerMagic->mRightHandSpell == nullptr)
 		{
 			pPlayerMagic->mRightHandSpell = pPlayerMagic->mSpells[0];
-		}
-		if (pPlayerMagic->mCombinedSpell == nullptr)
-		{
-			int combinedSpellIndex = pPlayerMagic->mRightHandSpell->mSpellType & pPlayerMagic->mLeftHandSpell->mSpellType;
-			//pPlayerMagic->mCombinedSpell = mpCombinedSpellMap.at(combinedSpellIndex);
 		}
 
 		// Destroy spell object

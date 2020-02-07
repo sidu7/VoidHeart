@@ -22,5 +22,7 @@ namespace Hollow {
 		/// </summary>
 		/// <param name="pGameObject">The gameObject instance to add.</param>
 		HOLLOW_API void AddGameObject(GameObject* pGameObject) override;
+
+		void OnDeleteGameObject(GameObject* pGameObject) override;
 	};
 }

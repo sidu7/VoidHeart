@@ -31,10 +31,10 @@ function PlayerAttack ()
 end
 
 function CheckValidAttack()
-	attack = gameObject:GetAttack()
+	local attack = gameObject:GetAttack()
 	if attack.shouldAttack then
 		PlayerAttack()
-		attack.shouldAttack = false;
+		attack.shouldAttack = false
 	end
 end
 

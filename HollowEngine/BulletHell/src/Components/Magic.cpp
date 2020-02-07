@@ -83,11 +83,11 @@ namespace BulletHell
 	std::unordered_map<int, Magic::SpellData*> Magic::CreateSpellMap()
 	{
 		std::unordered_map<int, Magic::SpellData*> spellMap;
-		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Resources/Scripts/Spells/FireFire.lua", COMBINED,  0.0f, 0.0f, "", 0.1f, "Resources/Textures/Flames.png" };
+		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Resources/Scripts/Spells/FireFire.lua", COMBINED,  0.0f, 0.0f, "", 3.0f, "Resources/Textures/Flames.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::FIRE, pCombinedSpell);
 		pCombinedSpell = new Magic::SpellData{ "Air + Air", "Resources/Scripts/Spells/AirAir.lua", COMBINED,  0.0f, 0.0f, "", 1.0f, "Resources/Textures/AirAir.png" };
 		spellMap.emplace(SpellType::AIR | SpellType::AIR, pCombinedSpell);
-		pCombinedSpell = new Magic::SpellData{ "Fire + Air", "Resources/Scripts/Spells/FireAir.lua", COMBINED,  0.0f, 0.0f, "", 1.0f, "Resources/Textures/FireAir.png" };
+		pCombinedSpell = new Magic::SpellData{ "Fire + Air", "Resources/Scripts/Spells/FireAir.lua", COMBINED,  0.0f, 0.0f, "", 0.1f, "Resources/Textures/FireAir.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::AIR, pCombinedSpell);
 		return spellMap;
 	}
