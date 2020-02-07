@@ -33,6 +33,7 @@ namespace BulletHell
 	private:
 		void OnBulletHitPlayer(Hollow::GameEvent& event);
 		void OnBulletHitWall(Hollow::GameEvent& event);
+		void OnBulletHitDoor(Hollow::GameEvent& event);
 		void OnPlayerBulletHitEnemy(Hollow::GameEvent& event);
 
 		void HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet);
