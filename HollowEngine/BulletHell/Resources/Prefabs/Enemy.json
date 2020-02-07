@@ -8,7 +8,7 @@
     },
     {
       "Type": "Body",
-      "Mass": 10.0,
+      "Mass": 10000.0,
       "isFrictionLess": true,
       "RigidbodyType": "DYNAMIC"
     },
@@ -29,7 +29,7 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "ShootInCardinalDirections" ]
+      "Scripts": [ "ShootInCardinalDirections", "CirclePlayer" ]
     },
     {
       "Type": "Attack",
