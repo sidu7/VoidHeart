@@ -26,24 +26,25 @@ function PlayerAttack ()
 end
 
 function CheckValidAttack()
-	local hThreshold = 8000
-	local vThreshold = 8000
+	--local hThreshold = 800
+	--local vThreshold = 80
 	
 	-- May need to rethink this
-	local rightHorizontalAxis = GetAxis(CONTROLLER["RX"])
-	local rightVerticalAxis = GetAxis(CONTROLLER["RY"])
+	--local rightHorizontalAxis = GetAxis(CONTROLLER["LX"])
+	--local rightVerticalAxis = GetAxis(CONTROLLER["LY"])
 	
 	-- Debug input for keyboard
-	local debugFire = IsKeyPressed("H")
+	local debugFire = (IsControllerTriggerTriggered(CONTROLLER["LT"]) or IsControllerTriggerTriggered(CONTROLLER["RT"]))
 	if (debugFire) then
 		rightHorizontalAxis = 10000
 		rightVerticalAxis = 0
 	end
 	
 	
-	if math.abs(rightHorizontalAxis) > hThreshold
-	or math.abs(rightVerticalAxis) > hThreshold 
-	or debugFire then
+	--if math.abs(rightHorizontalAxis) > hThreshold
+	--or math.abs(rightVerticalAxis) > hThreshold 
+	--or debugFire then
+	if debugFire then
 		PlayerAttack()
 	end
 end

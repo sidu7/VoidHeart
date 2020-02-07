@@ -158,6 +158,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\AISettings.cpp" />
     <ClCompile Include="src\Components\Attack.cpp" />
     <ClCompile Include="src\Components\Behavior.cpp" />
     <ClCompile Include="src\Components\DestroyTimer.cpp" />
@@ -173,6 +174,10 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </ClCompile>
     <ClCompile Include="src\Components\Magic.cpp" />
     <ClCompile Include="src\Components\Movement.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonFloor.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp" />
+    <ClCompile Include="src\Components\Spell.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Systems\AttackSystem.cpp" />
     <ClCompile Include="src\Systems\BehaviorSystem.cpp" />
@@ -192,19 +197,25 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
   <ItemGroup>
     <None Include="Resources\Json data\Camera.json" />
     <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\Floor.json" />
+    <None Include="Resources\Prefabs\Floor.json" />
     <None Include="Resources\Json data\Light.json" />
     <None Include="Resources\Json data\LocalLight.json" />
+    <None Include="Resources\Json data\Rooms\Wall.json" />
     <None Include="Resources\Json data\UIElement.json" />
     <None Include="Resources\Levels\Level3.json" />
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
+    <None Include="Resources\Prefabs\Player.json" />
     <None Include="Resources\Scripts\BossAngry.lua" />
     <None Include="Resources\Scripts\BossHappy.lua" />
     <None Include="Resources\Scripts\BossPist.lua" />
     <None Include="Resources\Scripts\BossSad.lua" />
+    <None Include="Resources\Scripts\Enemies\Attacks\ShootAtThePlayer.lua" />
+    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
+    <None Include="Resources\Scripts\GameConfig.lua" />
     <None Include="Resources\Scripts\PlayerAttack.lua" />
     <None Include="Resources\Scripts\PlayerMovement.lua" />
+    <None Include="Resources\Scripts\SetupLevel.lua" />
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Ambient.frag" />
@@ -247,11 +258,17 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="src\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\AISettings.h" />
     <ClInclude Include="src\Components\Attack.h" />
     <ClInclude Include="src\Components\Behavior.h" />
     <ClInclude Include="src\Components\DestroyTimer.h" />
     <ClInclude Include="src\Components\Health.h" />
     <ClInclude Include="src\Components\Magic.h" />
+    <ClInclude Include="src\Components\Spell.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonFloor.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
+    <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
     <ClInclude Include="src\GameMetaData\GameObjectType.h" />
     <ClInclude Include="src\Components\Movement.h" />

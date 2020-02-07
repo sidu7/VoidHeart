@@ -31,8 +31,7 @@ namespace BulletHell
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
 
 	private:
-		void PlayerAttackUpdate(Hollow::GameObject* pPlayer);
-		void EnemyAttackUpdate(Hollow::GameObject* pEnemy);
+		void FireAttack(Hollow::GameObject* pGameObject);
 
 	private:
 		float mDeltaTime;

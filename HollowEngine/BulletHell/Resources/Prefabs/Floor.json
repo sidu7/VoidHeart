@@ -4,7 +4,7 @@
     {
       "Type": "Transform",
       "Position": [ 1.0, 0.0, 1.0 ],
-      "Scale": [ 200.0, 1.0, 200.0 ]
+      "Scale": [ 15.0, 1.0, 15.0 ]
     },
     {
       "Type": "Body",

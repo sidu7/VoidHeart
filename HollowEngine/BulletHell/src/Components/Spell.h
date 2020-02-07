@@ -4,11 +4,11 @@
 
 namespace BulletHell
 {
-	class Magic : public Hollow::Component
+	class Spell : public Hollow::Component
 	{
-		REGISTERCOMPONENT(Magic);
+		REGISTERCOMPONENT(Spell);
 	public:
-		
+
 		/// <summary>
 		/// Initializes the Attack component.
 		/// </summary>
@@ -37,21 +37,8 @@ namespace BulletHell
 		void DebugDisplay();
 
 	public:
-		struct SpellData {
-			std::string mName;
-			std::string mScriptPath;
-		};
-
-	public:
-		std::string mLeftHandScriptPath;
-		std::string mRightHandScriptPath;
-		std::string mCombineHandScriptPath;
-
-		SpellData* mLeftHandSpell;
-		SpellData* mRightHandSpell;
-		SpellData* mCombinedSpell;
-
-		std::vector<SpellData*> mSpells;
+		std::string mName;
+		std::string mScriptPath;
 
 	};
 }

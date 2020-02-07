@@ -25,7 +25,7 @@ namespace Hollow {
 
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-		
+
 	Application::~Application()
 	{
 		ResourceManager::Instance().CleanUp();
@@ -60,13 +60,13 @@ namespace Hollow {
 		ThreadManager::Instance().Init();
 		MemoryManager::Instance().Init(JSONHelper::GetSettings(data, "Memory"));
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
+		ScriptingManager::Instance().Init(JSONHelper::GetSettings(data, "Scripting"));
 		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
 		LocalizationManager::Instance().Init(JSONHelper::GetSettings(data, "Localization"));
 		EventManager::Instance().Init(JSONHelper::GetSettings(data, "Events"));
 		ResourceManager::Instance().Init();
 		AudioManager::Instance().Init();
-		ScriptingManager::Instance().Init(JSONHelper::GetSettings(data, "Scripting"));
 		UIManager::Instance().Init();
 		PhysicsManager::Instance().Init(JSONHelper::GetSettings(data, "Physics"));
 		SceneManager::Instance().Init();
@@ -84,7 +84,7 @@ namespace Hollow {
 
 		//HW_CORE_TRACE("{0}", e);
 
-		for(auto it = mLayerStack.end(); it != mLayerStack.begin();)
+		for (auto it = mLayerStack.end(); it != mLayerStack.begin();)
 		{
 			(*--it)->OnEvent(e);
 
@@ -95,8 +95,11 @@ namespace Hollow {
 
 	void Application::Run()
 	{
+#ifdef _DEBUG
+		return;
+#else
 		while (mIsRunning)
-		{			
+		{
 			FrameRateController::Instance().FrameStart();
 			// Start frame functions
 			ImGuiManager::Instance().StartFrame();
@@ -117,12 +120,13 @@ namespace Hollow {
 			RenderManager::Instance().Update();
 
 			GameObjectManager::Instance().ClearDeletionList();
-			
+
 			FrameRateController::Instance().FrameEnd();
 
 			if (InputManager::Instance().IsKeyPressed("Escape"))
 				mIsRunning = false;
-		}		
+		}
+#endif	
 	}
 
 	void Application::PushLayer(Layer* layer)

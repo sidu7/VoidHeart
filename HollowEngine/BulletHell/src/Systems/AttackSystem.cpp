@@ -2,6 +2,7 @@
 #include "AttackSystem.h"
 
 #include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Material.h"
 
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/ScriptingManager.h"
@@ -25,9 +26,12 @@ namespace BulletHell
 			sol::constructors<Attack()>(),
 			"baseAttackTime", &Attack::mBaseAttackTime,
 			"currentAttackTime", &Attack::mCurrentAttackTime,
-			"IsFired", &Attack::mIsFired
+			"IsFired", &Attack::mIsFired,
+            "target", &Attack::mpTarget
 			);
 
+		// Add get attack component to lua
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetAttack"] = &Hollow::GameObject::GetComponent<Attack>;
 	}
 
 	void AttackSystem::Update()
@@ -35,16 +39,8 @@ namespace BulletHell
 		mDeltaTime = Hollow::FrameRateController::Instance().GetFrameTime();
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			// Handle player attack script
-			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
-			{
-				PlayerAttackUpdate(mGameObjects[i]);
-			}
-			// Handle enemy attack script for now
-			else
-			{
-				EnemyAttackUpdate(mGameObjects[i]);
-			}
+			// Run attack script for game object
+			FireAttack(mGameObjects[i]);
 		}
 	}
 
@@ -61,47 +57,14 @@ namespace BulletHell
 	{
 	}
 
-	void AttackSystem::PlayerAttackUpdate(Hollow::GameObject* pPlayer)
+	void AttackSystem::FireAttack(Hollow::GameObject* pGameObject)
 	{
 		// Check buttons/axis directions and fire player attack script
-		Attack* pAttack = pPlayer->GetComponent<Attack>();
-		Hollow::Transform* pTransform = pPlayer->GetComponent<Hollow::Transform>();
+		Attack* pAttack = pGameObject->GetComponent<Attack>();
 		pAttack->mCurrentAttackTime += mDeltaTime;
 
 		// Fire player lua script
-		short rightHorizontalAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX);
-		short rightVerticalAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY);
-		bool debugFire = Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_H);
-		if (debugFire)
-		{
-			rightHorizontalAxis = 10000;
-			rightVerticalAxis = 0;
-		}
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
-
-		// Send values to lua
-		lua["attackPosition"] = pTransform->mPosition;
-		lua["playerBody"] = pPlayer->GetComponent<Hollow::Body>();
-		lua["horizontalAxis"] = rightHorizontalAxis;
-		lua["verticalAxis"] = rightVerticalAxis;
-		lua["attack"] = pAttack;
 		lua.script_file(pAttack->mScriptPath);
-
-	}
-
-	void AttackSystem::EnemyAttackUpdate(Hollow::GameObject* pEnemy)
-	{
-		Attack* pAttack = pEnemy->GetComponent<Attack>();
-		pAttack->mCurrentAttackTime += mDeltaTime;
-		// Fire attack and reset attack timer
-		if (mpPlayerBody != nullptr)
-		{
-			auto& lua = Hollow::ScriptingManager::Instance().lua;
-
-			lua["attack"] = pAttack;
-			lua["followObject"] = pEnemy;
-			lua["followPosition"] = mpPlayerBody->mPosition;
-			lua.script_file(pAttack->mScriptPath);
-		}
 	}
 }

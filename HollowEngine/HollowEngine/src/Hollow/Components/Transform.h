@@ -35,6 +35,13 @@ namespace Hollow
 		/// <param name="writer">The writer of the JSON file.</param>
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
+        /// <summary>
+        /// Gets orientation vector.
+        /// </summary>
+        HOLLOW_API glm::vec3 GetForward() const;
+
+        HOLLOW_API void Rotate(const glm::vec3 angles);
+
 		glm::vec3 mPosition;					// mPosition is x,y,z
 		glm::vec3 mScale;						// mScale is x,y,z
 		glm::vec3 mRotation;					// mRotation is degree for x,y,z

@@ -8,11 +8,16 @@
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 #include "Components/Health.h"
 #include "GameMetaData/GameObjectType.h"
 #include "GameMetaData/GameEventType.h"
 #include "Hollow/Core/GameMetaData.h"
+
+#include "DungeonGeneration/DungeonManager.h"
+
+#include "Hollow/Components/Body.h"
 
 void Hollow::GameMetaData::Init()
 {
@@ -47,14 +52,23 @@ public:
 		Application::Init("Resources/Settings.json");
 
 		Hollow::SceneManager::Instance().LoadLevel("Level3");
+		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
 
 		PushLayer(new GameLayer());
+
+		BulletHell::DungeonManager::Instance().ConfigureDungeon();
+        BulletHell::DungeonManager::Instance().Init();
+		//BulletHell::DungeonManager::Instance().Generate();
+
+		
+		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
 	}
 
 	~BulletHellGame()
 	{
 		HW_TRACE("BulletHell Prototype Closing");
 	}
+
 };
 
 
