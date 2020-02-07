@@ -1,0 +1,49 @@
+{
+  "Type": "PLAYER_BULLET",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 3.0, 3.0, 3.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Model",
+      "Shape": "BALL",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 0.0, 5.0, 0.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "Script",
+      "DestroyScripts": [ "Destroy/CreateFireballs" ]
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 10000,
+      "EmissionRate": 100,
+      "Shape": 0,
+      "Texture": "Resources/Textures/star.png",
+      "Area": [ 1.0, 1.0, 1.0 ],
+      "Life": [ 2.0, 5.0 ],
+      "Speed": [ 0.0, 0.0 ],
+      "ComputeShader": "Resources/Shaders/RainParticles.comp",
+      "CenterOffset": [ 0.0, 0.0, 0.0 ],
+      "PixelSize": 0.1
+    }
+  ]
+}

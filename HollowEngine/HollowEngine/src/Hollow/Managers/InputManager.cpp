@@ -182,6 +182,16 @@ namespace Hollow {
 			}
 			break;
 		}
+		case SDL_CONTROLLERDEVICEREMOVED:
+		{
+			HW_CORE_WARN("Controller disconnected");
+			SDL_GameControllerClose(mpController);
+			break;
+		}
+		case SDL_CONTROLLERDEVICEADDED:
+			HW_CORE_INFO("Controller reconnected");
+			mpController = SDL_GameControllerOpen(0);
+			break;
 		}
 	}
 

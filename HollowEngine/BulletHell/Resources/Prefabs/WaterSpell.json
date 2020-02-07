@@ -1,0 +1,42 @@
+{
+  "Type": "SPELL",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.5, 10.0, 0.0 ],
+      "Scale": [ 0.75, 0.75, 0.75 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Model",
+      "Shape": "BALL",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 0.0, 0.0, 30.0 ],
+      "Shininess": 100000.0,
+      "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "Spell",
+      "Name": "Water",
+      "Script": "Resources/Scripts/Spells/Water.lua",
+      "SpellType": 8,
+      "UIRotation": 4.712388,
+      "ParticleSize": 0.0,
+      "ParticleTexture": "Resources/Textures/water.png",
+      "Cooldown": 0.5
+    }
+  ]
+}

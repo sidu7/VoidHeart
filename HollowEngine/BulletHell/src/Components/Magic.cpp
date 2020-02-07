@@ -83,12 +83,36 @@ namespace BulletHell
 	std::unordered_map<int, Magic::SpellData*> Magic::CreateSpellMap()
 	{
 		std::unordered_map<int, Magic::SpellData*> spellMap;
-		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Resources/Scripts/Spells/FireFire.lua", COMBINED,  0.0f, 0.0f, "", 0.1f, "Resources/Textures/Flames.png" };
+		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Resources/Scripts/Spells/FireFire.lua", COMBINED,  0.0f, 0.0f, "", 3.0f, "Resources/Textures/Flames.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::FIRE, pCombinedSpell);
+
 		pCombinedSpell = new Magic::SpellData{ "Air + Air", "Resources/Scripts/Spells/AirAir.lua", COMBINED,  0.0f, 0.0f, "", 1.0f, "Resources/Textures/AirAir.png" };
 		spellMap.emplace(SpellType::AIR | SpellType::AIR, pCombinedSpell);
-		pCombinedSpell = new Magic::SpellData{ "Fire + Air", "Resources/Scripts/Spells/FireAir.lua", COMBINED,  0.0f, 0.0f, "", 1.0f, "Resources/Textures/FireAir.png" };
+
+		pCombinedSpell = new Magic::SpellData{ "Earth + Earth", "Resources/Scripts/Spells/Empty.lua", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/EarthEarth.png" };
+		spellMap.emplace(SpellType::EARTH | SpellType::EARTH, pCombinedSpell);
+
+		pCombinedSpell = new Magic::SpellData{ "Water + Water", "Resources/Scripts/Spells/Empty.lua", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/WaterWater.png" };
+		spellMap.emplace(SpellType::WATER | SpellType::WATER, pCombinedSpell);
+
+		pCombinedSpell = new Magic::SpellData{ "Fire + Air", "Resources/Scripts/Spells/FireAir.lua", COMBINED,  0.0f, 0.0f, "", 0.1f, "Resources/Textures/FireAir.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::AIR, pCombinedSpell);
+
+		pCombinedSpell = new Magic::SpellData{ "Fire + Earth", "Resources/Scripts/Spells/Empty.lua", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/FireEarth.png" };
+		spellMap.emplace(SpellType::FIRE | SpellType::EARTH, pCombinedSpell);
+
+		pCombinedSpell = new Magic::SpellData{ "Fire + Water", "Resources/Scripts/Spells/Empty.lua", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/FireWater.png" };
+		spellMap.emplace(SpellType::FIRE | SpellType::WATER, pCombinedSpell);
+
+		pCombinedSpell = new Magic::SpellData{ "Air + Earth", "Resources/Scripts/Spells/Empty.lua", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/AirEarth.png" };
+		spellMap.emplace(SpellType::AIR | SpellType::EARTH, pCombinedSpell);
+
+		pCombinedSpell = new Magic::SpellData{ "Air + Water", "Resources/Scripts/Spells/Empty.lua", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/AirWater.png" };
+		spellMap.emplace(SpellType::AIR | SpellType::WATER, pCombinedSpell);
+
+		pCombinedSpell = new Magic::SpellData{ "Earth + Water", "Resources/Scripts/Spells/Empty.lua", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/EarthWater.png" };
+		spellMap.emplace(SpellType::EARTH | SpellType::WATER, pCombinedSpell);
+
 		return spellMap;
 	}
 	
