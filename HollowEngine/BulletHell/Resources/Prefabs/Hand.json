@@ -17,9 +17,10 @@
     },
     {
       "Type": "ParticleEmitter",
+      "MaxCount": 1000,
+      "EmissionRate": 100,
       "Shape": 0,
       "Texture": "Resources/Textures/star.png",
-      "Count": 100000,
       "Area": [ 0.2, 0.2, 0.2 ],
       "Life": [ 4.0, 9.0 ],
       "Speed": [ 1.5, 2.0 ],

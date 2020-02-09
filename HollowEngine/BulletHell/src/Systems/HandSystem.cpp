@@ -77,14 +77,27 @@ namespace BulletHell
 			// Update position based on offset and parent
 			Hollow::Transform* pTr = mGameObjects[i]->GetComponent<Hollow::Transform>();
 			ParentOffset* pParentOffset = mGameObjects[i]->GetComponent<ParentOffset>();
-			Hollow::Transform* pParentTr = pParentOffset->mpParent->GetComponent<Hollow::Transform>();
-
-			pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition;
+            if (pParentOffset->mpParent && pParentOffset->mpParent->mActive)
+            {
+                Hollow::Transform* pParentTr = pParentOffset->mpParent->GetComponent<Hollow::Transform>();
+           
+                pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition;
+            }
+            else
+            {
+                pParentOffset->mpParent = nullptr;
+                return;
+            }
 		}
 
 		// Update combined spell UI image
 		Magic* pMagic = mpPlayerObject->GetComponent<Magic>();
-		if (pMagic->mCombinedSpell != nullptr)
+        if (!mpPlayerObject->mActive)
+        {
+            mpPlayerObject = nullptr;
+            return;
+        }
+        if (pMagic->mCombinedSpell != nullptr)
 		{
 			Hollow::UIImage* pUIImg = mpCombinedHandUI->GetComponent<Hollow::UIImage>();
 			pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pMagic->mCombinedSpell->mUITexturePath);

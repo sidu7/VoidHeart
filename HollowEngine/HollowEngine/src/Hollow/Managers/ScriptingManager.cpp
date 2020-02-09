@@ -130,12 +130,14 @@ namespace Hollow
 			);
 
 		// GAMEOBJECT
-		mGameObjectType = lua.new_usertype<GameObject>("GameObject",
-			sol::constructors<GameObject()>(),
-			"GetBody", &GameObject::GetComponent<Body>,
-			"GetTransform", &GameObject::GetComponent<Transform>,
-			"GetMaterial", &GameObject::GetComponent<Material>,
-			"GetScript", &GameObject::GetComponent<Script>
+        mGameObjectType = lua.new_usertype<GameObject>("GameObject",
+            sol::constructors<GameObject()>(),
+            "GetBody", &GameObject::GetComponent<Body>,
+            "GetTransform", &GameObject::GetComponent<Transform>,
+            "GetMaterial", &GameObject::GetComponent<Material>,
+            "GetScript", &GameObject::GetComponent<Script>,
+            "isActive", &GameObject::mActive
+
 			);
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));

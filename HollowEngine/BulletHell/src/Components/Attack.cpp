@@ -69,6 +69,7 @@ namespace BulletHell
 
 		ImGui::InputFloat("Base Attack Time", &mBaseAttackTime);
 		ImGui::Text("Current Attack Time %f", mCurrentAttackTime);
+		ImGui::Text("Should attack: %d", mShouldAttack);
 
 		// Attack testing button
 		if (ImGui::Button("Fire Attack"))

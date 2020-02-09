@@ -34,10 +34,12 @@ namespace Hollow {
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
 		std::vector <std::string> mScripts;
+		std::vector <std::string> mDestroyScripts;
 
 		// Active
 		bool mIsActive;
 	private:
 		int mScriptCount;
+		int mDestroyScriptCount;
 	};
 }

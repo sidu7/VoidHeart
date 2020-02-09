@@ -1,7 +1,7 @@
 function CreateFireball(xVel, zVel)
 	attackPosition = gameObject:GetTransform().position
 
-	local gameObjectPath = "Resources/Json data/PlayerBullet.json"
+	local gameObjectPath = "Resources/Prefabs/LargeFireball.json"
 	go = CreateGameObject(gameObjectPath)
 	body = go:GetBody()
 	body.position = attackPosition
@@ -12,7 +12,7 @@ function CreateFireball(xVel, zVel)
 	xVelocity = xVelocity / totalVelocity
 	zVelocity = zVelocity / totalVelocity
 		
-	local attackSpeed = 5.0
+	local attackSpeed = 25.0
 	body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
 
 	transform = go:GetTransform()
@@ -24,15 +24,14 @@ function CreateFireball(xVel, zVel)
 end
 
 function PlayerAttack ()
-	for i=1,3 do
-		CreateFireball(i, i)
-	end
+	-- Create a large fireball
+	CreateFireball()
 	PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
 end
 
 function CheckValidAttack()
 	local attack = gameObject:GetAttack()
-	if attack.shouldAttack then
+	if (attack.shouldAttack == true) then
 		PlayerAttack()
 		attack.shouldAttack = false
 	end

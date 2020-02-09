@@ -44,4 +44,16 @@ namespace Hollow
 	{
 		CheckAllComponents<Script>(pGameObject);
 	}
+
+	void ScriptingSystem::OnDeleteGameObject(GameObject* pGameObject)
+	{
+		// Run any delete scripts
+		auto& lua = ScriptingManager::Instance().lua;
+		Script* pScript = pGameObject->GetComponent<Script>();
+		lua["gameObject"] = pScript->mpOwner;
+		for (auto& script : pScript->mDestroyScripts)
+		{
+			lua.script_file(ScriptingManager::Instance().rootPath + script + ScriptingManager::Instance().ext);
+		}
+	}
 }
