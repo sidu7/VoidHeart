@@ -53,6 +53,7 @@ namespace BulletHell
         void OnDeath(Hollow::GameEvent& event);
 
         DungeonRoom& GetCurrentRoom();
+        void OnFloorCleared(Hollow::GameEvent& event);
     public:
 		Hollow::GameObject* mpPlayerGo;
     private:

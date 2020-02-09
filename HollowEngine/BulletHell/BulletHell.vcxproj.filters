@@ -82,6 +82,8 @@
     <None Include="Resources\Scripts\EnemyStayStill.lua" />
     <None Include="Resources\Prefabs\EnemyBoss1.json" />
     <None Include="Resources\Scripts\GameLogic.lua" />
+    <None Include="Resources\Json data\Camera.json" />
+    <None Include="Resources\Json data\Cloud.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

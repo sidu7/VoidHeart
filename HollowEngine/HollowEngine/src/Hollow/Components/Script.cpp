@@ -18,6 +18,7 @@ namespace Hollow {
 
 	void Script::DebugDisplay()
 	{
+		ImGui::Checkbox("Active", &mIsActive);
 		ImGui::InputInt("Count", &mScriptCount);
 		for (int i = 0; i < mScriptCount; ++i)
 		{
