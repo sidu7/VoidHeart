@@ -29,7 +29,7 @@ namespace BulletHell
         void Regenerate();
         void Construct();
         void ConfigureDungeon();
-        void SetSeed(unsigned seed);
+        bool SetSeed(unsigned seed);
         unsigned GetSeed();
 
         std::vector<DungeonFloor> GetFloors() const;

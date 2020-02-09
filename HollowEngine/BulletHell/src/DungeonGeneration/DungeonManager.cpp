@@ -18,11 +18,16 @@ namespace BulletHell
         static DungeonManager instance;
         return instance;
     }
+
     void DungeonManager::Init()
     {
-        //mSeed = 521288629;
         auto randomizer = Random::Range(0, MAXINT);
-        mSeed = randomizer();
+        while (!SetSeed(randomizer()));
+        {
+        }
+        //mSeed = 521288629;
+        //mSeed = 1993539175;
+        
         Generate();
 
         SubscribeToEvents();
@@ -86,9 +91,18 @@ namespace BulletHell
         Generate();
     }
 
-    void DungeonManager::SetSeed(unsigned seed)
+    bool DungeonManager::SetSeed(unsigned seed)
     {
-        mSeed = seed;
+        // check for bug seeds, investigate them later
+        switch (seed)
+        {
+        //case ####: // blacklisted seed
+        //    return false;
+        //    break;
+        default:
+            mSeed = seed;
+            return true;
+        }
     }
 	
     void DungeonManager::Construct()

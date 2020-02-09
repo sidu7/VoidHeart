@@ -1,7 +1,12 @@
 local firstFloor = GetDungeonFloor(currentFloor)
 
 currentRoom = firstFloor:GetEntranceIndex()
+--CreatePrefabAtPosition("EnemyBoss1", vec3.new(coords.y * roomSize + roomSize/2 + 8, 0.1, coords.x * roomSize + roomSize/2 + 8))
 local coords = firstFloor:GetEntrance():GetCoords()
+--CreatePrefabAtPosition("EnemyFollowLookdir", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2))
+--CreatePrefabAtPosition("EnemyTurretTarget", vec3.new(coords.y * roomSize + roomSize/2 - 3, 0.5, coords.x * roomSize + roomSize/2))
+--CreatePrefabAtPosition("EnemyTurretCardinal", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2 + 3))
+--CreatePrefabAtPosition("EnemyRunsawayLookDir", vec3.new(coords.y * roomSize + roomSize/2 - 3, 0.5, coords.x * roomSize + roomSize/2 - 3))
 player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 
 -- generate a spell in front of the player in the entrance room on the first floor
@@ -11,9 +16,7 @@ end
 
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
 local roomCount = firstFloor:GetRoomCount() - 2 - 1 - 1
-print(roomCount)
 for i=0, roomCount, 1 do
-    print(i)
     CreateEnemiesInRoom(firstFloor:GetRegularRoom(i))
 end
 

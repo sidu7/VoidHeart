@@ -108,27 +108,39 @@ namespace BulletHell
 			mRooms[roomIndex].mRoomType = DungeonRoomType::EMPTY;
 		}
 
-		//// boss room
-		// find furthest away room from the entrance, assign it to boss room 
-		// find furthest away dead-end for the boss room
-		int biggestDist = 0;
-		int furthestRoom = mEntranceIndex;
-		for (unsigned i = 0; i < mRooms.size(); i++)
-		{
-			const DungeonRoom& room = mRooms[i];
-			const int numDoors = room.TotalDoors();
-			if (numDoors == 1)
-			{
-				if (room.mDistFromEntrance > biggestDist)
-				{
-					biggestDist = room.mDistFromEntrance;
-					furthestRoom = i;
-				}
-			}
-		}
+        //// boss room
+        // find furthest away room from the entrance, assign it to boss room 
+        // find furthest away dead-end for the boss room
+        int biggestDistDeadEnd = 0;
+        int furthestDeadEndRoom = mEntranceIndex;
+        int biggestDist = 0;
+        int furthestRoom = mEntranceIndex;
+        for (unsigned i = 0; i < mRooms.size(); i++)
+        {
+            const DungeonRoom& room = mRooms[i];
+            const int numDoors = room.TotalDoors();
+            if (numDoors == 1)
+            {
+                if (room.mDistFromEntrance > biggestDistDeadEnd)
+                {
+                    biggestDistDeadEnd = room.mDistFromEntrance;
+                    furthestDeadEndRoom = i;
+                }
+            }
+            else 
+            {
+                if (room.mRoomType == DungeonRoomType::REGULAR && room.mDistFromEntrance > biggestDist)
+                {
+                    biggestDist = room.mDistFromEntrance;
+                    furthestRoom = i;
+                }
+            }
+        }
+        if (furthestDeadEndRoom == mEntranceIndex)
+            furthestDeadEndRoom = furthestRoom;
 
-		mRooms[furthestRoom].mRoomType = DungeonRoomType::BOSS;
-		mBossIndex = furthestRoom;
+        mRooms[furthestDeadEndRoom].mRoomType = DungeonRoomType::BOSS;
+    	mBossIndex = furthestRoom;
 
 		// Remove boss room from fillable rooms as that will be handled separately
 		mIndexRegularRooms.erase(std::find(mIndexRegularRooms.begin(), mIndexRegularRooms.end(), mBossIndex));
@@ -154,13 +166,13 @@ namespace BulletHell
 		mEntranceIndex = -1;
 	}
 
-	const DungeonRoom& DungeonFloor::GetEntrance() const
-	{
-		if (mEntranceIndex > 0 && !mRooms.empty())
-			return mRooms[mEntranceIndex];
-		else
-			return DungeonRoom();
-	}
+    const DungeonRoom& DungeonFloor::GetEntrance() const
+    {
+        if (mEntranceIndex >= 0 && !mRooms.empty())
+            return mRooms[mEntranceIndex];
+        else
+            return DungeonRoom();
+    }
 
 	int DungeonFloor::GetEntranceIndex()
 	{
