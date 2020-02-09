@@ -33,7 +33,7 @@
     },
     {
       "Type": "Attack",
-      "Script": "Resources/Scripts/ShootAtThePlayer.lua",
+      "Script": "ShootAtThePlayer",
       "BaseAttackTime": 0.7
     },
     {

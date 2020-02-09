@@ -35,7 +35,7 @@
     },
     {
       "Type": "Attack",
-      "Script": "Resources/Scripts/ShootInTheLookDir.lua",
+      "Script": "ShootInTheLookDir",
       "BaseAttackTime": 0.7
     },
     {
