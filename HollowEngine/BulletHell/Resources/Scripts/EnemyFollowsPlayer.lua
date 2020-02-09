@@ -1,4 +1,9 @@
 function FollowPlayer()
+    -----------------------------------------
+    -- playtesting vars
+	local enemySpeed = 4.0
+    -----------------------------------------
+
     local transform = gameObject:GetTransform()
 	local position = transform.position
 
@@ -33,7 +38,6 @@ function FollowPlayer()
     
     -- setting the velocity
 	local body = gameObject:GetBody()
-	local enemySpeed = 4.0
     body.velocity = enemySpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
     
 end
