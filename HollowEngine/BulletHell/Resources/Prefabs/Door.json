@@ -2,43 +2,43 @@
     
     "Type": "DOOR",
     "Active": true,
-    "Components": [
-        {
-            "Type": "Transform",
-            "Scale": [ 1.0, 5.0, 1.0 ]
-        },
-        {
-            "Type": "Body",
-            "RigidbodyType": "STATIC",
-            "IsFrictionLess": false,
-            "UseGravity": true
-        },
-        {
-            "Type": "Model",
-            "Shape": "CUBE",
-            "CastShadow": true,
-            "ModelHasOffset": false
-        },
-        {
-            "Type": "Collider",
-            "Bounciness": 0.20000000298023225,
-            "Shape": "BOX",
-            "isTrigger": false
-        },
-        {
-          "Type": "Material",
-          "Diffuse": [
-            1.0,
-            0.65,
-            0.0
-          ],
-          "Specular": [
-            0.5,
-            0.5,
-            0.5
-          ],
-          "Shininess": 1000.0,
-          "MaterialTextures": true
-        }
-    ]
+  "Components": [
+    {
+      "Type": "Transform",
+      "Scale": [ 1.0, 5.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "RigidbodyType": "STATIC",
+      "IsFrictionLess": false,
+      "UseGravity": true
+    },
+    {
+      "Type": "Model",
+      "Shape": "CUBE",
+      "CastShadow": true,
+      "ModelHasOffset": false
+    },
+    {
+      "Type": "Collider",
+      "Bounciness": 0.20000000298023225,
+      "Shape": "BOX",
+      "isTrigger": false
+    },
+    {
+      "Type": "Material",
+      "Diffuse": [
+        1.0,
+        0.65,
+        0.0
+      ],
+      "Specular": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "Shininess": 1000.0,
+      "MaterialTextures": true
+    }
+  ]
 }

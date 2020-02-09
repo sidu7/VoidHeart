@@ -1,6 +1,6 @@
-function Shoot()
+function FollowPlayer()
     local transform = gameObject:GetTransform()
-	local spawnPos = transform.position
+	local position = transform.position
 
     --  acquire target 
     local target = player
@@ -11,8 +11,8 @@ function Shoot()
     local targetPos = targetTransform.position
     
     -- calculate direction
-    local xDir = targetPos.x - spawnPos.x
-	local zDir = targetPos.z - spawnPos.z
+    local xDir = targetPos.x - position.x
+	local zDir = targetPos.z - position.z
 	local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
 	local xDirNorm = xDir / dirLength
 	local zDirNorm = zDir / dirLength
@@ -31,33 +31,16 @@ function Shoot()
         transform:Rotate(rot)
     end
     
-	local attack = gameObject:GetAttack()
-	if attack.currentAttackTime > attack.baseAttackTime then
-        -- Create bullet
-	    local bulletPrefabPath = "Resources/Json data/Bullet.json"
-	    local bullet = CreateGameObject(bulletPrefabPath)
-        local bulletTransform = bullet:GetTransform()
-	    local bulletBody = bullet:GetBody()
-   
-        -- Setting position
-        bulletBody.position = spawnPos
-        bulletTransform.position = spawnPos
-
-        -- Setting velocity
-	    local bulletSpeed = 15.0
-        bulletBody.velocity = bulletSpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
+    -- setting the velocity
+	local body = gameObject:GetBody()
+	local enemySpeed = 4.0
+    body.velocity = enemySpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
     
-        -- Setting rotation
-        bulletTransform:Rotate(rot);
-
-        attack.currentAttackTime = 0
-    end
-
 end
 
 function Update()
     
-	Shoot()
+	FollowPlayer()
 end
 
 Update()

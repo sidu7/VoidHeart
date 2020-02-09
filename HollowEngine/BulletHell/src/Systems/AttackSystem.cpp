@@ -63,7 +63,10 @@ namespace BulletHell
 	{
 		// Check buttons/axis directions and fire player attack script
 		Attack* pAttack = pGameObject->GetComponent<Attack>();
-		pAttack->mCurrentAttackTime += mDeltaTime;
+
+		if (pAttack->mIsActive)
+		{
+			pAttack->mCurrentAttackTime += mDeltaTime;
 
 		// Fire player lua script
 		Hollow::ScriptingManager::Instance().RunScript(pAttack->mScriptPath, pAttack->mpOwner);

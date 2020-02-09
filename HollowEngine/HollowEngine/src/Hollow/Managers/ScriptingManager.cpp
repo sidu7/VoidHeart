@@ -29,7 +29,7 @@ namespace Hollow
 		rootPath = data["FilePath"].GetString();
 		ext = data["FileExtension"].GetString();
 
-		lua.open_libraries(sol::lib::base, sol::lib::math);
+		lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::bit32);
 
 		// Controller
 		lua["CONTROLLER"] = lua.create_table_with(
@@ -103,6 +103,11 @@ namespace Hollow
 			sol::meta_function::multiplication, mult_overloads3
 		);
 
+		// GLM functions
+		lua.set_function("VecCross", [](const glm::vec3& v1, const glm::vec3& v2) -> glm::vec3 { return glm::cross(v1,v2); });
+		lua.set_function("VecNormalize", [](const glm::vec3& v) -> glm::vec3 { return glm::normalize(v); });
+		lua.set_function("VecLength", [](const glm::vec3& v) -> float { return glm::length(v); });
+		
 		// COMPONENTS
 		lua.new_usertype<Body>("RigidBody",
 			sol::constructors<Body()>(),
