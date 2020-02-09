@@ -10,10 +10,12 @@
 #include "Hollow/Components/UIImage.h"
 #include "Hollow/Components/UITransform.h"
 #include "Hollow/Components/ParticleEmitter.h"
+#include "Hollow/Components/Body.h"
 
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 #include "Hollow/Events/GameEvent.h"
 
@@ -28,6 +30,16 @@ namespace BulletHell
 	{
 		// Subscribe to hand related events
 		SubscribeToEvents();
+
+		// Add the parent offset component to lua
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<ParentOffset>("ParentOffset",
+			sol::constructors<ParentOffset()>(),
+			"offset", &ParentOffset::mOffset
+			);
+
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetParentOffset"] = &Hollow::GameObject::GetComponent<ParentOffset>;
 	}
 
 	void HandSystem::OnSceneInit()
@@ -81,7 +93,25 @@ namespace BulletHell
             {
                 Hollow::Transform* pParentTr = pParentOffset->mpParent->GetComponent<Hollow::Transform>();
            
-                pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition;
+				// Think about doing default forward
+				if (pParentOffset->mUseForward)
+				{
+					// Get parent forward
+					// THIS IS ONLY FOR MELEE COLLIDER FOR NOW
+					// IT ARBITRARILY TAKES A SCALE AMOUNT OFF THE FORWARD VECTOR
+					// USE THIS SYSTEM WITH CAUTION, IT IS A MESS
+					pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition + (pParentTr->GetForward()*0.5f);
+				}
+				else
+				{
+					pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition;
+				}
+
+				Hollow::Body* pBody = mGameObjects[i]->GetComponent<Hollow::Body>();
+				if (pBody)
+				{
+					pBody->mPosition = pTr->mPosition;
+				}
             }
             else
             {

@@ -1,6 +1,6 @@
-function FireAttack()
+function AirDash()
 	local impulse = vec3.new()
-	local dashSpeed = 1500.0
+	local dashSpeed = 2000.0
 	local body = gameObject:GetBody()
 	-- Damp Overall Velocity and Rotation
 	local direction = body.velocity
@@ -17,7 +17,7 @@ end
 function CheckValidAttack()
 	local attack = gameObject:GetAttack()
 	if attack.shouldAttack then
-		FireAttack()
+		AirDash()
 		attack.currentAttackTime = 0.0
 		attack.shouldAttack = false
 	end

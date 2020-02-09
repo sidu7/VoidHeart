@@ -33,7 +33,7 @@
     },
     {
       "Type": "Attack",
-      "Script": "Resources/Scripts/ShootInCardinalDirections.lua",
+      "Script": "ShootInCardinalDirections",
       "BaseAttackTime": 0.4
     },
     {

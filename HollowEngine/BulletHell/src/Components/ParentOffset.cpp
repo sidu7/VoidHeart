@@ -33,12 +33,17 @@ namespace BulletHell
 		{
 			mTag = data["Tag"].GetString();
 		}
+		if (data.HasMember("UseForward"))
+		{
+			mUseForward = data["UseForward"].GetBool();
+		}
 	}
 
 	void ParentOffset::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
 		Hollow::JSONHelper::Write<glm::vec3>("Offset", mOffset, writer);
 		Hollow::JSONHelper::Write<std::string>("Tag", mTag, writer);
+		Hollow::JSONHelper::Write<bool>("UseForward", mUseForward, writer);
 	}
 
 	void ParentOffset::Clear()
@@ -50,5 +55,6 @@ namespace BulletHell
 		ImGui::Text("%i", mpOwner->mType);
 		ImGui::InputFloat3("Offset", &mOffset[0]);
 		Hollow::ImGuiHelper::InputText("Tag", mTag);
+		ImGui::Checkbox("Use Forward", &mUseForward);
 	}
 }

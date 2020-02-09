@@ -550,7 +550,7 @@ namespace Hollow {
 
 	bool SAT::CheckCollsionAndGenerateContact(Collider* col1, Collider* col2)
 	{
-		if (col1 != NULL && col1 != NULL)
+		if (col1 != NULL && col2 != NULL)
 			return (this->*CollisionFunctions[col1->mpShape->mType][col2->mpShape->mType])(col1, col2);
 		else
 			return false;

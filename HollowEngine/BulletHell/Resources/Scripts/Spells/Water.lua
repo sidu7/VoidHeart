@@ -1,24 +1,30 @@
-function FireAttack()
-	local impulse = vec3.new()
-	local dashSpeed = 1500.0
-	local body = gameObject:GetBody()
-	-- Damp Overall Velocity and Rotation
-	local direction = body.velocity
-	local magnitude = math.sqrt(direction.x*direction.x + direction.y*direction.y + direction.z*direction.z)
-	direction.x = direction.x / magnitude
-	direction.y = direction.y / magnitude
-	direction.z = direction.z / magnitude
-	impulse = impulse + direction * dashSpeed
-	impulse.y = 0.0
-	PlaySFX("Resources/Audio/SFX/PlayerDash.wav")
-	ApplyLinearImpulse(gameObject, impulse)
+function CreateHomingWave()
+	local attackPosition = gameObject:GetTransform().position
+
+	local gameObjectPath = "Resources/Prefabs/PlayerWater.json"
+	local go = CreateGameObject(gameObjectPath)
+	local body = go:GetBody()
+	body.position = attackPosition
+		
+	local xVelocity = GetAxis(CONTROLLER["RX"])
+	local zVelocity = GetAxis(CONTROLLER["RY"])
+	local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
+	xVelocity = xVelocity / totalVelocity
+	zVelocity = zVelocity / totalVelocity
+		
+	local attackSpeed = 10.0
+	body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
+
+	local transform = go:GetTransform()
+	transform.position = body.position
+		
+	--PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
 end
 
 function CheckValidAttack()
 	local attack = gameObject:GetAttack()
 	if attack.shouldAttack then
-		FireAttack()
-		attack.currentAttackTime = 0.0
+		CreateHomingWave()
 		attack.shouldAttack = false
 	end
 end

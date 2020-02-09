@@ -13,6 +13,7 @@ namespace BulletHell
 	void Attack::Init()
 	{
 		mIsFired = false;
+		mChargeTime = 0.0f;
 	}
 
 	void Attack::Serialize(rapidjson::Value::Object data)
@@ -62,7 +63,8 @@ namespace BulletHell
 		mScriptPath = str;
 
 		ImGui::InputFloat("Base Attack Time", &mBaseAttackTime);
-		ImGui::Text("Current Attack Time %f", mCurrentAttackTime);
+		ImGui::Text("Current Attack Time: %f", mCurrentAttackTime);
+		ImGui::Text("Charge Time: %f", mChargeTime);
 		ImGui::Text("Should attack: %d", mShouldAttack);
 
 		// Attack testing button

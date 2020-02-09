@@ -43,5 +43,6 @@ namespace BulletHell
 		bool mFireOnce;
 		bool mIsFired;
 		bool mShouldAttack;
+		float mChargeTime;
 	};
 }
