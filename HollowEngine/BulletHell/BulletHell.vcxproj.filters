@@ -81,6 +81,10 @@
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Prefabs\UIIcon.json" />
+    <None Include="Resources\Scripts\ShootInTheLookDir.lua" />
+    <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
+    <None Include="Resources\Scripts\EnemyRunsAway.lua" />
+    <None Include="Resources\Scripts\EnemyStayStill.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

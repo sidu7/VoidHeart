@@ -29,7 +29,7 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "ShootInCardinalDirections" ]
+      "Scripts": [ "EnemyStayStill" ]
     },
     {
       "Type": "Attack",

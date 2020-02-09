@@ -29,11 +29,13 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "EnemyStayStill" ]
+      "Scripts": [
+        "EnemyRunsAway"
+      ]
     },
     {
       "Type": "Attack",
-      "Script": "Resources/Scripts/ShootAtThePlayer.lua",
+      "Script": "Resources/Scripts/ShootInTheLookDir.lua",
       "BaseAttackTime": 0.7
     },
     {
