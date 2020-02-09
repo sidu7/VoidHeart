@@ -111,6 +111,8 @@ namespace BulletHell
         //// boss room
         // find furthest away room from the entrance, assign it to boss room 
         // find furthest away dead-end for the boss room
+        int biggestDistDeadEnd = 0;
+        int furthestDeadEndRoom = mEntranceIndex;
         int biggestDist = 0;
         int furthestRoom = mEntranceIndex;
         for (unsigned i = 0; i < mRooms.size(); i++)
@@ -119,15 +121,25 @@ namespace BulletHell
             const int numDoors = room.TotalDoors();
             if (numDoors == 1)
             {
-                if (room.mDistFromEntrance > biggestDist)
+                if (room.mDistFromEntrance > biggestDistDeadEnd)
+                {
+                    biggestDistDeadEnd = room.mDistFromEntrance;
+                    furthestDeadEndRoom = i;
+                }
+            }
+            else 
+            {
+                if (room.mRoomType == DungeonRoomType::REGULAR && room.mDistFromEntrance > biggestDist)
                 {
                     biggestDist = room.mDistFromEntrance;
                     furthestRoom = i;
                 }
             }
         }
+        if (furthestDeadEndRoom == mEntranceIndex)
+            furthestDeadEndRoom = furthestRoom;
 
-        mRooms[furthestRoom].mRoomType = DungeonRoomType::BOSS;
+        mRooms[furthestDeadEndRoom].mRoomType = DungeonRoomType::BOSS;
     }
 
     DungeonRoom& DungeonFloor::GetRoom(int row, int col) 
@@ -147,7 +159,7 @@ namespace BulletHell
 
     const DungeonRoom& DungeonFloor::GetEntrance() const
     {
-        if (mEntranceIndex > 0 && !mRooms.empty())
+        if (mEntranceIndex >= 0 && !mRooms.empty())
             return mRooms[mEntranceIndex];
         else
             return DungeonRoom();
