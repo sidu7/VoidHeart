@@ -31,7 +31,7 @@
     {
       "Type": "Spell",
       "Name": "Air",
-      "Script": "Resources/Scripts/Spells/Air.lua",
+      "Script": "Spells/Air",
       "SpellType": 2,
       "UIRotation": 3.14159,
       "ParticleSize": 0.0,

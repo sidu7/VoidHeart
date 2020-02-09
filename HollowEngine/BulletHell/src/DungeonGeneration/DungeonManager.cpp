@@ -155,12 +155,12 @@ namespace BulletHell
     {
         glm::ivec2 coords = room.GetCoords();
 		
-        room.mEnemies.push_back(Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Enemy",
+        room.mEnemies.push_back(Hollow::ResourceManager::Instance().LoadPrefabAtPosition("EnemyFollowLookdir",
             glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2 + 10,
                 1.5f,
                 coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2)));
 
-    	room.mEnemies.push_back(Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Enemy",
+    	room.mEnemies.push_back(Hollow::ResourceManager::Instance().LoadPrefabAtPosition("EnemyFollowLookdir",
         glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2 - 10,
             1.5f,
             coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2)));

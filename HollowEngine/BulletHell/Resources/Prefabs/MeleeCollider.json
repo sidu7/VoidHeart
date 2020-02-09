@@ -1,0 +1,45 @@
+{
+  "Type": "PLAYER_MELEE",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Scale": [
+        0.75,
+        2.0,
+        0.75
+      ]
+    },
+    {
+      "Type": "Body",
+      "RigidbodyType": "TRIGGER"
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX",
+      "IsTrigger": true
+    },
+    {
+      "Type": "ParentOffset",
+      "Parent": 0,
+      "Offset": [ 0.0, 0.0, 0.0 ],
+      "Tag": "Melee",
+      "UseForward": true
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 0.4
+    },
+    {
+      "Type": "Model",
+      "Shape": "BOX",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 2.0, 2.0, 1.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    }
+  ]
+}

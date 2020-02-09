@@ -7,6 +7,9 @@
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Light.h"
 #include "Hollow/Components/Script.h"
+#include "Hollow/Components/Collider.h"
+
+#include "Hollow/Physics/Broadphase/Shape.h"
 
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/InputManager.h"
@@ -15,8 +18,9 @@
 
 namespace Hollow
 {
-	void ScriptingManager::RunScript(std::string name, std::string folderName)
+	void ScriptingManager::RunScript(std::string name, GameObject* pGameObject, std::string folderName)
 	{
+		lua["gameObject"] = pGameObject;
 		lua.script_file(rootPath + folderName + name + ext);
 	}
 
@@ -141,6 +145,7 @@ namespace Hollow
             "GetTransform", &GameObject::GetComponent<Transform>,
             "GetMaterial", &GameObject::GetComponent<Material>,
             "GetScript", &GameObject::GetComponent<Script>,
+			"GetCollider", &GameObject::GetComponent<Collider>,
             "isActive", &GameObject::mActive
 
 			);
@@ -152,6 +157,7 @@ namespace Hollow
 		// PHYSICS
 		lua.set_function("ApplyLinearImpulse", &PhysicsManager::ApplyLinearImpulse, std::ref(PhysicsManager::Instance()));
 		lua.set_function("ApplyAngularImpulse", &PhysicsManager::ApplyAngularImpulse, std::ref(PhysicsManager::Instance()));
+		lua.set_function("ChangeRadius", &PhysicsManager::UpdateScale, std::ref(PhysicsManager::Instance()));
 
 		// AUDIO
 		lua.set_function("PlaySFX", &AudioManager::PlayEffect, std::ref(AudioManager::Instance()));

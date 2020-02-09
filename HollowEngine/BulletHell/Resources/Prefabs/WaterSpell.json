@@ -31,12 +31,12 @@
     {
       "Type": "Spell",
       "Name": "Water",
-      "Script": "Resources/Scripts/Spells/Water.lua",
+      "Script": "Spells/Water",
       "SpellType": 8,
       "UIRotation": 4.712388,
       "ParticleSize": 0.0,
       "ParticleTexture": "Resources/Textures/water.png",
-      "Cooldown": 0.5
+      "Cooldown": 0.75
     }
   ]
 }

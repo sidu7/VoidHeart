@@ -1,16 +1,16 @@
 {
-  "Type": "SPELL",
+  "Type": "PLAYER_BULLET",
   "Components": [
     {
       "Type": "Transform",
       "Position": [ 0.0, 0.0, 0.0 ],
-      "Scale": [ 0.75, 0.75, 0.75 ]
+      "Scale": [ 0.7, 0.7, 0.7 ]
     },
     {
       "Type": "Body",
       "Mass": 0.00001,
-      "RigidbodyType": "STATIC",
-      "UseGravity": false
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity" : false
     },
     {
       "Type": "Collider",
@@ -24,19 +24,14 @@
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 0.0, 1.0, 0.0 ],
-      "Shininess": 1000.0,
+      "Diffuse": [ 0.0, 2.0, 20.0 ],
+      "Shininess": 10.0,
       "Texture": "Resources/Textures/cracks.png"
     },
     {
-      "Type": "Spell",
-      "Name": "Earth",
-      "Script": "Spells/Earth",
-      "SpellType": 4,
-      "UIRotation": 0.0,
-      "ParticleSize": 0.0,
-      "ParticleTexture": "Resources/Textures/rocks.png",
-      "Cooldown": 1.0
+      "Type": "Attack",
+      "Script": "FollowTarget",
+      "Target":  4
     }
   ]
 }

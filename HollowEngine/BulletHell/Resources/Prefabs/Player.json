@@ -78,7 +78,7 @@
     },
     {
       "Type": "Attack",
-      "Script": "Resources/Scripts/Spells/Empty.lua",
+      "Script": "Spells/Empty",
       "BaseAttackTime": 0.4
     },
     {
@@ -142,9 +142,9 @@
     },
     {
       "Type": "Magic",
-      "LeftHandScript": "Resources/Scripts/Spells/Empty.lua",
-      "RightHandScript": "Resources/Scripts/Spells/Empty.lua",
-      "CombineHandScript": "Resources/Scripts/Spells/Empty.lua"
+      "LeftHandScript": "Spells/Empty",
+      "RightHandScript": "Spells/Empty",
+      "CombineHandScript": "Spells/Empty"
     }
   ]
 }
