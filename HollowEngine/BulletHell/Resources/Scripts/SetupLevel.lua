@@ -16,9 +16,7 @@ end
 
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
 local roomCount = firstFloor:GetRoomCount() - 2 - 1 - 1
-print(roomCount)
 for i=0, roomCount, 1 do
-    print(i)
     CreateEnemiesInRoom(firstFloor:GetRegularRoom(i))
 end
 
