@@ -203,10 +203,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\EnemyStayStill.lua" />
     <None Include="Resources\Scripts\EnemyRunsAway.lua" />
     <None Include="Resources\Prefabs\Floor.json" />
-    <None Include="Resources\Json data\Light.json" />
-    <None Include="Resources\Json data\LocalLight.json" />
-    <None Include="Resources\Json data\Rooms\Wall.json" />
-    <None Include="Resources\Json data\UIElement.json" />
     <None Include="Resources\Levels\Level3.json" />
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
@@ -216,6 +212,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\BossHappy.lua" />
     <None Include="Resources\Scripts\BossPist.lua" />
     <None Include="Resources\Scripts\BossSad.lua" />
+    <None Include="Resources\Scripts\CirclePlayer.lua" />
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
     <None Include="Resources\Scripts\GameLogic.lua" />
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />

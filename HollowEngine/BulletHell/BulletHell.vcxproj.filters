@@ -52,10 +52,6 @@
     <None Include="Resources\Shaders\UIShader.frag" />
     <None Include="Resources\Shaders\UIShader.vert" />
     <None Include="Resources\Shaders\VerticalBlur.comp" />
-    <None Include="Resources\Json data\Camera.json" />
-    <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\Light.json" />
-    <None Include="Resources\Json data\LocalLight.json" />
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
@@ -69,10 +65,8 @@
     <None Include="Resources\Scripts\BossSad.lua" />
     <None Include="Resources\Scripts\PlayerAttack.lua" />
     <None Include="Resources\Scripts\PlayerMovement.lua" />
-    <None Include="Resources\Json data\UIElement.json" />
     <None Include="Resources\Localization\Hindi.json" />
     <None Include="Resources\Localization\Japanese.json" />
-    <None Include="Resources\Json data\Rooms\Wall.json" />
     <None Include="Resources\Prefabs\Player.json" />
     <None Include="Resources\Prefabs\Floor.json" />
     <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
@@ -81,6 +75,7 @@
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Prefabs\UIIcon.json" />
+    <None Include="Resources\Scripts\CirclePlayer.lua" />
     <None Include="Resources\Scripts\ShootInTheLookDir.lua" />
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
     <None Include="Resources\Scripts\EnemyRunsAway.lua" />
