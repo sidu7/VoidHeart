@@ -1,4 +1,9 @@
 function FollowPlayer()
+    -----------------------------------------
+    -- playtesting vars
+	local enemySpeed = 8.0
+    local scareDistance = 10 -- distance at which enemy will run away
+    -----------------------------------------
     local transform = gameObject:GetTransform()
 	local position = transform.position
 
@@ -33,8 +38,7 @@ function FollowPlayer()
     
     -- setting the velocity
 	local body = gameObject:GetBody()
-	local enemySpeed = 8.0
-    if (dirLength < 10) then
+    if (dirLength < scareDistance) then
         body.velocity = enemySpeed * vec3.new(-xDirNorm, 0.0, -zDirNorm)
     else
         body.velocity = vec3.new(0.0, 0.0, 0.0)

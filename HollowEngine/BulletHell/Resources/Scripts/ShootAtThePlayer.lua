@@ -1,4 +1,9 @@
 function Shoot()
+    -----------------------------------------
+    -- playtesting vars
+	local bulletSpeed = 15.0
+    -----------------------------------------
+	    
     local transform = gameObject:GetTransform()
 	local spawnPos = transform.position
 
@@ -44,7 +49,6 @@ function Shoot()
         bulletTransform.position = spawnPos
 
         -- Setting velocity
-	    local bulletSpeed = 15.0
         bulletBody.velocity = bulletSpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
     
         -- Setting rotation

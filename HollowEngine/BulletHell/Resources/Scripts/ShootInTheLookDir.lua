@@ -1,4 +1,8 @@
 function ShootInDirection(dirX, dirY, dirZ)
+    -----------------------------------------
+    -- playtesting vars
+	local bulletSpeed = 15.0
+    -----------------------------------------
     local transform = gameObject:GetTransform()
 	local spawnPos = transform.position
 
@@ -12,7 +16,6 @@ function ShootInDirection(dirX, dirY, dirZ)
     bulletTransform.position = spawnPos
 
     -- Setting velocity
-	local bulletSpeed = 15.0
     bulletBody.velocity = bulletSpeed * vec3.new(dirX, dirY, dirZ)
 end
 
