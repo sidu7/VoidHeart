@@ -217,6 +217,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\BossPist.lua" />
     <None Include="Resources\Scripts\BossSad.lua" />
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
+    <None Include="Resources\Scripts\GameLogic.lua" />
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
@@ -267,6 +268,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="src\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Events\DeathEvent.h" />
     <ClInclude Include="src\Components\AISettings.h" />
     <ClInclude Include="src\Components\Attack.h" />
     <ClInclude Include="src\Components\Behavior.h" />

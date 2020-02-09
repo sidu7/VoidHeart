@@ -3,6 +3,13 @@
 //#include "Hollow/Common.h"
 #include "DungeonFloor.h"
 #include "Hollow/Utils/Singleton.h"
+#include <Hollow.h>
+#include <Hollow/Core/GameObject.h>
+
+
+namespace Hollow {
+	class GameEvent;
+}
 
 namespace BulletHell
 {
@@ -29,14 +36,25 @@ namespace BulletHell
         DungeonFloor& GetFloor(int index);
         void Print() const;
 
+    	// Create Enemies adjusted according to the floor the room is in
+        void CreateEnemiesInRoom(DungeonRoom& room);
+
+    	// Create a PickUp at the centre of the room
+        void CreatePickUpInRoom(DungeonRoom& room);
+    	
 		void DebugDisplay();
     private:
         int length;
         int breadth;
         int numFloors;
         int firstFloorRoomCount;
-    public:
 
+        void SubscribeToEvents();
+        void OnDeath(Hollow::GameEvent& event);
+
+        DungeonRoom& GetCurrentRoom();
+    public:
+		Hollow::GameObject* mpPlayerGo;
     private:
         std::vector<DungeonFloor> mFloors;
         unsigned mSeed;
