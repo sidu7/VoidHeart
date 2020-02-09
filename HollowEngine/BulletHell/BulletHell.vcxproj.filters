@@ -85,6 +85,7 @@
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
     <None Include="Resources\Scripts\EnemyRunsAway.lua" />
     <None Include="Resources\Scripts\EnemyStayStill.lua" />
+    <None Include="Resources\Prefabs\EnemyBoss1.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">
