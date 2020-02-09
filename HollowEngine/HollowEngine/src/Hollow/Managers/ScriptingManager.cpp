@@ -25,7 +25,7 @@ namespace Hollow
 		rootPath = data["FilePath"].GetString();
 		ext = data["FileExtension"].GetString();
 
-		lua.open_libraries(sol::lib::base, sol::lib::math);
+		lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::bit32);
 
 		// Controller
 		lua["CONTROLLER"] = lua.create_table_with(

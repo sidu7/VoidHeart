@@ -15,8 +15,9 @@ namespace BulletHell
         void ResetFloor();
         const DungeonRoom& GetEntrance() const;
         int GetEntranceIndex();
-		int GetRoomCount() const { return mIndexValidRooms.size(); }
-		const DungeonRoom& GetRoomFromIndex(int index) const { return mRooms[mIndexValidRooms[index]]; }
+		int GetRoomCount() const { return mIndexRegularRooms.size() + 2; }
+		DungeonRoom& GetRoomFromIndex(int index);
+		const DungeonRoom& GetRegularRoom(int index) const;
         void PrintFloor(int printMode = 1) const;
     private:
         int Index(int row, int col) const; // helper function to convert 2D index to 1D
@@ -33,10 +34,11 @@ namespace BulletHell
 
     private:
         std::vector<DungeonRoom> mRooms; // 1D representation of a 2D array
-		std::vector<int> mIndexValidRooms; // stores index to valid rooms 
+		std::vector<int> mIndexRegularRooms; // stores index to regular rooms (No Entrance/Boss) 
         int mWidth;
         int mHeight;
         int mFloorNum;
         int mEntranceIndex;
+        int mBossIndex;
     };
 }

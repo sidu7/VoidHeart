@@ -1,0 +1,32 @@
+{
+  "Type": "BULLET",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.5, 10.0, 0.0 ],
+      "Scale": [ 2, 2, 2 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Model",
+      "Shape": "BALL",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+	  "Diffuse": [3.0, 0.0, 0.0],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    }
+  ]
+}

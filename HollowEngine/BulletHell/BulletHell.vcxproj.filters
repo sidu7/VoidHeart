@@ -76,6 +76,12 @@
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Prefabs\UIIcon.json" />
     <None Include="Resources\Scripts\CirclePlayer.lua" />
+    <None Include="Resources\Scripts\ShootInTheLookDir.lua" />
+    <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
+    <None Include="Resources\Scripts\EnemyRunsAway.lua" />
+    <None Include="Resources\Scripts\EnemyStayStill.lua" />
+    <None Include="Resources\Prefabs\EnemyBoss1.json" />
+    <None Include="Resources\Scripts\GameLogic.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">
@@ -207,6 +213,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Components\AISettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\DeathEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

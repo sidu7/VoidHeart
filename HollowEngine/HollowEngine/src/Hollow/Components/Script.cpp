@@ -8,6 +8,7 @@ namespace Hollow {
 
 	void Script::Init()
 	{
+		mIsActive = true;
 	}
 
 	void Script::Clear()
@@ -31,6 +32,10 @@ namespace Hollow {
 
 	void Script::Serialize(rapidjson::Value::Object data)
 	{
+		if(data.HasMember("Active"))
+		{
+			mIsActive = data["Active"].GetBool();
+		}
 		if (data.HasMember("Scripts"))
 		{
 			auto scripts = data["Scripts"].GetArray();
@@ -53,6 +58,8 @@ namespace Hollow {
 
 	void Script::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
+		writer.Key("Active");
+		writer.Bool(mIsActive);
 		writer.Key("Scripts");
 		writer.StartArray();
 		// generalize the array
