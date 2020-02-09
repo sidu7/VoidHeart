@@ -18,7 +18,7 @@ namespace Hollow {
 
 		// Add function for calling a script
 		HOLLOW_API void RunScript(std::string name, std::string folderPath = "");
-		HOLLOW_API void RunScriptOnGameObject(std::string name, GameObject* go, std::string folderPath = "");
+
 	public:
 		sol::state lua;
 		sol::usertype<GameObject> mGameObjectType;

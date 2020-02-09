@@ -4,6 +4,10 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/ImGuiManager.h"
+#include "Hollow/Managers/EventManager.h"
+
+#include "GameMetaData/GameEventType.h"
+#include "Events/DeathEvent.h"
 
 namespace BulletHell
 {
@@ -21,6 +25,8 @@ namespace BulletHell
         mSeed = randomizer();
         Generate();
 
+        SubscribeToEvents();
+    	
 		// LUA Bindings for Dungeon Classes
 		// Send attack component to lua
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
@@ -43,10 +49,12 @@ namespace BulletHell
 			"IsCleared", &DungeonRoom::IsCleared,
             "UnlockRoom", &DungeonRoom::UnlockRoom,
             "LockDownRoom", &DungeonRoom::LockDownRoom,
-            "enemyCount", &DungeonRoom::mEnemyCount
+            "getEnemyCount", &DungeonRoom::GetEnemyCount
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
+		lua.set_function("CreateEnemiesInRoom", &DungeonManager::CreateEnemiesInRoom, std::ref(DungeonManager::Instance()));
+		lua.set_function("CreatePickUpInRoom", &DungeonManager::CreatePickUpInRoom, std::ref(DungeonManager::Instance()));
 
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
@@ -128,8 +136,64 @@ namespace BulletHell
             floor.PrintFloor();
         }
     }
-	void DungeonManager::DebugDisplay()
+
+    void DungeonManager::CreateEnemiesInRoom(DungeonRoom& room)
+    {
+        glm::ivec2 coords = room.GetCoords();
+		
+        room.mEnemies.push_back(Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Enemy",
+            glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2 + 10,
+                1.5f,
+                coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2)));
+
+    	room.mEnemies.push_back(Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Enemy",
+        glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2 - 10,
+            1.5f,
+            coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2)));
+        
+    }
+
+    void DungeonManager::CreatePickUpInRoom(DungeonRoom& room)
+    {
+        glm::ivec2 coords = room.GetCoords();
+        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("AirSpell",
+            glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
+                1.5,
+                coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2));
+    }
+
+    void DungeonManager::DebugDisplay()
 	{
 		ImGui::Text("Seed: %u", mSeed);
 	}
+
+    void DungeonManager::OnDeath(Hollow::GameEvent& event)
+    {
+        DeathEvent& pDeathEvent = dynamic_cast<DeathEvent&>(event);
+        DungeonRoom& room = GetCurrentRoom();
+    	
+    	if(pDeathEvent.mType == (int)GameObjectType::ENEMY)
+    	{
+            auto iter = std::find(room.mEnemies.begin(), room.mEnemies.end(), pDeathEvent.mpObject1);
+    		if(iter != room.mEnemies.end())
+    		{
+                room.mEnemies.erase(iter);
+    		}
+    	}
+    }
+
+    DungeonRoom& DungeonManager::GetCurrentRoom()
+    {
+        auto& lua = Hollow::ScriptingManager::Instance().lua;
+        int currentFloor = lua["currentFloor"].get<int>();
+        int currentRoom = lua["currentRoom"].get<int>();
+    	
+        return mFloors[currentFloor].GetRoomFromIndex(currentRoom);
+    }
+
+    void DungeonManager::SubscribeToEvents()
+	{
+        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(DungeonManager::OnDeath));
+	}
+
 }

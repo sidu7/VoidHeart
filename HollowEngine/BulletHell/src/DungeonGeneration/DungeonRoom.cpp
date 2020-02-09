@@ -17,8 +17,7 @@ namespace BulletHell
     float DungeonRoom::mDoorThickness = 0;
 	
     DungeonRoom::DungeonRoom()
-        : mEnemyCount(0)
-        , mRoomType(DungeonRoomType::EMPTY)
+        : mRoomType(DungeonRoomType::EMPTY)
         , mRoomID(0)
         , mDoors(DoorDirrection::NONE)
         , mFloorNum(0)
@@ -32,8 +31,7 @@ namespace BulletHell
 
     DungeonRoom::DungeonRoom(DungeonRoomType roomType, int roomID, int doors
         , int floorNum, int xCoord, int yCoord)
-        : mEnemyCount(0)
-        , mRoomType(roomType)
+        : mRoomType(roomType)
         , mRoomID(roomID)
         , mDoors(doors)
         , mFloorNum(floorNum)
@@ -201,7 +199,7 @@ namespace BulletHell
     }
 	bool DungeonRoom::IsCleared()
 	{
-		if (mEnemyCount == 0)
+		if (GetEnemyCount() == 0)
 			return true;
     	
 		return false;

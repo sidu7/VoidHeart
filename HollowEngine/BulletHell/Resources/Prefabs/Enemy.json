@@ -1,5 +1,5 @@
 {
-  "Type" :  "ENEMY",
+    "Type": "ENEMY",
   "Components": [
     {
       "Type": "Transform",
@@ -7,10 +7,10 @@
       "Scale": [ 2.0, 2.0, 2.0 ]
     },
     {
-      "Type": "Body",
-      "Mass": 10.0,
-      "isFrictionLess": true,
-      "RigidbodyType": "DYNAMIC"
+        "Type": "Body",
+        "Mass": 10.0,
+        "isFrictionLess": true,
+        "RigidbodyType": "DYNAMIC"
     },
     {
       "Type": "Collider",
@@ -28,12 +28,13 @@
       "MaterialData": "Resources/Models/Walking.fbx"
     },
     {
-      "Type": "Script",
+        "Type": "Script",
+        "Active": false,
       "Scripts": [ "ShootAtThePlayer" ]
     },
     {
       "Type": "Health",
-      "HitPoints": 100,
+      "HitPoints": 10,
       "IsAlive": true,
       "Invincible": false,
       "InvincibleTime": 3.0

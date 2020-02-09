@@ -35,6 +35,8 @@ namespace Hollow {
 
 		std::vector <std::string> mScripts;
 
+		// Active
+		bool mIsActive;
 	private:
 		int mScriptCount;
 	};

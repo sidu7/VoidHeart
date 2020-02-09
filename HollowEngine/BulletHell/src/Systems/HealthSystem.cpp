@@ -15,6 +15,7 @@
 #include "GameMetaData/GameObjectType.h"
 
 #include "Components/Health.h"
+#include "Events/DeathEvent.h"
 
 namespace BulletHell
 {
@@ -64,6 +65,10 @@ namespace BulletHell
 				pHealth->mIsAlive = false;
 				std::string gameEndText = "";
 
+				DeathEvent death(mGameObjects[i]->mType);
+				death.mpObject1 = mGameObjects[i];
+				Hollow::EventManager::Instance().BroadcastToSubscribers(death);
+				
 				// Check type of object destroyed
 				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
 				{

@@ -20,12 +20,6 @@ namespace Hollow
 		lua.script_file(rootPath + folderName + name + ext);
 	}
 
-	void ScriptingManager::RunScriptOnGameObject(std::string name, GameObject* go, std::string folderPath)
-	{
-		lua["gameObject"] = go;
-		lua.script_file(rootPath + folderPath + name + ext);
-	}
-
 	void ScriptingManager::Init(rapidjson::Value::Object& data)
 	{
 		rootPath = data["FilePath"].GetString();

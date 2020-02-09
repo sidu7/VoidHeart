@@ -263,6 +263,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="src\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Events\DeathEvent.h" />
     <ClInclude Include="src\Components\AISettings.h" />
     <ClInclude Include="src\Components\Attack.h" />
     <ClInclude Include="src\Components\Behavior.h" />

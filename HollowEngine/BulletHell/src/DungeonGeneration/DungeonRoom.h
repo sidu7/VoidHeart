@@ -31,6 +31,7 @@ namespace BulletHell
         glm::ivec2 GetCoords() const;
 		int GetFloorNum() const { return mFloorNum; }
 		int GetDoorBits() const { return mDoors; }
+        int GetEnemyCount() const { return mEnemies.size(); }
     private:
         int TotalDoors() const;
     public:
@@ -49,9 +50,9 @@ namespace BulletHell
         static float mDoorThickness;
 
 		// game
-        int mEnemyCount;
         bool mIsUnlocked;
         Hollow::GameObject* mDoorGOs[9]; // doors at 1,2,4,8 indices
+        std::vector<Hollow::GameObject*> mEnemies;
     private:    	
         DungeonRoomType mRoomType;
         int mRoomID;   // unique id of the room

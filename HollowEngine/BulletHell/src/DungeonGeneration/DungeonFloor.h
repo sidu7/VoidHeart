@@ -16,7 +16,7 @@ namespace BulletHell
         const DungeonRoom& GetEntrance() const;
         int GetEntranceIndex();
 		int GetRoomCount() const { return mIndexRegularRooms.size() + 2; }
-		const DungeonRoom& GetRoomFromIndex(int index) const;
+		DungeonRoom& GetRoomFromIndex(int index);
 		const DungeonRoom& GetRegularRoom(int index) const;
         void PrintFloor(int printMode = 1) const;
     private:
