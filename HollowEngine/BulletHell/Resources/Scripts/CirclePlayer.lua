@@ -6,7 +6,6 @@ function MoveInCirle()
 	-- Get Player
 	local target = player
     if (target == nil or target.isActive == false) then
-        player = nil
         return
     end
     local targetTransform = target:GetTransform()
