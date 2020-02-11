@@ -1,10 +1,13 @@
 #include <Hollow.h>
 #include "DungeonRoom.h"
 
+#include "Components/Attack.h"
+
 #include "Hollow/Managers/ResourceManager.h"
 
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Material.h"
+#include "Hollow/Components/Script.h"
 
 namespace BulletHell
 {
@@ -231,6 +234,22 @@ namespace BulletHell
                 Hollow::Body* pB = mDoorGOs[1 << i]->GetComponent<Hollow::Body>();
                 pB->mPosition.y = 2.0f;
             }
+		}
+
+		// TODO: Maybe add a little delay
+		for (auto enemy : mEnemies)
+		{
+			// Enable any scripts
+			Hollow::Script* pS = enemy->GetComponent<Hollow::Script>();
+			if (pS != nullptr)
+			{
+				pS->mIsActive = true;
+			}
+			Attack* pA = enemy->GetComponent<Attack>();
+			if (pA != nullptr)
+			{
+				pA->mIsActive = true;
+			}
 		}
 	}
 }

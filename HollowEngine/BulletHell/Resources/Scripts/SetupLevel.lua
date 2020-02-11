@@ -14,21 +14,21 @@ local coords = floor:GetEntrance():GetCoords()
 -- generate player in the entrance room
 player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 
--- genetate boss in the boss room
-local bossRoom = floor:GetBossIndex()
-coords = floor:GetRoomFromIndex(bossRoom):GetCoords()
-boss = CreatePrefabAtPosition("EnemyBoss1", vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2))
-
 -- generate a spell in front of the player in the entrance room on the first floor
 if(currentFloor == 0) then
     -- TODO instead of doing this we can spawn the player with a random starting spell each time
     local spell = CreatePrefabAtPosition("FireSpell", vec3.new(coords.y * roomSize + roomSize/2, 1.0, coords.x * roomSize + roomSize/2+5))
 end
 
+-- genetate boss in the boss room
+local bossRoom = floor:GetBossIndex()
+coords = floor:GetRoomFromIndex(bossRoom):GetCoords()
+boss = CreatePrefabAtPosition("EnemyBoss1", vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2))
+
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
 local roomCount = floor:GetRoomCount() - 2 - 1 - 1
 for i=0, roomCount, 1 do
-    CreateEnemiesInRoom(floor:GetRegularRoom(i))
+    PopulateRoom(floor:GetRegularRoom(i))
 end
 
 -- generate random valid pickup
