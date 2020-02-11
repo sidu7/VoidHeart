@@ -1,7 +1,5 @@
 #pragma once
-#include <glm/vec2.hpp>
-#include <string>
-#include <glm/vec3.hpp>
+#include <Hollow.h>
 
 namespace Hollow
 {
@@ -24,17 +22,26 @@ namespace BulletHell
         static GameLogicManager& Instance();
     public:
 
-        // Create Enemies adjusted according to the floor the room is in
-        void CreateEnemiesInRoom(DungeonRoom& room);
+		// Load enemies, obstacles, pick ups, and traps into room
+		void PopulateRoom(DungeonRoom& room);
+
+		// Loads objects from a room json based on object type string
+		void CreateObjectsInRoom(DungeonRoom& room, const rapidjson::Value::Object& data, const std::string& objects, const std::string& type, bool addToEnemylist);
 
         // Create a PickUp at the centre of the room
         void CreatePickUpInRoom(DungeonRoom& room);
 
         // Generates Enemy in the room given by roomCoords at the position offset
-        Hollow::GameObject* GenerateEnemyAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
+        Hollow::GameObject* GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
 
         std::string GetRandomEnemy();
 
         glm::vec3 GetRoomOffset(int, int);
+
+	private: 
+		void InitializeRoomsMap();
+
+	private:
+		std::unordered_map<int, std::string> mCachedRoomsMap;
     };
 }
