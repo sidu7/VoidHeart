@@ -18,7 +18,6 @@
     },
     {
       "Type": "Model",
-      "Shape": "BALL",
       "CastShadow": true
     },
     {

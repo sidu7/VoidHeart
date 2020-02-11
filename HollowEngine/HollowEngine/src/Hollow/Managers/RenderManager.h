@@ -118,6 +118,7 @@ namespace Hollow {
 
 
 		friend class LocalizationManager;
+		friend class RenderSystem;
 	private:
 		// Transformation matricies
 		glm::mat4 mProjectionMatrix;
@@ -190,5 +191,6 @@ namespace Hollow {
 		TextRenderer* mpTextRenderer;
 		
 		bool mShowDebugDrawing;
+		bool mShowPartialDebug;
 	};
 }

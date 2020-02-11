@@ -300,7 +300,7 @@ namespace Hollow {
 		LocalLightingPass();
 
 		//Draw debug drawings
-		if (mShowDebugDrawing)
+		if (mShowDebugDrawing || mShowPartialDebug)
 		{
 			DrawDebugDrawings();
 		}
@@ -1286,6 +1286,8 @@ namespace Hollow {
 		ImGui::Checkbox("Particle System", &ShowParticles);
 		ImGui::Checkbox("Pause Particle System", &PauseParticles);
 		ImGui::Checkbox("Show Debug", &mShowDebugDrawing);
+		ImGui::Checkbox("Show Partial Debug", &mShowPartialDebug);
+		
 	}
 
 	void RenderManager::DebugDisplayGBuffer()
