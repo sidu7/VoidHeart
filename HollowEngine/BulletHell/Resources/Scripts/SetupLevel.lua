@@ -22,8 +22,8 @@ end
 
 -- genetate boss in the boss room
 local bossRoom = floor:GetBossIndex()
-coords = floor:GetRoomFromIndex(bossRoom):GetCoords()
-boss = CreatePrefabAtPosition("EnemyBoss1", vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2))
+PopulateRoom(floor:GetRoomFromIndex(bossRoom))
+
 
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
 local roomCount = floor:GetRoomCount() - 2 - 1 - 1

@@ -53,8 +53,8 @@ namespace BulletHell
         bool mIsUnlocked;
         Hollow::GameObject* mDoorGOs[9]; // doors at 1,2,4,8 indices
         std::vector<Hollow::GameObject*> mEnemies;
-    private:    	
         DungeonRoomType mRoomType;
+    private:    	
         int mRoomID;   // unique id of the room
         int mDoors;    // flag field for 4 doors
         int mFloorNum; // floor number of the room (owner id)

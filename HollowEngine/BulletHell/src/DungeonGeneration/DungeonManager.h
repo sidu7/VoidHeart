@@ -34,6 +34,7 @@ namespace BulletHell
 
         std::vector<DungeonFloor> GetFloors() const;
         DungeonFloor& GetFloor(int index);
+        DungeonRoom& GetCurrentRoom();
         void Print() const;
    	
 		void DebugDisplay();
@@ -46,7 +47,6 @@ namespace BulletHell
         void SubscribeToEvents();
         void OnDeath(Hollow::GameEvent& event);
 
-        DungeonRoom& GetCurrentRoom();
         void OnFloorCleared(Hollow::GameEvent& event);
     public:
 		Hollow::GameObject* mpPlayerGo;

@@ -1,0 +1,8 @@
+{
+  "Enemies": [{"EnemyType": "EnemyFollowLookdir",
+				"Position": [10, 16]},
+				{"EnemyType": "EnemyFollowLookdir",
+				"Position": [20, 16]}],
+  "Obstacles": [{"ObstacleType": "Wall",
+				"Position": [16, 16]}]
+}
