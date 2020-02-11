@@ -64,6 +64,8 @@ namespace BulletHell
 
 	void Attack::DebugDisplay()
 	{
+		ImGui::Checkbox("Active", &mIsActive);
+		
 		char* str = (char*)mScriptPath.c_str();
 		ImGui::InputText("Path", str, 50);
 		mScriptPath = str;
