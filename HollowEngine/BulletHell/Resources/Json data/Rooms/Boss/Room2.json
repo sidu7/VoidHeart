@@ -1,0 +1,4 @@
+{
+  "Enemies": [{"EnemyType": "EnemyBoss1",
+				"Position": [16, 16]}]
+}

@@ -64,6 +64,7 @@ namespace Hollow {
 			{
 				SystemManager::Instance().BroadcastEventToSystems(*mDelayedEvents[i]);
 				GameEvent* event = mDelayedEvents[i];
+				BroadcastToSubscribers(*event);
 				mDelayedEvents.erase(mDelayedEvents.begin() + i);
 				delete event;
 			}
