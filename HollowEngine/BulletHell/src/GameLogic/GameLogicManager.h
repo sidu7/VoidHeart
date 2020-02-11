@@ -1,7 +1,12 @@
 #pragma once
 #include <glm/vec2.hpp>
 #include <string>
-#include "Hollow/Core/GameObject.h"
+#include <glm/vec3.hpp>
+
+namespace Hollow
+{
+    class GameObject;
+}
 
 namespace BulletHell
 {

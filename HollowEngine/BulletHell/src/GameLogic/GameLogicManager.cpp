@@ -1,5 +1,7 @@
 #include "GameLogicManager.h"
 #include <iostream>
+
+#include <Hollow.h>
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Components/Script.h"
 #include "Components/Attack.h"
@@ -34,11 +36,21 @@ namespace BulletHell
         return pGo;
     }
 
+    std::string GameLogicManager::GetRandomEnemy()
+    {
+        return "EnemyFollowsPlayer";
+    }
+
+    glm::vec3 GameLogicManager::GetRoomOffset(int, int)
+    {
+        return glm::vec3(10.0f, 1.5f, 0.0f);
+    }
+
     void GameLogicManager::CreateEnemiesInRoom(DungeonRoom& room)
     {
         glm::ivec2 coords = room.GetCoords();
 
-        int count = Random::RangeSeeded(0, 5);
+        int count = Random::RangeSeeded(0, 1);
         for (int i = 0; i < count; ++i)
         {
             std::string enemy = GetRandomEnemy();

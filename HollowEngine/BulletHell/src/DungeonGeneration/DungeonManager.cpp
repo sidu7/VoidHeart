@@ -63,8 +63,8 @@ namespace BulletHell
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
-		lua.set_function("CreateEnemiesInRoom", &GameLogicManager::CreateEnemiesInRoom, std::ref(DungeonManager::Instance()));
-		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(DungeonManager::Instance()));
+		lua.set_function("CreateEnemiesInRoom", &GameLogicManager::CreateEnemiesInRoom, std::ref(GameLogicManager::Instance()));
+		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
 
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
