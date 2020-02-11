@@ -153,7 +153,6 @@ namespace BulletHell
 
     void DungeonManager::CreateEnemiesInRoom(DungeonRoom& room)
     {
-		return;
         glm::ivec2 coords = room.GetCoords();
 		
         room.mEnemies.push_back(Hollow::ResourceManager::Instance().LoadPrefabAtPosition("EnemyFollowLookdir",
