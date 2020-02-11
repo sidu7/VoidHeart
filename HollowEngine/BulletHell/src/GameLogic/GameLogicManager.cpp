@@ -84,21 +84,18 @@ namespace BulletHell
 	{
 		// Loads all room files into map
 		// for all room files
-		std::string path = "Resources/Json data/Rooms/";
-		for (int i = 1; i <= MAX_REGULAR_ROOMS; ++i)
-		{
-			std::string name = "Room" + std::to_string(i);
-			std::ifstream file(path + name + ".json");
-			std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-			file.close();
-			mCachedRoomsMap[name] = contents;
-		}
+		LoadRoomJsons("Room", MAX_REGULAR_ROOMS);
 
 		// Do the same for boss rooms
-		// As much as it pains me, didn't want to make a function out of this
-		for (int i = 1; i <= MAX_BOSS_ROOMS; ++i)
+		LoadRoomJsons("Boss/Room", MAX_BOSS_ROOMS);
+	}
+
+	void GameLogicManager::LoadRoomJsons(std::string roomPrefix, int count)
+	{
+		std::string path = "Resources/Json data/Rooms/";
+		for (int i = 1; i <= count; ++i)
 		{
-			std::string name = "Boss/Room" + std::to_string(i);
+			std::string name = roomPrefix + std::to_string(i);
 			std::ifstream file(path + name + ".json");
 			std::string contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 			file.close();

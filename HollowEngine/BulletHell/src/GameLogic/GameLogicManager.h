@@ -41,7 +41,7 @@ namespace BulletHell
         void OnRoomLockDownDelayed(Hollow::GameEvent& event);
 	private: 
 		void InitializeRoomsMap();
-
+		void LoadRoomJsons(std::string roomPrefix, int count);
 	private:
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
     };
