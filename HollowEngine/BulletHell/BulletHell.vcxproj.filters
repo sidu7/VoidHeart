@@ -146,6 +146,9 @@
     <ClCompile Include="src\Components\AISettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameLogic\GameLogicManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Attack.h">
@@ -218,6 +221,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\DeathEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameLogic\GameLogicManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
