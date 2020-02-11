@@ -1,5 +1,6 @@
 {
-  "Type": "ENEMY",
+    "Type": "ENEMY",
+    "Tag": "Boss",
   "Components": [
     {
       "Type": "Transform",
@@ -35,7 +36,7 @@
     },
     {
       "Type": "Attack",
-      "Script": "Resources/Scripts/ShootInCardinalDirections.lua",
+      "Script": "ShootInCardinalDirections",
       "BaseAttackTime": 0.4
     },
     {

@@ -49,7 +49,7 @@ namespace Hollow {
 		unsigned int mID;
 		int mType;
 		bool mActive;
-
+		std::string mTag;
 	private:
 		static unsigned int ID;
 		std::string mDType;

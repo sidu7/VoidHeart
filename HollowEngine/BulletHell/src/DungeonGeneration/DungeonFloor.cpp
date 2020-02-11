@@ -140,7 +140,7 @@ namespace BulletHell
             furthestDeadEndRoom = furthestRoom;
 
         mRooms[furthestDeadEndRoom].mRoomType = DungeonRoomType::BOSS;
-    	mBossIndex = furthestRoom;
+    	mBossIndex = furthestDeadEndRoom;
 
 		// Remove boss room from fillable rooms as that will be handled separately
 		mIndexRegularRooms.erase(std::find(mIndexRegularRooms.begin(), mIndexRegularRooms.end(), mBossIndex));
