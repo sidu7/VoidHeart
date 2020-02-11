@@ -8,6 +8,9 @@
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Script.h"
+#include "GameMetaData/GameEventType.h"
+#include "Hollow/Events/GameEvent.h"
+#include "Hollow/Managers/EventManager.h"
 
 namespace BulletHell
 {
@@ -236,20 +239,8 @@ namespace BulletHell
             }
 		}
 
-		// TODO: Maybe add a little delay
-		for (auto enemy : mEnemies)
-		{
-			// Enable any scripts
-			Hollow::Script* pS = enemy->GetComponent<Hollow::Script>();
-			if (pS != nullptr)
-			{
-				pS->mIsActive = true;
-			}
-			Attack* pA = enemy->GetComponent<Attack>();
-			if (pA != nullptr)
-			{
-				pA->mIsActive = true;
-			}
-		}
+    	// Delayed event to activate enemies in rooms
+        Hollow::GameEvent* lde = new Hollow::GameEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED);
+        Hollow::EventManager::Instance().AddDelayedEvent(lde, 3.0f);
 	}
 }

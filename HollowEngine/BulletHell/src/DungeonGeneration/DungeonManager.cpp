@@ -160,7 +160,7 @@ namespace BulletHell
 	{
 		ImGui::Text("Seed: %u", mSeed);
 	}
-
+	
     void DungeonManager::OnDeath(Hollow::GameEvent& event)
     {
         DeathEvent& pDeathEvent = dynamic_cast<DeathEvent&>(event);
@@ -176,7 +176,7 @@ namespace BulletHell
 
     		if(pDeathEvent.mpObject1->mTag == "Boss")
     		{
-                Hollow::GameEvent* fce = new Hollow::GameEvent((int)GameEventType::FLOOR_CLEARED);
+                Hollow::GameEvent* fce = new Hollow::GameEvent((int)GameEventType::FLOOR_CLEARED_DELAYED);
                 Hollow::EventManager::Instance().AddDelayedEvent(fce, 1.0f);
     		}
     	}
@@ -199,7 +199,7 @@ namespace BulletHell
     void DungeonManager::SubscribeToEvents()
 	{
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(DungeonManager::OnDeath));
-        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED, EVENT_CALLBACK(DungeonManager::OnFloorCleared));
+        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(DungeonManager::OnFloorCleared));
 	}
 
 }

@@ -3,7 +3,8 @@
 
 namespace Hollow
 {
-    class GameObject;
+	class GameEvent;
+	class GameObject;
 }
 
 namespace BulletHell
@@ -21,7 +22,10 @@ namespace BulletHell
         GameLogicManager& operator=(GameLogicManager&&) = delete;
         static GameLogicManager& Instance();
     public:
+        void Init();
 
+        void SubscribeToEvents();
+		
 		// Load enemies, obstacles, pick ups, and traps into room
 		void PopulateRoom(DungeonRoom& room);
 
@@ -34,14 +38,11 @@ namespace BulletHell
         // Generates Enemy in the room given by roomCoords at the position offset
         Hollow::GameObject* GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
 
-        std::string GetRandomEnemy();
-
-        glm::vec3 GetRoomOffset(int, int);
-
+        void OnRoomLockDownDelayed(Hollow::GameEvent& event);
 	private: 
 		void InitializeRoomsMap();
-
+		void LoadRoomJsons(std::string roomPrefix, int count);
 	private:
-		std::unordered_map<int, std::string> mCachedRoomsMap;
+		std::unordered_map<std::string, std::string> mCachedRoomsMap;
     };
 }
