@@ -77,7 +77,7 @@ namespace BulletHell
 
 				// Set attack flag
 				// Check combined spell first
-				if (mLeftHandPressed && mRightHandPressed)
+				if (mLeftHandPressed && mRightHandPressed && pMagic->mCombinedSpell != nullptr)
 				{
 					bool shouldAttack = (pMagic->mCombinedSpell->mCombinedCooldown < 0.016f);
 					pAttack->mShouldAttack = shouldAttack;
@@ -86,7 +86,7 @@ namespace BulletHell
 						pMagic->mCombinedSpell->mCombinedCooldown = pMagic->mCombinedSpell->mCooldown * pMagic->mCombinedSpell->mCooldownModifier;
 					}
 				}
-				else if (mLeftHandPressed)
+				else if (mLeftHandPressed && pMagic->mLeftHandSpell != nullptr)
 				{
 					bool shouldAttack = (pMagic->mLeftHandSpell->mLeftHandCooldown < 0.016f);
 					pAttack->mShouldAttack = shouldAttack;
@@ -95,7 +95,7 @@ namespace BulletHell
 						pMagic->mLeftHandSpell->mLeftHandCooldown = pMagic->mLeftHandSpell->mCooldown * pMagic->mLeftHandSpell->mCooldownModifier;
 					}
 				}
-				else if (mRightHandPressed)
+				else if (mRightHandPressed && pMagic->mRightHandSpell != nullptr)
 				{
 					bool shouldAttack = (pMagic->mRightHandSpell->mRightHandCooldown < 0.016f);
 					pAttack->mShouldAttack = shouldAttack;
@@ -268,10 +268,16 @@ namespace BulletHell
 		if (pPlayerMagic->mLeftHandSpell == nullptr)
 		{
 			pPlayerMagic->mLeftHandSpell = pPlayerMagic->mBasicSpells[pSpellObject->GetComponent<Spell>()->mSpellType];
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("left");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
 		}
 		if (pPlayerMagic->mRightHandSpell == nullptr)
 		{
 			pPlayerMagic->mRightHandSpell = pPlayerMagic->mBasicSpells[pSpellObject->GetComponent<Spell>()->mSpellType];
+			// Fire spell cycle event
+			CycleSpellEvent cycleEvent("right");
+			Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
 		}
 
 		// Destroy spell object
