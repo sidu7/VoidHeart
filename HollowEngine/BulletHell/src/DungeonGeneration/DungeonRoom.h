@@ -39,6 +39,7 @@ namespace BulletHell
 		bool IsCleared();
 		void UnlockRoom();
 		void LockDownRoom();
+        int GetID() const;
         ~DungeonRoom();
 
 		// structure

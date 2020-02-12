@@ -27,7 +27,7 @@ namespace BulletHell
         void Init();
         void Generate();
         void Regenerate();
-        void Construct();
+        void Construct(int);
         void ConfigureDungeon();
         bool SetSeed(unsigned seed);
         unsigned GetSeed();

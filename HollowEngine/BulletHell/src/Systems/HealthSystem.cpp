@@ -30,6 +30,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
+        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
 	}
 
@@ -210,6 +211,18 @@ namespace BulletHell
 		}
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/BossHit.wav");
 	}
+
+    void HealthSystem::OnFloorCleared(Hollow::GameEvent& event)
+    {
+        // Empty HP UI array
+        //for (auto UIIcon : mPlayerHPUIIcons)
+        {
+
+            //Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
+            //delete UIIcon;
+        }
+        mPlayerHPUIIcons.clear();
+    }
 
 	void HealthSystem::HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet)
 	{

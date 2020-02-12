@@ -105,7 +105,7 @@ namespace BulletHell
         Hollow::GameObject* pRoomFloor = 
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Floor", 
                 glm::vec3(mRoomY*mRoomSize + halfRoomSize,
-							(mFloorNum-1)*10,
+							0.0f,
 							mRoomX * mRoomSize + halfRoomSize),
                 glm::vec3(mRoomSize, 1.0f, mRoomSize));
 
@@ -249,6 +249,11 @@ namespace BulletHell
             mIsLockedFirstTime = true;
         }
 	}
+
+    int DungeonRoom::GetID() const
+    {
+        return mRoomID;
+    }
 
     DungeonRoom::~DungeonRoom()
     {

@@ -47,6 +47,23 @@ namespace BulletHell
         Hollow::SystemManager::Instance().OnSceneInit();
     }
 
+    void GameLogicManager::MoveToNextFloor()
+    {
+
+        auto& lua = Hollow::ScriptingManager::Instance().lua;
+        int currentFloor = lua["currentFloor"].get<int>();
+        DungeonManager::Instance().GetFloor(currentFloor).ResetFloor();
+        currentFloor++;
+        lua["currentFloor"] = currentFloor;
+        Hollow::SceneManager::Instance().LoadLevel("Level3");
+        DungeonManager::Instance().Construct(currentFloor);
+
+        Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
+        
+        BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
+        Hollow::SystemManager::Instance().OnSceneInit();
+    }
+
     void GameLogicManager::SubscribeToEvents()
     {
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));

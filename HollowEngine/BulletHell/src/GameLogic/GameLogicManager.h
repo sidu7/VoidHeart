@@ -35,6 +35,8 @@ namespace BulletHell
         // Create a PickUp at the centre of the room
         void CreatePickUpInRoom(DungeonRoom& room);
 
+        void MoveToNextFloor();
+
         // Generates Enemy in the room given by roomCoords at the position offset
         Hollow::GameObject* GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
 
