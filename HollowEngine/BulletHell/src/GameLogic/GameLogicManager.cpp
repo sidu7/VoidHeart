@@ -9,7 +9,7 @@
 #include "Hollow/Managers/EventManager.h"
 #include "GameMetaData/GameEventType.h"
 
-#define MAX_REGULAR_ROOMS 2
+#define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 2
 
 namespace BulletHell
