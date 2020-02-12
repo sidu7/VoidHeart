@@ -12,6 +12,8 @@
 
 #include "Hollow/Components/UIText.h"
 #include "Hollow/Components/Transform.h"
+#include "Hollow/Components/UIImage.h"
+#include "Hollow/Components/UITransform.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -41,7 +43,7 @@ namespace BulletHell
 			Health* pHealth = mGameObjects[i]->GetComponent<Health>();
 
 			// Update player HP bar
-			Hollow::UIText* pHPText = mGameObjects[i]->GetComponent<Hollow::UIText>();
+			//Hollow::UIText* pHPText = mGameObjects[i]->GetComponent<Hollow::UIText>();
 			//std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap[pHPText->mTag];
 			//pHPText->mText = ss + std::to_string(pHealth->mHitPoints);
 			
@@ -91,15 +93,50 @@ namespace BulletHell
 				}
 				// Send event to destroy object
 				Hollow::GameObjectManager::Instance().DeleteGameObject(mGameObjects[i]);
-
-				// Create new UI object
-				// TODO: Fix how this is being done
-				/*Hollow::GameObject* pUI = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Json Data/UIElement.json");
-				Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
-				pUIText->mOffsetPosition = glm::vec2(400.0f, 300.0f);
-				pUIText->mTextScale = glm::vec2(4.0f, 4.0f);
-				pUIText->mText = gameEndText;
-				pUIText->mChangingText = true;*/
+			}
+			// Create new UI object
+			//if (mGameObjects[i]->mTag == "Player")
+			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
+			{
+				// Populate UIIcons
+				if (mPlayerHPUIIcons.empty())
+				{
+					int numUIIcons = pHealth->mHitPoints / 2;
+					for (int i = 0; i < numUIIcons; ++i)
+					{
+						CreateHPUIIcon(i);
+					}
+				}
+				else
+				{
+					int playerHealth = pHealth->mHitPoints;
+					if (playerHealth > mPlayerHPUIIcons.size()*2)
+					{
+						CreateHPUIIcon(mPlayerHPUIIcons.size());
+					}
+					for (int UIIndex = 0; UIIndex < mPlayerHPUIIcons.size(); ++UIIndex)
+					{
+						Hollow::GameObject* pUIIcon = mPlayerHPUIIcons[UIIndex];
+						Hollow::UIImage* pUIImg = pUIIcon->GetComponent<Hollow::UIImage>();
+						// Play should have full hp
+						if (playerHealth >= (UIIndex + 1)*2)
+						{
+							pUIImg->TexturePath = "Resources/Textures/HPIcon.png";
+						}
+						else if (playerHealth <= (UIIndex) * 2)
+						{
+							pUIImg->TexturePath = "Resources/Textures/EmptyHPIcon.png";
+						}
+						else
+						{
+							pUIImg->TexturePath = "Resources/Textures/HalfHPIcon.png";
+						 }
+						pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
+					}
+					//Hollow::UIImage* pUIImg = mpPlayerHPUI->GetComponent<Hollow::UIImage>();
+					//pUIImg->TexturePath = "Resources/Textures/HalfHPIcon.png";
+					//pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
+				}
 			}
 		}
 	}
@@ -115,17 +152,20 @@ namespace BulletHell
 
 	void HealthSystem::OnBulletHitPlayer(Hollow::GameEvent& event)
 	{
+		Hollow::GameObject* pPlayer = nullptr;
 		if (event.mpObject1->mType == (int)GameObjectType::PLAYER)
 		{
 			// Call handle function with player, bullet
 			HandleBulletDamage(event.mpObject1, event.mpObject2);
+			pPlayer = event.mpObject1;
 		}
 		else
 		{
 			// Call handle function with input reversed
 			HandleBulletDamage(event.mpObject2, event.mpObject1);
+			pPlayer = event.mpObject2;
 		}
-				
+			
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/PlayerHit.wav");
 	}
 
@@ -204,6 +244,20 @@ namespace BulletHell
 		{
 			--pHealth->mHitPoints;
 		}		
+	}
+
+	void HealthSystem::CreateHPUIIcon(int index)
+	{
+		Hollow::GameObject* pUIObj = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/UIIcon.json");
+		//Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
+		Hollow::UIImage* pUIImg = pUIObj->GetComponent<Hollow::UIImage>();
+		pUIImg->TexturePath = "Resources/Textures/HPIcon.png";
+		pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
+
+		Hollow::UITransform* pUITr = pUIObj->GetComponent<Hollow::UITransform>();
+		pUITr->mScale = glm::vec2(64, 64);
+		pUITr->mPosition = glm::vec2(64 * (index + 1), 660);
+		mPlayerHPUIIcons.push_back(pUIObj);
 	}
 
 }

@@ -77,6 +77,8 @@ namespace Hollow {
         model = glm::translate(model, mPosition);
         model *= rotate;
         model = glm::scale(model, mScale);
-        mTransformationMatrix = model;
+        mTransformationMatrix = model; 
+
+        mRotation = angles;
     }
 }

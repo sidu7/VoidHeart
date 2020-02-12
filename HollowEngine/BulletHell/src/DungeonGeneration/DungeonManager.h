@@ -34,14 +34,9 @@ namespace BulletHell
 
         std::vector<DungeonFloor> GetFloors() const;
         DungeonFloor& GetFloor(int index);
+        DungeonRoom& GetCurrentRoom();
         void Print() const;
-
-    	// Create Enemies adjusted according to the floor the room is in
-        void CreateEnemiesInRoom(DungeonRoom& room);
-
-    	// Create a PickUp at the centre of the room
-        void CreatePickUpInRoom(DungeonRoom& room);
-    	
+   	
 		void DebugDisplay();
     private:
         int length;
@@ -52,7 +47,7 @@ namespace BulletHell
         void SubscribeToEvents();
         void OnDeath(Hollow::GameEvent& event);
 
-        DungeonRoom& GetCurrentRoom();
+        void OnFloorCleared(Hollow::GameEvent& event);
     public:
 		Hollow::GameObject* mpPlayerGo;
     private:

@@ -22,6 +22,7 @@
 
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/UITransform.h"
+#include "GameLogic/GameLogicManager.h"
 
 void Hollow::GameMetaData::Init()
 {
@@ -63,6 +64,8 @@ public:
 
 		BulletHell::DungeonManager::Instance().ConfigureDungeon();
         BulletHell::DungeonManager::Instance().Init();
+
+		BulletHell::GameLogicManager::Instance().Init();
 
 		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
 

@@ -1,6 +1,11 @@
 #pragma once
 #include "Hollow/Systems/System.h"
 
+namespace Hollow
+{
+	class GameObject;
+}
+
 namespace BulletHell
 {
 
@@ -38,5 +43,10 @@ namespace BulletHell
 		void OnAOEDamageHitPlayer(Hollow::GameEvent& event);
 
 		void HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet);
+
+		void CreateHPUIIcon(int index);
+
+	private:
+		std::vector<Hollow::GameObject*> mPlayerHPUIIcons;
 	};
 }

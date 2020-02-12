@@ -1,71 +1,65 @@
-local impulse = vec3.new()
-local direction = vec3.new();
+function CalculateRotation(xDir, zDir)
+    local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
+    local xDirNorm = xDir / dirLength
+    local zDirNorm = zDir / dirLength
 
-local front = vec3.new(0.0, 0.0, -1.0)
-local right = vec3.new(1.0, 0.0, 0.0)
+    local tangent = xDirNorm / zDirNorm
+    local radians = math.atan(tangent)
+    local degree = radians * 180 / math.pi
+    local rot = vec3.new()
+    if zDirNorm >= 0 then  
+	    rot = vec3.new(0.0, degree, 0.0)
+    end
+    if zDirNorm < 0 then 
+	    rot = vec3.new(0.0, degree + 180, 0.0)
+    end
 
-front.y = 0.0
-right.y = 0.0
-
-local speed = vec3.new(1000.0, 0.0, 1000.0)
-
-local transform = gameObject:GetTransform()
-if IsKeyPressed("W") or GetAxis(CONTROLLER["LY"]) < -16000 then
-	impulse = impulse + front;
-	direction = direction + vec3.new(0.0, 0.0, -1.0)
-end
-if IsKeyPressed("S") or GetAxis(CONTROLLER["LY"]) > 16000 then
-	impulse = impulse - front;
-	direction = direction + vec3.new(0.0, 0.0, 1.0)
-end
-if IsKeyPressed("A") or GetAxis(CONTROLLER["LX"]) < -16000 then
-	impulse = impulse - right;
-	direction = direction + vec3.new(-1.0, 0.0, 0.0)
-end
-if IsKeyPressed("D") or GetAxis(CONTROLLER["LX"]) > 16000 then
-	impulse = impulse + right;
-	direction = direction + vec3.new(1.0, 0.0, 0.0)
-end
-if IsKeyPressed("SPACE") or IsControllerButtonTriggered(CONTROLLER["A"]) then
-	impulse = impulse + vec3.new(0.0, 20.0, 0.0);
+    return rot
 end
 
--- look direction
-local xVelocity = GetAxis(CONTROLLER["RX"])
-local zVelocity = GetAxis(CONTROLLER["RY"])
-local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
-local xVelocityNorm = xVelocity / totalVelocity
-local zVelocityNorm = zVelocity / totalVelocity
+function Update()
+    local impulse = vec3.new()
+    local direction = vec3.new();
 
-local rot = vec3.new(0.0, 0.0, 0.0)
-local tangent = xVelocityNorm / zVelocityNorm
-local radians = math.atan(tangent)
-local degree = radians * 180 / math.pi
-if zVelocityNorm >= 0 then  
-	rot = vec3.new(0.0, degree, 0.0)
+    local front = vec3.new(0.0, 0.0, -1.0)
+    local right = vec3.new(1.0, 0.0, 0.0)
+
+    front.y = 0.0
+    right.y = 0.0
+
+    local speed = vec3.new(1000.0, 0.0, 1000.0)
+
+    local transform = gameObject:GetTransform()
+    local xDirLeftStick = GetAxis(CONTROLLER["LX"])
+    local zDirLeftStick = GetAxis(CONTROLLER["LY"])
+    local rot = transform.rotation
+
+    if ((xDirLeftStick < -16000) or (xDirLeftStick > 16000) or (zDirLeftStick < -16000) or (zDirLeftStick > 16000)) then
+
+        rot = CalculateRotation(xDirLeftStick, zDirLeftStick)
+
+        if IsKeyPressed("W") or zDirLeftStick < -16000 then
+	        impulse = impulse + front;
+        end
+        if IsKeyPressed("S") or zDirLeftStick > 16000 then
+	        impulse = impulse - front;
+        end
+        if IsKeyPressed("A") or xDirLeftStick < -16000 then
+	        impulse = impulse - right;
+        end
+        if IsKeyPressed("D") or xDirLeftStick > 16000 then
+	        impulse = impulse + right;
+        end
+    end
+
+    -- look direction
+    local xDirRightStick = GetAxis(CONTROLLER["RX"])
+    local zDirRightStick = GetAxis(CONTROLLER["RY"])
+    if ((xDirRightStick < -16000) or (xDirRightStick > 16000) or (zDirRightStick < -16000) or (zDirRightStick > 16000)) then
+        rot = CalculateRotation(xDirRightStick, zDirRightStick)
+    end
+
     transform:Rotate(rot)
-end
-if zVelocityNorm < 0 then 
-	rot = vec3.new(0.0, degree + 180, 0.0)
-    transform:Rotate(rot)
-end
-
--- cardinal direction look
---[[local rot = vec3.new(0.0, 0.0, 0.0)
-if GetAxis(CONTROLLER["RY"]) < -16000 then --up
-	rot = vec3.new(0.0, 180.0, 0.0)
-end
-if GetAxis(CONTROLLER["RY"]) > 16000 then  --down
-	rot = vec3.new(0.0, 0.0, 0.0)
-end
-if GetAxis(CONTROLLER["RX"]) < -16000 then --left
-	rot = vec3.new(0.0, 270.0, 0.0)
-end
-if GetAxis(CONTROLLER["RX"]) > 16000 then  --right
-	rot = vec3.new(0.0, 90.0, 0.0)
-end
-local transform = gameObject:GetTransform()
-transform:Rotate(rot) --]]
 
 -- Apply any movement debuffs
 local movement = gameObject:GetMovement()
@@ -74,10 +68,13 @@ impulse = impulse * speed * movement.moveDebuffFactor;
 
 movement.moveDebuffFactor = 1.0; -- reset debuff for this frame
 
-ApplyLinearImpulse(gameObject, impulse)
+    ApplyLinearImpulse(gameObject, impulse)
 
-local body = gameObject:GetBody()
+    local body = gameObject:GetBody()
 
--- Damp Overall Velocity and Rotation
-body.velocity = body.velocity - 0.8 * body.velocity 
-body.angularVelocity = body.angularVelocity - 0.8* body.angularVelocity;
+    -- Damp Overall Velocity and Rotation
+    body.velocity = body.velocity - 0.8 * body.velocity 
+    body.angularVelocity = body.angularVelocity - 0.8* body.angularVelocity;
+end
+
+Update()

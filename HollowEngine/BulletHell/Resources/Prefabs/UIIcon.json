@@ -8,7 +8,7 @@
     },
     {
       "Type": "UIImage",
-      "Image": "Resources/Textures/Sp_Fire.png",
+      "Image": "Resources/Textures/UICombined.png",
       "Shape": "QUAD",
       "Color": [ 0.0, 0.0, 1.0 ]
     }
