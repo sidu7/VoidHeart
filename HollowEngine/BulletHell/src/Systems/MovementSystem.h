@@ -7,6 +7,8 @@ namespace BulletHell
 	{
 		REGISTERSYSTEM(MovementSystem, 2);
 	public:
+		void Init() override;
+		
 		/// <summary>
 		/// Updates the System every frame.
 		/// </summary>
@@ -17,5 +19,8 @@ namespace BulletHell
 		/// </summary>
 		/// <param name="pGameObject">The gameObject instance to add.</param>
 		void AddGameObject(Hollow::GameObject* pGameObject);
+
+	private:
+		void OnPlayerAOESlow(Hollow::GameEvent& event);
 	};
 }

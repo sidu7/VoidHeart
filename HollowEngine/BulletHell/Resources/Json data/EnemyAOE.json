@@ -1,0 +1,53 @@
+{
+  "Type": "ENEMY_AOE_DAMAGE",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Model",
+      "Shape": "SPHERE",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 10.0, 5.0, 0.0 ],
+      "Shininess": 10.0,
+      "Transparent": true,
+      "AlphaValue": 0.4
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 1.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "EnemyGrow" ]
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 1000,
+      "EmissionRate": 300,
+      "Shape": 1,
+      "ModelShape": "CUBE",
+      "Speed": [ 4.0, 8.0 ],
+      "Life": [ 0.2, 0.4 ],
+      "Size": [ 0.1, 0.2 ],
+      "ParticleColor": [ 0.0, 0.0, 1.0 ],
+      "ComputeShader": "Resources/Shaders/CenterModelParticles.comp"
+    }
+  ]
+}

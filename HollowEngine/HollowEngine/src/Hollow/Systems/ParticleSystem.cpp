@@ -13,6 +13,7 @@
 
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 
 namespace Hollow
@@ -27,6 +28,26 @@ namespace Hollow
 		}
 	}
 	
+	void ParticleSystem::Init()
+	{
+		// Send ParticleEmitter component to lua
+		auto& lua =ScriptingManager::Instance().lua;
+
+		lua.new_usertype<ParticleEmitter>("ParticleEmitter",
+			sol::constructors<ParticleEmitter()>(),
+			"scaleRange", &ParticleEmitter::mSizeRange,
+			"active", &ParticleEmitter::mActive,
+			"speedRange", &ParticleEmitter::mSpeedRange,
+			"lifeRange",&ParticleEmitter::mLifeRange,
+			"direction", &ParticleEmitter::mDirection,
+			"color", &ParticleEmitter::mParticleColor,
+			"areaOfEffect",&ParticleEmitter::mAreaOfEffect
+			);
+
+		// Add get ParticleEmitter component to lua
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetParticleEmitter"] = &Hollow::GameObject::GetComponent<ParticleEmitter>;
+	}
+
 	void ParticleSystem::Update()
 	{	
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)

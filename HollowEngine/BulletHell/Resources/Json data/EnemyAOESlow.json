@@ -1,0 +1,42 @@
+{
+  "Type": "ENEMY_AOE_SLOW",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL",
+      "isTrigger": true
+    },
+    {
+      "Type": "Model",
+      "Shape": "SPHERE",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 10.0, 5.0, 0.0 ],
+      "Shininess": 10.0,
+      "Transparent": true,
+      "AlphaValue": 0.4
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 2.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "EnemyGrowSlow" ]
+    }
+  ]
+}

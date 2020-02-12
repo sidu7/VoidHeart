@@ -29,6 +29,8 @@ namespace Hollow {
 		mHeightTexturePath = "";
 		mMaterialDataPath = "";
 		mHasMaterialTextures = false;
+		mTransparent = false;
+		mAlphaValue = 1.0f;
 	}
 
 	void Material::Clear()
@@ -91,6 +93,14 @@ namespace Hollow {
 			mMaterialDataPath = data["MaterialData"].GetString();
 			mMaterials = ResourceManager::Instance().LoadMaterials(mMaterialDataPath);
 		}
+		if (data.HasMember("Transparent"))
+		{
+			mTransparent = data["Transparent"].GetBool();
+		}
+		if (data.HasMember("AlphaValue"))
+		{
+			mAlphaValue = data["AlphaValue"].GetFloat();
+		}
 	}
 
 	void Material::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -106,6 +116,8 @@ namespace Hollow {
 		JSONHelper::Write("HeightTexture", mHeightTexturePath, writer);
 		JSONHelper::Write("HeightScale", mHeightScale, writer);
 		JSONHelper::Write("MaterialData", mMaterialDataPath, writer);
+		JSONHelper::Write("Transparent", mTransparent, writer);
+		JSONHelper::Write("AlphaValue", mAlphaValue, writer);
 	}
 
 	void Material::DebugDisplay()
@@ -119,6 +131,8 @@ namespace Hollow {
 		// Show the shininess
 		ImGui::InputFloat("Shininess", &mShininess);
 
+		ImGui::Checkbox("Transparent", &mTransparent);
+		ImGui::InputFloat("Alpha Value", &mAlphaValue);
 
 		ImGuiHelper::InputText("Texture File", mTexturePath);
 

@@ -15,6 +15,7 @@
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/AudioManager.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 namespace Hollow
 {
@@ -135,7 +136,8 @@ namespace Hollow
 
 		lua.new_usertype<Material>("Material",
 			sol::constructors<Material()>(),
-			"diffuse", &Material::mDiffuseColor
+			"diffuse", &Material::mDiffuseColor,
+			"alphaValue", &Material::mAlphaValue
 			);
 
 		// GAMEOBJECT
@@ -174,6 +176,8 @@ namespace Hollow
 		lua.set_function("IsControllerTriggerTriggered", &InputManager::IsControllerTriggerTriggered, std::ref(InputManager::Instance()));
 		lua.set_function("IsControllerTriggerReleased", &InputManager::IsControllerTriggerReleased, std::ref(InputManager::Instance()));
 
+		//FRAMERATE CONTROLLER
+		lua.set_function("GetFrameTime", &FrameRateController::GetFrameTime, std::ref(FrameRateController::Instance()));
 
 	}
 

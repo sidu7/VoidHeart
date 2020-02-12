@@ -8,7 +8,7 @@ struct Particle
 	float speed;
 	float life;
 	float currentlife;
-	vec2 padding;
+	vec3 direction;
 };
 
 layout(std430, binding = 2) buffer ParticleDataBlock
@@ -26,6 +26,9 @@ layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
 uniform float DeltaTime;
 uniform vec2 SpeedRange;
 uniform vec2 LifeRange;
+uniform bool Pause;
+uniform vec3 Center;
+uniform bool Active;
 
 highp float rand(vec2 co)
 {
@@ -43,19 +46,32 @@ void main()
 	
 	each_particle[gid].currentlife = each_particle[gid].currentlife - DeltaTime;
 	vec3 pos = each_particle[gid].mPos;
-	if (each_particle[gid].currentlife > 0)
-	{
-		float vel = each_particle[gid].speed;
-		vec3 dir = normalize(pos);
 
-		pos = pos + vel * dir * DeltaTime;
-	}
-	else
+	if(!Pause)
 	{
-		pos = vec3(rand(pos.xy),rand(pos.yz),rand(pos.xz)) * 2.0f - 1.0f;
-		each_particle[gid].life = rand(pos.xy) * (LifeRange.y - LifeRange.x) + LifeRange.x;
-		each_particle[gid].currentlife = each_particle[gid].life;
-		each_particle[gid].speed = rand(pos.yz) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
+		if (each_particle[gid].currentlife > 0)
+		{
+			float vel = each_particle[gid].speed;
+			vec3 dir = each_particle[gid].direction;
+
+			pos += vel * dir * DeltaTime;
+		}
+		else if(Active)
+		{
+			pos = vec3(rand(pos.xy),rand(pos.yz),rand(pos.xz)) * 2.0f - 1.0f;
+			each_particle[gid].life = rand(pos.xy) * (LifeRange.y - LifeRange.x) + LifeRange.x;
+			each_particle[gid].currentlife = each_particle[gid].life;
+			each_particle[gid].speed = rand(pos.yz) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
+			each_particle[gid].direction = normalize(pos - Center);
+		}		
+		else
+		{
+			each_particle[gid].life = 0.0f;
+			each_particle[gid].currentlife = 0.0f;
+			each_particle[gid].speed = 0.0f;
+			each_particle[gid].direction = vec3(0.0f);
+			each_particle[gid].mPos = vec3(0.0f);
+		}
 	}
 
 	each_particle[gid].mPos = pos;

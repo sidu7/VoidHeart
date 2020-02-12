@@ -3,11 +3,28 @@
 #include "Components/DestroyTimer.h"
 
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
 
 namespace BulletHell
 {
 	DestroySystem DestroySystem::instance;
+
+
+	void DestroySystem::Init()
+	{
+		// Send Destroy component to lua
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<DestroyTimer>("DestroyTimer",
+			sol::constructors<DestroyTimer()>(),
+			"maxTime", &DestroyTimer::mMaxTime,
+			"currentTime",&DestroyTimer::mCurrentTime
+			);
+
+		// Add get attack component to lua
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetDestroyTimer"] = &Hollow::GameObject::GetComponent<DestroyTimer>;
+	}
 
 	void DestroySystem::Update()
 	{

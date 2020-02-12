@@ -30,7 +30,10 @@
       "Type": "Collider",
       "Bounciness": 0.20000000298023225,
       "Shape": "BOX",
-      "isTrigger": false
+      "isTrigger": false,
+      "HasCustomScale": true,
+      "MinBounds": [ -0.3, -0.5, -0.3],
+      "MaxBounds": [ 0.3, 1.5, 0.3]
     },
     {
       "Type": "Model",
@@ -75,6 +78,9 @@
     {
       "Type": "Script",
       "Scripts": [ "PlayerMovement" ]
+    },
+    {
+      "Type": "Movement"
     },
     {
       "Type": "Attack",

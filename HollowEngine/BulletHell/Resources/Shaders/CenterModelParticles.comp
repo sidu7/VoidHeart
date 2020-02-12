@@ -1,6 +1,7 @@
 #version 430 compatibility
 #extension GL_ARB_COMPUTE_SHADER : enable
 #extension GL_ARB_SHADER_STORAGE_BUFFER_OBJECT : enable
+#extension GL_EXT_gpu_shader4: enable
 
 struct Particle
 {
@@ -33,7 +34,6 @@ uniform float DeltaTime;
 uniform vec2 SpeedRange;
 uniform vec2 ScaleRange;
 uniform vec2 LifeRange;
-uniform vec3 Direction;
 uniform vec3 Center;
 uniform bool Pause;
 uniform bool Active;
