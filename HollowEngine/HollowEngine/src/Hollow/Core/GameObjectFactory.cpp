@@ -24,6 +24,11 @@ namespace Hollow {
 		{
 			pNewGameObject->mActive = root["Active"].GetBool();
 		}
+
+		if (root.HasMember("Tag"))
+		{
+			pNewGameObject->mTag = root["Tag"].GetString();
+		}
 		
 		if (root.HasMember("Components"))
 		{

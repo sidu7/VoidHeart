@@ -179,6 +179,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp" />
     <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp" />
     <ClCompile Include="src\Components\Spell.cpp" />
+    <ClCompile Include="src\GameLogic\GameLogicManager.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Systems\AttackSystem.cpp" />
     <ClCompile Include="src\Systems\BehaviorSystem.cpp" />
@@ -279,6 +280,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
     <ClInclude Include="src\Events\CycleSpellEvent.h" />
+    <ClInclude Include="src\GameLogic\GameLogicManager.h" />
     <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
     <ClInclude Include="src\GameMetaData\GameObjectType.h" />

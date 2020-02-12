@@ -83,7 +83,7 @@ namespace BulletHell
 	std::unordered_map<int, Magic::SpellData*> Magic::CreateSpellMap()
 	{
 		std::unordered_map<int, Magic::SpellData*> spellMap;
-		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Spells/FireFire", COMBINED,  0.0f, 0.0f, "", 3.0f, "Resources/Textures/Flames.png" };
+		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Spells/FireFire", COMBINED,  0.0f, 0.0f, "", 3.0f, "Resources/Textures/FireFire.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::FIRE, pCombinedSpell);
 
 		pCombinedSpell = new Magic::SpellData{ "Air + Air", "Spells/AirAir", COMBINED,  0.0f, 0.0f, "", 1.0f, "Resources/Textures/AirAir.png" };

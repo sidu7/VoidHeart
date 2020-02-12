@@ -7,7 +7,7 @@ namespace Hollow {
 
 	unsigned int GameObject::ID = 0;
 
-	GameObject::GameObject(): mID(ID++), mActive(false)
+	GameObject::GameObject(): mID(ID++), mActive(false), mTag("")
 	{
 	}
 
@@ -49,6 +49,8 @@ namespace Hollow {
 		writer.String(mDType.c_str());
 		writer.Key("Active");
 		writer.Bool(mActive);
+		writer.Key("Tag");
+		writer.String(mTag.c_str());
 		writer.Key("Components");
 		writer.StartArray();
 		for (unsigned int i = 0; i < mIndices.size(); ++i)
