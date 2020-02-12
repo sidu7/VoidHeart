@@ -158,12 +158,7 @@ namespace BulletHell
 
 	void DungeonFloor::ResetFloor()
 	{
-		for (DungeonRoom& room : mRooms)
-		{
-			room.mRoomType = DungeonRoomType::EMPTY;
-			room.mDoors = 0;
-		}
-		mEntranceIndex = -1;
+        mRooms.clear();
 	}
 
     const DungeonRoom& DungeonFloor::GetEntrance() const

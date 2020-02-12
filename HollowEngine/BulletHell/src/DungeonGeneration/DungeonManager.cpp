@@ -65,6 +65,7 @@ namespace BulletHell
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
 		lua.set_function("PopulateRoom", &GameLogicManager::PopulateRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
+		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
 
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
@@ -87,13 +88,13 @@ namespace BulletHell
 
     void DungeonManager::Regenerate()
     {
-        // delete old data
-        // ...
         for (DungeonFloor& dungeonFloor : mFloors)
         {
             dungeonFloor.ResetFloor();
         }
-        Generate();
+        mFloors.clear();
+
+        GameLogicManager::Instance().Init();
     }
 
     bool DungeonManager::SetSeed(unsigned seed)

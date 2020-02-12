@@ -15,6 +15,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 
 #include "Hollow/Events/GameEvent.h"
@@ -142,6 +143,16 @@ namespace BulletHell
 			mpPlayerObject = pGameObject;
 		}
 	}
+
+    void HandSystem::OnDeleteAllGameObjects()
+    {
+        //if (mpCombinedHandUI) Hollow::GameObjectManager::Instance().DeleteGameObject(mpCombinedHandUI);
+        //if (mpLeftHandUI) Hollow::GameObjectManager::Instance().DeleteGameObject(mpLeftHandUI);
+        //if (mpRightHandUI) Hollow::GameObjectManager::Instance().DeleteGameObject(mpRightHandUI);
+        mpCombinedHandUI = nullptr;
+        mpLeftHandUI = nullptr;
+        mpRightHandUI = nullptr;
+    }
 
 	void HandSystem::HandleBroadcastEvent(Hollow::GameEvent& event)
 	{

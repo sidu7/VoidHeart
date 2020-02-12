@@ -77,9 +77,17 @@ namespace BulletHell
 				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
 				{
 					//YOU LOSE
+
 					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
 					//gameEndText = "You Lose!";
-					gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["LOSE"];
+                    gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["LOSE"];
+                    // Empty HP UI array
+                    for (auto UIIcon : mPlayerHPUIIcons)
+                    {
+                        Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
+                        //delete UIIcon;
+                    }
+                    mPlayerHPUIIcons.clear();
 				}
 				if (mGameObjects[i]->mType == (int)GameObjectType::ENEMY)
 				{
@@ -93,7 +101,7 @@ namespace BulletHell
 			}
 			// Create new UI object
 			//if (mGameObjects[i]->mTag == "Player")
-			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
+			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER && pHealth->mIsAlive)
 			{
 				// Populate UIIcons
 				if (mPlayerHPUIIcons.empty())

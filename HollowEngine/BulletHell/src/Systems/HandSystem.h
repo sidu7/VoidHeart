@@ -11,6 +11,8 @@ namespace BulletHell
 		void OnSceneInit() override;
 		void Update() override;
 		void AddGameObject(Hollow::GameObject* pGameObject) override;
+
+        void OnDeleteAllGameObjects() override;
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
 
 	private:
