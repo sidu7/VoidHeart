@@ -61,7 +61,12 @@ function Update()
 
     transform:Rotate(rot)
 
-    impulse = impulse * speed;
+-- Apply any movement debuffs
+local movement = gameObject:GetMovement()
+
+impulse = impulse * speed * movement.moveDebuffFactor;
+
+movement.moveDebuffFactor = 1.0; -- reset debuff for this frame
 
     ApplyLinearImpulse(gameObject, impulse)
 

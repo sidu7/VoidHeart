@@ -300,7 +300,7 @@ namespace Hollow {
 		LocalLightingPass();
 
 		//Draw debug drawings
-		if (mShowDebugDrawing)
+		if (mShowDebugDrawing || mShowPartialDebug)
 		{
 			DrawDebugDrawings();
 		}
@@ -597,6 +597,9 @@ namespace Hollow {
 		// Draw all game objects
 		DrawAllRenderData(mpGBufferShader);
 
+		//Clear Transparent Objects list
+		mTransparentObjects.clear();
+
 		mpGBufferShader->Unbind();
 		mpGBuffer->Unbind();
 	}
@@ -732,105 +735,133 @@ namespace Hollow {
 	{
 		for (RenderData& data : mRenderData)
 		{
-			pShader->SetMat4("Model", data.mpModel);
-			pShader->SetMat4("NormalTr", /*glm::transpose*/(glm::inverse(data.mpModel)));
-
-			pShader->SetInt("isAnimated", data.mIsAnimated);
-			if (data.mIsAnimated)
+			if (data.mpMaterial->mTransparent)
 			{
-				for (unsigned int i = 0; i < data.mBoneTransforms.size(); ++i)
+				mTransparentObjects.push_back(data);
+			}
+			else
+			{
+				DrawRenderData(data, pShader);
+			}
+		}
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE,GL_ONE);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glDepthMask(GL_FALSE);
+
+		for (RenderData& data : mTransparentObjects)
+		{
+			DrawRenderData(data, pShader);
+		}
+
+		glDisable(GL_BLEND); 
+		glDisable(GL_CULL_FACE);
+		glDepthMask(GL_TRUE);
+	}
+
+	void RenderManager::DrawRenderData(RenderData& data, Shader* pShader)
+	{
+		pShader->SetMat4("Model", data.mpModel);
+		pShader->SetMat4("NormalTr", /*glm::transpose*/(glm::inverse(data.mpModel)));
+
+		pShader->SetInt("isAnimated", data.mIsAnimated);
+		if (data.mIsAnimated)
+		{
+			for (unsigned int i = 0; i < data.mBoneTransforms.size(); ++i)
+			{
+				pShader->SetMat4("BoneTransforms[" + std::to_string(i) + "]", data.mBoneTransforms[i]);
+			}
+		}
+
+		Material* pMaterial = data.mpMaterial;
+
+		// Send lighting information
+		pShader->SetVec3("diffuseColor", pMaterial->mDiffuseColor);
+		pShader->SetFloat("alphaValue", pMaterial->mAlphaValue);
+		pShader->SetVec3("specularColor", pMaterial->mSpecularColor);
+		pShader->SetFloat("shininess", pMaterial->mShininess);
+		pShader->SetInt("hasDiffuseTexture", 0);
+
+		// Send diffuse texture information
+		if (pMaterial->mpTexture)
+		{
+			pMaterial->mpTexture->Bind(1);
+			pShader->SetInt("diffuseTexture", 1);
+			pShader->SetInt("hasDiffuseTexture", 1);
+		}
+
+		pShader->SetInt("hasNormalMap", 0);
+		pShader->SetInt("hasHeightMap", 0);
+		pShader->SetFloat("heightScale", 0.0f);
+		pShader->SetInt("hasSpecularTexture", 0);
+
+		// Draw object
+		for (Mesh* mesh : data.mpMeshes)
+		{
+			if (mesh->mMaterialIndex != -1 && pMaterial->mMaterials.size() > 0)
+			{
+				MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
+				if (materialdata->mpDiffuse)
 				{
-					pShader->SetMat4("BoneTransforms[" + std::to_string(i) + "]", data.mBoneTransforms[i]);
+					materialdata->mpDiffuse->Bind(1);
+					pShader->SetInt("diffuseTexture", 1);
+					pShader->SetInt("hasDiffuseTexture", 1);
+				}
+				if (materialdata->mpSpecular)
+				{
+					materialdata->mpSpecular->Bind(2);
+					pShader->SetInt("specularTexture", 2);
+					pShader->SetInt("hasSpecularTexture", 1);
+				}
+				if (materialdata->mpNormal)
+				{
+					materialdata->mpNormal->Bind(3);
+					pShader->SetInt("normalTexture", 3);
+					pShader->SetInt("hasNormalMap", 1);
+				}
+				if (materialdata->mpHeight)
+				{
+					materialdata->mpHeight->Bind(4);
+					pShader->SetInt("heightTexture", 4);
+					pShader->SetInt("hasHeightMap", 1);
+					pShader->SetFloat("heightScale", pMaterial->mHeightScale);
 				}
 			}
+			mesh->mpVAO->Bind();
+			mesh->mpEBO->Bind();
+			mesh->mpVBO->Bind();
+			GLCall(glDrawElements(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
+			mesh->mpEBO->Unbind();
+			mesh->mpVBO->Unbind();
+			mesh->mpVAO->Unbind();
 
-			Material* pMaterial = data.mpMaterial;
-
-			// Send lighting information
-			pShader->SetVec3("diffuseColor", pMaterial->mDiffuseColor);
-			pShader->SetVec3("specularColor", pMaterial->mSpecularColor);
-			pShader->SetFloat("shininess", pMaterial->mShininess);
-			pShader->SetInt("hasDiffuseTexture", 0);
-
-			// Send diffuse texture information
-			if (pMaterial->mpTexture)
+			if (mesh->mMaterialIndex != -1 && pMaterial->mMaterials.size() > 0)
 			{
-				pMaterial->mpTexture->Bind(1);
-				pShader->SetInt("diffuseTexture", 1);
-				pShader->SetInt("hasDiffuseTexture", 1);
-			}
-
-			pShader->SetInt("hasNormalMap", 0);
-			pShader->SetInt("hasHeightMap", 0);
-			pShader->SetFloat("heightScale", 0.0f);
-			pShader->SetInt("hasSpecularTexture", 0);
-
-			// Draw object
-			for (Mesh* mesh : data.mpMeshes)
-			{
-				if (mesh->mMaterialIndex != -1 && pMaterial->mMaterials.size() > 0)
+				MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
+				if (materialdata->mpDiffuse)
 				{
-					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
-					if (materialdata->mpDiffuse)
-					{
-						materialdata->mpDiffuse->Bind(1);
-						pShader->SetInt("diffuseTexture", 1);
-						pShader->SetInt("hasDiffuseTexture", 1);
-					}
-					if (materialdata->mpSpecular)
-					{
-						materialdata->mpSpecular->Bind(2);
-						pShader->SetInt("specularTexture", 2);
-						pShader->SetInt("hasSpecularTexture", 1);
-					}
-					if (materialdata->mpNormal)
-					{
-						materialdata->mpNormal->Bind(3);
-						pShader->SetInt("normalTexture", 3);
-						pShader->SetInt("hasNormalMap", 1);
-					}
-					if (materialdata->mpHeight)
-					{
-						materialdata->mpHeight->Bind(4);
-						pShader->SetInt("heightTexture", 4);
-						pShader->SetInt("hasHeightMap", 1);
-						pShader->SetFloat("heightScale", pMaterial->mHeightScale);
-					}
+					materialdata->mpDiffuse->Unbind(1);
 				}
-				mesh->mpVAO->Bind();
-				mesh->mpEBO->Bind();
-				mesh->mpVBO->Bind();
-				GLCall(glDrawElements(GL_TRIANGLES, mesh->mpEBO->GetCount(), GL_UNSIGNED_INT, 0));
-				mesh->mpEBO->Unbind();
-				mesh->mpVBO->Unbind();
-				mesh->mpVAO->Unbind();
-
-				if (mesh->mMaterialIndex != -1 && pMaterial->mMaterials.size() > 0)
+				if (materialdata->mpSpecular)
 				{
-					MaterialData* materialdata = pMaterial->mMaterials[mesh->mMaterialIndex];
-					if (materialdata->mpDiffuse)
-					{
-						materialdata->mpDiffuse->Unbind(1);
-					}
-					if (materialdata->mpSpecular)
-					{
-						materialdata->mpSpecular->Unbind(2);
-					}
-					if (materialdata->mpNormal)
-					{
-						materialdata->mpNormal->Unbind(3);
-					}
-					if (materialdata->mpHeight)
-					{
-						materialdata->mpHeight->Unbind(4);
-					}
+					materialdata->mpSpecular->Unbind(2);
+				}
+				if (materialdata->mpNormal)
+				{
+					materialdata->mpNormal->Unbind(3);
+				}
+				if (materialdata->mpHeight)
+				{
+					materialdata->mpHeight->Unbind(4);
 				}
 			}
+		}
 
-			if (pMaterial->mpTexture)
-			{
-				pMaterial->mpTexture->Unbind(1);
-			}
+		if (pMaterial->mpTexture)
+		{
+			pMaterial->mpTexture->Unbind(1);
 		}
 	}
 
@@ -988,7 +1019,6 @@ namespace Hollow {
 		for (unsigned int i = 0; i < mParticleData.size(); ++i)
 		{
 			ParticleData& particle = mParticleData[i];
-			mpParticleShader->SetInt("Type", particle.emitter->mType);
 			
 			particle.emitter->mpParticleStorage->Bind(2);
 			if (particle.emitter->mType == POINT)
@@ -1007,7 +1037,8 @@ namespace Hollow {
 			particle.emitter->mpComputeShader->SetFloat("DeltaTime", FrameRateController::Instance().GetFrameTime());
 			particle.emitter->mpComputeShader->SetVec2("SpeedRange", particle.emitter->mSpeedRange);
 			particle.emitter->mpComputeShader->SetVec2("LifeRange", particle.emitter->mLifeRange);
-			particle.emitter->mpComputeShader->SetVec2("ScaleRange", particle.emitter->mSizeRange);			
+			particle.emitter->mpComputeShader->SetVec2("ScaleRange", particle.emitter->mSizeRange);
+			particle.emitter->mpComputeShader->SetVec3("Direction", particle.emitter->mDirection);
 			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mMaxCount / 128, 1, 1);
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();
@@ -1025,6 +1056,7 @@ namespace Hollow {
 				particle.emitter->mpParticleVAO->Bind();
 
 				GLCall(glDrawArrays(GL_POINTS, 0, particle.emitter->mCount));
+				mpParticleShader->Unbind();
 				particle.emitter->mTexture->Unbind(4);
 				mpParticlesPositionStorage->Unbind(3);
 				particle.emitter->mpParticleVAO->Unbind();
@@ -1039,17 +1071,17 @@ namespace Hollow {
 					if (mesh->mMaterialIndex != -1 && particle.emitter->mParticleMaterials.size() > 0)
 					{
 						MaterialData* materialdata = particle.emitter->mParticleMaterials[mesh->mMaterialIndex];
-						if (materialdata->mpDiffuse)
+						if (materialdata && materialdata->mpDiffuse)
 						{
-							materialdata->mpDiffuse->Bind(3);
-							mpModelParticleShader->SetInt("DiffuseTexture", 3);
+							materialdata->mpDiffuse->Bind(4);
+							mpModelParticleShader->SetInt("DiffuseTexture", 4);
 							mpModelParticleShader->SetInt("HasTexture", 1);
-						}
-						else
-						{
-							mpModelParticleShader->SetInt("HasTexture", 0);
-							mpModelParticleShader->SetVec3("DiffuseColor", particle.emitter->mParticleColor);
-						}
+						}						
+					}
+					else
+					{
+						mpModelParticleShader->SetInt("HasTexture", 0);
+						mpModelParticleShader->SetVec3("DiffuseColor", particle.emitter->mParticleColor);
 					}
 					mesh->mpVAO->Bind();
 					mesh->mpVBO->Bind();
@@ -1063,7 +1095,7 @@ namespace Hollow {
 						MaterialData* materialdata = particle.emitter->mParticleMaterials[mesh->mMaterialIndex];
 						if (materialdata->mpDiffuse)
 						{
-							materialdata->mpDiffuse->Unbind(3);
+							materialdata->mpDiffuse->Unbind(4);
 						}
 					}
 				}
@@ -1286,6 +1318,8 @@ namespace Hollow {
 		ImGui::Checkbox("Particle System", &ShowParticles);
 		ImGui::Checkbox("Pause Particle System", &PauseParticles);
 		ImGui::Checkbox("Show Debug", &mShowDebugDrawing);
+		ImGui::Checkbox("Show Partial Debug", &mShowPartialDebug);
+		
 	}
 
 	void RenderManager::DebugDisplayGBuffer()

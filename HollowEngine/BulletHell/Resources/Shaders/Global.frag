@@ -188,7 +188,7 @@ void main()
 	// Apply shadow
 	result = (1.0 - G)*result;
 
-	color = vec4(result, 1.0);
+	color = vec4(result, 1.0f);
 	bloom = vec4(0.0, 0.0, 0.0, 0.0);
 
 	if(displayMode == 1)

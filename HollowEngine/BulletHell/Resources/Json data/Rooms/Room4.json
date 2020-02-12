@@ -1,0 +1,16 @@
+{
+  "Enemies": [{"EnemyType": "EnemyTurretCardinal",
+				"Position": [16, 16]},
+				{"EnemyType": "EnemyFollowLookdir",
+				"Position": [12, 16]},
+				{"EnemyType": "EnemyFollowLookdir",
+				"Position": [20, 16]}],
+  "Obstacles": [{"ObstacleType": "Wall",
+				"Position": [14, 14]},
+				{"ObstacleType": "Wall",
+				"Position": [18, 18]},
+				{"ObstacleType": "Wall",
+				"Position": [18, 14]},
+				{"ObstacleType": "Wall",
+				"Position": [14, 18]}]
+}

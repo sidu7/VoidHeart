@@ -15,6 +15,10 @@ namespace Hollow
 		mpShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
 		mpLocalShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
 		mpShape->mpOwnerCollider = this;
+		mHasCustomScale = false;
+
+		mMinBounds = glm::vec3(0.0f);
+		mMaxBounds = glm::vec3(0.0f);
 	}
 
 	void Collider::Clear()
@@ -25,6 +29,7 @@ namespace Hollow
 	{
 		ImGui::InputFloat3("Shape Extents", &mpShape->GetHalfExtents()[0]);
 		ImGui::Checkbox("Is Trigger", &mIsTrigger);
+		ImGui::Checkbox("Has Custom Scale", &mHasCustomScale);
 		ImGui::InputFloat("Bounciness", &mBounciness);
 		ImGui::InputFloat("Friction", &mFriction);
 		ImGuiHelper::InputText("Shape", mDShape);
@@ -35,6 +40,20 @@ namespace Hollow
 		if (data.HasMember("isTrigger"))
 		{
 			mIsTrigger = data["isTrigger"].GetBool();
+		}
+		if (data.HasMember("HasCustomScale"))
+		{
+			mHasCustomScale = data["HasCustomScale"].GetBool();
+		}
+		if (data.HasMember("MinBounds"))
+		{
+			auto min = data["MinBounds"].GetArray();
+			mMinBounds = glm::vec3(min[0].GetFloat(), min[1].GetFloat(), min[2].GetFloat());
+		}
+		if (data.HasMember("MaxBounds"))
+		{
+			auto max = data["MaxBounds"].GetArray();
+			mMaxBounds = glm::vec3(max[0].GetFloat(), max[1].GetFloat(), max[2].GetFloat());
 		}
 		if (data.HasMember("Bounciness"))
 		{
@@ -56,7 +75,7 @@ namespace Hollow
 			if (mDShape == "BOX")
 			{
 				mpShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
-				mpLocalShape = new ShapeAABB(glm::vec3(0.0f), glm::vec3(0.0f));
+				mpLocalShape = new ShapeAABB(mMinBounds, mMaxBounds);
 				mpShape->mpOwnerCollider = this;
 			}
 		}
@@ -69,5 +88,6 @@ namespace Hollow
 		JSONHelper::Write<float>("Bounciness", mBounciness, writer);
 		JSONHelper::Write<std::string>("Shape", mDShape, writer);
 		JSONHelper::Write<bool>("isTrigger", mIsTrigger, writer);
+		JSONHelper::Write<bool>("HasCustomScale", mHasCustomScale, writer);
 	}
 }

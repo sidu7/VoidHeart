@@ -8,6 +8,8 @@ namespace BulletHell
 	{
 		REGISTERSYSTEM(DestroySystem, 3);
 	public:
+
+		void Init();
 		/// <summary>
 		/// Updates the System every frame.
 		/// </summary>

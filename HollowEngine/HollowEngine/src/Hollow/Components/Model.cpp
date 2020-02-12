@@ -16,6 +16,7 @@ namespace Hollow {
 		mModelHasOffset = false;
 		mModelPath = "";
 		mShape = SHAPE_NUM;
+		mShapeType = "";
 	}
 	
 	void Model::Clear()
@@ -37,6 +38,7 @@ namespace Hollow {
 		if (object.HasMember("Shape"))
 		{
 			mShapeType = object["Shape"].GetString();
+			mShape = ResourceManager::Instance().mShapeEnumMap[mShapeType];
 			mMeshes.push_back(ResourceManager::Instance().GetShape(mShapeType));
 		}
 		if (object.HasMember("CastShadow"))

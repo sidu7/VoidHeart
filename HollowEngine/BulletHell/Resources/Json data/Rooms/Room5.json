@@ -1,0 +1,7 @@
+{
+  "Enemies": [{"EnemyType": "EnemyCircleLookdir",
+				"Position": [16, 16]},
+				{"EnemyType": "EnemyTurretTarget",
+				"Position": [18, 18]}],
+  "Obstacles": []
+}

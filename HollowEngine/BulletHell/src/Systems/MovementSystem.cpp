@@ -4,22 +4,40 @@
 #include "Components/Movement.h"
 
 #include "Hollow/Components/Body.h"
-#include "Hollow/Components/Transform.h"
 
 #include "Hollow/Managers/ScriptingManager.h"
-#include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/InputManager.h"
-#include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/EventManager.h"
+#include "GameMetaData/GameEventType.h"
+#include "GameMetaData/GameObjectType.h"
+#include "Components/Attack.h"
 
 namespace BulletHell
 {
 	MovementSystem MovementSystem::instance;
 
+	void MovementSystem::Init()
+	{
+		// Send Movement component to lua
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<Movement>("Movement",
+			sol::constructors<Movement()>(),
+			"moveDebuffFactor", &Movement::mMoveDebuffFactor
+			);
+
+		// Add get movement component to lua
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetMovement"] = &Hollow::GameObject::GetComponent<Movement>;
+
+		// Enemy Slow AOE event
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_SLOW_HIT_PLAYER, EVENT_CALLBACK(MovementSystem::OnPlayerAOESlow));
+	}
+
 	void MovementSystem::Update()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			Movement* script = mGameObjects[i]->GetComponent<Movement>();
+			/*Movement* script = mGameObjects[i]->GetComponent<Movement>();
 			Hollow::Body* pBody = mGameObjects[i]->GetComponent<Hollow::Body>();
 			short rightHorizontalAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTX);
 			short rightVerticallAxis = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_RIGHTY);
@@ -89,7 +107,7 @@ namespace BulletHell
 			//}
 
 
-			lua["body"] = pBody;
+			/*lua["body"] = pBody;
 
 			lua["isMoveForward"] = Hollow::InputManager::Instance().GetAxisValue(SDL_CONTROLLER_AXIS_LEFTY) < -16000;
 
@@ -105,12 +123,28 @@ namespace BulletHell
 
 			lua.script_file(script->mScriptPath);
 			glm::vec3 impulse = lua.get<glm::vec3>("impulse");
-			Hollow::PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i], impulse);
+			Hollow::PhysicsManager::Instance().ApplyLinearImpulse(mGameObjects[i], impulse);*/
 		}
 	}
 
 	void MovementSystem::AddGameObject(Hollow::GameObject* pGameObject)
 	{
 		CheckAllComponents<Movement, Hollow::Body>(pGameObject);
+	}
+
+	void MovementSystem::OnPlayerAOESlow(Hollow::GameEvent& event)
+	{
+		Movement* movement;
+		if (event.mpObject1->mType == (int)GameObjectType::PLAYER)
+		{
+			// Call handle function with player, bullet
+			movement = event.mpObject1->GetComponent<Movement>();
+		}
+		else
+		{
+			// Call handle function with input reversed
+			movement = event.mpObject2->GetComponent<Movement>();
+		}
+		movement->mMoveDebuffFactor = 0.5f; // 50% movement slow
 	}
 }

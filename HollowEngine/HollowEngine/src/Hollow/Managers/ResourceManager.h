@@ -30,6 +30,9 @@ namespace Hollow
 	{
 		SINGLETON(ResourceManager)
 	public:
+
+		friend class Model;
+
 		/// <summary>
 		/// Initializes manager data.
 		/// </summary> 

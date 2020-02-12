@@ -34,12 +34,12 @@ uniform vec2 SpeedRange;
 uniform vec2 ScaleRange;
 uniform vec2 LifeRange;
 uniform vec3 Direction;
-uniform vec3 Center;
 uniform bool Pause;
 uniform bool Active;
 
 highp float rand(vec2 co)
 {
+	return noise1(co);
 	highp float a = 12.9898;
 	highp float b = 78.233;
 	highp float c = 43758.5453;
@@ -70,7 +70,7 @@ void main()
 			each_particle[gid].life = rand(pos.yx) * (LifeRange.y - LifeRange.x) + LifeRange.x;
 			each_particle[gid].currentlife = each_particle[gid].life;
 			each_particle[gid].speed = rand(pos.zx) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
-			each_particle[gid].direction = normalize(pos - Center);
+			each_particle[gid].direction = normalize(Direction);
 		}
 		else
 		{

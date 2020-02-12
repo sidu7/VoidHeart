@@ -21,6 +21,8 @@ namespace Hollow
 		/// Destructor for ParticleSystem
 		/// </summary>
 		HOLLOW_API virtual ~ParticleSystem() {}
+
+		HOLLOW_API void Init();
 		/// <summary>
 		/// Updates the System every frame.
 		/// </summary>

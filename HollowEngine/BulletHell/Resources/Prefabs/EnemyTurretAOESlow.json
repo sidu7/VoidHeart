@@ -29,14 +29,12 @@
     },
     {
       "Type": "Script",
-      "Scripts": [
-        "CirclePlayer"
-      ]
+      "Scripts": [ "EnemyStayStill" ]
     },
     {
       "Type": "Attack",
-      "Script": "ShootInTheLookDir",
-      "BaseAttackTime": 0.7
+      "Script": "AreaSlow",
+      "BaseAttackTime": 2.0
     },
     {
       "Type": "Health",
