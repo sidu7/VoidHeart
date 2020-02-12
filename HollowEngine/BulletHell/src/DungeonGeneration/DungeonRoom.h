@@ -39,6 +39,8 @@ namespace BulletHell
 		bool IsCleared();
 		void UnlockRoom();
 		void LockDownRoom();
+        int GetID() const;
+        ~DungeonRoom();
 
 		// structure
         static float mWallLength;
@@ -51,6 +53,7 @@ namespace BulletHell
 
 		// game
         bool mIsUnlocked;
+        bool mIsLockedFirstTime;
         Hollow::GameObject* mDoorGOs[9]; // doors at 1,2,4,8 indices
         std::vector<Hollow::GameObject*> mEnemies;
         DungeonRoomType mRoomType;

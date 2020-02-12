@@ -9,7 +9,11 @@ function CheckRoomBounds(playerPos, coords)
 end
 
 function UpdateCurrentRoom( )
-	local playerPosition = player:GetBody().position
+	if (player == nil or player.isActive == false) then
+        RegenerateDungeon()
+        return
+    end
+    local playerPosition = player:GetBody().position
 
 	-- check position against adjacent rooms
 	local room = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom)
@@ -32,14 +36,15 @@ function UpdateCurrentRoom( )
 	if ((doors & 8) == 8) then
 		CheckRoomBounds(playerPosition, ivec2.new(roomCoords.x, roomCoords.y - 1))
 	end
+
+    --print("curr: ", currentRoom)
+    -- Lock or Unlock Room
+    local room = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom)
+    if room:IsCleared() then
+	    room:UnlockRoom()
+    else 
+	    room:LockDownRoom()
+    end
 end
 
 UpdateCurrentRoom()
---print("curr: ", currentRoom)
--- Lock or Unlock Room
-local room = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom)
-if room:IsCleared() then
-	room:UnlockRoom()
-else 
-	room:LockDownRoom()
-end

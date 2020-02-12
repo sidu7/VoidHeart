@@ -131,7 +131,7 @@
       "HitPoints": 10,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 3.0
+      "InvincibleTime": 300.0
     },
     {
       "Type": "Magic",

@@ -1,5 +1,8 @@
 #include "GameLogicManager.h"
 
+#include "Hollow/Managers/SceneManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
+#include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Components/Script.h"
 #include "Components/Attack.h"
@@ -30,6 +33,35 @@ namespace BulletHell
     void GameLogicManager::Init()
     {
 		SubscribeToEvents();
+        Hollow::SceneManager::Instance().LoadLevel("Level3");
+        Hollow::ScriptingManager::Instance().RunScript("GameConfig");
+
+
+        BulletHell::DungeonManager::Instance().ConfigureDungeon();
+        BulletHell::DungeonManager::Instance().Init();
+
+
+        Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
+
+        BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
+        Hollow::SystemManager::Instance().OnSceneInit();
+    }
+
+    void GameLogicManager::MoveToNextFloor()
+    {
+
+        auto& lua = Hollow::ScriptingManager::Instance().lua;
+        int currentFloor = lua["currentFloor"].get<int>();
+        DungeonManager::Instance().GetFloor(currentFloor).ResetFloor();
+        currentFloor++;
+        lua["currentFloor"] = currentFloor;
+        Hollow::SceneManager::Instance().LoadLevel("Level3");
+        DungeonManager::Instance().Construct(currentFloor);
+
+        Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
+        
+        BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
+        Hollow::SystemManager::Instance().OnSceneInit();
     }
 
     void GameLogicManager::SubscribeToEvents()

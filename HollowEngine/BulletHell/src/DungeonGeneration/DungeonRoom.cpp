@@ -32,6 +32,7 @@ namespace BulletHell
         , mDistFromEntrance(0)
 		, mDoorGOs{ nullptr }
 		, mIsUnlocked(false)
+        , mIsLockedFirstTime(false)
     {
     }
 
@@ -104,7 +105,7 @@ namespace BulletHell
         Hollow::GameObject* pRoomFloor = 
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Floor", 
                 glm::vec3(mRoomY*mRoomSize + halfRoomSize,
-							(mFloorNum-1)*10,
+							0.0f,
 							mRoomX * mRoomSize + halfRoomSize),
                 glm::vec3(mRoomSize, 1.0f, mRoomSize));
 
@@ -230,17 +231,34 @@ namespace BulletHell
 	void DungeonRoom::LockDownRoom()
 	{
 		// TODO Replace with a nice animation of doors closing
-        for (int i = 0; i < 4; ++i)
+        if (!mIsLockedFirstTime)
         {
-            if (mDoorGOs[1 << i] != nullptr)
+            for (int i = 0; i < 4; ++i)
             {
-                Hollow::Body* pB = mDoorGOs[1 << i]->GetComponent<Hollow::Body>();
-                pB->mPosition.y = 2.0f;
+                if (mDoorGOs[1 << i] != nullptr && mDoorGOs[1 << i]->mActive)
+                {
+                    Hollow::Body* pB = mDoorGOs[1 << i]->GetComponent<Hollow::Body>();
+                    pB->mPosition.y = 2.0f;
+                }
             }
-		}
 
-    	// Delayed event to activate enemies in rooms
-        Hollow::GameEvent* lde = new Hollow::GameEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED);
-        Hollow::EventManager::Instance().AddDelayedEvent(lde, 3.0f);
+            // Delayed event to activate enemies in rooms
+            Hollow::GameEvent* lde = new Hollow::GameEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED);
+            Hollow::EventManager::Instance().AddDelayedEvent(lde, 3.0f);
+
+            mIsLockedFirstTime = true;
+        }
 	}
+
+    int DungeonRoom::GetID() const
+    {
+        return mRoomID;
+    }
+
+    DungeonRoom::~DungeonRoom()
+    {
+        for (int i = 0; i < 9; i++)
+            mDoorGOs[i] = nullptr;
+    }
+
 }
