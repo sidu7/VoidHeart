@@ -30,6 +30,7 @@
     "ShadowMapShader": [ "Resources/Shaders/ShadowMap.vert", "Resources/Shaders/ShadowMap.frag" ],
     "DebugShader": [ "Resources/Shaders/Debug.vert", "Resources/Shaders/Debug.frag" ],
     "ParticleShader": [ "Resources/Shaders/ParticleSystem.vert", "Resources/Shaders/ParticleSystem.frag" ],
+    "ModelParticleShader": [ "Resources/Shaders/ModelParticleSystem.vert", "Resources/Shaders/ModelParticleSystem.frag" ],
     "DebugShadowMapShader": [ "Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/ShadowDebug.frag" ],
     "BlurComputeShaders": [ "Resources/Shaders/HorizontalBlur.comp", "Resources/Shaders/VerticalBlur.comp" ],
     "LocalLightShader": [ "Resources/Shaders/LocalLight.vert", "Resources/Shaders/LocalLight.frag" ],

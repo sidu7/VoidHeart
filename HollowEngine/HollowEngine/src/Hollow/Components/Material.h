@@ -52,5 +52,7 @@ namespace Hollow {
 		float mHeightScale;
 		Texture* mpTexture;
 		std::vector<MaterialData*> mMaterials;
+		bool mTransparent;
+		float mAlphaValue;
 	};
 }

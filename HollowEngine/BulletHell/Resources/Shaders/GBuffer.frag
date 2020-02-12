@@ -26,6 +26,7 @@ uniform float heightScale;
 in vec3 viewPosition;
 uniform sampler2D normalTexture;
 uniform sampler2D heightTexture;
+uniform float alphaValue;
 
 vec2 ParallaxMapping(vec2 uv, vec3 V)
 {
@@ -98,7 +99,7 @@ void main()
 	}
 	
 	// Store diffuse color in the G-Buffer
-	gDiffuse = diffuseColor + hasDiffuseTexture*texture(diffuseTexture, texCoords).rgb;
+	gDiffuse = (diffuseColor + hasDiffuseTexture*texture(diffuseTexture, texCoords).rgb) * alphaValue;
 
 	// Store specular color in the G-Buffer
 	gSpecular = vec4(specularColor, shininess) + vec4(hasSpecularTexture*texture(specularTexture, texCoords).rgb, 0.0);

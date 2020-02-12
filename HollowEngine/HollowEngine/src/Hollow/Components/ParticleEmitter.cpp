@@ -28,17 +28,20 @@ namespace Hollow
 		mpComputeShader = nullptr;
 		mType = PARTICLE_NUM;
 		
+		mDirection = glm::vec3(0.0f);
 		mSpeedRange = glm::vec2(0.0f);
 		mLifeRange = glm::vec2(0.0f);
 		mSizeRange = glm::vec2(0.0f);
 		mCenterOffset = glm::vec3(0.0f);
-		mAreaOfEffect = glm::vec3(0.0f);
+		mAreaOfEffect = glm::vec3(1.0f);
 		mParticleColor = glm::vec3(0.0f);
 		mPixelSize = 0.0f;
 
 		mDType = -1;
 		mComputeShaderPath = "";
 		mDTexturePath = "";
+		mDModelPath = "";
+		mDModelShape = "";
 	}
 
 	void ParticleEmitter::Clear()
@@ -68,9 +71,17 @@ namespace Hollow
 			}
 			else if (mType == MODEL)
 			{
-				mDModelPath = data["Model"].GetString();
-				mParticleModel = ResourceManager::Instance().LoadModel(mDModelPath);
-				mParticleMaterials = ResourceManager::Instance().LoadMaterials(mDModelPath);
+				if (data.HasMember("Model"))
+				{
+					mDModelPath = data["Model"].GetString();
+					mParticleModel = ResourceManager::Instance().LoadModel(mDModelPath);
+					mParticleMaterials = ResourceManager::Instance().LoadMaterials(mDModelPath);
+				}
+				if (data.HasMember("ModelShape"))
+				{
+					mDModelShape = data["ModelShape"].GetString();
+					mParticleModel.push_back(ResourceManager::Instance().GetShape(mDModelShape));
+				}
 			}
 		}
 		if (data.HasMember("Active"))
@@ -110,15 +121,21 @@ namespace Hollow
 		{
 			mSizeRange = JSONHelper::GetVec2F(data["Size"].GetArray());
 		}
+		if (data.HasMember("Direction"))
+		{
+			mDirection = JSONHelper::GetVec3F(data["Direction"].GetArray());
+		}
 	}
 
 	void ParticleEmitter::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
 		JSONHelper::Write("MaxCount", mMaxCount, writer);
 		JSONHelper::Write("EmissionRate", mEmissionRate, writer);
+		JSONHelper::Write("Direction", mDirection, writer);
 		JSONHelper::Write("Shape", mDType, writer);
 		JSONHelper::Write("Texture", mDTexturePath, writer);
 		JSONHelper::Write("Model", mDModelPath, writer);
+		JSONHelper::Write("ModelShape", mDModelShape, writer);
 		JSONHelper::Write("Area", mAreaOfEffect, writer);
 		JSONHelper::Write("Speed", mSpeedRange, writer);
 		JSONHelper::Write("Life", mLifeRange, writer);
@@ -138,7 +155,9 @@ namespace Hollow
 		ImGui::Checkbox("Active", &mActive);
 		ImGuiHelper::InputText("Texture File", mDTexturePath);
 		ImGuiHelper::InputText("Model File", mDModelPath);
-		ImGui::InputFloat3("Area of Effect", (float*)&mAreaOfEffect);
+		ImGuiHelper::InputText("Model Shape", mDModelShape);
+		ImGui::InputFloat3("Area of Effect", (float*)& mAreaOfEffect);
+		ImGui::InputFloat3("Direction", &mDirection[0]);
 		ImGui::InputFloat2("Speed Range", &mSpeedRange[0]);
 		ImGui::InputFloat2("Life Range", &mLifeRange[0]);
 		ImGui::InputFloat2("Size Range", &mSizeRange[0]);

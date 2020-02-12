@@ -7,6 +7,7 @@ namespace BulletHell
 
 	void Movement::Init()
 	{
+		mMoveDebuffFactor = 1.0f;
 	}
 
 	void Movement::Serialize(rapidjson::Value::Object data)

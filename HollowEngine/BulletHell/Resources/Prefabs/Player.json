@@ -80,6 +80,9 @@
       "Scripts": [ "PlayerMovement" ]
     },
     {
+      "Type": "Movement"
+    },
+    {
       "Type": "Attack",
       "Script": "Spells/Empty",
       "BaseAttackTime": 0.4
