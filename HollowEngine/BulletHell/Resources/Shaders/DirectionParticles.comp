@@ -16,26 +16,19 @@ layout(std430, binding = 2) buffer ParticleDataBlock
 	Particle each_particle[];
 };
 
-struct ParticleData
+layout(std430, binding = 3) buffer PosBlock
 {
-	mat4 mModel;
-	vec4 more_data;
-};
-
-layout(std430, binding = 3) buffer ModelBlock
-{
-	ParticleData data[];
+	vec4 mPos[];
 };
 
 layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
 
 uniform float DeltaTime;
 uniform vec2 SpeedRange;
-uniform vec2 ScaleRange;
 uniform vec2 LifeRange;
-uniform vec3 Direction;
-uniform vec3 Center;
 uniform bool Pause;
+uniform vec3 Center;
+uniform vec3 Direction;
 uniform bool Active;
 
 highp float rand(vec2 co)
@@ -67,11 +60,11 @@ void main()
 		else if(Active)
 		{
 			pos = vec3(rand(pos.xy),rand(pos.yz),rand(pos.xz)) * 2.0f - 1.0f;
-			each_particle[gid].life = rand(pos.yx) * (LifeRange.y - LifeRange.x) + LifeRange.x;
+			each_particle[gid].life = rand(pos.xy) * (LifeRange.y - LifeRange.x) + LifeRange.x;
 			each_particle[gid].currentlife = each_particle[gid].life;
-			each_particle[gid].speed = rand(pos.zx) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
-			each_particle[gid].direction = normalize(pos - Center);
-		}
+			each_particle[gid].speed = rand(pos.yz) * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
+			each_particle[gid].direction = normalize(Direction);
+		}		
 		else
 		{
 			each_particle[gid].life = 0.0f;
@@ -83,9 +76,6 @@ void main()
 	}
 
 	each_particle[gid].mPos = pos;
-	float scale = rand(pos.zy) * (ScaleRange.y - ScaleRange.x) + ScaleRange.x;
-	mat4 temp = mat4(scale);
-	temp[3] = vec4(pos,1.0f);
-	data[gid].mModel = temp;
-	data[gid].more_data.x = each_particle[gid].speed;
+	mPos[gid] = vec4(pos,1.0);
+	mPos[gid].w = each_particle[gid].currentlife / each_particle[gid].life;
 }

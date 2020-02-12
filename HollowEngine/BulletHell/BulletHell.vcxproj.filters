@@ -88,6 +88,14 @@
     <None Include="Resources\Prefabs\EnemyTurretAOE.json" />
     <None Include="Resources\Scripts\AreaDamage.lua" />
     <None Include="Resources\Scripts\EnemyGrow.lua" />
+    <None Include="Resources\Shaders\ModelParticleSystem.frag" />
+    <None Include="Resources\Shaders\ModelParticleSystem.vert" />
+    <None Include="Resources\Shaders\CenterModelParticles.comp" />
+    <None Include="Resources\Shaders\DirectionModelParticles.comp" />
+    <None Include="Resources\Shaders\DirectionParticles.comp" />
+    <None Include="Resources\Scripts\AreaSlow.lua" />
+    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
+    <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

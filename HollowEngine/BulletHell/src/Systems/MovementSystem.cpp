@@ -26,11 +26,11 @@ namespace BulletHell
 			"moveDebuffFactor", &Movement::mMoveDebuffFactor
 			);
 
-		// Add get attack component to lua
+		// Add get movement component to lua
 		Hollow::ScriptingManager::Instance().mGameObjectType["GetMovement"] = &Hollow::GameObject::GetComponent<Movement>;
 
 		// Enemy Slow AOE event
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_HIT_ENEMY_AOE, EVENT_CALLBACK(MovementSystem::OnPlayerAOESlow));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_SLOW_HIT_PLAYER, EVENT_CALLBACK(MovementSystem::OnPlayerAOESlow));
 	}
 
 	void MovementSystem::Update()

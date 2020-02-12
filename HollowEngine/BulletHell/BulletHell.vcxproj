@@ -202,6 +202,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\EnemyAOE.json" />
     <None Include="Resources\Prefabs\EnemyBoss1.json" />
     <None Include="Resources\Prefabs\EnemyTurretAOE.json" />
+    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
+    <None Include="Resources\Scripts\AreaSlow.lua" />
+    <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
     <None Include="Resources\Scripts\EnemyStayStill.lua" />
     <None Include="Resources\Scripts\EnemyRunsAway.lua" />
     <None Include="Resources\Prefabs\Floor.json" />
@@ -233,6 +236,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\Ambient.vert" />
     <None Include="Resources\Shaders\Bloom.frag" />
     <None Include="Resources\Shaders\Bloom.vert" />
+    <None Include="Resources\Shaders\CenterModelParticles.comp" />
     <None Include="Resources\Shaders\CenterParticles.comp" />
     <None Include="Resources\Shaders\Debug.frag" />
     <None Include="Resources\Shaders\Debug.vert" />
@@ -240,6 +244,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\Deferred.vert" />
     <None Include="Resources\Shaders\Diffuse.frag" />
     <None Include="Resources\Shaders\Diffuse.vert" />
+    <None Include="Resources\Shaders\DirectionModelParticles.comp" />
+    <None Include="Resources\Shaders\DirectionParticles.comp" />
     <None Include="Resources\Shaders\fxaa.frag" />
     <None Include="Resources\Shaders\GBuffer.frag" />
     <None Include="Resources\Shaders\GBuffer.vert" />
@@ -248,6 +254,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\HorizontalBlur.comp" />
     <None Include="Resources\Shaders\LocalLight.frag" />
     <None Include="Resources\Shaders\LocalLight.vert" />
+    <None Include="Resources\Shaders\ModelParticleSystem.frag" />
+    <None Include="Resources\Shaders\ModelParticleSystem.vert" />
     <None Include="Resources\Shaders\ParticleSystem.frag" />
     <None Include="Resources\Shaders\ParticleSystem.vert" />
     <None Include="Resources\Shaders\Phong.frag" />

@@ -1,0 +1,47 @@
+{
+  "Type": "ENEMY",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 10.0, 10.0, 10.0 ],
+      "Scale": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 10.0,
+      "isFrictionLess": true,
+      "RigidbodyType": "DYNAMIC"
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Walking.fbx",
+      "ModelHasOffset": true,
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Shininess": 1.0,
+      "MaterialData": "Resources/Models/Walking.fbx"
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "EnemyStayStill" ]
+    },
+    {
+      "Type": "Attack",
+      "Script": "AreaSlow",
+      "BaseAttackTime": 2.0
+    },
+    {
+      "Type": "Health",
+      "HitPoints": 10,
+      "IsAlive": true,
+      "Invincible": false,
+      "InvincibleTime": 3.0
+    }
+  ]
+}

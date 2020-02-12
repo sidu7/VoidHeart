@@ -80,6 +80,7 @@ namespace Hollow {
 		void LocalLightingPass();
 
 		void DrawAllRenderData(Shader* pShader);
+		void DrawRenderData(RenderData& data, Shader* pShader);
 		void DrawShadowCastingObjects(Shader* pShader);
 		void DrawFSQ();
 		void DrawSphere();
@@ -120,6 +121,9 @@ namespace Hollow {
 		friend class LocalizationManager;
 		friend class RenderSystem;
 	private:
+		// Transparent Objects list
+		std::vector<RenderData> mTransparentObjects;
+
 		// Transformation matricies
 		glm::mat4 mProjectionMatrix;
 		glm::mat4 mViewMatrix;

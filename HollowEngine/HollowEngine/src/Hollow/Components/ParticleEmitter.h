@@ -50,6 +50,7 @@ namespace Hollow
 		unsigned int mDType;
 		std::string mComputeShaderPath;
 		std::string mDModelPath;
+		std::string mDModelShape;
 		
 	public:
 		std::string mDTexturePath;
@@ -69,6 +70,7 @@ namespace Hollow
 
 		ParticleType mType;
 		bool mActive;
+		glm::vec3 mDirection;
 		glm::vec2 mSpeedRange;
 		glm::vec2 mLifeRange;
 		glm::vec2 mSizeRange;

@@ -8,8 +8,10 @@
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/LocalizationManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
 
 #include "Hollow/Components/UIText.h"
+#include "Hollow/Components/Transform.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -28,6 +30,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
 	}
 
@@ -161,6 +164,33 @@ namespace BulletHell
 			HandleBulletDamage(event.mpObject2, event.mpObject1);
 		}
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/BossHit.wav");
+	}
+
+	void HealthSystem::OnAOEDamageHitPlayer(Hollow::GameEvent& event)
+	{
+		Hollow::GameObject* gameobject;
+		Hollow::GameObject* aoe;
+		if (event.mpObject1->mType == (int)GameObjectType::PLAYER)
+		{
+			gameobject = event.mpObject1;
+			aoe = event.mpObject2;
+		}
+		else
+		{
+			gameobject = event.mpObject2;
+			aoe = event.mpObject1;
+		}
+		Health* pHealth = gameobject->GetComponent<Health>();
+		if (!pHealth->mInvincible)
+		{
+			--pHealth->mHitPoints;
+		}
+		glm::vec3 impulse = glm::vec3(0.0f);
+		glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
+		impulse = direction * 10000.0f;
+		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
 	}
 
 	void HealthSystem::HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet)

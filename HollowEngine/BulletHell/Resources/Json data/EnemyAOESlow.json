@@ -1,5 +1,5 @@
 {
-  "Type": "ENEMY_AOE_DAMAGE",
+  "Type": "ENEMY_AOE_SLOW",
   "Components": [
     {
       "Type": "Transform",
@@ -14,7 +14,8 @@
     },
     {
       "Type": "Collider",
-      "Shape": "BALL"
+      "Shape": "BALL",
+      "isTrigger": true
     },
     {
       "Type": "Model",
@@ -31,23 +32,11 @@
     },
     {
       "Type": "DestroyTimer",
-      "MaxTime": 1.0
+      "MaxTime": 2.0
     },
     {
       "Type": "Script",
-      "Scripts": [ "EnemyGrow" ]
-    },
-    {
-      "Type": "ParticleEmitter",
-      "MaxCount": 1000,
-      "EmissionRate": 300,
-      "Shape": 1,
-      "ModelShape": "CUBE",
-      "Speed": [ 4.0, 8.0 ],
-      "Life": [ 0.2, 0.4 ],
-      "Size": [ 0.1, 0.2 ],
-      "ParticleColor": [ 0.0, 0.0, 1.0 ],
-      "ComputeShader": "Resources/Shaders/CenterModelParticles.comp"
+      "Scripts": [ "EnemyGrowSlow" ]
     }
   ]
 }

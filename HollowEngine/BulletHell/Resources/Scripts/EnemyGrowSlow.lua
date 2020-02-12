@@ -2,7 +2,7 @@ function grow()
     -----------------------------------------
     -- playtesting vars
 	local maxScale = 10.0
-	local scaleRate = 16.0 -- percent increase per frame
+	local scaleRate = 4.0 -- percent increase per frame
     -----------------------------------------
 	local destroy = gameObject:GetDestroyTimer()
 	local transform = gameObject:GetTransform()
@@ -12,7 +12,7 @@ function grow()
 		-- Update Scale
 		transform.scale = transform.scale * change
 		-- Update Particles
-		particles.areaOfEffect = particles.areaOfEffect * (1.0 + scaleRate / 500.0)
+		--particles.areaOfEffect = particles.areaOfEffect * (1.0 + scaleRate / 500.0)
 	else
 		local material = gameObject:GetMaterial()
 		local deltaTime = GetFrameTime()
