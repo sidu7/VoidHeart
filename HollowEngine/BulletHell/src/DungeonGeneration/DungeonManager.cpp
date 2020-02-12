@@ -59,12 +59,14 @@ namespace BulletHell
 			"IsCleared", &DungeonRoom::IsCleared,
             "UnlockRoom", &DungeonRoom::UnlockRoom,
             "LockDownRoom", &DungeonRoom::LockDownRoom,
-            "getEnemyCount", &DungeonRoom::GetEnemyCount
+            "getEnemyCount", &DungeonRoom::GetEnemyCount,
+            "GetID", &DungeonRoom::GetID
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
 		lua.set_function("PopulateRoom", &GameLogicManager::PopulateRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
+		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
 
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
@@ -75,25 +77,26 @@ namespace BulletHell
 
         for (int i = 0; i < numFloors; i++)
         {
-            DungeonFloor dungeonFloor(length, breadth, 1);
+            DungeonFloor dungeonFloor(length, breadth, i);
             int numRooms = firstFloorRoomCount + 2 * i;
             dungeonFloor.Generate(numRooms, mSeed + i);
             mFloors.push_back(dungeonFloor);
             dungeonFloor.PrintFloor(1);
         }
         //system("PAUSE");
-        Construct();
+        // Construct the first floor
+        Construct(0);
     }
 
     void DungeonManager::Regenerate()
     {
-        // delete old data
-        // ...
         for (DungeonFloor& dungeonFloor : mFloors)
         {
             dungeonFloor.ResetFloor();
         }
-        Generate();
+        mFloors.clear();
+
+        GameLogicManager::Instance().Init();
     }
 
     bool DungeonManager::SetSeed(unsigned seed)
@@ -110,9 +113,9 @@ namespace BulletHell
         }
     }
 	
-    void DungeonManager::Construct()
+    void DungeonManager::Construct(int floorIndex)
     {
-        mFloors[0].ConstructFloor();
+        mFloors[floorIndex].ConstructFloor();
     }
 
     void DungeonManager::ConfigureDungeon()
@@ -193,7 +196,7 @@ namespace BulletHell
 
 	void DungeonManager::OnFloorCleared(Hollow::GameEvent& event)
     {
-        HW_TRACE("FLOOR CLEARED!");
+        GameLogicManager::Instance().MoveToNextFloor();
     }
 
     void DungeonManager::SubscribeToEvents()

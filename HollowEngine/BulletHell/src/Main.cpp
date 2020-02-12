@@ -57,20 +57,8 @@ public:
 		// Engine Initialization
 		Application::Init("Resources/Settings.json");
 
-		Hollow::SceneManager::Instance().LoadLevel("Level3");
-		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
-
 		PushLayer(new GameLayer());
-
-		BulletHell::DungeonManager::Instance().ConfigureDungeon();
-        BulletHell::DungeonManager::Instance().Init();
-
 		BulletHell::GameLogicManager::Instance().Init();
-
-		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
-
-        BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
-		Hollow::SystemManager::Instance().OnSceneInit();
 	}
 
 	~BulletHellGame()

@@ -4,7 +4,7 @@ function Update()
     body.velocity = vec3.new(0.0, 0.0, 0.0)
 
     -- collision handling
-    if (dirLength < 1.0) then
+    if (dirLength < 2.0) then
         local impulseStrength = vec3.new(1000, 0, 1000)
         local impulse = vec3.new(xDirNorm, 0.0, zDirNorm)
         impulse  = impulse * impulseStrength

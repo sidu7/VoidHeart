@@ -32,6 +32,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
+        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
 	}
@@ -80,9 +81,17 @@ namespace BulletHell
 				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
 				{
 					//YOU LOSE
+
 					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
 					//gameEndText = "You Lose!";
-					gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["LOSE"];
+                    gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["LOSE"];
+                    // Empty HP UI array
+                    for (auto UIIcon : mPlayerHPUIIcons)
+                    {
+                        Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
+                        //delete UIIcon;
+                    }
+                    mPlayerHPUIIcons.clear();
 				}
 				if (mGameObjects[i]->mType == (int)GameObjectType::ENEMY)
 				{
@@ -96,7 +105,7 @@ namespace BulletHell
 			}
 			// Create new UI object
 			//if (mGameObjects[i]->mTag == "Player")
-			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
+			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER && pHealth->mIsAlive)
 			{
 				// Populate UIIcons
 				if (mPlayerHPUIIcons.empty())
@@ -205,6 +214,18 @@ namespace BulletHell
 		}
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/BossHit.wav");
 	}
+
+    void HealthSystem::OnFloorCleared(Hollow::GameEvent& event)
+    {
+        // Empty HP UI array
+        //for (auto UIIcon : mPlayerHPUIIcons)
+        {
+
+            //Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
+            //delete UIIcon;
+        }
+        mPlayerHPUIIcons.clear();
+    }
 
 	void HealthSystem::OnAOEDamageHitPlayer(Hollow::GameEvent& event)
 	{
