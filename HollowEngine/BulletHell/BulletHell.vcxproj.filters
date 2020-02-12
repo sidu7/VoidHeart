@@ -84,6 +84,9 @@
     <None Include="Resources\Scripts\GameLogic.lua" />
     <None Include="Resources\Json data\Camera.json" />
     <None Include="Resources\Json data\Cloud.json" />
+    <None Include="Resources\Scripts\ShootInDiagonalDirections.lua" />
+    <None Include="Resources\Json data\Camera.json" />
+    <None Include="Resources\Json data\Cloud.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

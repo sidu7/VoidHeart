@@ -1,15 +1,14 @@
 {
-    "Type": "ENEMY",
-    "Tag": "Boss",
+  "Type" :  "ENEMY",
   "Components": [
     {
       "Type": "Transform",
       "Position": [ 10.0, 10.0, 10.0 ],
-      "Scale": [ 4.0, 4.0, 4.0 ]
+      "Scale": [ 2.0, 2.0, 2.0 ]
     },
     {
       "Type": "Body",
-      "Mass": 10000.0,
+      "Mass": 10.0,
       "isFrictionLess": true,
       "RigidbodyType": "DYNAMIC"
     },
@@ -30,18 +29,16 @@
     },
     {
       "Type": "Script",
-      "Scripts": [
-        "EnemyFollowsPlayer"
-      ]
+      "Scripts": [ "EnemyStayStill" ]
     },
     {
       "Type": "Attack",
-      "Script": "ShootInCardinalDirections",
-      "BaseAttackTime": 0.4
+      "Script": "ShootInDiagonalDirections",
+      "BaseAttackTime": 0.7
     },
     {
       "Type": "Health",
-      "HitPoints": 100,
+      "HitPoints": 10,
       "IsAlive": true,
       "Invincible": false,
       "InvincibleTime": 3.0
