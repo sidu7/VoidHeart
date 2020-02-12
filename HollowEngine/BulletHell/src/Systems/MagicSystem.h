@@ -1,6 +1,8 @@
 #pragma once
 #include "Hollow/Systems/System.h"
 
+#include "Hollow/Managers/InputManager.h"
+
 #include "Components/Magic.h"
 
 namespace BulletHell
@@ -19,8 +21,6 @@ namespace BulletHell
 	private:
 		void UpdateSelectedSpells(Magic* pMagic);
 		void UpdateSpellCooldowns(Magic* pMagic);
-
-		Magic::SpellData* GetNextSpell(Magic* pMagic, Magic::SpellData* pSpellData);
 
 		void OnSpellCollect(Hollow::GameEvent& event);
 
