@@ -173,6 +173,11 @@ namespace Hollow {
 	void PhysicsManager::UpdateScale(GameObject* pGo)
 	{
 		Collider* pCol = static_cast<Collider*>(pGo->GetComponent<Collider>());
+		if (pCol->mHasCustomScale)
+		{
+			return;
+		}
+
 		if (pCol->mpShape->mType == ShapeType::BOX)
 		{
 			// update local shape (0.5f because we are updating half extents)

@@ -24,11 +24,13 @@ namespace Hollow {
 		float mBounciness, mFriction;
 
 		bool mIsTrigger;
-
+		bool mHasCustomScale;
 		Transform* mpTr;
 		Body* mpBody;
 	private:
 		std::string mDShape;
+		glm::vec3 mMinBounds;
+		glm::vec3 mMaxBounds;
 	};
 }
 
