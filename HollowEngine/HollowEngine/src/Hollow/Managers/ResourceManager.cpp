@@ -349,8 +349,8 @@ namespace Hollow
 				return boneList[i]->mIndex;
 			}
 		}
-		return -1;
 		HW_CORE_ERROR("Bone index not found");
+		return -1;
 	}
 
 	const aiScene* ResourceManager::GetModelRootNodeFromFile(std::string path, unsigned int flags)
