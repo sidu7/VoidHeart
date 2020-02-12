@@ -227,7 +227,6 @@ namespace BulletHell
 		// Update rotation of the hightlight icon
 		Hollow::UITransform* pUITr = pHandUIObj->GetComponent<Hollow::UITransform>();
 		pUITr->mRotation = pSpellData->mUIRotation;
-		//pUITr->mRotation += (3.1419f/2.0f);
 
 		// Update hand particles
 		Hollow::ParticleEmitter* pParticleEmitter = pHandObj->GetComponent<Hollow::ParticleEmitter>();

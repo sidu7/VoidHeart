@@ -7,9 +7,14 @@
 namespace BulletHell
 {
 	Magic Magic::instance;
+
+	// Create all basic spells for storage in the map
+	// Map is [int, Spell*] where int is the bit mask for the spell type
+	std::unordered_map<int, Magic::SpellData*> Magic::mBasicSpells = Magic::CreateBasicSpellMap();
+
 	// Create all combined spells for storage in the map
 	// Map is [int, Spell*] where int is the bit mask for the spell types
-	std::unordered_map<int, Magic::SpellData*> Magic::mCombinedSpells = Magic::CreateSpellMap();
+	std::unordered_map<int, Magic::SpellData*> Magic::mCombinedSpells = Magic::CreateCombinedSpellMap();
 
 	void Magic::Init()
 	{	
@@ -65,11 +70,12 @@ namespace BulletHell
 		//ImGui::Columns(2, 0, true);
 		//ImGui::Separator();
 		//ImGui::Text("ID"); ImGui::NextColumn();
-		for (auto& spell : mSpells)
+		for (auto& spell : mBasicSpells)
 		{
-			ImGui::Text("%s", spell->mName);
-			ImGui::Text("RH CD: %f", spell->mRightHandCooldown); ImGui::SameLine();
-			ImGui::Text("LH CD: %f", spell->mLeftHandCooldown);
+			ImGui::Text("%s", spell.second->mName); ImGui::SameLine();
+			ImGui::Text("Collected %i", spell.second->mCollected);
+			ImGui::Text("RH CD: %f", spell.second->mRightHandCooldown); ImGui::SameLine();
+			ImGui::Text("LH CD: %f", spell.second->mLeftHandCooldown);
 		}
 
 		ImGui::Text("Combined Spells");
@@ -80,7 +86,25 @@ namespace BulletHell
 		}
 	}
 
-	std::unordered_map<int, Magic::SpellData*> Magic::CreateSpellMap()
+	std::unordered_map<int, Magic::SpellData*> Magic::CreateBasicSpellMap()
+	{
+		std::unordered_map<int, Magic::SpellData*> spellMap;
+		Magic::SpellData* pBasicSpell = new Magic::SpellData{ "Fire", "Spells/Fire", FIRE, 1.570796f, 0.0f, "Resources/Textures/star.png", 0.5f};
+		spellMap.emplace(SpellType::FIRE, pBasicSpell);
+
+		pBasicSpell = new Magic::SpellData{ "Air", "Spells/Air", AIR, 3.14159f, 0.0f, "Resources/Textures/cracks.png", 0.5f };
+		spellMap.emplace(SpellType::AIR, pBasicSpell);
+
+		pBasicSpell = new Magic::SpellData{ "Earth", "Spells/Earth", EARTH, 0.0f, 0.0f, "Resources/Textures/rocks.png" , 1.0f };
+		spellMap.emplace(SpellType::EARTH, pBasicSpell);
+
+		pBasicSpell = new Magic::SpellData{ "Water", "Spells/Water", WATER, 4.712388f, 0.0f, "Resources/Textures/water.png" , 0.75f };
+		spellMap.emplace(SpellType::WATER, pBasicSpell);
+
+		return spellMap;
+	}
+
+	std::unordered_map<int, Magic::SpellData* > Magic::CreateCombinedSpellMap()
 	{
 		std::unordered_map<int, Magic::SpellData*> spellMap;
 		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Spells/FireFire", COMBINED,  0.0f, 0.0f, "", 3.0f, "Resources/Textures/FireFire.png" };
@@ -114,6 +138,5 @@ namespace BulletHell
 		spellMap.emplace(SpellType::EARTH | SpellType::WATER, pCombinedSpell);
 
 		return spellMap;
-	}
-	
+	}	
 }

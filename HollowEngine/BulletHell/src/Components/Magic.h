@@ -25,10 +25,12 @@ namespace BulletHell
 			float mCooldown;
 			std::string mUITexturePath;
 
-			float mRightHandCooldown;
-			float mLeftHandCooldown;
-			float mCombinedCooldown;
+			float mRightHandCooldown = 0.0f;
+			float mLeftHandCooldown = 0.0f;
+			float mCombinedCooldown = 0.0f;
 			float mCooldownModifier = 1.0f;
+
+			bool mCollected = false;
 		};
 
 	public:
@@ -40,11 +42,12 @@ namespace BulletHell
 		SpellData* mRightHandSpell;
 		SpellData* mCombinedSpell;
 
-		std::vector<SpellData*> mSpells;
+		static std::unordered_map<int, SpellData*> mBasicSpells;
 		static std::unordered_map<int, SpellData*> mCombinedSpells;
 
 	private:
-		static std::unordered_map<int, SpellData*> CreateSpellMap();
+		static std::unordered_map<int, SpellData*> CreateBasicSpellMap();
+		static std::unordered_map<int, SpellData*> CreateCombinedSpellMap();
 
 	};
 }

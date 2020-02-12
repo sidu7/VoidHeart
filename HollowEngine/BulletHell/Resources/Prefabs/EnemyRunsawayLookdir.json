@@ -18,20 +18,36 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Walking.fbx",
+      "Model": "Resources/Models/Warlock.fbx",
       "ModelHasOffset": true,
       "CastShadow": true
     },
     {
       "Type": "Material",
       "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Walking.fbx"
+      "MaterialData": "Resources/Models/Warlock.fbx"
     },
     {
       "Type": "Script",
       "Scripts": [
         "EnemyRunsAway"
       ]
+    },
+    {
+      "Type": "Animator",
+      "BoneData": "Resources/Models/Walking.fbx",
+      "Animations": [
+        [
+          "Walking",
+          "Resources/Models/Goblin.fbx"
+        ]
+      ],
+      "BlendFactor": 1.0
+    },
+    {
+      "Type": "StateMachine",
+      "StateFile": "Resources/State data/npcstate.json",
+      "StartState": "Walking"
     },
     {
       "Type": "Attack",
