@@ -9,7 +9,7 @@
 #include "Hollow/Managers/EventManager.h"
 #include "GameMetaData/GameEventType.h"
 
-#define MAX_REGULAR_ROOMS 2
+#define MAX_REGULAR_ROOMS 7
 #define MAX_BOSS_ROOMS 2
 
 namespace BulletHell
@@ -115,6 +115,7 @@ namespace BulletHell
 		else
 		{
 			roomNum = Random::RangeSeeded(1, MAX_REGULAR_ROOMS);
+			roomNum = 7;
 			roomName = "Room" + std::to_string(roomNum);
 		}
 		
