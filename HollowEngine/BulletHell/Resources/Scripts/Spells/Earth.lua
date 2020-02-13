@@ -12,20 +12,22 @@ function ShortDash()
 	-- Damp Overall Velocity and Rotation
 	local direction = body.velocity
 	local magnitude = math.sqrt(direction.x*direction.x + direction.y*direction.y + direction.z*direction.z)
-	direction.x = direction.x / magnitude
-	direction.y = direction.y / magnitude
-	direction.z = direction.z / magnitude
-	impulse = impulse + direction * dashSpeed
-	impulse.y = 0.0
-	PlaySFX("Resources/Audio/SFX/EarthMelee.wav")
-	ApplyLinearImpulse(gameObject, impulse)
+	if magnitude > 0.001 then
+		direction.x = direction.x / magnitude
+		direction.y = direction.y / magnitude
+		direction.z = direction.z / magnitude
+		impulse = impulse + direction * dashSpeed
+		impulse.y = 0.0
+		PlaySFX("Resources/Audio/SFX/EarthMelee.wav")
+		ApplyLinearImpulse(gameObject, impulse)
+	end
 end
 
 function CheckValidAttack()
 	local attack = gameObject:GetAttack()
 	if attack.shouldAttack then
-		MeleeAttack()
 		ShortDash()
+		MeleeAttack()
 		attack.shouldAttack = false
 	end
 end
