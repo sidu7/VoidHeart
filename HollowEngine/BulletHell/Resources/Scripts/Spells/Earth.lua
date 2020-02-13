@@ -24,8 +24,8 @@ end
 function CheckValidAttack()
 	local attack = gameObject:GetAttack()
 	if attack.shouldAttack then
-		ShortDash()
 		MeleeAttack()
+		ShortDash()
 		attack.shouldAttack = false
 	end
 end
