@@ -5,12 +5,17 @@
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Components/Script.h"
+
 #include "Components/Attack.h"
+#include "Components/Pickup.h"
+#include "Components/Health.h"
 
 #include "DungeonGeneration/DungeonRoom.h"
 #include "DungeonGeneration/DungeonManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/GameObjectManager.h"
 #include "GameMetaData/GameEventType.h"
+#include "GameMetaData/GameObjectType.h"
 
 #define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 2
@@ -67,7 +72,36 @@ namespace BulletHell
     void GameLogicManager::SubscribeToEvents()
     {
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
     }
+
+	void GameLogicManager::OnPickupCollected(Hollow::GameEvent& event)
+	{
+		// Find out the pickup gameobject 
+		Hollow::GameObject* pPickupObject = event.mpObject1->mType == (int)GameObjectType::PICKUP ? event.mpObject1 : event.mpObject2;
+		Hollow::GameObject* pPlayer = event.mpObject1->mType == (int)GameObjectType::PLAYER ? event.mpObject1 : event.mpObject2;
+
+		Pickup* pPickup = pPickupObject->GetComponent<Pickup>();
+		
+		// TODO make a stats component to change everything right here
+		switch (pPickup->mPickupType)
+		{
+		case PickupType::HP:
+		{
+			Health* pHealth = pPlayer->GetComponent<Health>();
+			pHealth->mHitPoints += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::DAMAGE:
+			break;
+		case PickupType::SPEED:
+			break;
+		case PickupType::RATE_OF_FIRE:
+			break;
+		}
+
+		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
+	}
 
     Hollow::GameObject* GameLogicManager::GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset)
     {
@@ -204,7 +238,7 @@ namespace BulletHell
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)
     {
         glm::ivec2 coords = room.GetCoords();
-        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("AirSpell",
+        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Pickup_HP",
             glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
                 1.5,
                 coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2));

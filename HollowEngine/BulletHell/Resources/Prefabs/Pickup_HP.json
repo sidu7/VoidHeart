@@ -1,0 +1,44 @@
+{
+    
+    "Type": "PICKUP",
+    "Active": true,
+    "Components": [
+    {
+      "Type": "Transform",
+      "Scale": [ 1.5, 1.5, 1.5 ]
+    },
+    {
+      "Type": "Body",
+      "RigidbodyType": "STATIC",
+      "IsFrictionLess": false,
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Bounciness": 0.20000000298023225,
+      "Shape": "BALL",
+      "isTrigger": false
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Heart.obj",
+      "ModelHasOffset": false,
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Shininess": 1.0,
+      "MaterialData": "Resources/Models/Heart.obj"
+    },
+      {
+        "Type": "Pickup",
+        "PickupType": 0,
+        "BuffValue": 2.0,
+        "EffectTime": 0.0
+      },
+      {
+        "Type": "Script",
+        "Scripts": ["SlowRotate"]
+      }
+  ]
+}
