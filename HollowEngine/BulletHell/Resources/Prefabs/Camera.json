@@ -1,5 +1,4 @@
 {
-  "Type": "UICAMERA",
   "Components": [
     {
       "Type": "Transform",
@@ -26,7 +25,7 @@
       ],
       "PositionOffset": [
         0.0,
-        8.5,
+        7.5,
         8.5
       ],
       "LERPFactor": 0.070000000149011612,
@@ -42,8 +41,7 @@
         0.0,
         1000.0
       ],
-      "FocusObjects": [ "PLAYER", "ENEMY" ],
-      "DynamicFocus":  true
+      "FocusObjects": [ "PLAYER", "ENEMY" ]
     }
   ]
 }

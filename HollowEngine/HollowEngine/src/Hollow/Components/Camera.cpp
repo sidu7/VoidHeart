@@ -39,6 +39,8 @@ namespace Hollow {
 		mViewPortSize = glm::ivec2(0, 0);
 
 		mLERPFactor = 1.0f;
+
+		mDynamicFocus = false;
 	}
 
 	void Camera::Serialize(rapidjson::Value::Object data)
@@ -139,6 +141,10 @@ namespace Hollow {
 				mFocusObjects.emplace_back(objects[i].GetString());
 			}
 		}
+		if (data.HasMember("DynamicFocus"))
+		{
+			mDynamicFocus = data["DynamicFocus"].GetBool();
+		}
 	}
 	void Camera::Clear()
 	{
@@ -196,6 +202,7 @@ namespace Hollow {
 			writer.String(mFocusObjects[i].c_str());
 		}
 		writer.EndArray();
+		JSONHelper::Write("DynamicFocus", mDynamicFocus, writer);
 		
 	}
 }
