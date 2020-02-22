@@ -354,42 +354,49 @@ namespace Hollow {
 			pCamera->mFocusPositions.clear();
 			ScriptingManager::Instance().RunScript("DynamicCameraUpdate", pGO);
 		}
-		//else
+		else
 		{
-			// Set camera position based on object
-			// LERP to desired position
-			float distance = 0.0f;
-			glm::vec3 midPoint(0.0f);
-			for (int i = 0; i < pCamera->mFocusPositions.size(); ++i)
-			{
-				for (int j = 0; j < pCamera->mFocusPositions.size(); ++j)
-				{
-					if (i == j)
-						continue;
-					glm::vec3 objectsvector = pCamera->mFocusPositions[i]->mPosition - pCamera->mFocusPositions[j]->mPosition;
-					float tempdist = glm::length(objectsvector);
-					if (tempdist >= distance)
-						distance = tempdist;
-				}
-				midPoint += pCamera->mFocusPositions[i]->mPosition;
-			}
-			midPoint /= pCamera->mFocusPositions.size();
-			glm::vec3 focuspoint = midPoint;
-			glm::vec3 desiredPosition = focuspoint + pCamera->mOffsetFromAnchor;
-			glm::vec3 apnaFront = glm::normalize(pCamera->mOffsetFromAnchor);
-			desiredPosition += apnaFront * distance * 0.5f;
-			glm::vec3& p = desiredPosition;
-			float t = pCamera->mLERPFactor;
-			glm::vec3 d = pCamera->mPreviousPosition + t * (desiredPosition - pCamera->mPreviousPosition);
-			cameraData.mEyePosition = d;
+			//glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -0.5f, -1.0f));
+			//glm::vec3 frontDirection = glm::normalize(focuspoint - desiredPosition);
+			//pCamera->mFront = frontDirection;
 		}
-		// Apply camera constraits if they exist
+		// Set camera position based on object
+		// LERP to desired position
+		float distance = 0.0f;
+		glm::vec3 midPoint(0.0f);
+		for (int i = 0; i < pCamera->mFocusPositions.size(); ++i)
+		{
+			for (int j = 0; j < pCamera->mFocusPositions.size(); ++j)
+			{
+				if (i == j)
+					continue;
+				glm::vec3 objectsvector = pCamera->mFocusPositions[i]->mPosition - pCamera->mFocusPositions[j]->mPosition;
+				float tempdist = glm::length(objectsvector);
+				if (tempdist >= distance)
+					distance = tempdist;
+			}
+			midPoint += pCamera->mFocusPositions[i]->mPosition;
+		}
+		midPoint /= pCamera->mFocusPositions.size();
+		glm::vec3 focuspoint = midPoint;
+		glm::vec3 desiredPosition = focuspoint + pCamera->mOffsetFromAnchor;
+		glm::vec3 apnaFront = glm::normalize(pCamera->mOffsetFromAnchor);
+		desiredPosition += apnaFront * distance * 0.5f;
+		glm::vec3& p = desiredPosition;
+		float t = pCamera->mLERPFactor;
+		glm::vec3 d = pCamera->mPreviousPosition + t * (desiredPosition - pCamera->mPreviousPosition);
+		cameraData.mEyePosition = d;
+		
+		// Apply camera constraints if they exist
 		//ApplyConstraints(pCamera, cameraData);
+		if (pCamera->mDynamicFocus)
+		{
+			pTransform->mPosition = cameraData.mEyePosition;
+			ScriptingManager::Instance().RunScript("DynamicCameraConstraints", pGO);
+			cameraData.mEyePosition = pTransform->mPosition;
+		}
 		pCamera->mPreviousPosition = cameraData.mEyePosition;
 
-		//glm::vec3 frontDirection = glm::normalize(glm::vec3(0.0f, -0.5f, -1.0f));
-		//glm::vec3 frontDirection = glm::normalize(focuspoint - desiredPosition);
-		//pCamera->mFront = frontDirection;
 		pCamera->mRight = glm::normalize(glm::cross(pCamera->mFront, glm::vec3(0.0f, 1.0f, 0.0f)));
 		pCamera->mUp = glm::normalize(glm::cross(pCamera->mRight, pCamera->mFront));
 

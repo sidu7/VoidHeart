@@ -1,7 +1,7 @@
-function UpdateCamera()
+function SetCameraPosition()
 	-----------------------------------------
     -- playtesting vars
-	local cameraFront = vec3.new(0.0, -1.0, -1.0)
+	local cameraFront = vec3.new(0.0, -1.2, -1.0)
 	-----------------------------------------	
 	local camera = gameObject:GetCamera()
 	
@@ -19,7 +19,10 @@ function UpdateCamera()
 		i = k
 	end
 	camera.FocusPositions[i+1] = player:GetTransform()
+end
 
+function UpdateCamera()
+	SetCameraPosition()
 end
 
 UpdateCamera()

@@ -31,16 +31,16 @@
       ],
       "LERPFactor": 0.070000000149011612,
       "XConstraints": [
-        0.0,
-        1000.0
+        -0.0,
+        0.0
       ],
       "YConstraints": [
-        0.0,
-        100.0
+        -0.0,
+        0.0
       ],
       "ZConstraints": [
-        0.0,
-        1000.0
+        -0.0,
+        0.0
       ],
       "FocusObjects": [ "PLAYER", "ENEMY" ],
       "DynamicFocus":  true
