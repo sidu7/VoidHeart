@@ -1,10 +1,5 @@
 function FireAttack()
-	attackPosition = gameObject:GetTransform().position
-
-	local gameObjectPath = "Resources/Json data/PlayerAOE.json"
-	local go = CreateGameObject(gameObjectPath)
-	body = go:GetBody()
-	body.position = attackPosition
+	local go = CreatePrefabAtPosition("PlayerAOE", gameObject:GetTransform().position)
 end
 
 function CheckValidAttack()

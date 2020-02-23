@@ -126,97 +126,23 @@ namespace BulletHell
 	void MagicSystem::UpdateSelectedSpells(Magic* pMagic)
 	{
 		// Check if either hand spell should cycle
-		//bool leftHandCycle = Hollow::InputManager::Instance().IsKeyTriggered("1") ||
-
 		bool leftHandCycle = Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
 		bool rightHandCycle = Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
 
 		// Update script paths
 		if (leftHandCycle)
 		{
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_B))
-			{
-				if (Magic::mBasicSpells.at(FIRE)->mCollected)
-				{
-					pMagic->mLeftHandSpell = Magic::mBasicSpells.at(FIRE);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("left");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_Y))
-			{
-				if (Magic::mBasicSpells.at(AIR)->mCollected)
-				{
-					pMagic->mLeftHandSpell = Magic::mBasicSpells.at(AIR);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("left");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_A))
-			{
-				if (Magic::mBasicSpells.at(EARTH)->mCollected)
-				{
-					pMagic->mLeftHandSpell = Magic::mBasicSpells.at(EARTH);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("left");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_X))
-			{
-				if (Magic::mBasicSpells.at(WATER)->mCollected)
-				{
-					pMagic->mLeftHandSpell = Magic::mBasicSpells.at(WATER);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("left");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
+			CheckAndCycleSpell(&pMagic->mLeftHandSpell, FIRE, "left");
+			CheckAndCycleSpell(&pMagic->mLeftHandSpell, AIR, "left");
+			CheckAndCycleSpell(&pMagic->mLeftHandSpell, EARTH, "left");
+			CheckAndCycleSpell(&pMagic->mLeftHandSpell, WATER, "left");
 		}
 		if (rightHandCycle)
 		{
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_B))
-			{
-				if (Magic::mBasicSpells.at(FIRE)->mCollected)
-				{
-					pMagic->mRightHandSpell = Magic::mBasicSpells.at(FIRE);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("right");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_Y))
-			{
-				if (Magic::mBasicSpells.at(AIR)->mCollected)
-				{
-					pMagic->mRightHandSpell = Magic::mBasicSpells.at(AIR);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("right");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_A))
-			{
-				if (Magic::mBasicSpells.at(EARTH)->mCollected)
-				{
-					pMagic->mRightHandSpell = Magic::mBasicSpells.at(EARTH);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("right");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
-			if (Hollow::InputManager::Instance().IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_X))
-			{
-				if (Magic::mBasicSpells.at(WATER)->mCollected)
-				{
-					pMagic->mRightHandSpell = Magic::mBasicSpells.at(WATER);
-					// Fire spell cycle event
-					CycleSpellEvent cycleEvent("right");
-					Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
-				}
-			}
+			CheckAndCycleSpell(&pMagic->mRightHandSpell, FIRE, "right");
+			CheckAndCycleSpell(&pMagic->mRightHandSpell, AIR, "right");
+			CheckAndCycleSpell(&pMagic->mRightHandSpell, EARTH, "right");
+			CheckAndCycleSpell(&pMagic->mRightHandSpell, WATER, "right");
 		}
 
 		if (pMagic->mLeftHandSpell != nullptr)
@@ -251,6 +177,38 @@ namespace BulletHell
 		for (auto& spell : pMagic->mCombinedSpells)
 		{
 			spell.second->mCombinedCooldown = std::max(0.0f, spell.second->mCombinedCooldown - mDeltaTime);
+		}
+	}
+
+	bool MagicSystem::CheckSpellInput(SpellType spellType)
+	{
+		SDL_GameControllerButton spellButton = mSpellButtonMap.at(spellType);
+		if (Hollow::InputManager::Instance().IsControllerButtonPressed(spellButton))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool MagicSystem::CheckSpellCollected(SpellType spellType)
+	{
+		return Magic::mBasicSpells.at(spellType)->mCollected;
+	}
+
+	// TODO: Find a way to pass hand string
+	void MagicSystem::CycleHandToSpell(Magic::SpellData** hand, SpellType spellType, const std::string& handString)
+	{
+		*hand = Magic::mBasicSpells.at(spellType);
+		// Fire spell cycle event
+		CycleSpellEvent cycleEvent(handString);
+		Hollow::EventManager::Instance().BroadcastToSubscribers(cycleEvent);
+	}
+
+	void MagicSystem::CheckAndCycleSpell(Magic::SpellData** hand, SpellType spellType, const std::string& handString)
+	{
+		if (CheckSpellInput(spellType) && CheckSpellCollected(spellType))
+		{
+			CycleHandToSpell(hand, spellType, handString);
 		}
 	}
 

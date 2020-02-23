@@ -1,10 +1,6 @@
-function CreateFireball(xVel, zVel)
-	attackPosition = gameObject:GetTransform().position
-
-	local gameObjectPath = "Resources/Prefabs/LargeFireball.json"
-	go = CreateGameObject(gameObjectPath)
-	body = go:GetBody()
-	body.position = attackPosition
+function CreateLargeFireball()
+	local go = CreatePrefabAtPosition("LargeFireball", gameObject:GetTransform().position)
+	local body = go:GetBody()
 		
 	local xVelocity = GetAxis(CONTROLLER["RX"])
 	local zVelocity = GetAxis(CONTROLLER["RY"])
@@ -25,7 +21,7 @@ end
 
 function PlayerAttack ()
 	-- Create a large fireball
-	CreateFireball()
+	CreateLargeFireball()
 	PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
 end
 

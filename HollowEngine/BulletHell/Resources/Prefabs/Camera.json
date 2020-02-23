@@ -1,5 +1,4 @@
 {
-  "Type": "UICAMERA",
   "Components": [
     {
       "Type": "Transform",
@@ -14,7 +13,7 @@
       "Near": 0.10000000149011612,
       "Far": 1000.0,
       "IsActive": true,
-      "CameraType": 7,
+      "CameraType": 6,
       "ProjectionType": 0,
       "ViewPortPosition": [
         0,
@@ -26,24 +25,23 @@
       ],
       "PositionOffset": [
         0.0,
-        8.5,
+        7.5,
         8.5
       ],
       "LERPFactor": 0.070000000149011612,
       "XConstraints": [
-        -0.0,
-        0.0
+        0.0,
+        1000.0
       ],
       "YConstraints": [
-        -0.0,
-        0.0
+        0.0,
+        100.0
       ],
       "ZConstraints": [
-        -0.0,
-        0.0
+        0.0,
+        1000.0
       ],
-      "FocusObjects": [ "PLAYER", "ENEMY" ],
-      "DynamicFocus":  true
+      "FocusObjects": [ "PLAYER", "ENEMY" ]
     }
   ]
 }

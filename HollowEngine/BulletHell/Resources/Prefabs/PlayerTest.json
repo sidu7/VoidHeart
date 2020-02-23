@@ -88,17 +88,11 @@
       "BaseAttackTime": 0.4
     },
     {
-        "Type": "Health",
-        "HitPoints": 10,
-        "IsAlive": true,
-        "Invincible": false,
-        "InvincibleTime": 3.0
-    },
-    {
-        "Type": "CharacterStats",
-        "MovementSpeed": 70.0,
-        "RateOfFire": 1.0,
-        "DashSpeed" :  1000.0
+      "Type": "Health",
+      "HitPoints": 10,
+      "IsAlive": true,
+      "Invincible": false,
+      "InvincibleTime": 300.0
     },
     {
       "Type": "Magic",

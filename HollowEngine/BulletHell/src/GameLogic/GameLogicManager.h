@@ -34,6 +34,7 @@ namespace BulletHell
 
         // Create a PickUp at the centre of the room
         void CreatePickUpInRoom(DungeonRoom& room);
+		void OnPickupCollected(Hollow::GameEvent& event);
 
         void MoveToNextFloor();
 
@@ -44,6 +45,9 @@ namespace BulletHell
 	private: 
 		void InitializeRoomsMap();
 		void LoadRoomJsons(std::string roomPrefix, int count);
+
+		void OnBulletHitShield(Hollow::GameEvent& event);
+
 	private:
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
     };

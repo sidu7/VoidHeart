@@ -24,7 +24,7 @@
 namespace BulletHell
 {
 	HealthSystem HealthSystem::instance;
-
+	
 	void HealthSystem::Init()
 	{
 		// Set event callback functions
@@ -34,15 +34,33 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
+
+		std::ifstream file("Resources/GameData/BulletDamageValues.data");
+		std::string line;
+
+		if (file.is_open())
+		{
+			while (getline(file, line))
+			{
+				std::istringstream iss(line);
+				std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+					std::istream_iterator<std::string>());
+
+				mMapBulletDamage[results[0]] = stoi(results[1]);
+			}
+			file.close();
+		}
+		
 	}
 
 	void HealthSystem::Update()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			Health* pHealth = mGameObjects[i]->GetComponent<Health>();
-
+			Health* pHealth = mGameObjects[i]->GetComponent<Health>();		
+			
 			// Update player HP bar
 			//Hollow::UIText* pHPText = mGameObjects[i]->GetComponent<Hollow::UIText>();
 			//std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap[pHPText->mTag];
@@ -254,16 +272,45 @@ namespace BulletHell
 		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
 	}
 
+	void HealthSystem::OnPlayerAOEHitEnemy(Hollow::GameEvent& event)
+	{
+		Hollow::GameObject* gameobject;
+		Hollow::GameObject* aoe;
+		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
+		{
+			gameobject = event.mpObject1;
+			aoe = event.mpObject2;
+		}
+		else
+		{
+			gameobject = event.mpObject2;
+			aoe = event.mpObject1;
+		}
+		Health* pHealth = gameobject->GetComponent<Health>();
+		if (!pHealth->mInvincible)
+		{
+			--pHealth->mHitPoints;
+		}
+		glm::vec3 impulse = glm::vec3(0.0f);
+		glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
+		impulse = direction * 50.0f;
+		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
+	}
+
 	void HealthSystem::HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet)
 	{
 		// Destroy player bullet
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pBullet);
 
+		int damage = mMapBulletDamage[pBullet->mTag];
+		
 		// Decrease player health, object hit must have a health component
 		Health* pHealth = pObjectHit->GetComponent<Health>();
 		if (!pHealth->mInvincible)
 		{
-			--pHealth->mHitPoints;
+			pHealth->mHitPoints = pHealth->mHitPoints - damage;
 		}		
 	}
 

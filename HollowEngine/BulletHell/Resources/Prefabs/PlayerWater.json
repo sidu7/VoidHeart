@@ -1,5 +1,6 @@
 {
-  "Type": "PLAYER_BULLET",
+    "Type": "PLAYER_BULLET",
+    "Tag": "WATER",
   "Components": [
     {
       "Type": "Transform",

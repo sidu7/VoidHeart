@@ -1,6 +1,6 @@
 {
     "Type": "PLAYER_BULLET",
-    "Tag": "EARTHEARTH",
+    "Tag": "FIREAIR",
     "Components": [
         {
             "Type": "Transform",
@@ -28,6 +28,10 @@
             "Diffuse": [ 0.0, 2.0, 0.0 ],
             "Shininess": 10.0,
             "Texture": "Resources/Textures/cracks.png"
+        },
+        {
+            "Type": "DestroyTimer",
+            "MaxTime": 0.5
         }
     ]
 }
