@@ -1,4 +1,4 @@
-function CreateHomingWave()
+function CreateWater()
 	-----------------------------------------
     -- playtesting vars
 	local attackSpeed = 10.0
@@ -38,12 +38,4 @@ function CreateHomingWave()
 	--PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
 end
 
-function CheckValidAttack()
-	local attack = gameObject:GetAttack()
-	if attack.shouldAttack then
-		CreateHomingWave()
-		attack.shouldAttack = false
-	end
-end
-
-CheckValidAttack()
+CreateWater()

@@ -4,6 +4,7 @@
 #include "Hollow/Managers/InputManager.h"
 
 #include "Components/Magic.h"
+#include "Components/Spell.h"
 
 namespace BulletHell
 {
@@ -22,6 +23,13 @@ namespace BulletHell
 		void UpdateSelectedSpells(Magic* pMagic);
 		void UpdateSpellCooldowns(Magic* pMagic);
 
+		bool CheckSpellInput(SpellType spellType);
+		bool CheckSpellCollected(SpellType spellType);
+
+		void CycleHandToSpell(Magic::SpellData** hand, SpellType spellType, const std::string& handString);
+
+		void CheckAndCycleSpell(Magic::SpellData** hand, SpellType spellType, const std::string& handString);
+
 		void OnSpellCollect(Hollow::GameEvent& event);
 
 	private:
@@ -31,5 +39,10 @@ namespace BulletHell
 		bool mWaitForInput = false;
 		bool mLeftHandPressed = false;
 		bool mRightHandPressed = false;
+		const std::unordered_map< SpellType, SDL_GameControllerButton> mSpellButtonMap = {
+								{FIRE, SDL_CONTROLLER_BUTTON_B},
+								{AIR, SDL_CONTROLLER_BUTTON_Y},
+								{EARTH, SDL_CONTROLLER_BUTTON_A},
+								{WATER, SDL_CONTROLLER_BUTTON_X} };
 	};
 }

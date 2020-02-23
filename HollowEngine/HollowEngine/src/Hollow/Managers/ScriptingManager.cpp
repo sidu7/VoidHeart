@@ -131,7 +131,10 @@ namespace Hollow
 			"frontDirection", &Camera::mFront,
 			"rightDirection", &Camera::mRight,
 			"yaw", &Camera::mYaw,
-			"pitch", &Camera::mPitch
+			"pitch", &Camera::mPitch,
+			"LERPFactor", &Camera::mLERPFactor,
+			"PreviousPosition", &Camera::mPreviousPosition,
+			"FocusPositions", &Camera::mFocusPositions
 			);
 
 		lua.new_usertype<Material>("Material",
@@ -148,7 +151,8 @@ namespace Hollow
             "GetMaterial", &GameObject::GetComponent<Material>,
             "GetScript", &GameObject::GetComponent<Script>,
 			"GetCollider", &GameObject::GetComponent<Collider>,
-            "isActive", &GameObject::mActive
+            "isActive", &GameObject::mActive,
+			"GetCamera", &GameObject::GetComponent<Camera>
 
 			);
 
