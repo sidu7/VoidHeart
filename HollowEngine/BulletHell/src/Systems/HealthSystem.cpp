@@ -37,7 +37,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
 
-		std::ifstream file("Resources/Json data/BulletDamageValues.data");
+		std::ifstream file("Resources/GameData/BulletDamageValues.data");
 		std::string line;
 
 		if (file.is_open())
