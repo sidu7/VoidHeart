@@ -34,6 +34,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
 	}
 
@@ -251,6 +252,33 @@ namespace BulletHell
 		glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
 		glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
 		impulse = direction * 10000.0f;
+		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
+	}
+
+	void HealthSystem::OnPlayerAOEHitEnemy(Hollow::GameEvent& event)
+	{
+		Hollow::GameObject* gameobject;
+		Hollow::GameObject* aoe;
+		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
+		{
+			gameobject = event.mpObject1;
+			aoe = event.mpObject2;
+		}
+		else
+		{
+			gameobject = event.mpObject2;
+			aoe = event.mpObject1;
+		}
+		Health* pHealth = gameobject->GetComponent<Health>();
+		if (!pHealth->mInvincible)
+		{
+			--pHealth->mHitPoints;
+		}
+		glm::vec3 impulse = glm::vec3(0.0f);
+		glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
+		impulse = direction * 50.0f;
 		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
 	}
 

@@ -44,6 +44,9 @@ namespace BulletHell
 	private: 
 		void InitializeRoomsMap();
 		void LoadRoomJsons(std::string roomPrefix, int count);
+
+		void OnBulletHitShield(Hollow::GameEvent& event);
+
 	private:
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
     };

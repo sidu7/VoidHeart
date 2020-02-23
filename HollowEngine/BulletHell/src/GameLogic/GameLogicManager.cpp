@@ -4,13 +4,18 @@
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/SystemManager.h"
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/GameObjectManager.h"
+
 #include "Hollow/Components/Script.h"
+
 #include "Components/Attack.h"
 
 #include "DungeonGeneration/DungeonRoom.h"
 #include "DungeonGeneration/DungeonManager.h"
-#include "Hollow/Managers/EventManager.h"
+
 #include "GameMetaData/GameEventType.h"
+#include "GameMetaData/GameObjectType.h"
 
 #define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 2
@@ -67,6 +72,8 @@ namespace BulletHell
     void GameLogicManager::SubscribeToEvents()
     {
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_SHIELD, EVENT_CALLBACK(GameLogicManager::OnBulletHitShield));
+
     }
 
     Hollow::GameObject* GameLogicManager::GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset)
@@ -133,6 +140,14 @@ namespace BulletHell
 			file.close();
 			mCachedRoomsMap[name] = contents;
 		}
+	}
+
+	void GameLogicManager::OnBulletHitShield(Hollow::GameEvent& event)
+	{
+		// Destroy the enemy bullet and spawn a new player bullet that tracks the nearest enemy
+		Hollow::GameObject* pBullet = event.mpObject1->mType == (int)GameObjectType::BULLET ? event.mpObject1 : event.mpObject2;
+		Hollow::ScriptingManager::Instance().RunScript("CreateWater", pBullet);
+		Hollow::GameObjectManager::Instance().DeleteGameObject(pBullet);
 	}
 
 	void GameLogicManager::PopulateRoom(DungeonRoom& room)
