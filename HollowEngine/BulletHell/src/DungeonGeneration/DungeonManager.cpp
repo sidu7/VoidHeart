@@ -207,7 +207,7 @@ namespace BulletHell
 	void DungeonManager::OnCurrentRoomUpdated()
 	{
         Hollow::GameEvent ge((int)GameEventType::ON_ROOM_ENTERED);
-        Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
+        //Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
 	}
 
     void DungeonManager::SubscribeToEvents()

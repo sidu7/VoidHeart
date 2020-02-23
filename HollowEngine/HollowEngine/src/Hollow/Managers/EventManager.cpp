@@ -99,7 +99,7 @@ namespace Hollow {
 		}
 		else
 		{
-			HW_CORE_ERROR("EventType not found");
+			HW_CORE_ERROR("EventType not found. Perhaps no subscribers.");
 		}
 	}
 
