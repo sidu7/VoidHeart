@@ -1,10 +1,6 @@
 function PlayerAttack ()
-	local attackPosition = gameObject:GetTransform().position
-
-	local gameObjectPath = "Resources/Json data/PlayerBullet.json"
-	local go = CreateGameObject(gameObjectPath)
+	local go = CreatePrefabAtPosition("PlayerFire", gameObject:GetTransform().position)
 	local body = go:GetBody()
-	body.position = attackPosition
 		
 	local xVelocity = GetAxis(CONTROLLER["RX"])
 	local zVelocity = GetAxis(CONTROLLER["RY"])

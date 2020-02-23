@@ -1,10 +1,6 @@
 function CreateFireball(xVel, zVel)
-	attackPosition = gameObject:GetTransform().position
-
-	local gameObjectPath = "Resources/Json data/PlayerBullet.json"
-	go = CreateGameObject(gameObjectPath)
-	body = go:GetBody()
-	body.position = attackPosition
+	local go = CreatePrefabAtPosition("PlayerFlames", gameObject:GetTransform().position)
+	local body = go:GetBody()
 		
 	local xVelocity = GetAxis(CONTROLLER["RX"])
 	local zVelocity = GetAxis(CONTROLLER["RY"])
