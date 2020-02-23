@@ -1,16 +1,16 @@
 {
-  "Type": "PLAYER_AOE",
+  "Type": "PLAYER_SHIELD",
   "Components": [
     {
       "Type": "Transform",
       "Position": [ 0.0, 0.0, 0.0 ],
-      "Scale": [ 1.0, 1.0, 1.0 ]
+      "Scale": [ 3.0, 3.0, 3.0 ]
     },
     {
       "Type": "Body",
       "Mass": 0.00001,
-      "RigidbodyType": "STATIC",
-      "UseGravity": false
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity" : false
     },
     {
       "Type": "Collider",
@@ -19,22 +19,26 @@
     {
       "Type": "Model",
       "Shape": "BALL",
-      "CastShadow": true
+      "CastShadow": false
     },
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 10.0, 10.0, 10.0 ],
+      "Diffuse": [ 0.0, 2.0, 20.0 ],
       "Shininess": 10.0,
-      "Texture": "Resources/Textures/cracks.png"
+      "Texture": "Resources/Textures/cracks.png",
+	  "Transparent": true,
+      "AlphaValue": 0.1
     },
     {
+      "Type": "ParentOffset",
+      "Parent": 0,
+      "Offset": [ 0.0, 0.0, 0.0 ],
+      "Tag": "Shield"
+    },
+	{
       "Type": "DestroyTimer",
       "MaxTime": 5.5
-    },
-    {
-      "Type": "Script",
-      "Scripts": ["Grow"]
     }
   ]
 }

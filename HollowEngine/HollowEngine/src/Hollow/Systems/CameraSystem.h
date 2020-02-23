@@ -43,7 +43,8 @@ namespace Hollow
 		bool HandleMouseScroll(MouseScrolledEvent& mse,Camera* pCamera);
 		void UpdateCamera(Camera* pCamera);
 		void UpdateTopDownCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData);
-		void UpdateMultiFocusCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData);
+		void UpdateCenterOnRoomCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData, GameObject* pGO);
+		void UpdateMultiFocusCamera(Camera* pCamera, Transform* pTransform, CameraData& cameraData, GameObject* pGO);
 		void ApplyConstraints(Camera* pCamera, CameraData& cameraData);
 		void Reset(Camera* pCamera);
 

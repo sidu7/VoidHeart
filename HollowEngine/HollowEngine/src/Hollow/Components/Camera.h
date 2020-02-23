@@ -75,6 +75,7 @@ namespace Hollow
 
 		std::vector <Transform*> mFocusPositions;
 		std::vector <std::string> mFocusObjects;
+		bool mDynamicFocus;
 
 		float mPitchLowerBound;
 		

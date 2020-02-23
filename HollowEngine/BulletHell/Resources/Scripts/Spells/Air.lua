@@ -1,6 +1,9 @@
 function AirDash()
-	local impulse = vec3.new(0.0, 0.0, 0.0)
-	local dashSpeed = 2000.0
+    -----------------------------------------
+    -- playtesting vars
+	local dashSpeed = 1000.0
+    -----------------------------------------
+
 	local body = gameObject:GetBody()
 	-- Damp Overall Velocity and Rotation
 	local direction = body.velocity
@@ -9,6 +12,7 @@ function AirDash()
 		direction.x = direction.x / magnitude
 		direction.y = direction.y / magnitude
 		direction.z = direction.z / magnitude
+		local impulse = vec3.new(0.0, 0.0, 0.0)
 		impulse = impulse + direction * dashSpeed
 		impulse.y = 0.0
 		PlaySFX("Resources/Audio/SFX/PlayerDash.wav")
