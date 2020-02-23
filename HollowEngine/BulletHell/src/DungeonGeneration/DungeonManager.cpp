@@ -116,6 +116,7 @@ namespace BulletHell
     void DungeonManager::Construct(int floorIndex)
     {
         mFloors[floorIndex].ConstructFloor();
+        mFloors[floorIndex].CreateMinimap();
     }
 
     void DungeonManager::ConfigureDungeon()

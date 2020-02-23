@@ -101,6 +101,7 @@
     <None Include="Resources\Scripts\AreaSlow.lua" />
     <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
     <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
+    <None Include="Resources\Prefabs\UIMinimap.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

@@ -244,7 +244,7 @@ namespace BulletHell
 
             // Delayed event to activate enemies in rooms
             Hollow::GameEvent* lde = new Hollow::GameEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED);
-            Hollow::EventManager::Instance().AddDelayedEvent(lde, 3.0f);
+            Hollow::EventManager::Instance().AddDelayedEvent(lde, 1.0f);
 
             mIsLockedFirstTime = true;
         }

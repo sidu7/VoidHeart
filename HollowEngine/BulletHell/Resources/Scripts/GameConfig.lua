@@ -1,7 +1,7 @@
 -- Stores all Configuration values for the game
 
 -- Dungeon Configuration
-firstFloorRoomCount = 3
+firstFloorRoomCount = 10
 numFloors = 1
 dungeonLength = 6
 dungeonBreadth = 6

@@ -32,14 +32,26 @@ namespace BulletHell
     
     public:
         void ConstructFloor();
+        Hollow::GameObject* CreateMinimapElement(const glm::vec2& position, const glm::vec2& scale, float angle, const std::string texturePath, bool isVisible);
+        void SetUIRoomTexture(std::string path, int index, bool isVisible); // index assumed to be valid
+        void SetUINeighborRoomsTexture(std::string path, int index, bool isVisible); // index assumed to be valid
+        void TrySetUIRoomTexture(std::string path, int index, bool isVisible); // index assumed to be valid
+        void TrySetUINeighborRoomsTexture(std::string path, int index, bool isVisible); // index assumed to be valid
+        void CreateMinimap();
+        Hollow::GameObject* CreateMinimapRoomAt(int roomIndex);
+        void OnRoomEnter(int oldIndex, int newIndex);
 
     private:
         std::vector<DungeonRoom> mRooms; // 1D representation of a 2D array
 		std::vector<int> mIndexRegularRooms; // stores index to regular rooms (No Entrance/Boss) 
+        Hollow::GameObject* mpMinimapPlayer;
         int mWidth;
         int mHeight;
         int mFloorNum;
         int mEntranceIndex;
         int mBossIndex;
+
+        const std::string mMinimapFoggedRoomPath = "Resources/Textures/Minimap/UIMinimapFoggedRoom.png";
+        const std::string mMinimapCurrentRoomPath = "Resources/Textures/Minimap/UIMinimapPlayer.png";
     };
 }

@@ -1,0 +1,16 @@
+{
+  "Type": "MinimapRoom",
+  "Components": [
+    {
+      "Type": "UITransform",
+      "Position": [ 0, 0 ],
+      "Scale": [ 1, 1 ]
+    },
+    {
+      "Type": "UIImage",
+      "Image": "Resources/Textures/Minimap/UIMinimapRoomRegular1.png",
+      "Shape": "QUAD",
+      "Color": [ 1.0, 1.0, 1.0 ]
+    }
+  ]
+}

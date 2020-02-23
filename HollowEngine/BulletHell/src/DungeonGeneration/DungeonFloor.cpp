@@ -2,6 +2,12 @@
 #include "Hollow/Utils/Random.h"
 #include "Hollow/Utils/UniqueID.h"
 
+#include "Systems/HandSystem.h" // HandSystem::CreateUIObject
+#include "Hollow/Components/UITransform.h"
+#include "Hollow/Components/UIImage.h"
+#include "Hollow/Managers/ResourceManager.h"
+
+
 namespace BulletHell
 {
 	DungeonFloor::DungeonFloor()
@@ -378,4 +384,213 @@ namespace BulletHell
 			}
 		}
 	}
+
+    Hollow::GameObject* DungeonFloor::CreateMinimapElement(const glm::vec2& position, const glm::vec2& scale, float angle, const std::string texturePath, bool isVisible)
+    {
+        Hollow::GameObject* roomUI = HandSystem::CreateUIObject(scale, position, texturePath);
+
+        Hollow::UIImage* pUIImage = roomUI->GetComponent<Hollow::UIImage>();
+        pUIImage->mIsVisible = isVisible;
+
+        Hollow::UITransform* uiEntranceTransform = roomUI->GetComponent<Hollow::UITransform>();
+        uiEntranceTransform->mRotation = angle;
+        return roomUI;
+    }
+
+    void DungeonFloor::SetUIRoomTexture(std::string path, int index, bool isVisible)
+    {
+        DungeonRoom& room = mRooms[index];
+        Hollow::GameObject* uiElement = room.mMinimapObject;
+        Hollow::UIImage* pUIImage = uiElement->GetComponent<Hollow::UIImage>();
+        
+        pUIImage->TexturePath = path;
+        pUIImage->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(path);
+        pUIImage->mIsVisible = isVisible;
+    }
+
+    void DungeonFloor::SetUINeighborRoomsTexture(std::string path, int index, bool isVisible)
+    {
+        const int doorMask = mRooms[index].GetDoorBits();
+        if (doorMask & DungeonRoom::DoorDirrection::UP)
+        {
+            SetUIRoomTexture(path, index - mWidth, isVisible);
+        }
+        if (doorMask & DungeonRoom::DoorDirrection::RIGHT)
+        {
+            SetUIRoomTexture(path, index + 1, isVisible);
+        }
+        if (doorMask & DungeonRoom::DoorDirrection::DOWN)
+        {
+            SetUIRoomTexture(path, index + mWidth, isVisible);
+        }
+        if (doorMask & DungeonRoom::DoorDirrection::LEFT)
+        {
+            SetUIRoomTexture(path, index - 1, isVisible);
+        }
+    }
+
+    void DungeonFloor::TrySetUIRoomTexture(std::string path, int index, bool isVisible)
+    {
+        DungeonRoom& room = mRooms[index];
+        Hollow::GameObject* uiElement = room.mMinimapObject;
+        Hollow::UIImage* pUIImage = uiElement->GetComponent<Hollow::UIImage>();
+        if (pUIImage->mIsVisible)
+        {
+            pUIImage->TexturePath = path;
+            pUIImage->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(path);
+            pUIImage->mIsVisible = isVisible;
+        }
+    }
+
+    void DungeonFloor::TrySetUINeighborRoomsTexture(std::string path, int index, bool isVisible)
+    {
+        const int doorMask = mRooms[index].GetDoorBits();
+        if (doorMask & DungeonRoom::DoorDirrection::UP)
+        {
+            TrySetUIRoomTexture(path, index - mWidth, isVisible);
+        }
+        if (doorMask & DungeonRoom::DoorDirrection::RIGHT)
+        {
+            TrySetUIRoomTexture(path, index + 1, isVisible);
+        }
+        if (doorMask & DungeonRoom::DoorDirrection::DOWN)
+        {
+            TrySetUIRoomTexture(path, index + mWidth, isVisible);
+        }
+        if (doorMask & DungeonRoom::DoorDirrection::LEFT)
+        {
+            TrySetUIRoomTexture(path, index - 1, isVisible);
+        }
+    }
+
+    void DungeonFloor::CreateMinimap()
+    {
+        Hollow::GameObject* pUIEntranceRoom = CreateMinimapRoomAt(mEntranceIndex);
+        CreateMinimapRoomAt(mBossIndex);
+
+        for (int roomIndex : mIndexRegularRooms)
+        {
+            Hollow::GameObject* pRoomUI = CreateMinimapRoomAt(roomIndex);
+        }
+        // player current location
+        Hollow::UITransform* pEntranceTransform = pUIEntranceRoom->GetComponent<Hollow::UITransform>();
+        const glm::vec2 roomScale = pEntranceTransform->mScale;
+        const glm::vec2 roomPos = pEntranceTransform->mPosition;
+        mpMinimapPlayer = CreateMinimapElement(roomPos, roomScale, M_PI, mMinimapCurrentRoomPath, true);
+        
+        // Set UI Texture
+        SetUINeighborRoomsTexture(mMinimapFoggedRoomPath, mEntranceIndex, true);
+    }
+
+    Hollow::GameObject* DungeonFloor::CreateMinimapRoomAt(int roomIndex)
+    {
+        // calculating room scale
+        const int windowWidth = 1280;
+        const int windowHeight = 720;
+        const int mapScale = 250;
+        const int uiScale = mapScale / 10;
+        const glm::vec2 roomScale = glm::vec2(uiScale, uiScale);
+        const float pi = static_cast<float>(M_PI);
+        // calculating room position
+        const glm::vec2 topLeftConrer = glm::vec2(windowWidth - 9.5f * uiScale - 5, windowHeight - 0.5f * uiScale - 5);
+        int row, col;
+        Index2D(roomIndex, row, col);
+        const glm::vec2 roomPos = glm::vec2(topLeftConrer.x + col * uiScale, topLeftConrer.y - row * uiScale);
+        
+        // figuring out which texture to use as well as by how much to rotate it
+        std::string& texturePath = mRooms[roomIndex].mMinimapTexturePath;
+        texturePath = "Resources/Textures/Minimap/UIMinimap";
+        float angle = 0.0f;
+        
+        if (roomIndex == mEntranceIndex)  { texturePath += "EntranceRoom"; }
+        else if (roomIndex == mBossIndex) { texturePath += "BossRoom"; }
+        else { texturePath += "RegularRoom"; }
+
+        const int doorCount = mRooms[roomIndex].TotalDoors();
+        const int doorMask = mRooms[roomIndex].GetDoorBits();
+        const int verticalMask = DungeonRoom::DoorDirrection::DOWN | DungeonRoom::DoorDirrection::UP;
+        const int horizontalMask = DungeonRoom::DoorDirrection::RIGHT | DungeonRoom::DoorDirrection::LEFT;
+        switch (doorCount)
+        {
+        case 1:
+            texturePath += "1";
+            switch (doorMask)
+            {
+            case DungeonRoom::DoorDirrection::UP:
+                angle = pi;
+                break;
+            case DungeonRoom::DoorDirrection::RIGHT:
+                angle = pi / 2.0f;
+                break;
+            case DungeonRoom::DoorDirrection::LEFT:
+                angle = -pi / 2.0f;
+                break;
+            default: // DungeonRoom::DoorDirrection::DOWN:
+                break; // no need to rotate
+            }
+            break;
+        case 2:
+            texturePath += "2";
+            if (doorMask == verticalMask || doorMask == horizontalMask)
+            {
+                texturePath += "stright";
+                if (doorMask == verticalMask)
+                {
+                    angle = pi / 2.0f;
+                } // dont need to rotate if horizontal 
+            }
+            else
+            {
+                texturePath += "corner";
+                
+                switch (doorMask)
+                {
+                case DungeonRoom::DoorDirrection::RIGHT | DungeonRoom::DoorDirrection::DOWN:
+                    angle = -pi / 2.0f;
+                    break;
+                case DungeonRoom::DoorDirrection::DOWN | DungeonRoom::DoorDirrection::LEFT:
+                    angle = pi;
+                    break;
+                case DungeonRoom::DoorDirrection::LEFT | DungeonRoom::DoorDirrection::UP:
+                    angle = pi / 2.0f;
+                    break;
+                default: //DungeonRoom::DoorDirrection::UP | DungeonRoom::DoorDirrection::RIGHT
+                    break; // no need to rotate
+                }
+            }
+            break;
+        case 3:
+            texturePath += "3";
+
+            if ((doorMask & DungeonRoom::DoorDirrection::LEFT) == 0)
+            {
+                angle = -pi / 2.0f;
+            }
+            else if ((doorMask & DungeonRoom::DoorDirrection::UP) == 0)
+            {
+                angle = pi;
+            }
+            else if ((doorMask & DungeonRoom::DoorDirrection::RIGHT) == 0)
+            {
+                angle = pi / 2.0f;
+            } // else do not rotate (already in place)
+            break;
+        case 4:
+            texturePath += "4";
+            break;
+        default: // no default
+            break;
+        }
+        texturePath += ".png";
+
+        // creating the actual object
+        mRooms[roomIndex].mMinimapObject = CreateMinimapElement(roomPos, roomScale, angle, texturePath, false);
+        
+        return mRooms[roomIndex].mMinimapObject;
+    }
+    
+    void DungeonFloor::OnRoomEnter(int oldIndex, int newIndex)
+    {
+        SetUIRoomTexture(mRooms[oldIndex].mMinimapTexturePath, oldIndex, true);
+    }
 }
