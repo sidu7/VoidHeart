@@ -58,6 +58,8 @@ namespace BulletHell
         std::vector<Hollow::GameObject*> mEnemies;
         DungeonRoomType mRoomType;
     private:    	
+        Hollow::GameObject* mMinimapObject;
+        std::string mMinimapTexturePath;
         int mRoomID;   // unique id of the room
         int mDoors;    // flag field for 4 doors
         int mFloorNum; // floor number of the room (owner id)

@@ -3,8 +3,9 @@ function CheckRoomBounds(playerPos, coords)
 	 and playerPos.x < (coords.y + 1) * roomSize
 	 and playerPos.z > coords.x * roomSize 
 	 and playerPos.z < (coords.x + 1) * roomSize) then
+		local oldRoomIndex = currentRoom
 		currentRoom = coords.x * dungeonLength + coords.y
-		OnRoomEntered()
+        OnRoomEntered(currentRoom, oldRoomIndex)
 	end
 	--print("room ", coords.x, coords.y)
 end
