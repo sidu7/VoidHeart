@@ -5,7 +5,7 @@
     "Components": [
     {
       "Type": "Transform",
-      "Scale": [ 1.5, 1.5, 1.5 ]
+      "Scale": [ 1.0, 1.0, 1.0 ]
     },
     {
       "Type": "Body",
@@ -27,8 +27,9 @@
     },
     {
       "Type": "Material",
-      "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Heart.obj"
+      "Shininess": 1000.0,
+        "Diffuse": [ 1.0, 0.0, 0.0, 1.0 ],
+        "Specular": [0.5,0.5,0.5,1.0]
     },
       {
         "Type": "Pickup",

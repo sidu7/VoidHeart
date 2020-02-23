@@ -297,6 +297,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
     <ClInclude Include="src\Events\CycleSpellEvent.h" />
+    <ClInclude Include="src\Events\PickupTimedEvent.h" />
     <ClInclude Include="src\GameLogic\GameLogicManager.h" />
     <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />

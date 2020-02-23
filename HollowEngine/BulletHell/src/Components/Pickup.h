@@ -7,6 +7,7 @@ namespace BulletHell
 	enum PickupType
 	{
 		HP,
+		DASH,
 		RATE_OF_FIRE,
 		DAMAGE,
 		SPEED

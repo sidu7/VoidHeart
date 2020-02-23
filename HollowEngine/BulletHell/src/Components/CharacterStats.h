@@ -37,9 +37,9 @@ namespace BulletHell
 
 	public:
 		// TODO Add other stats 
-		int mHitPoints;
 		float mDamage;
 		float mFireRate;
 		float mMovementSpeed;
+		float mDashSpeed;
 	};
 }

@@ -67,7 +67,9 @@ namespace BulletHell
 		lua.set_function("PopulateRoom", &GameLogicManager::PopulateRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
+		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
 
+		
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
     }
@@ -198,6 +200,14 @@ namespace BulletHell
     {
         GameLogicManager::Instance().MoveToNextFloor();
     }
+
+	// Called from Lua
+	// Fires an event in C++
+	void DungeonManager::OnCurrentRoomUpdated()
+	{
+        Hollow::GameEvent ge((int)GameEventType::ON_ROOM_ENTERED);
+        Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
+	}
 
     void DungeonManager::SubscribeToEvents()
 	{

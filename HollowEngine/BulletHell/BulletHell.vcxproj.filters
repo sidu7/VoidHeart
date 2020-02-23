@@ -256,5 +256,8 @@
     <ClInclude Include="src\Components\CharacterStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Events\PickupTimedEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

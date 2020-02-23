@@ -9,6 +9,7 @@
 #include "Components/Attack.h"
 #include "Components/Pickup.h"
 #include "Components/Health.h"
+#include "Components/CharacterStats.h"
 
 #include "DungeonGeneration/DungeonRoom.h"
 #include "DungeonGeneration/DungeonManager.h"
@@ -16,6 +17,7 @@
 #include "Hollow/Managers/GameObjectManager.h"
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
+#include "Events/PickupTimedEvent.h"
 
 #define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 2
@@ -82,24 +84,56 @@ namespace BulletHell
 		Hollow::GameObject* pPlayer = event.mpObject1->mType == (int)GameObjectType::PLAYER ? event.mpObject1 : event.mpObject2;
 
 		Pickup* pPickup = pPickupObject->GetComponent<Pickup>();
+		CharacterStats* pStats = pPlayer->GetComponent<CharacterStats>();
 		
-		// TODO make a stats component to change everything right here
 		switch (pPickup->mPickupType)
 		{
 		case PickupType::HP:
 		{
-			Health* pHealth = pPlayer->GetComponent<Health>();
-			pHealth->mHitPoints += pPickup->mBuffValue;
+			Health* pHp = pPlayer->GetComponent<Health>();
+			pHp->mHitPoints += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::DASH:
+		{
+			pStats->mDashSpeed += pPickup->mBuffValue;	
 			break;
 		}
 		case PickupType::DAMAGE:
-			break;
-		case PickupType::SPEED:
-			break;
-		case PickupType::RATE_OF_FIRE:
+		{
+			pStats->mDamage += pPickup->mBuffValue;
 			break;
 		}
+		case PickupType::SPEED:
+		{
+			pStats->mMovementSpeed += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::RATE_OF_FIRE:
+		{
+			pStats->mFireRate *= pPickup->mBuffValue;
+			break;
+		}
+		}
 
+		if (pPickup->mEffectTime > 0.0f)
+		{
+			PickupTimedEvent* pEvent = new PickupTimedEvent(pPickup);
+			Hollow::EventManager::Instance().AddDelayedEvent(pEvent, pPickup->mEffectTime);
+
+			// change pickup so that its effects are reversed after the given time
+			pPickup->mEffectTime = 0.0f;
+
+			if (pPickup->mPickupType == PickupType::RATE_OF_FIRE)
+			{
+				pPickup->mBuffValue = 1.0f/pPickup->mBuffValue;
+			}
+			else
+			{
+				pPickup->mBuffValue = -pPickup->mBuffValue;
+			}
+		}
+    	
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
 	}
 

@@ -127,11 +127,18 @@
       "FocusObjects": [ "PLAYER", "ENEMY" ]
     },
     {
-      "Type": "Health",
-      "HitPoints": 10,
-      "IsAlive": true,
-      "Invincible": false,
-      "InvincibleTime": 300.0
+        "Type": "Health",
+        "HitPoints": 10,
+        "IsAlive": true,
+        "Invincible": false,
+        "InvincibleTime": 300.0
+    },
+    {
+        "Type": "CharacterStats",
+        "HP": 10,
+        "FireRate": 1.0,
+        "Damage": 10.0,
+        "RateOfFire":  1.0
     },
     {
       "Type": "Magic",
