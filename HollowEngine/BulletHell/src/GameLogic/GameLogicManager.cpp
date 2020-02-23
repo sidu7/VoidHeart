@@ -10,12 +10,18 @@
 #include "Hollow/Components/Script.h"
 
 #include "Components/Attack.h"
+#include "Components/Pickup.h"
+#include "Components/Health.h"
+#include "Components/CharacterStats.h"
 
 #include "DungeonGeneration/DungeonRoom.h"
 #include "DungeonGeneration/DungeonManager.h"
-
+#include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/GameObjectManager.h"
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
+#include "Events/PickupTimedEvent.h"
+
 
 #define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 2
@@ -72,9 +78,69 @@ namespace BulletHell
     void GameLogicManager::SubscribeToEvents()
     {
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_SHIELD, EVENT_CALLBACK(GameLogicManager::OnBulletHitShield));
-
     }
+
+	void GameLogicManager::OnPickupCollected(Hollow::GameEvent& event)
+	{
+		// Find out the pickup gameobject 
+		Hollow::GameObject* pPickupObject = event.mpObject1->mType == (int)GameObjectType::PICKUP ? event.mpObject1 : event.mpObject2;
+		Hollow::GameObject* pPlayer = event.mpObject1->mType == (int)GameObjectType::PLAYER ? event.mpObject1 : event.mpObject2;
+
+		Pickup* pPickup = pPickupObject->GetComponent<Pickup>();
+		CharacterStats* pStats = pPlayer->GetComponent<CharacterStats>();
+		
+		switch (pPickup->mPickupType)
+		{
+		case PickupType::HP:
+		{
+			Health* pHp = pPlayer->GetComponent<Health>();
+			pHp->mHitPoints += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::DASH:
+		{
+			pStats->mDashSpeed += pPickup->mBuffValue;	
+			break;
+		}
+		case PickupType::DAMAGE:
+		{
+			pStats->mDamage += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::SPEED:
+		{
+			pStats->mMovementSpeed += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::RATE_OF_FIRE:
+		{
+			pStats->mFireRate *= pPickup->mBuffValue;
+			break;
+		}
+		}
+
+		if (pPickup->mEffectTime > 0.0f)
+		{
+			PickupTimedEvent* pEvent = new PickupTimedEvent(pPickup);
+			Hollow::EventManager::Instance().AddDelayedEvent(pEvent, pPickup->mEffectTime);
+
+			// change pickup so that its effects are reversed after the given time
+			pPickup->mEffectTime = 0.0f;
+
+			if (pPickup->mPickupType == PickupType::RATE_OF_FIRE)
+			{
+				pPickup->mBuffValue = 1.0f/pPickup->mBuffValue;
+			}
+			else
+			{
+				pPickup->mBuffValue = -pPickup->mBuffValue;
+			}
+		}
+    	
+		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
+	}
 
     Hollow::GameObject* GameLogicManager::GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset)
     {
@@ -219,7 +285,7 @@ namespace BulletHell
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)
     {
         glm::ivec2 coords = room.GetCoords();
-        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("AirSpell",
+        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Pickup_HP",
             glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
                 1.5,
                 coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2));

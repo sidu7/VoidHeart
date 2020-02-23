@@ -24,7 +24,7 @@
 namespace BulletHell
 {
 	HealthSystem HealthSystem::instance;
-
+	
 	void HealthSystem::Init()
 	{
 		// Set event callback functions
@@ -36,14 +36,31 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
+
+		std::ifstream file("Resources/Json data/BulletDamageValues.data");
+		std::string line;
+
+		if (file.is_open())
+		{
+			while (getline(file, line))
+			{
+				std::istringstream iss(line);
+				std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+					std::istream_iterator<std::string>());
+
+				mMapBulletDamage[results[0]] = stoi(results[1]);
+			}
+			file.close();
+		}
+		
 	}
 
 	void HealthSystem::Update()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			Health* pHealth = mGameObjects[i]->GetComponent<Health>();
-
+			Health* pHealth = mGameObjects[i]->GetComponent<Health>();		
+			
 			// Update player HP bar
 			//Hollow::UIText* pHPText = mGameObjects[i]->GetComponent<Hollow::UIText>();
 			//std::string ss = Hollow::LocalizationManager::Instance().mCurrentLanguageMap[pHPText->mTag];
@@ -287,11 +304,13 @@ namespace BulletHell
 		// Destroy player bullet
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pBullet);
 
+		int damage = mMapBulletDamage[pBullet->mTag];
+		
 		// Decrease player health, object hit must have a health component
 		Health* pHealth = pObjectHit->GetComponent<Health>();
 		if (!pHealth->mInvincible)
 		{
-			--pHealth->mHitPoints;
+			pHealth->mHitPoints = pHealth->mHitPoints - damage;
 		}		
 	}
 
