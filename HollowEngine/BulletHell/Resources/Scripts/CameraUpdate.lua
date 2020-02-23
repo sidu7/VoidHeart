@@ -2,9 +2,9 @@ function UpdateCamera()
 	-----------------------------------------
     -- playtesting vars
 	local xOffset = 0.0
-	local yOffset = 16.0
+	local yOffset = 17.0
 	local zOffset = roomSize/2 + 1
-	local cameraFront = vec3.new(0.0, -1.5, -1.0)
+	local cameraFront = vec3.new(0.0, -1.4, -1.0)
 	-----------------------------------------
 	
 	-- Get camera object components
