@@ -84,7 +84,7 @@ namespace BulletHell
             int numRooms = firstFloorRoomCount + 2 * i;
             dungeonFloor.Generate(numRooms, mSeed + i);
             mFloors.push_back(dungeonFloor);
-            dungeonFloor.PrintFloor(1);
+            //dungeonFloor.PrintFloor(1);
         }
         //system("PAUSE");
         // Construct the first floor
@@ -205,9 +205,13 @@ namespace BulletHell
 
 	// Called from Lua
 	// Fires an event in C++
-	void DungeonManager::OnCurrentRoomUpdated()
+	void DungeonManager::OnCurrentRoomUpdated(int current, int previousIndex)
 	{
         Hollow::GameEvent ge((int)GameEventType::ON_ROOM_ENTERED);
+
+        auto& lua = Hollow::ScriptingManager::Instance().lua;
+        int currentFloor = lua["currentFloor"].get<int>();
+        mFloors[currentFloor].OnRoomEnter(current, previousIndex);
         //Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
 	}
 

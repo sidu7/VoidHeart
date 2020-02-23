@@ -39,7 +39,7 @@ namespace BulletHell
         void TrySetUINeighborRoomsTexture(std::string path, int index, bool isVisible); // index assumed to be valid
         void CreateMinimap();
         Hollow::GameObject* CreateMinimapRoomAt(int roomIndex);
-        void OnRoomEnter(int oldIndex, int newIndex);
+        void OnRoomEnter(int newIndex, int oldIndex);
 
     private:
         std::vector<DungeonRoom> mRooms; // 1D representation of a 2D array

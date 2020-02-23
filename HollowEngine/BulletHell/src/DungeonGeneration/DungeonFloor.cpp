@@ -434,7 +434,7 @@ namespace BulletHell
         DungeonRoom& room = mRooms[index];
         Hollow::GameObject* uiElement = room.mMinimapObject;
         Hollow::UIImage* pUIImage = uiElement->GetComponent<Hollow::UIImage>();
-        if (pUIImage->mIsVisible)
+        if (!pUIImage->mIsVisible)
         {
             pUIImage->TexturePath = path;
             pUIImage->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(path);
@@ -481,7 +481,7 @@ namespace BulletHell
         // Set UI Texture
         SetUINeighborRoomsTexture(mMinimapFoggedRoomPath, mEntranceIndex, true);
     }
-
+    
     Hollow::GameObject* DungeonFloor::CreateMinimapRoomAt(int roomIndex)
     {
         // calculating room scale
@@ -589,8 +589,22 @@ namespace BulletHell
         return mRooms[roomIndex].mMinimapObject;
     }
     
-    void DungeonFloor::OnRoomEnter(int oldIndex, int newIndex)
+    void DungeonFloor::OnRoomEnter(int newIndex, int oldIndex)
     {
         SetUIRoomTexture(mRooms[oldIndex].mMinimapTexturePath, oldIndex, true);
+        Hollow::UITransform* uiTransform = mpMinimapPlayer->GetComponent<Hollow::UITransform>();
+
+        const int windowWidth = 1280;
+        const int windowHeight = 720;
+        const int mapScale = 250;
+        const int uiScale = mapScale / 10;
+        const glm::vec2 topLeftConrer = glm::vec2(windowWidth - 9.5f * uiScale - 5, windowHeight - 0.5f * uiScale - 5);
+        int row, col;
+        Index2D(newIndex, row, col);
+        uiTransform->mPosition = glm::vec2(topLeftConrer.x + col * uiScale, topLeftConrer.y - row * uiScale);
+        
+        mRooms[newIndex].mMinimapObject->GetComponent<Hollow::UIImage>()->mIsVisible = false;
+
+        TrySetUINeighborRoomsTexture(mMinimapFoggedRoomPath, newIndex, true);
     }
 }
