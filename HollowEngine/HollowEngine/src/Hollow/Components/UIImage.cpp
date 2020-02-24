@@ -14,6 +14,7 @@ namespace Hollow
 		mColor = glm::vec3(0.0f);
 		mpShapeData = nullptr;
 		mShapeType = "";
+        mIsVisible = true;
 	}
 
 	void UIImage::Clear()

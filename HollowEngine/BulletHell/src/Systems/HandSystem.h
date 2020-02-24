@@ -14,12 +14,12 @@ namespace BulletHell
 
         void OnDeleteAllGameObjects() override;
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
-
+        static Hollow::GameObject* CreateUIObject(const glm::vec2& scale, const glm::vec2& position, const std::string& texturePath);
+	    
 	private:
 		void CreateUIObjects();
 		void SubscribeToEvents();
 
-		Hollow::GameObject* CreateUIObject(const glm::vec2& scale, const glm::vec2& position, const std::string& texturePath);
 		void CheckHandUI();
 
 		void CycleSpell(Hollow::GameEvent& event);

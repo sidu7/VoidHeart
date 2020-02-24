@@ -1,53 +1,54 @@
 {
-  "Type": "PLAYER_AOE",
-  "Components": [
-    {
-      "Type": "Transform",
-      "Position": [ 0.0, 0.0, 0.0 ],
-      "Scale": [ 1.0, 1.0, 1.0 ]
-    },
-    {
-      "Type": "Body",
-      "Mass": 0.00001,
-      "RigidbodyType": "STATIC",
-      "UseGravity": false
-    },
-    {
-      "Type": "Collider",
-      "Shape": "BALL"
-    },
-    {
-      "Type": "Model",
-      "Shape": "BALL",
-      "CastShadow": false
-    },
-    {
-      "Type": "Material",
-      "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 10.0, 10.0, 10.0 ],
-      "Shininess": 10.0,
-      "Transparent": true,
-      "AlphaValue": 0.2
-    },
-    {
-      "Type": "DestroyTimer",
-      "MaxTime": 5.5
-    },
-    {
-      "Type": "Script",
-      "Scripts": ["Grow"]
-    },
-    {
-      "Type": "ParticleEmitter",
-      "MaxCount": 1000,
-      "EmissionRate": 300,
-      "Shape": 1,
-      "ModelShape": "CUBE",
-      "Speed": [ 4.0, 8.0 ],
-      "Life": [ 0.2, 0.4 ],
-      "Size": [ 0.1, 0.2 ],
-      "ParticleColor": [ 0.8, 0.8, 0.8 ],
-      "ComputeShader": "Resources/Shaders/CenterModelParticles.comp"
-    }
-  ]
+    "Type": "PLAYER_AOE",
+    "Tag": "AIRAIR",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.0, 0.0, 0.0 ],
+            "Scale": [ 1.0, 1.0, 1.0 ]
+        },
+        {
+            "Type": "Body",
+            "Mass": 0.00001,
+            "RigidbodyType": "STATIC",
+            "UseGravity": false
+        },
+        {
+            "Type": "Collider",
+            "Shape": "BALL"
+        },
+        {
+            "Type": "Model",
+            "Shape": "BALL",
+            "CastShadow": false
+        },
+        {
+            "Type": "Material",
+            "Specular": [ 1.0, 1.0, 1.0 ],
+            "Diffuse": [ 10.0, 10.0, 10.0 ],
+            "Shininess": 10.0,
+            "Transparent": true,
+            "AlphaValue": 0.2
+        },
+        {
+            "Type": "DestroyTimer",
+            "MaxTime": 5.5
+        },
+        {
+            "Type": "Script",
+            "Scripts": [ "Grow" ]
+        },
+        {
+            "Type": "ParticleEmitter",
+            "MaxCount": 1000,
+            "EmissionRate": 300,
+            "Shape": 1,
+            "ModelShape": "CUBE",
+            "Speed": [ 4.0, 8.0 ],
+            "Life": [ 0.2, 0.4 ],
+            "Size": [ 0.1, 0.2 ],
+            "ParticleColor": [ 0.8, 0.8, 0.8 ],
+            "ComputeShader": "Resources/Shaders/CenterModelParticles.comp"
+        }
+    ]
 }

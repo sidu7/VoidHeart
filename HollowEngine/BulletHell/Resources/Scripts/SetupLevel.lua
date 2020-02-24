@@ -13,7 +13,7 @@ local coords = floor:GetEntrance():GetCoords()
 
 -- generate player in the entrance room
 --player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
-player = CreatePrefabAtPosition("PlayerTest", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
+player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 local gameObjectPath = "Resources/Json data/Camera.json"
 local camera = CreateGameObject(gameObjectPath)
 

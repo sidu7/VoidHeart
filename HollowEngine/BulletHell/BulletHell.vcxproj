@@ -161,6 +161,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClCompile Include="src\Components\AISettings.cpp" />
     <ClCompile Include="src\Components\Attack.cpp" />
     <ClCompile Include="src\Components\Behavior.cpp" />
+    <ClCompile Include="src\Components\CharacterStats.cpp" />
     <ClCompile Include="src\Components\DestroyTimer.cpp" />
     <ClCompile Include="src\Components\Health.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -175,6 +176,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClCompile Include="src\Components\Magic.cpp" />
     <ClCompile Include="src\Components\Movement.cpp" />
     <ClCompile Include="src\Components\ParentOffset.cpp" />
+    <ClCompile Include="src\Components\Pickup.cpp" />
     <ClCompile Include="src\DungeonGeneration\DungeonFloor.cpp" />
     <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp" />
     <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp" />
@@ -202,6 +204,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\Cloud.json" />
     <None Include="Resources\Json data\EnemyAOE.json" />
     <None Include="Resources\Prefabs\EnemyBoss1.json" />
+    <None Include="Resources\Prefabs\UIMinimap.json" />
     <None Include="Resources\Scripts\ShootInDiagonalDirections.lua" />
     <None Include="Resources\Prefabs\EnemyTurretAOE.json" />
     <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
@@ -232,6 +235,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\ShootInTheLookDir.lua" />
     <None Include="Resources\Scripts\AreaDamage.lua" />
     <None Include="Resources\Scripts\EnemyGrow.lua" />
+    <None Include="Resources\Scripts\SlowRotate.lua" />
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Ambient.frag" />
@@ -279,6 +283,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="src\GameMetaData\CollisionMask.data" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\CharacterStats.h" />
+    <ClInclude Include="src\Components\Pickup.h" />
     <ClInclude Include="src\Events\DeathEvent.h" />
     <ClInclude Include="src\Components\AISettings.h" />
     <ClInclude Include="src\Components\Attack.h" />
@@ -292,6 +298,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
     <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
     <ClInclude Include="src\Events\CycleSpellEvent.h" />
+    <ClInclude Include="src\Events\PickupTimedEvent.h" />
     <ClInclude Include="src\GameLogic\GameLogicManager.h" />
     <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />

@@ -68,7 +68,9 @@ namespace BulletHell
 		lua.set_function("PopulateRoom", &GameLogicManager::PopulateRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
+		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
 
+		
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
     }
@@ -82,7 +84,7 @@ namespace BulletHell
             int numRooms = firstFloorRoomCount + 2 * i;
             dungeonFloor.Generate(numRooms, mSeed + i);
             mFloors.push_back(dungeonFloor);
-            dungeonFloor.PrintFloor(1);
+            //dungeonFloor.PrintFloor(1);
         }
         //system("PAUSE");
         // Construct the first floor
@@ -117,6 +119,7 @@ namespace BulletHell
     void DungeonManager::Construct(int floorIndex)
     {
         mFloors[floorIndex].ConstructFloor();
+        mFloors[floorIndex].CreateMinimap();
     }
 
     void DungeonManager::ConfigureDungeon()
@@ -199,6 +202,18 @@ namespace BulletHell
     {
         GameLogicManager::Instance().MoveToNextFloor();
     }
+
+	// Called from Lua
+	// Fires an event in C++
+	void DungeonManager::OnCurrentRoomUpdated(int current, int previousIndex)
+	{
+        Hollow::GameEvent ge((int)GameEventType::ON_ROOM_ENTERED);
+
+        auto& lua = Hollow::ScriptingManager::Instance().lua;
+        int currentFloor = lua["currentFloor"].get<int>();
+        mFloors[currentFloor].OnRoomEnter(current, previousIndex);
+        //Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
+	}
 
     void DungeonManager::SubscribeToEvents()
 	{

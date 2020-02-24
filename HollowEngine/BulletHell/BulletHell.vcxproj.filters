@@ -101,6 +101,8 @@
     <None Include="Resources\Scripts\AreaSlow.lua" />
     <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
     <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
+    <None Include="Resources\Prefabs\UIMinimap.json" />
+    <None Include="Resources\Scripts\SlowRotate.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">
@@ -164,6 +166,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GameLogic\GameLogicManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Pickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\CharacterStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -241,6 +249,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GameLogic\GameLogicManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Pickup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\CharacterStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\PickupTimedEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

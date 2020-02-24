@@ -34,6 +34,7 @@ namespace BulletHell
 
         // Create a PickUp at the centre of the room
         void CreatePickUpInRoom(DungeonRoom& room);
+		void OnPickupCollected(Hollow::GameEvent& event);
 
         void MoveToNextFloor();
 

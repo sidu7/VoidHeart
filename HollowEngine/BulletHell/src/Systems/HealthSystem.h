@@ -50,5 +50,6 @@ namespace BulletHell
 
 	private:
 		std::vector<Hollow::GameObject*> mPlayerHPUIIcons;
+		std::unordered_map<std::string, int> mMapBulletDamage;
 	};
 }

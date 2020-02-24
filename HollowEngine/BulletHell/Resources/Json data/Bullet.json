@@ -1,5 +1,6 @@
 {
-  "Type": "BULLET",
+    "Type": "BULLET",
+    "Tag": "OODOOM",
   "Components": [
     {
       "Type": "Transform",
