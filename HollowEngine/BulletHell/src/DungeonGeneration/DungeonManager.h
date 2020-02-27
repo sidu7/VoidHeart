@@ -46,7 +46,7 @@ namespace BulletHell
 
         void SubscribeToEvents();
         void OnDeath(Hollow::GameEvent& event);
-        void OnCurrentRoomUpdated();
+        void OnCurrentRoomUpdated(int current, int previousIndex);
         void OnFloorCleared(Hollow::GameEvent& event);
     public:
 		Hollow::GameObject* mpPlayerGo;

@@ -1,5 +1,5 @@
 {
-  "Type": "UIICON",
+  "Type": "MinimapRoom",
   "Components": [
     {
       "Type": "UITransform",
@@ -8,10 +8,9 @@
     },
     {
       "Type": "UIImage",
-      "Image": "Resources/Textures/UICombined.png",
+      "Image": "Resources/Textures/Minimap/UIMinimapRoomRegular1.png",
       "Shape": "QUAD",
-      "Color": [ 0.0, 0.0, 0.0 ],
-      "Alpha":  0.0
+      "Color": [ 1.0, 1.0, 1.0 ]
     }
   ]
 }

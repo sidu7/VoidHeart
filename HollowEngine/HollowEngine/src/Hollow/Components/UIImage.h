@@ -46,5 +46,7 @@ namespace Hollow
 		Texture* mpTexture;
 		glm::vec3 mColor;
 		Mesh* mpShapeData;
+        bool mIsVisible;
+		float mAlpha;
 	};
 }

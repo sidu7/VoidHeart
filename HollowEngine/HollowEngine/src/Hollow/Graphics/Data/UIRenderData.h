@@ -13,5 +13,7 @@ namespace Hollow
 		UITextData* mpTextData;
 		Mesh* mpShape;
 		glm::vec3 mColor;
+		float mAlpha;
+		int mLayer;
 	};
 }
