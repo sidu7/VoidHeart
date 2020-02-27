@@ -44,6 +44,7 @@ namespace Hollow
                 uidata.mpTexture = uiimage->mpTexture;
                 uidata.mpShape = uiimage->mpShapeData;
                 uidata.mColor = uiimage->mColor;
+				uidata.mAlpha = uiimage->mAlpha;
 
                 RenderManager::Instance().mUIRenderData.emplace_back(uidata);
             }

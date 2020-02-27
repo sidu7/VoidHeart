@@ -10,7 +10,8 @@
       "Type": "UIImage",
       "Image": "Resources/Textures/UICombined.png",
       "Shape": "QUAD",
-      "Color": [ 0.0, 0.0, 1.0 ]
+      "Color": [ 0.0, 0.0, 0.0 ],
+      "Alpha":  0.0
     }
   ]
 }

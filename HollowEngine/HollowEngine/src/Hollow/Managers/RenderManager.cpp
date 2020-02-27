@@ -1262,18 +1262,19 @@ namespace Hollow {
 		{
 			UIRenderData& uidata = mUIRenderData[i];
 
+			{
+				mpUIShader->SetVec3("UIColor", uidata.mColor);
+				mpUIShader->SetInt("hasTexture", 0);
+			}
 			if (uidata.mpTexture)
 			{
 				uidata.mpTexture->Bind(1);
 				mpUIShader->SetInt("UITexture", 1);
 				mpUIShader->SetInt("hasTexture", 1);
 			}
-			else
-			{
-				mpUIShader->SetVec3("UIColor", uidata.mColor);
-				mpUIShader->SetInt("hasTexture", 0);
-			}
+			//else
 			mpUIShader->SetMat4("Model", uidata.mModelTransform);
+			mpUIShader->SetFloat("alpha", uidata.mAlpha);
 
 			Mesh* shape = uidata.mpShape;
 

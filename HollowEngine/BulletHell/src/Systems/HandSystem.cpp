@@ -132,6 +132,7 @@ namespace BulletHell
 		{
 			Hollow::UIImage* pUIImg = mpCombinedHandUI->GetComponent<Hollow::UIImage>();
 			pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pMagic->mCombinedSpell->mUITexturePath);
+			pUIImg->TexturePath = pMagic->mCombinedSpell->mUITexturePath;
 		}
 	}
 
@@ -189,6 +190,7 @@ namespace BulletHell
 		Hollow::UIImage* pUIImage = UIObject->GetComponent<Hollow::UIImage>();
 		pUIImage->TexturePath = texturePath;
 		pUIImage->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(texturePath);
+		pUIImage->mColor = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		return UIObject;
 	}
