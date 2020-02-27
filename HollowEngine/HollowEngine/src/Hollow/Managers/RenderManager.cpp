@@ -1258,22 +1258,29 @@ namespace Hollow {
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
+		// Sort UI render data by layer
+		std::sort(mUIRenderData.begin(), mUIRenderData.end(), [](const UIRenderData& a, const UIRenderData& b) -> bool
+			{
+				return a.mLayer > b.mLayer;
+			});
+
 		for (unsigned int i = 0; i < mUIRenderData.size(); ++i)
 		{
 			UIRenderData& uidata = mUIRenderData[i];
 
+			{
+				mpUIShader->SetVec3("UIColor", uidata.mColor);
+				mpUIShader->SetInt("hasTexture", 0);
+			}
 			if (uidata.mpTexture)
 			{
 				uidata.mpTexture->Bind(1);
 				mpUIShader->SetInt("UITexture", 1);
 				mpUIShader->SetInt("hasTexture", 1);
 			}
-			else
-			{
-				mpUIShader->SetVec3("UIColor", uidata.mColor);
-				mpUIShader->SetInt("hasTexture", 0);
-			}
+			//else
 			mpUIShader->SetMat4("Model", uidata.mModelTransform);
+			mpUIShader->SetFloat("alpha", uidata.mAlpha);
 
 			Mesh* shape = uidata.mpShape;
 

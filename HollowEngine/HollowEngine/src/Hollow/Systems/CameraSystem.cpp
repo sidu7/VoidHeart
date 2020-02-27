@@ -388,7 +388,7 @@ namespace Hollow {
 		cameraData.mEyePosition = d;
 		
 		// Apply camera constraints if they exist
-		//ApplyConstraints(pCamera, cameraData);
+		//ApplyConstraints(pCamera, cameraData); 
 		if (pCamera->mDynamicFocus)
 		{
 			pTransform->mPosition = cameraData.mEyePosition;

@@ -13,7 +13,7 @@
       "Type": "UIImage",
       "Image": "Resources/Textures/UITest.png",
       "Shape": "QUAD",
-      "Color": [ 0.0, 0.0, 1.0 ]
+      "Color": [ 0.0, 0.0, 0.0 ]
     },
     {
       "Type": "ParticleEmitter",

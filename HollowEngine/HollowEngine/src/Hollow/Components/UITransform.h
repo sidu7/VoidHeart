@@ -39,5 +39,6 @@ namespace Hollow
 		float mRotation;
 		float mTilt;
 		glm::mat4 mTransformationMatrix;
+		int mLayer;
 	};
 }

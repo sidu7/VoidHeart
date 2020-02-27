@@ -15,6 +15,7 @@ namespace Hollow
 		mpShapeData = nullptr;
 		mShapeType = "";
         mIsVisible = true;
+		mAlpha = 0.0f;
 	}
 
 	void UIImage::Clear()
@@ -37,6 +38,10 @@ namespace Hollow
 		{
 			mColor = JSONHelper::GetVec3F(data["Color"].GetArray());
 		}
+		if (data.HasMember("Alpha"))
+		{
+			mAlpha = data["Alpha"].GetFloat();
+		}
 	}
 
 	void UIImage::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -44,6 +49,7 @@ namespace Hollow
 		JSONHelper::Write("Image", TexturePath, writer);
 		JSONHelper::Write("Shape", mShapeType, writer);
 		JSONHelper::Write("Color", mColor, writer);
+		JSONHelper::Write("Alpha", mAlpha, writer);
 	}
 
 	void UIImage::DebugDisplay()
@@ -51,6 +57,7 @@ namespace Hollow
 		ImGuiHelper::InputText("Image File", TexturePath);
 		ImGuiHelper::InputText("Shape", mShapeType);
 		ImGui::InputFloat3("Color", (float*)&mColor);
+		ImGui::InputFloat("Alpha", &mAlpha);
 		// TODO: Find better place to update UI image
 		mpTexture = ResourceManager::Instance().LoadTexture(TexturePath);
 	}
