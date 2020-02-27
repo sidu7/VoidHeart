@@ -106,17 +106,17 @@ namespace BulletHell
 		}
 		case PickupType::DAMAGE:
 		{
-			pStats->mDamage += pPickup->mBuffValue;
+			pStats->mDamageFactor += pPickup->mBuffValue;
 			break;
 		}
 		case PickupType::SPEED:
 		{
-			pStats->mMovementSpeed += pPickup->mBuffValue;
+			pStats->mMovementSpeedFactor += pPickup->mBuffValue;
 			break;
 		}
 		case PickupType::RATE_OF_FIRE:
 		{
-			pStats->mFireRate *= pPickup->mBuffValue;
+			pStats->mFireRate += pPickup->mBuffValue;
 			break;
 		}
 		}
@@ -128,15 +128,7 @@ namespace BulletHell
 
 			// change pickup so that its effects are reversed after the given time
 			pPickup->mEffectTime = 0.0f;
-
-			if (pPickup->mPickupType == PickupType::RATE_OF_FIRE)
-			{
-				pPickup->mBuffValue = 1.0f/pPickup->mBuffValue;
-			}
-			else
-			{
-				pPickup->mBuffValue = -pPickup->mBuffValue;
-			}
+			pPickup->mBuffValue = -pPickup->mBuffValue;
 		}
     	
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);

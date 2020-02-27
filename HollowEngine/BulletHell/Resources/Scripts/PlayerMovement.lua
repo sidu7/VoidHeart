@@ -27,7 +27,11 @@ function Update()
     front.y = 0.0
     right.y = 0.0
 
-    local speed = vec3.new(1000.0, 0.0, 1000.0)
+	local playerStats = player:GetStats()
+
+    local speed = vec3.new(playerStats.mMovementSpeed * playerStats.mMovementSpeedFactor,
+							0.0,
+							playerStats.mMovementSpeed * playerStats.mMovementSpeedFactor)
 
     local transform = gameObject:GetTransform()
     local xDirLeftStick = GetAxis(CONTROLLER["LX"])
@@ -61,12 +65,12 @@ function Update()
 
     transform:Rotate(rot)
 
--- Apply any movement debuffs
-local movement = gameObject:GetMovement()
+	-- Apply any movement debuffs
+	local movement = gameObject:GetMovement()
 
-impulse = impulse * speed * movement.moveDebuffFactor;
+	impulse = impulse * speed * movement.moveDebuffFactor;
 
-movement.moveDebuffFactor = 1.0; -- reset debuff for this frame
+	movement.moveDebuffFactor = 1.0; -- reset debuff for this frame
 
     ApplyLinearImpulse(gameObject, impulse)
 

@@ -7,9 +7,9 @@ namespace BulletHell
 
 	void BulletHell::CharacterStats::Init()
 	{
-		mDashSpeed = 1.0f;
+		mDashSpeedFactor = 1.0f;
 		mFireRate = 1.0f; // this is a factor
-		mMovementSpeed = 1.0f; // this should be absolute value
+		mMovementSpeedFactor = 1.0f; // this should be absolute value
 
 		// Register to Lua
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
@@ -34,7 +34,7 @@ namespace BulletHell
 		}
 		if (data.HasMember("Damage"))
 		{
-			mDamage = data["Damage"].GetFloat();
+			mDamageFactor = data["Damage"].GetFloat();
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace BulletHell
 	{
 		Hollow::JSONHelper::Write<float>("DashSpeed", mDashSpeed, writer);
 		Hollow::JSONHelper::Write<float>("MovementSpeed", mMovementSpeed, writer);
-		Hollow::JSONHelper::Write<float>("Damage", mDamage, writer);
+		Hollow::JSONHelper::Write<float>("Damage", mDamageFactor, writer);
 		Hollow::JSONHelper::Write<float>("RateOfFire", mFireRate, writer);
 	}
 
@@ -54,7 +54,7 @@ namespace BulletHell
 	{
 		ImGui::InputFloat("Dash Speed", &mDashSpeed);
 		ImGui::InputFloat("Movement Speed", &mMovementSpeed);
-		ImGui::InputFloat("Damage", &mDamage);
+		ImGui::InputFloat("Damage", &mDamageFactor);
 		ImGui::InputFloat("Fire Rate", &mFireRate);
 	}
 }
