@@ -12,6 +12,7 @@ namespace Hollow
 		mRotation = 0.0f;
 		mTilt = 0.0f;
 		mTransformationMatrix = glm::mat4(1.0f);
+		mLayer = 0;
 	}
 
 	void UITransform::Clear()
@@ -36,6 +37,10 @@ namespace Hollow
 		{
 			mTilt = data["Tilt"].GetFloat();
 		}
+		if (data.HasMember("Layer"))
+		{
+			mLayer = data["Layer"].GetInt();
+		}
 	}
 
 	void UITransform::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -44,6 +49,7 @@ namespace Hollow
 		JSONHelper::Write("Scale", mScale, writer);
 		JSONHelper::Write("Rotation", mRotation, writer);
 		JSONHelper::Write("Tilt", mTilt, writer);
+		JSONHelper::Write("Layer", mLayer, writer);
 	}
 
 	void UITransform::DebugDisplay()
@@ -52,5 +58,6 @@ namespace Hollow
 		ImGui::InputFloat2("Scale", (float*)&mScale);
 		ImGui::InputFloat("Rotation", &mRotation);
 		ImGui::InputFloat("Tilt", &mTilt);
+		ImGui::InputInt("Layer", &mLayer);
 	}
 }

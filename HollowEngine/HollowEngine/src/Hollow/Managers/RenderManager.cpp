@@ -1258,6 +1258,12 @@ namespace Hollow {
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
+		// Sort UI render data by layer
+		std::sort(mUIRenderData.begin(), mUIRenderData.end(), [](const UIRenderData& a, const UIRenderData& b) -> bool
+			{
+				return a.mLayer > b.mLayer;
+			});
+
 		for (unsigned int i = 0; i < mUIRenderData.size(); ++i)
 		{
 			UIRenderData& uidata = mUIRenderData[i];

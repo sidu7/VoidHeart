@@ -14,5 +14,6 @@ namespace Hollow
 		Mesh* mpShape;
 		glm::vec3 mColor;
 		float mAlpha;
+		int mLayer;
 	};
 }
