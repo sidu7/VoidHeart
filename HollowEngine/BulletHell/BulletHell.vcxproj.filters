@@ -103,6 +103,8 @@
     <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
     <None Include="Resources\Prefabs\UIMinimap.json" />
     <None Include="Resources\Scripts\SlowRotate.lua" />
+    <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
+    <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

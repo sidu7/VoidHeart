@@ -47,12 +47,12 @@
     {
       "Type": "Script",
       "Scripts": [
-        "EnemyFollowsPlayer"
+        "EnemyBoss1Movement"
       ]
     },
     {
       "Type": "Attack",
-      "Script": "ShootInCardinalDirections",
+      "Script": "EnemyBoss1Fire",
       "BaseAttackTime": 0.4
     },
     {

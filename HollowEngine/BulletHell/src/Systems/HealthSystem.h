@@ -39,6 +39,7 @@ namespace BulletHell
 		void OnBulletHitPlayer(Hollow::GameEvent& event);
 		void OnBulletHitWall(Hollow::GameEvent& event);
 		void OnBulletHitDoor(Hollow::GameEvent& event);
+        void OnBulletHitFloor(Hollow::GameEvent& event);
 		void OnPlayerBulletHitEnemy(Hollow::GameEvent& event);
         void OnFloorCleared(Hollow::GameEvent& event);
 		void OnAOEDamageHitPlayer(Hollow::GameEvent& event);
