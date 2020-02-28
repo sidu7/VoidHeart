@@ -152,7 +152,8 @@ namespace Hollow
             "GetScript", &GameObject::GetComponent<Script>,
 			"GetCollider", &GameObject::GetComponent<Collider>,
             "isActive", &GameObject::mActive,
-			"GetCamera", &GameObject::GetComponent<Camera>
+			"GetCamera", &GameObject::GetComponent<Camera>,
+			"tag", &GameObject::mTag
 
 			);
 

@@ -33,6 +33,10 @@
       "DestroyScripts": [ "Destroy/CreateFireballs" ]
     },
     {
+      "Type": "DestroyTimer",
+      "MaxTime": 3.0
+    },
+    {
       "Type": "ParticleEmitter",
       "MaxCount": 10000,
       "EmissionRate": 100,
