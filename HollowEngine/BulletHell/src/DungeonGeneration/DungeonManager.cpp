@@ -44,6 +44,7 @@ namespace BulletHell
 			sol::constructors<DungeonFloor()>(),
 			"GetRoom", &DungeonFloor::GetRoom,
 			"GetRoomFromIndex", &DungeonFloor::GetRoomFromIndex,
+			"GetFloorNum", &DungeonFloor::GetFloorNumber,
 			"GetRegularRoom", &DungeonFloor::GetRegularRoom,
 			"GetRoomCount", &DungeonFloor::GetRoomCount,
 			"GetEntrance", &DungeonFloor::GetEntrance,

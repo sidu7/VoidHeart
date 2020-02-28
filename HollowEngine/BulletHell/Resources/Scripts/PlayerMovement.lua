@@ -29,9 +29,9 @@ function Update()
 
 	local playerStats = player:GetStats()
 
-    local speed = vec3.new(playerStats.mMovementSpeed * playerStats.mMovementSpeedFactor,
+    local speed = vec3.new(playerStats.movementSpeed * playerStats.movementSpeedFactor,
 							0.0,
-							playerStats.mMovementSpeed * playerStats.mMovementSpeedFactor)
+							playerStats.movementSpeed * playerStats.movementSpeedFactor)
 
     local transform = gameObject:GetTransform()
     local xDirLeftStick = GetAxis(CONTROLLER["LX"])

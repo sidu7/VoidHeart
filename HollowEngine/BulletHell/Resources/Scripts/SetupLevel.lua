@@ -1,5 +1,6 @@
 -- Setups a Floor of the Dungeon 
 local floor = GetDungeonFloor(currentFloor)
+local floorNum = floor:GetFloorNum()
 
 -- update current room to the dungeon entrance
 currentRoom = floor:GetEntranceIndex()
@@ -29,13 +30,18 @@ PopulateRoom(floor:GetRoomFromIndex(bossRoom))
 
 
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
-local roomCount = floor:GetRoomCount() - 2 - 1 - 1
+local roomCount = floor:GetRoomCount() - 2 - 1 - floorNum
 for i=0, roomCount, 1 do
     PopulateRoom(floor:GetRegularRoom(i))
 end
 
 -- generate random valid pickup
-CreatePickUpInRoom(floor:GetRegularRoom(roomCount + 1))
-local airSpell = CreatePrefabAtPosition("AirSpell", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
+for i=0, floorNum, 1 do
+	CreatePickUpInRoom(floor:GetRegularRoom(roomCount + i))
+end
+
+local airSpell = CreatePrefabAtPosition("Pickup_HP", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
 local earthSpell = CreatePrefabAtPosition("Pickup_Speed", vec3.new(coords.y * roomSize + roomSize/2 - 5, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
-local waterSpell = CreatePrefabAtPosition("WaterSpell", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 + 10.0))
+local waterSpell = CreatePrefabAtPosition("Pickup_Damage", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 + 10.0))
+local waterSpell = CreatePrefabAtPosition("Pickup_Invincible", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 + 15.0))
+local waterSpell = CreatePrefabAtPosition("Pickup_RateOfFire", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 - 15.0))

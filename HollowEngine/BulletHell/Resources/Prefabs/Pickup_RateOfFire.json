@@ -28,14 +28,14 @@
     {
       "Type": "Material",
       "Shininess": 1000.0,
-        "Diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
+        "Diffuse": [ 1.0, 1.0, 0.0, 1.0 ],
         "Specular": [0.5,0.5,0.5,1.0]
     },
       {
         "Type": "Pickup",
-        "PickupType": 5,
-        "BuffValue": 0.5,
-        "EffectTime": 5.0
+        "PickupType": 2,
+        "BuffValue": 2.0,
+        "EffectTime": 15.0
       },
       {
         "Type": "Script",

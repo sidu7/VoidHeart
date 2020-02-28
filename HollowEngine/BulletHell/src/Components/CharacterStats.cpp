@@ -14,7 +14,13 @@ namespace BulletHell
 		// Register to Lua
 		auto& lua = Hollow::ScriptingManager::Instance().lua;
 		lua.new_usertype<CharacterStats>("Stats",
-			sol::constructors<CharacterStats()>());
+			sol::constructors<CharacterStats()>(),
+			"movementSpeed", &CharacterStats::mMovementSpeed,
+			"movementSpeedFactor", &CharacterStats::mMovementSpeedFactor,
+			"dashSpeed", &CharacterStats::mDashSpeed,
+			"dashSpeedFactor", &CharacterStats::mDashSpeedFactor,
+			"damageFactor", &CharacterStats::mDamageFactor);
+
 		Hollow::ScriptingManager::Instance().mGameObjectType["GetStats"] = &Hollow::GameObject::GetComponent<CharacterStats>;
 	}
 
@@ -32,9 +38,13 @@ namespace BulletHell
 		{
 			mMovementSpeed = data["MovementSpeed"].GetFloat();
 		}
-		if (data.HasMember("Damage"))
+		if (data.HasMember("MovementSpeedFactor"))
 		{
-			mDamageFactor = data["Damage"].GetFloat();
+			mMovementSpeedFactor = data["MovementSpeedFactor"].GetFloat();
+		}
+		if (data.HasMember("DamageFactor"))
+		{
+			mDamageFactor = data["DamageFactor"].GetFloat();
 		}
 	}
 
