@@ -35,6 +35,8 @@ namespace BulletHell
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DESTRUCTIBLE_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitDestructibleWall));
+
 		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
 
 		std::ifstream file("Resources/GameData/BulletDamageValues.data");
@@ -297,6 +299,27 @@ namespace BulletHell
 		glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
 		impulse = direction * 50.0f;
 		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
+	}
+
+	void HealthSystem::OnBulletHitDestructibleWall(Hollow::GameEvent& event)
+	{
+		Hollow::GameObject* pDWall = nullptr;
+
+		if (event.mpObject1->mType == (int)GameObjectType::DESTRUCTIBLE_WALL)
+		{
+			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
+			pDWall = event.mpObject1;
+		}
+		else
+		{
+			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
+			pDWall = event.mpObject2;
+		}
+
+		// Damage the wall
+		Health* pWallHealth = pDWall->GetComponent<Health>();
+		int damageTaken = 2;
+		pWallHealth->mHitPoints -= damageTaken;
 	}
 
 	void HealthSystem::HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet)
