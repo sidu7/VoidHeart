@@ -9,7 +9,7 @@ namespace BulletHell
 	{
         // Register to Lua
         auto& lua = Hollow::ScriptingManager::Instance().lua;
-        lua.new_usertype<Health>("Stats",
+        lua.new_usertype<Health>("Health",
             sol::constructors<Health()>(),
             "hitPoints", &Health::mHitPoints);
 
