@@ -1,4 +1,5 @@
 #include "Health.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 namespace BulletHell
 {
@@ -6,6 +7,13 @@ namespace BulletHell
 
 	void Health::Init()
 	{
+        // Register to Lua
+        auto& lua = Hollow::ScriptingManager::Instance().lua;
+        lua.new_usertype<Health>("Stats",
+            sol::constructors<Health()>(),
+            "hitPoints", &Health::mHitPoints);
+
+        Hollow::ScriptingManager::Instance().mGameObjectType["GetHealth"] = &Hollow::GameObject::GetComponent<Health>;
 	}
 
 	void Health::Serialize(rapidjson::Value::Object data)
