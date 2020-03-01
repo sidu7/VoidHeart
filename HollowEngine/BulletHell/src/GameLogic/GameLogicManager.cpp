@@ -34,6 +34,11 @@ namespace BulletHell
 	{
 		// Preload all rooms into map
 		InitializeRoomsMap();
+		mPickupPrefabNames.push_back("Pickup_Damage");
+		mPickupPrefabNames.push_back("Pickup_HP");
+		mPickupPrefabNames.push_back("Pickup_Invincible");
+		mPickupPrefabNames.push_back("Pickup_RateOfFire");
+		mPickupPrefabNames.push_back("Pickup_Speed");
 		std::cout << "Initialized: GameLogicManager" << std::endl; 
 	}
 
@@ -59,11 +64,6 @@ namespace BulletHell
         BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
         Hollow::SystemManager::Instance().OnSceneInit();
 
-		mPickupPrefabNames.push_back("Pickup_Damage");
-		mPickupPrefabNames.push_back("Pickup_HP");
-		mPickupPrefabNames.push_back("Pickup_Invincible");
-		mPickupPrefabNames.push_back("Pickup_RateOfFire");
-		mPickupPrefabNames.push_back("Pickup_Speed");
 
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
 		mCountDeadEnemies = 0;
@@ -328,9 +328,9 @@ namespace BulletHell
 			if (mCountDeadEnemies > mRandomCount)
 			{
 				mCountDeadEnemies = 0;
-				mRandomCount = Random::RangeSeeded(3, 5);
+				mRandomCount = Random::RangeSeeded(5, 9);
 
-				int randomIndex = Random::RangeSeeded(0, 5);
+				int randomIndex = Random::RangeSeeded(0, mPickupPrefabNames.size()-1);
 				
 				Hollow::Transform* pTr = event.mpObject1->GetComponent<Hollow::Transform>();
 				Hollow::ResourceManager::Instance().LoadPrefabAtPosition(mPickupPrefabNames[randomIndex], pTr->mPosition);
@@ -338,13 +338,21 @@ namespace BulletHell
 		}
 	}
 
-	// TODO Room pickups should have permanent abilities and should be stronger than enemy drops
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)
     {
         glm::ivec2 coords = room.GetCoords();
-        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Pickup_HP",
-            glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
+		int randomIndex = Random::RangeSeeded(0, mPickupPrefabNames.size()-1);
+
+        Hollow::GameObject* pGo = Hollow::ResourceManager::Instance().LoadPrefabAtPosition(
+				mPickupPrefabNames[randomIndex],
+             glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
                 1.5,
                 coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2));
+
+    	// make the effect time zero ie make it permanent
+    	Pickup* pP = pGo->GetComponent<Pickup>();
+		pP->mEffectTime = 0.0f;
+    	// make the effect stronger
+		pP->mBuffValue = Random::RangeSeeded(1.2f, 2.0f) * pP->mBuffValue;
     }
 }

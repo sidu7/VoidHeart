@@ -168,8 +168,8 @@ namespace BulletHell
 	void MagicSystem::UpdateSpellCooldowns(Magic* pMagic)
 	{
 		CharacterStats* pStats = pMagic->mpOwner->GetComponent<CharacterStats>();
-		int cooldownAmount = mDeltaTime * pStats->mFireRate;
-
+		float cooldownAmount = mDeltaTime * pStats->mFireRate;
+		
 		// Updated all spell cooldowns for left AND right hand
 		for (auto& spell : pMagic->mBasicSpells)
 		{
