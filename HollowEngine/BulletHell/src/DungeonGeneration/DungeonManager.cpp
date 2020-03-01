@@ -13,6 +13,12 @@
 #include "Components/Attack.h"
 #include "GameLogic/GameLogicManager.h"
 
+#include "Hollow/Managers/GameObjectManager.h"
+#include "Hollow/Components/Body.h"
+#include "Hollow/Components/Collider.h"
+#include "Hollow/Core/GameObject.h"
+#include "Hollow/Physics/Broadphase/Shape.h"
+
 namespace BulletHell
 {
 	DungeonManager::DungeonManager() : mSeed(0) { std::cout << "Initialized: DungeonManager" << std::endl; }
@@ -69,6 +75,7 @@ namespace BulletHell
 		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
 		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
+		lua.set_function("DCastRay", &DungeonManager::CastRay, std::ref(DungeonManager::Instance()));
 
 		
 		// Add to ImGui display
@@ -166,6 +173,37 @@ namespace BulletHell
     void DungeonManager::DebugDisplay()
 	{
 		ImGui::Text("Seed: %u", mSeed);
+	}
+
+	float DungeonManager::CastRay()
+	{
+		Hollow::Transform* pPlTr = mpPlayerGo->GetComponent<Hollow::Transform>();
+		Ray r{ pPlTr->mPosition, glm::normalize(pPlTr->GetForward()) };
+
+		IntersectionData id, closest;
+		closest.object = nullptr;
+		closest.depth = std::numeric_limits<float>::max();
+
+		// simple but inefficient solution
+		for (int i = 0; i < Hollow::GameObjectManager::Instance().GetGameObjects().size(); ++i) {
+			Hollow::GameObject* pGO = Hollow::GameObjectManager::Instance().GetGameObjects()[i];
+
+			if (pGO->mType != (int)GameObjectType::WALL && pGO->mType != (int)GameObjectType::DOOR)
+			{
+				continue;
+			}
+			
+			Hollow::Shape* shape = pGO->GetComponent<Hollow::Collider>()->mpShape;
+			glm::mat3& rot = pGO->GetComponent<Hollow::Body>()->mRotationMatrix;
+			glm::vec3 extents = pGO->GetComponent<Hollow::Transform>()->mScale;
+
+			if (shape->TestRay(r, id, rot, extents)) {
+				if (id.depth < closest.depth) {
+					closest = id;
+				}
+			}
+		}
+		return closest.depth;
 	}
 	
     void DungeonManager::OnDeath(Hollow::GameEvent& event)

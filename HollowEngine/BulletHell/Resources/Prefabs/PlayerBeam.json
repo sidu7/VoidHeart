@@ -1,0 +1,49 @@
+{
+    "Type": "PLAYER_AOE",
+    "Tag": "AirEarth",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.0, 0.0, 0.0 ],
+            "Scale": [ 1.0, 1.0, 3.0 ]
+        },
+        {
+            "Type": "Body",
+            "Mass": 0.00001,
+            "RigidbodyType": "STATIC",
+            "UseGravity": false
+        },
+        {
+            "Type": "Collider",
+            "Shape": "BOX"
+        },
+        {
+            "Type": "Model",
+            "Shape": "CUBE",
+            "CastShadow": false
+        },
+        {
+            "Type": "Material",
+            "Specular": [ 0.0, 0.0, 0.0 ],
+            "Diffuse": [ 10.0, 10.0, 5.0 ],
+            "Shininess": 1000.0,
+            "Transparent": true,
+            "AlphaValue": 0.2
+        },
+        {
+            "Type": "Script",
+            "Scripts": [ "Rotate", "DynamicScaleZ" ]
+        },
+		{
+            "Type": "ParentOffset",
+            "Parent": 0,
+            "Offset": [ 0.0, 0.0, 0.0 ],
+            "Tag": "Beam",
+            "UseForward": true
+        },
+		{
+            "Type": "DestroyTimer",
+            "MaxTime": 3.0
+        }
+    ]
+}
