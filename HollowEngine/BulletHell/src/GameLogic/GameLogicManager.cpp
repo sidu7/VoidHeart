@@ -78,6 +78,9 @@ namespace BulletHell
         int currentFloor = lua["currentFloor"].get<int>();
         DungeonManager::Instance().GetFloor(currentFloor).ResetFloor();
         currentFloor++;
+
+		HW_TRACE("{0}", currentFloor);
+    	
         lua["currentFloor"] = currentFloor;
         Hollow::SceneManager::Instance().LoadLevel("Level3");
         DungeonManager::Instance().Construct(currentFloor);
