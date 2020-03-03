@@ -29,6 +29,7 @@ namespace BulletHell
         while (!SetSeed(randomizer()));
         {
         }
+        //SetSeed(1777913080);
         //mSeed = 521288629;
         //mSeed = 1993539175;
         
@@ -44,6 +45,7 @@ namespace BulletHell
 			sol::constructors<DungeonFloor()>(),
 			"GetRoom", &DungeonFloor::GetRoom,
 			"GetRoomFromIndex", &DungeonFloor::GetRoomFromIndex,
+			"GetFloorNum", &DungeonFloor::GetFloorNumber,
 			"GetRegularRoom", &DungeonFloor::GetRegularRoom,
 			"GetRoomCount", &DungeonFloor::GetRoomCount,
 			"GetEntrance", &DungeonFloor::GetEntrance,

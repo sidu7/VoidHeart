@@ -13,9 +13,9 @@ namespace BulletHell
 	class PickupTimedEvent : public Hollow::GameEvent
 	{
 	public:
-		PickupTimedEvent(Pickup* p) : Hollow::GameEvent((int)GameEventType::ON_PICKUP_COLLECT), mpPickup(p) {}
+		PickupTimedEvent(Pickup* p) : Hollow::GameEvent((int)GameEventType::ON_PICKUP_EFFECT_END), mPickup(*p) {}
 	public:
-		Pickup* mpPickup;
+		Pickup mPickup;
 	};
 
 }

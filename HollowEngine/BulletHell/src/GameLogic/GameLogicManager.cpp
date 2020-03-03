@@ -6,8 +6,10 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
+#include "Hollow/Managers/EventManager.h"
 
 #include "Hollow/Components/Script.h"
+#include "Hollow/Components/Transform.h"
 
 #include "Components/Attack.h"
 #include "Components/Pickup.h"
@@ -32,6 +34,11 @@ namespace BulletHell
 	{
 		// Preload all rooms into map
 		InitializeRoomsMap();
+		mPickupPrefabNames.push_back("Pickup_Damage");
+		mPickupPrefabNames.push_back("Pickup_HP");
+		mPickupPrefabNames.push_back("Pickup_Invincible");
+		mPickupPrefabNames.push_back("Pickup_RateOfFire");
+		mPickupPrefabNames.push_back("Pickup_Speed");
 		std::cout << "Initialized: GameLogicManager" << std::endl; 
 	}
 
@@ -56,6 +63,12 @@ namespace BulletHell
 
         BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
         Hollow::SystemManager::Instance().OnSceneInit();
+
+
+		mRandomCount = 3; // first drop after 3 enemies... then randomize
+		mCountDeadEnemies = 0;
+
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(GameLogicManager::DropRandomPickup));
     }
 
     void GameLogicManager::MoveToNextFloor()
@@ -78,6 +91,7 @@ namespace BulletHell
     {
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_SHIELD, EVENT_CALLBACK(GameLogicManager::OnBulletHitShield));
     }
 
@@ -88,57 +102,32 @@ namespace BulletHell
 		Hollow::GameObject* pPlayer = event.mpObject1->mType == (int)GameObjectType::PLAYER ? event.mpObject1 : event.mpObject2;
 
 		Pickup* pPickup = pPickupObject->GetComponent<Pickup>();
-		CharacterStats* pStats = pPlayer->GetComponent<CharacterStats>();
-		
-		switch (pPickup->mPickupType)
-		{
-		case PickupType::HP:
-		{
-			Health* pHp = pPlayer->GetComponent<Health>();
-			pHp->mHitPoints += pPickup->mBuffValue;
-			break;
-		}
-		case PickupType::DASH:
-		{
-			pStats->mDashSpeed += pPickup->mBuffValue;	
-			break;
-		}
-		case PickupType::DAMAGE:
-		{
-			pStats->mDamage += pPickup->mBuffValue;
-			break;
-		}
-		case PickupType::SPEED:
-		{
-			pStats->mMovementSpeed += pPickup->mBuffValue;
-			break;
-		}
-		case PickupType::RATE_OF_FIRE:
-		{
-			pStats->mFireRate *= pPickup->mBuffValue;
-			break;
-		}
-		}
+		AddBuffs(pPlayer, pPickup);
 
 		if (pPickup->mEffectTime > 0.0f)
 		{
-			PickupTimedEvent* pEvent = new PickupTimedEvent(pPickup);
-			Hollow::EventManager::Instance().AddDelayedEvent(pEvent, pPickup->mEffectTime);
+			float effectTime = pPickup->mEffectTime;
 
 			// change pickup so that its effects are reversed after the given time
 			pPickup->mEffectTime = 0.0f;
+			pPickup->mBuffValue = -pPickup->mBuffValue;
+			
+			// create a pickup timed event
+			PickupTimedEvent* pEvent = new PickupTimedEvent(pPickup);
+			pEvent->mpObject1 = pPlayer;
 
-			if (pPickup->mPickupType == PickupType::RATE_OF_FIRE)
-			{
-				pPickup->mBuffValue = 1.0f/pPickup->mBuffValue;
-			}
-			else
-			{
-				pPickup->mBuffValue = -pPickup->mBuffValue;
-			}
+			Hollow::EventManager::Instance().AddDelayedEvent(pEvent, effectTime);
+
 		}
-    	
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
+	}
+
+	void GameLogicManager::OnPickupEffectEnd(Hollow::GameEvent& event)
+	{
+		PickupTimedEvent* pte = dynamic_cast<PickupTimedEvent*>(&event);
+
+		// Add the buffs to the object
+		AddBuffs(pte->mpObject1, &pte->mPickup);
 	}
 
     Hollow::GameObject* GameLogicManager::GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset)
@@ -192,6 +181,52 @@ namespace BulletHell
 
 		// Do the same for boss rooms
 		LoadRoomJsons("Boss/Room", MAX_BOSS_ROOMS);
+	}
+
+	void GameLogicManager::AddBuffs(Hollow::GameObject* pPlayer, Pickup* pPickup)
+	{
+		CharacterStats* pStats = pPlayer->GetComponent<CharacterStats>();
+
+		switch (pPickup->mPickupType)
+		{
+		case PickupType::HP:
+		{
+			Health* pHp = pPlayer->GetComponent<Health>();
+			pHp->mHitPoints += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::DASH:
+		{
+			pStats->mDashSpeed += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::DAMAGE_FACTOR:
+		{
+			pStats->mDamageFactor += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::SPEED_FACTOR:
+		{
+			pStats->mMovementSpeedFactor += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::SPEED:
+		{
+			pStats->mMovementSpeed += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::RATE_OF_FIRE:
+		{
+			pStats->mFireRate += pPickup->mBuffValue;
+			break;
+		}
+		case PickupType::INVINCIBILITY:
+		{
+			Health* pHp = pPlayer->GetComponent<Health>();
+			pHp->mInvincibleTime += pPickup->mBuffValue;
+			break;
+		}
+		}
 	}
 
 	void GameLogicManager::LoadRoomJsons(std::string roomPrefix, int count)
@@ -281,12 +316,40 @@ namespace BulletHell
 		}
 	}
 
+	void GameLogicManager::DropRandomPickup(Hollow::GameEvent& event)
+	{
+		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
+		{
+			mCountDeadEnemies++;
+
+			if (mCountDeadEnemies > mRandomCount)
+			{
+				mCountDeadEnemies = 0;
+				mRandomCount = Random::RangeSeeded(5, 9);
+
+				int randomIndex = Random::RangeSeeded(0, mPickupPrefabNames.size()-1);
+				
+				Hollow::Transform* pTr = event.mpObject1->GetComponent<Hollow::Transform>();
+				Hollow::ResourceManager::Instance().LoadPrefabAtPosition(mPickupPrefabNames[randomIndex], pTr->mPosition);
+			}
+		}
+	}
+
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)
     {
         glm::ivec2 coords = room.GetCoords();
-        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Pickup_HP",
-            glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
+		int randomIndex = Random::RangeSeeded(0, mPickupPrefabNames.size()-1);
+
+        Hollow::GameObject* pGo = Hollow::ResourceManager::Instance().LoadPrefabAtPosition(
+				mPickupPrefabNames[randomIndex],
+             glm::vec3(coords.y * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
                 1.5,
                 coords.x * DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2));
+
+    	// make the effect time zero ie make it permanent
+    	Pickup* pP = pGo->GetComponent<Pickup>();
+		pP->mEffectTime = 0.0f;
+    	// make the effect stronger
+		pP->mBuffValue = Random::RangeSeeded(1.2f, 2.0f) * pP->mBuffValue;
     }
 }

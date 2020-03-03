@@ -96,8 +96,10 @@
     },
     {
         "Type": "CharacterStats",
-        "MovementSpeed": 70.0,
+        "MovementSpeed": 1000.0,
+        "MovementSpeedFactor": 1.0,
         "RateOfFire": 1.0,
+        "DamageFactor": 1.0,
         "DashSpeed" :  1000.0
     },
     {
