@@ -8,14 +8,26 @@ function PlayerAttack ()
 		local body = go:GetBody()
 		body.position = attackPosition
 		
-		local xVelocity = GetAxis(CONTROLLER["RX"])
-		local zVelocity = GetAxis(CONTROLLER["RY"])
-		local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
-		xVelocity = xVelocity / totalVelocity
-		zVelocity = zVelocity / totalVelocity
+        local rot = vec3.new(transform.rotation)
+        local angle = rot.y
+        --print(angle)
+        angle = angle * math.pi / 180
+        local xDir = math.cos(angle)
+        local zDir = math.sin(angle)
+            
+		local xDirRightStick = GetAxis(CONTROLLER["RX"])
+		local zDirRightStick = GetAxis(CONTROLLER["RY"])
+		local totalVelocity = math.sqrt(xDirRightStick*xDirRightStick + zDirRightStick*zDirRightStick)
+        xDirRightStick = xDirRightStick / totalVelocity
+		zDirRightStick = zDirRightStick / totalVelocity
+		
+        if ((xDirRightStick < - 16000) or (xDirRightStick > 16000) or (zDirRightStick < -16000) or (zDirRightStick > 16000)) then 
+            xDir = xDirRightStick
+            zDir = zDirRightStick
+        end
 		
 		local attackSpeed = 70.0
-		body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
+		body.velocity = attackSpeed * vec3.new(xDir, 0.0, zDir)
 
 		local transform = go:GetTransform()
 		transform.position = body.position

@@ -43,7 +43,7 @@ function FollowPlayer(isScared)
 	if (isScared == true) then 
         if (dirLength < scareDistance) then
             body.velocity.x = scareDistance * body.velocity.x * -1
-            body.velocity.y = scareDistance * body.velocity.y * -1
+            body.velocity.z = scareDistance * body.velocity.z * -1
         else
             body.velocity = vec3.new(0.0, 0.0, 0.0)
         end    
@@ -108,7 +108,9 @@ function MoveInCirle()
     end
 
 	-- Get Direction to move in circle
+    local scale = transform.scale
 	local playerVec = targetPos - selfPos
+    transform.position.y = targetPos.y + scale.y /2
 	local Y = vec3.new(0,1,0)
 	local direction = VecNormalize(VecCross(Y,playerVec));
 	-- if enemy collides with wall reverse direction VecCross(Y,playerVec)
@@ -135,11 +137,12 @@ function MoveInCirle()
 end
 
 function Update()
+    local maxHealth = 200; 
 	local health = gameObject:GetHealth()
     local hitPoints = health.hitPoints
-    if (hitPoints < 33) then
+    if (hitPoints < maxHealth / 3) then
         FollowPlayer(true)
-    elseif (hitPoints < 66) then
+    elseif (hitPoints < maxHealth * 2 / 3) then
         MoveInCirle()
     else
         FollowPlayer(false)

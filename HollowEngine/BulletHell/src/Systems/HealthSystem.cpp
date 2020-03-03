@@ -19,6 +19,7 @@
 #include "GameMetaData/GameObjectType.h"
 
 #include "Components/Health.h"
+#include "Components/CharacterStats.h"
 #include "Events/DeathEvent.h"
 
 namespace BulletHell
@@ -342,6 +343,13 @@ namespace BulletHell
 
 		int damage = mMapBulletDamage[pBullet->mTag];
 		
+		CharacterStats* pStats = pObjectHit->GetComponent<CharacterStats>();
+
+		if (pStats)
+		{
+			damage *= pStats->mDamageFactor;
+		}
+
 		// Decrease player health, object hit must have a health component
 		Health* pHealth = pObjectHit->GetComponent<Health>();
 		if (pHealth && !pHealth->mInvincible)

@@ -4,6 +4,7 @@
 #include "Components/Attack.h"
 #include "Components/Magic.h"
 #include "Components/Spell.h"
+#include "Components/CharacterStats.h"
 
 #include "Events/CycleSpellEvent.h"
 
@@ -166,17 +167,20 @@ namespace BulletHell
 
 	void MagicSystem::UpdateSpellCooldowns(Magic* pMagic)
 	{
+		CharacterStats* pStats = pMagic->mpOwner->GetComponent<CharacterStats>();
+		float cooldownAmount = mDeltaTime * pStats->mFireRate;
+		
 		// Updated all spell cooldowns for left AND right hand
 		for (auto& spell : pMagic->mBasicSpells)
 		{
-			spell.second->mLeftHandCooldown = std::max(0.0f, spell.second->mLeftHandCooldown - mDeltaTime);
-			spell.second->mRightHandCooldown = std::max(0.0f, spell.second->mRightHandCooldown - mDeltaTime);
+			spell.second->mLeftHandCooldown = std::max(0.0f, spell.second->mLeftHandCooldown - cooldownAmount);
+			spell.second->mRightHandCooldown = std::max(0.0f, spell.second->mRightHandCooldown - cooldownAmount);
 		}
 
 		// Update all combined spell cooldowns
 		for (auto& spell : pMagic->mCombinedSpells)
 		{
-			spell.second->mCombinedCooldown = std::max(0.0f, spell.second->mCombinedCooldown - mDeltaTime);
+			spell.second->mCombinedCooldown = std::max(0.0f, spell.second->mCombinedCooldown - cooldownAmount);
 		}
 	}
 

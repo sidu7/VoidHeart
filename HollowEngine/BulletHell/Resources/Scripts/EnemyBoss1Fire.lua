@@ -79,21 +79,29 @@ function FlameThrower()
     local targetTransform = target:GetTransform()
     local targetPos = targetTransform.position
     local transform = gameObject:GetTransform()
-	local spawnPos = transform.position
+	local spawnPos = vec3.new(transform.position.x, transform.position.y, transform.position.z)
+    spawnPos.y = spawnPos.y + transform.scale.y * 0.30
+    local forward = vec3. new(transform:forward().x, transform:forward().y, transform:forward().z)
+    forward = VecNormalize(forward)
+	spawnPos = spawnPos + forward
+
 	local go = CreatePrefabAtPosition("PlayerFlames", spawnPos)
     go.type = 5
 	local body = go:GetBody()
 
     -- calculate direction
     local xDir = targetPos.x - spawnPos.x
+    local yDir = targetPos.y - spawnPos.y
 	local zDir = targetPos.z - spawnPos.z
-	local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
+	local dirLength = math.sqrt(xDir*xDir + yDir * yDir + zDir*zDir)
 	local xDirNorm = xDir / dirLength
+    local yDirNorm = yDir / dirLength
 	local zDirNorm = zDir / dirLength
+
 
 	local attackSpeed = 5.0
 	local enemyVelocity = gameObject:GetBody().velocity
-	body.velocity = enemyVelocity + attackSpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
+	body.velocity = enemyVelocity + attackSpeed * vec3.new(xDirNorm, yDirNorm, zDirNorm)
 	-- Add player velocity
 
 	transform = go:GetTransform()
@@ -105,14 +113,15 @@ function FlameThrower()
 end
 
 function Shoot()
+    local maxHealth = 200
     local health = gameObject:GetHealth()
 	local attack = gameObject:GetAttack()
     local hitPoints = health.hitPoints
-    print(hitPoints)
-    if (hitPoints < 33) then
+    --print(hitPoints)
+    if (hitPoints < maxHealth / 3) then
         CreateLargeFireball()
         attack.baseAttackTime = 3
-    elseif (hitPoints < 66) then
+    elseif (hitPoints < maxHealth * 2 / 3) then
         ShootInAllDirections()
         attack.baseAttackTime = 3
     else

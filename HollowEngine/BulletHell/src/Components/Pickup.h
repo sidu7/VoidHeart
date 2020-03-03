@@ -9,8 +9,10 @@ namespace BulletHell
 		HP,
 		DASH,
 		RATE_OF_FIRE,
-		DAMAGE,
-		SPEED
+		DAMAGE_FACTOR,
+		SPEED,
+		SPEED_FACTOR,
+		INVINCIBILITY
 	};
 
 	class Pickup : public Hollow::Component
