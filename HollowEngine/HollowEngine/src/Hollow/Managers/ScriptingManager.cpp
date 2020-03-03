@@ -114,7 +114,8 @@ namespace Hollow
 			sol::constructors<Body()>(),
 			"velocity", &Body::mVelocity,
 			"angularVelocity", &Body::mAngularVelocity,
-			"position", &Body::mPosition
+			"position", &Body::mPosition,
+            "useGravity", &Body::mUseGravity
 		);
 
 		lua.new_usertype<Transform>("Transform",
@@ -152,6 +153,7 @@ namespace Hollow
             "GetScript", &GameObject::GetComponent<Script>,
 			"GetCollider", &GameObject::GetComponent<Collider>,
             "isActive", &GameObject::mActive,
+            "type", &GameObject::mType,
 			"GetCamera", &GameObject::GetComponent<Camera>
 
 			);
