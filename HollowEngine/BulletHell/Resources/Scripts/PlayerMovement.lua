@@ -32,24 +32,20 @@ function Update()
     local transform = gameObject:GetTransform()
     local xDirLeftStick = GetAxis(CONTROLLER["LX"])
     local zDirLeftStick = GetAxis(CONTROLLER["LY"])
-    local rot = transform.rotation
-
+    local rot = vec3.new(transform.rotation.x, transform.rotation.y, transform.rotation.z)
+    --rot = VecNormalize(rot)
     if ((xDirLeftStick < -16000) or (xDirLeftStick > 16000) or (zDirLeftStick < -16000) or (zDirLeftStick > 16000)) then
-
         rot = CalculateRotation(xDirLeftStick, zDirLeftStick)
+        
+        local angle = rot.y
+        angle = angle * math.pi / 180
+        local xDir = math.sin(angle)
+        local zDir = math.cos(angle)
 
-        if IsKeyPressed("W") or zDirLeftStick < -16000 then
-	        impulse = impulse + front;
-        end
-        if IsKeyPressed("S") or zDirLeftStick > 16000 then
-	        impulse = impulse - front;
-        end
-        if IsKeyPressed("A") or xDirLeftStick < -16000 then
-	        impulse = impulse - right;
-        end
-        if IsKeyPressed("D") or xDirLeftStick > 16000 then
-	        impulse = impulse + right;
-        end
+        local magnitude = math.sqrt(xDir*xDir + zDir*zDir)
+        xDir = xDir / magnitude
+        zDir = zDir / magnitude
+        impulse = vec3.new(xDir, 0, zDir)
     end
 
     -- look direction

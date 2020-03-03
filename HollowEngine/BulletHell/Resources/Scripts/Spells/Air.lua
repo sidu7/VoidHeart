@@ -6,7 +6,14 @@ function AirDash()
 
 	local body = gameObject:GetBody()
 	-- Damp Overall Velocity and Rotation
-	local direction = body.velocity
+	local transform = gameObject:GetTransform()
+    local rot = transform.rotation
+    local angle = rot.y
+    angle = angle * math.pi / 180
+    local xDir = math.sin(angle)
+    local zDir = math.cos(angle)
+
+	local direction = vec3.new(xDir, 0, zDir)--body.velocity
 	local magnitude = math.sqrt(direction.x*direction.x + direction.y*direction.y + direction.z*direction.z)
 	if magnitude > 0.001 then
 		direction.x = direction.x / magnitude
