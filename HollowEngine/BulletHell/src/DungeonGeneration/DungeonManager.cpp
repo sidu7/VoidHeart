@@ -29,6 +29,7 @@ namespace BulletHell
         while (!SetSeed(randomizer()));
         {
         }
+        //SetSeed(1777913080);
         //mSeed = 521288629;
         //mSeed = 1993539175;
         

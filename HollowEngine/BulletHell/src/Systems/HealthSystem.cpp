@@ -32,6 +32,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnBulletHitPlayer));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_FLOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitFloor));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
@@ -221,6 +222,18 @@ namespace BulletHell
         }
     }
 
+    void HealthSystem::OnBulletHitFloor(Hollow::GameEvent& event)
+    {
+        if (event.mpObject1->mType == (int)GameObjectType::FLOOR)
+        {
+            Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
+        }
+        else
+        {
+            Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
+        }
+    }
+
 	void HealthSystem::OnPlayerBulletHitEnemy(Hollow::GameEvent& event)
 	{		
 		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
@@ -316,7 +329,7 @@ namespace BulletHell
 
 		// Decrease player health, object hit must have a health component
 		Health* pHealth = pObjectHit->GetComponent<Health>();
-		if (!pHealth->mInvincible)
+		if (pHealth && !pHealth->mInvincible)
 		{
 			pHealth->mHitPoints = pHealth->mHitPoints - damage;
 		}		

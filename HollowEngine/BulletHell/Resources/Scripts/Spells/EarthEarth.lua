@@ -35,14 +35,26 @@ end
 function ReleaseRock()
 	local body = rockObject:GetBody()
 	if body then
+    
+        local transform = gameObject:GetTransform()
+        local rot = transform.rotation
+        local angle = rot.y
+        angle = angle * math.pi / 180
+        local xDir = math.sin(angle)
+        local zDir = math.cos(angle)
+
 		local xVelocity = GetAxis(CONTROLLER["RX"])
-		local zVelocity = GetAxis(CONTROLLER["RY"])
-		local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
-		xVelocity = xVelocity / totalVelocity
-		zVelocity = zVelocity / totalVelocity
+	    local zVelocity = GetAxis(CONTROLLER["RY"])
+        if ((xVelocity < - 16000) or (xVelocity > 16000) or (zVelocity < -16000) or (zVelocity > 16000)) then 
+            local totalVelocity = math.sqrt(xVelocity*xVelocity + zVelocity*zVelocity)
+            xVelocity = xVelocity / totalVelocity
+            zVelocity = zVelocity / totalVelocity
+            xDir = xVelocity
+            zDir = zVelocity
+        end
 		
 		local attackSpeed = 70.0
-		body.velocity = attackSpeed * vec3.new(xVelocity, 0.0, zVelocity)
+		body.velocity = attackSpeed * vec3.new(xDir, 0.0, zDir)
 	end
 	rockObject = nil
 	

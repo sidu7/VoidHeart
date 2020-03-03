@@ -131,7 +131,7 @@ namespace BulletHell
 		PickupTimedEvent* pte = dynamic_cast<PickupTimedEvent*>(&event);
 
 		// Add the buffs to the object
-		AddBuffs(pte->mpObject1, &pte->mpPickup);
+		AddBuffs(pte->mpObject1, &pte->mPickup);
 	}
 
     Hollow::GameObject* GameLogicManager::GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset)
@@ -229,9 +229,7 @@ namespace BulletHell
 			Health* pHp = pPlayer->GetComponent<Health>();
 			pHp->mInvincibleTime += pPickup->mBuffValue;
 			break;
-			break;
 		}
-
 		}
 	}
 

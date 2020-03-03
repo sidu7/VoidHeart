@@ -39,7 +39,9 @@ function MoveInCirle()
     end
 
 	-- Get Direction to move in circle
+    local scale = transform.scale
 	local playerVec = targetPos - selfPos
+    transform.position.y = targetPos.y + scale.y / 2
 	local Y = vec3.new(0,1,0)
 	local direction = VecNormalize(VecCross(Y,playerVec));
 	-- if enemy collides with wall reverse direction VecCross(Y,playerVec)

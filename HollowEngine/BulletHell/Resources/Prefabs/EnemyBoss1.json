@@ -47,17 +47,17 @@
     {
       "Type": "Script",
       "Scripts": [
-        "EnemyFollowsPlayer"
+        "EnemyBoss1Movement"
       ]
     },
     {
       "Type": "Attack",
-      "Script": "ShootInCardinalDirections",
+      "Script": "EnemyBoss1Fire",
       "BaseAttackTime": 0.4
     },
     {
       "Type": "Health",
-      "HitPoints": 100,
+      "HitPoints": 200,
       "IsAlive": true,
       "Invincible": false,
       "InvincibleTime": 3.0
