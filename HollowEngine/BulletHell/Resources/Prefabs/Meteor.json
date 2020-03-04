@@ -1,17 +1,17 @@
 {
     "Type": "PLAYER_BULLET_LOB",
-    "Tag": "FIREFIRE",
+    "Tag": "FIREEARTH",
     "Components": [
         {
             "Type": "Transform",
             "Position": [ 0.0, 0.0, 0.0 ],
-            "Scale": [ 0.5, 0.5, 0.5 ]
+            "Scale": [ 2.5, 2.5, 2.5 ]
         },
         {
             "Type": "Body",
-            "Mass": 20.0,
+            "Mass": 0.00001,
             "RigidbodyType": "DYNAMIC",
-            "UseGravity": true
+            "UseGravity": false
         },
         {
             "Type": "Collider",
@@ -25,13 +25,13 @@
         {
             "Type": "Material",
             "Specular": [ 1.0, 1.0, 1.0 ],
-            "Diffuse": [ 0.0, 5.0, 0.0 ],
+            "Diffuse": [ 0.65, 0.16, 0.16 ],
             "Shininess": 10.0,
             "Texture": "Resources/Textures/cracks.png"
         },
         {
             "Type": "Script",
-            "DestroyScripts": [ "Destroy/CreateFireballs" ]
+            "DestroyScripts": [ "Destroy/CreateMeteorSplash" ]
         },
         {
             "Type": "ParticleEmitter",
