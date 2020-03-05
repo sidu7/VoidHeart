@@ -16,7 +16,7 @@ local coords = floor:GetEntrance():GetCoords()
 --player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 local gameObjectPath = "Resources/Json data/Camera.json"
-local camera = CreateGameObject(gameObjectPath)
+camera = CreateGameObject(gameObjectPath)
 
 -- generate a spell in front of the player in the entrance room on the first floor
 if(currentFloor == 0) then
