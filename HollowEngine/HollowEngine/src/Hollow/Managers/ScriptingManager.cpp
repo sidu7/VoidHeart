@@ -152,6 +152,8 @@ namespace Hollow
 			"position", &Light::mPosition
 			);
 
+		// Testing branches
+
 		// GAMEOBJECT
         mGameObjectType = lua.new_usertype<GameObject>("GameObject",
             sol::constructors<GameObject()>(),
