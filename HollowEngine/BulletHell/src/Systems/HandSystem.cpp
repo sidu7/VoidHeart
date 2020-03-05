@@ -171,6 +171,9 @@ namespace BulletHell
 
 		// Create combined hand UI
 		mpCombinedHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(600, 128), "Resources/Textures/UICombined.png");
+
+		// Create combined hand Cooldown UI
+		mpCombinedCooldownUI = CreateCooldownUIObject(glm::vec2(UIScale, UIScale), glm::vec2(600, 128), "Resources/Textures/UICombinedCooldown.png");
 	}
 
 	void HandSystem::SubscribeToEvents()
@@ -181,6 +184,24 @@ namespace BulletHell
 	Hollow::GameObject* HandSystem::CreateUIObject(const glm::vec2& scale, const glm::vec2& position, const std::string& texturePath)
 	{
 		Hollow::GameObject* UIObject = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/UIIcon.json");
+		// Set UI position
+		Hollow::UITransform* pUITr = UIObject->GetComponent<Hollow::UITransform>();
+		pUITr->mScale = scale;
+		pUITr->mPosition = position;
+		//pUITr->mRotation;
+
+		// Set UI Texture
+		Hollow::UIImage* pUIImage = UIObject->GetComponent<Hollow::UIImage>();
+		pUIImage->TexturePath = texturePath;
+		pUIImage->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(texturePath);
+		pUIImage->mColor = glm::vec3(0.0f, 0.0f, 0.0f);
+
+		return UIObject;
+	}
+
+	Hollow::GameObject* HandSystem::CreateCooldownUIObject(const glm::vec2& scale, const glm::vec2& position, const std::string& texturePath)
+	{
+		Hollow::GameObject* UIObject = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/UICooldownIcon.json");
 		// Set UI position
 		Hollow::UITransform* pUITr = UIObject->GetComponent<Hollow::UITransform>();
 		pUITr->mScale = scale;

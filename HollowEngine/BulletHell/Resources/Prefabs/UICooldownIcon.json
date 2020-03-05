@@ -1,0 +1,21 @@
+{
+  "Type": "UIICON",
+  "Components": [
+    {
+      "Type": "UITransform",
+      "Position": [ 0, 0 ],
+      "Scale": [ 1, 1 ]
+    },
+    {
+      "Type": "UIImage",
+      "Image": "Resources/Textures/UICombined.png",
+      "Shape": "QUAD",
+      "Color": [ 0.0, 0.0, 0.0 ],
+      "Alpha": 0.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": ["UICooldownScale"]
+    }
+  ]
+}

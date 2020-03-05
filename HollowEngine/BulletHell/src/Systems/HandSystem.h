@@ -15,6 +15,7 @@ namespace BulletHell
         void OnDeleteAllGameObjects() override;
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
         static Hollow::GameObject* CreateUIObject(const glm::vec2& scale, const glm::vec2& position, const std::string& texturePath);
+		static Hollow::GameObject* CreateCooldownUIObject(const glm::vec2& scale, const glm::vec2& position, const std::string& texturePath);
 	    
 	private:
 		void CreateUIObjects();
@@ -28,6 +29,7 @@ namespace BulletHell
 		Hollow::GameObject* mpLeftHandUI;
 		Hollow::GameObject* mpRightHandUI;
 		Hollow::GameObject* mpCombinedHandUI;
+		Hollow::GameObject* mpCombinedCooldownUI;
 
 		Hollow::GameObject* mpLeftHand;
 		Hollow::GameObject* mpRightHand;
