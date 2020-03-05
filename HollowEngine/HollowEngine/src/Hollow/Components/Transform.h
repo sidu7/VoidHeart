@@ -45,7 +45,8 @@ namespace Hollow
 		glm::vec3 mPosition;					// mPosition is x,y,z
 		glm::vec3 mScale;						// mScale is x,y,z
 		glm::vec3 mRotation;					// mRotation is degree for x,y,z
-		glm::mat4 mTransformationMatrix;		// Transformation Matrix
+        glm::mat3 mRotationMatrix;
+        glm::mat4 mTransformationMatrix;		// Transformation Matrix
 		glm::mat4 mDebugTransformationMatrix;	// Debug Transformation Matrix
 		glm::mat4 mPreviousTransformationMatrix;// For PostProcessing effects
 		glm::fquat mQuaternion;					// mQuaternion Do not mess if you don't know this

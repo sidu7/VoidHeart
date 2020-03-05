@@ -11,6 +11,7 @@ namespace Hollow {
 		mPosition = glm::vec3(0.0f,0.0f,0.0f);					
 		mScale = glm::vec3(1.0f, 1.0f, 1.0f);
 		mRotation = glm::vec3(0.0f, 0.0f, 0.0f);
+        mRotationMatrix = glm::mat3(1.0f);
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mTransformationMatrix = glm::mat4(1.0f);
 		mDebugTransformationMatrix = glm::mat4(1.0f);
@@ -72,6 +73,8 @@ namespace Hollow {
         rotate = glm::rotate(rotate, glm::radians(angles.y), glm::vec3(0.0f, 1.0f, 0.0f));
         rotate = glm::rotate(rotate, glm::radians(angles.z), glm::vec3(0.0f, 0.0f, 1.0f));
         mQuaternion = glm::toQuat(rotate);
+
+        mRotationMatrix = rotate;
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, mPosition);
