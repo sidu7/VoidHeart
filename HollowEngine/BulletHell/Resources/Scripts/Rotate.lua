@@ -25,10 +25,10 @@ function Rotate()
 	
 	local xDirLeftStick = GetAxis(CONTROLLER["LX"])
     local zDirLeftStick = GetAxis(CONTROLLER["LY"])
-    local rot = transform.rotation
+    local playerTransform = player:GetTransform()
+    local rot = vec3.new(playerTransform.rotation.x, playerTransform.rotation.y, playerTransform.rotation.z)
 
     if ((xDirLeftStick < -16000) or (xDirLeftStick > 16000) or (zDirLeftStick < -16000) or (zDirLeftStick > 16000)) then
-
         rot = CalculateRotation(xDirLeftStick, zDirLeftStick)
 
     end
@@ -41,7 +41,7 @@ function Rotate()
     end
 
     transform:Rotate(rot)
-
+        
 end
 
 Rotate()
