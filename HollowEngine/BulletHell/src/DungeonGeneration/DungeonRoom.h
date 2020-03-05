@@ -66,5 +66,7 @@ namespace BulletHell
         int mColumn;   // position in the grid of the floor
         int mRow;      // position in the grid of the floor
         int mDistFromEntrance;
+
+		float mLightOffsetFromDoor;
     };
 }

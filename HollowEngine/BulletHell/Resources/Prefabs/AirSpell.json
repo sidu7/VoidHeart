@@ -36,7 +36,8 @@
       "UIRotation": 3.14159,
       "ParticleSize": 0.0,
       "ParticleTexture": "Resources/Textures/cracks.png",
-      "Cooldown": 0.5
+      "Cooldown": 0.5,
+      "LightColor": [0.4, 0.4, 0.4]
     }
   ]
 }
