@@ -366,6 +366,14 @@ namespace Hollow
 		}
 		ImGui::End();
 
+		if(Hollow::InputManager::Instance().IsKeyTriggered("t"))
+		{
+			FILE* file;
+			fopen_s(&file,"C:\\Users\\spand\\Desktop\\tree.txt", "w+");
+			Hollow::PhysicsManager::Instance().DebugTree(Hollow::PhysicsManager::Instance().mTree.GetRoot(), file);
+			fclose(file);
+		}
+		
 		//================Physics Update======================
 		float dt = FrameRateController::Instance().GetFrameTime();
 

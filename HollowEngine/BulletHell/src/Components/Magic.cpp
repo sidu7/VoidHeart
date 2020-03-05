@@ -122,7 +122,7 @@ namespace BulletHell
 		pCombinedSpell = new Magic::SpellData{ "Fire + Air", "Spells/FireAir", COMBINED,  0.0f, 0.0f, "", 0.1f, "Resources/Textures/FireAir.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::AIR, pCombinedSpell);
 
-		pCombinedSpell = new Magic::SpellData{ "Fire + Earth", "Spells/Empty", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/FireEarth.png" };
+		pCombinedSpell = new Magic::SpellData{ "Fire + Earth", "Spells/FireEarth", COMBINED, 0.0f, 0.0f, "", 5.0f, "Resources/Textures/FireEarth.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::EARTH, pCombinedSpell);
 
 		pCombinedSpell = new Magic::SpellData{ "Fire + Water", "Spells/FireWater", COMBINED, 0.0f, 0.0f, "", 1.0f, "Resources/Textures/FireWater.png" };

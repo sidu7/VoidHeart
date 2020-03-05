@@ -33,7 +33,7 @@ function ShootInAllDirections()
     end
 end
 
-function CreateFireballs ()
+local function CreateFireballs ()
 	ShootInAllDirections()
 end
 
