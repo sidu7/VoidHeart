@@ -3,11 +3,14 @@
 #include "Broadphase.h"
 #include "Hollow/Components/Collider.h"
 #include "Shape.h"
+#include "Hollow/Utils/UniqueID.h"
 
 namespace Hollow {
 	class Node {
 	public:
 		Node() {
+			ID = Hollow::GenerateUniqueID<Node>();
+			
 			aabb = new Hollow::ShapeAABB(glm::vec3(0), glm::vec3(0));
 			left = nullptr;
 			right = nullptr;
@@ -22,6 +25,8 @@ namespace Hollow {
 		Node* right;
 		Node* parent;
 
+		unsigned int ID;
+		
 		int height;
 		void* mClientData;
 

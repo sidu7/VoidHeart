@@ -19,8 +19,9 @@ function CreateLargeFireball()
         zDir = zVelocity
     end
 		
-	local attackSpeed = 25.0
-	body.velocity = attackSpeed * vec3.new(xDir, 0.0, zDir)
+	local attackSpeed = 5.0
+	body.velocity = attackSpeed * vec3.new(xDir, 1.2, zDir)
+	body.position = transform.position + vec3.new(0.0, 0.75, 0.0)
 
 	transform = go:GetTransform()
 	transform.position = body.position

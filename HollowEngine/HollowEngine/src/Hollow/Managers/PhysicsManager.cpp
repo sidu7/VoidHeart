@@ -136,6 +136,49 @@ namespace Hollow {
 	
 	}
 
+	void PhysicsManager::DebugTreeNullNode(Node* key, int nullcount, FILE* stream)
+	{
+		long long nodeAdd = reinterpret_cast<long long>(key);
+		fprintf(stream, "    null%d [shape=point];\n", nullcount);
+		fprintf(stream, "    %u -> null%d;\n", key->ID, nullcount);
+	}
+
+	void PhysicsManager::DebugTreeNode(Node* node, FILE* stream)
+	{
+		static int nullcount = 0;
+
+		if (node->left)
+		{
+			fprintf(stream, "    %u -> %u;\n", node->ID, node->left->ID);
+			DebugTreeNode(node->left, stream);
+		}
+		else
+			DebugTreeNullNode(node, nullcount++, stream);
+
+		if (node->right)
+		{
+			fprintf(stream, "    %u -> %u;\n", node->ID, node->right->ID);
+			DebugTreeNode(node->right, stream);
+		}
+		else
+			DebugTreeNullNode(node, nullcount++, stream);
+	}
+
+	void PhysicsManager::DebugTree(Node* tree, FILE* stream)
+	{
+		fprintf(stream, "digraph BST {\n");
+		fprintf(stream, "    node [fontname=\"Arial\"];\n");
+
+		if (!tree)
+			fprintf(stream, "\n");
+		else if (!tree->right && !tree->left)
+			fprintf(stream, "    %d;\n", tree->ID);
+		else
+			DebugTreeNode(tree, stream);
+
+		fprintf(stream, "}\n");
+	}
+	
 	void PhysicsManager::Init(rapidjson::Value::Object& data)
 	{
 		{
@@ -183,6 +226,18 @@ namespace Hollow {
 			// update local shape (0.5f because we are updating half extents)
 			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f * (pCol->mpTr->mScale);
 			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
+
+			glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
+			glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
+			glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
+			glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
+			glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
+				abs((pCol->mpBody->mRotationMatrix) * y) +
+				abs((pCol->mpBody->mRotationMatrix) * z);
+
+			// based on normalized body vertices
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
 		}
 		else if (pCol->mpShape->mType == ShapeType::BALL)
 		{
