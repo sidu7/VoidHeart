@@ -1,6 +1,6 @@
 {
     "Type": "PLAYER_AOE",
-    "Tag": "AirEarth",
+    "Tag": "AIREARTH",
     "Components": [
         {
             "Type": "Transform",
