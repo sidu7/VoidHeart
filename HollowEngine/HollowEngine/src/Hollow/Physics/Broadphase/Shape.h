@@ -157,6 +157,7 @@ namespace Hollow {
 			while (i < 6 && a <= b) {
 				glm::vec3 pointOnFace = rot * (mMeshData.GetPointOnFace(i) * extents) + GetCenter();
 				glm::vec3 normal = rot * mMeshData.faces[i].normal;
+				
 				if (glm::dot(r.direction, normal) < 0) {
 					data.depth = glm::dot((pointOnFace - r.origin), normal) /
 						glm::dot(r.direction, normal);
@@ -172,7 +173,7 @@ namespace Hollow {
 						b = data.depth;
 					}
 				}
-				else if (glm::dot(r.origin - GetCenter(), normal) > 0) {
+				else if (glm::dot(glm::normalize(r.origin - pointOnFace), normal) > 0) {
 					b = a - 1;
 				}
 

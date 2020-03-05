@@ -153,9 +153,9 @@ namespace Hollow
             "GetScript", &GameObject::GetComponent<Script>,
 			"GetCollider", &GameObject::GetComponent<Collider>,
             "isActive", &GameObject::mActive,
-            "type", &GameObject::mType,
-			"GetCamera", &GameObject::GetComponent<Camera>
-
+			"GetCamera", &GameObject::GetComponent<Camera>,
+			"tag", &GameObject::mTag,
+            "type", &GameObject::mType
 			);
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));

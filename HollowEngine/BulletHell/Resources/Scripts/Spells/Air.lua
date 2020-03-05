@@ -1,7 +1,7 @@
 function AirDash()
     -----------------------------------------
     -- playtesting vars
-	local dashSpeed = player:GetStats().mDashSpeed
+	local dashSpeed = player:GetStats().dashSpeed
     -----------------------------------------
 
 	local body = gameObject:GetBody()

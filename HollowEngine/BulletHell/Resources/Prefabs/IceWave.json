@@ -1,0 +1,43 @@
+{
+    "Type": "PLAYER_SHIELD",
+    "Tag": "WATERWATER",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.5, 1.5, 1.5 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Model",
+      "Shape": "BALL",
+      "CastShadow": false
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 0.0, 2.0, 20.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png",
+      "Transparent": true,
+      "AlphaValue": 0.1
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "RotateMove" ]
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 1.0
+    }
+  ]
+}

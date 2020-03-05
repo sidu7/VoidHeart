@@ -38,6 +38,8 @@ namespace BulletHell
         void Print() const;
    	
 		void DebugDisplay();
+
+		float CastRay();
     private:
         int length;
         int breadth;

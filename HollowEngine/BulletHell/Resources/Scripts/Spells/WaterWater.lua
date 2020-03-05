@@ -2,9 +2,7 @@ function CreateBubbleShield()
 	-----------------------------------------
     -- playtesting vars
 	-----------------------------------------
-	local go = CreatePrefabAtPosition("PlayerBubble", gameObject:GetTransform().position)
-	local body = go:GetBody()
-	
+	local go = CreatePrefabAtPosition("PlayerBubble", gameObject:GetTransform().position)	
 	--PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
 end
 
