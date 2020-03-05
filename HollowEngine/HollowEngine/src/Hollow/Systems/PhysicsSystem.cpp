@@ -94,17 +94,20 @@ namespace Hollow
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			Collider* pCol = mGameObjects[i]->GetComponent<Collider>();
+			Transform* pTrans = mGameObjects[i]->GetComponent<Transform>();
+            
 			if (!pCol->mIsTrigger)
 			{
 				if (pCol->mpShape->mType == BOX)
 				{
+                    glm::mat3& rotMatrix = pTrans->mRotationMatrix;
 					glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
 					glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
 					glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
 					glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-					glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
-						abs((pCol->mpBody->mRotationMatrix) * y) +
-						abs((pCol->mpBody->mRotationMatrix) * z);
+					glm::vec3 rotatedExtents = abs(rotMatrix * x) +
+						abs(rotMatrix * y) +
+						abs(rotMatrix * z);
 
 					// based on normalized body vertices
 					static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
