@@ -24,7 +24,7 @@ function ChargeRock()
 		body.position = body.position + forward
 	end
 	if transform then
-		transform.scale = vec3.new(attack.chargeTime, attack.chargeTime, attack.chargeTime)
+		transform.scale = vec3.new(attack.chargeTime/2.0, attack.chargeTime/2.0, attack.chargeTime/2.0)
 	end
 	-- Update shape radius for physics
 	if body then
