@@ -38,6 +38,10 @@ namespace BulletHell
 		{
 			mCooldown = data["Cooldown"].GetFloat();
 		}
+		if (data.HasMember("LightColor"))
+		{
+			mLightColor = Hollow::JSONHelper::GetVec3F(data["LightColor"].GetArray());
+		}
 	}
 
 	void Spell::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -45,6 +49,7 @@ namespace BulletHell
 		Hollow::JSONHelper::Write<std::string>("Name", mName, writer);
 		Hollow::JSONHelper::Write<std::string>("Script", mScriptPath, writer);
 		Hollow::JSONHelper::Write<int>("SpellType", mSpellType, writer);
+		Hollow::JSONHelper::Write<glm::vec3>("LightColor", mLightColor, writer);
 	}
 
 	void Spell::Clear()
@@ -58,5 +63,6 @@ namespace BulletHell
 		ImGui::InputInt("Spell Type", &mSpellType);
 		Hollow::ImGuiHelper::InputText("Particle Texture", mParticleTexturePath);
 		ImGui::InputFloat("Cooldown", &mCooldown);
+		ImGui::InputFloat3("Light Color", &mLightColor[0]);
 	}
 }

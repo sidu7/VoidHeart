@@ -11,6 +11,7 @@
 #include "Hollow/Components/UITransform.h"
 #include "Hollow/Components/ParticleEmitter.h"
 #include "Hollow/Components/Body.h"
+#include "Hollow/Components/Light.h"
 
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
@@ -229,6 +230,10 @@ namespace BulletHell
 		// Update rotation of the hightlight icon
 		Hollow::UITransform* pUITr = pHandUIObj->GetComponent<Hollow::UITransform>();
 		pUITr->mRotation = pSpellData->mUIRotation;
+
+		// Update light color
+		Hollow::Light* pLight = pHandObj->GetComponent<Hollow::Light>();
+		pLight->mColor = pSpellData->mLightColor;
 
 		// Update hand particles
 		Hollow::ParticleEmitter* pParticleEmitter = pHandObj->GetComponent<Hollow::ParticleEmitter>();

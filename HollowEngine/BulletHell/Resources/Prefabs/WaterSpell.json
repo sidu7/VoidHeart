@@ -36,7 +36,8 @@
       "UIRotation": 4.712388,
       "ParticleSize": 0.0,
       "ParticleTexture": "Resources/Textures/water.png",
-      "Cooldown": 0.75
+      "Cooldown": 0.75,
+      "LightColor": [0.1, 0.1, 0.5]
     }
   ]
 }
