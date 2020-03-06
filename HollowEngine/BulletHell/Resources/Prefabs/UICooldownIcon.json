@@ -8,7 +8,7 @@
     },
     {
       "Type": "UIImage",
-      "Image": "Resources/Textures/UICombined.png",
+      "Image": "Resources/Textures/UI/Combined.png",
       "Shape": "QUAD",
       "Color": [ 0.0, 0.0, 0.0 ],
       "Alpha": 0.0
