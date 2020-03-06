@@ -58,6 +58,7 @@ namespace Hollow
 		unsigned long mMaxCount;
 		unsigned long mEmissionRate;
 		unsigned long mCount;
+		bool mMoveWithObject;
 		
 		// For Point particles
 		Texture* mTexture;
@@ -77,6 +78,8 @@ namespace Hollow
 		glm::vec3 mCenterOffset;
 		glm::vec3 mAreaOfEffect;
 		glm::vec3 mParticleColor;
+		glm::vec3 mMinColor;
+		glm::vec3 mMaxColor;
 		Shader* mpComputeShader;
 		ShaderStorageBuffer* mpParticleStorage;
 		VertexArray* mpParticleVAO;

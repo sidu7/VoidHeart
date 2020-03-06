@@ -23,6 +23,7 @@ namespace Hollow
 		mDrawCount = 0;
 		
 		mActive = true;
+		mMoveWithObject = true;
 		mTexture = nullptr;
 		mModelMatrix = glm::mat4(1.0f);
 		mpComputeShader = nullptr;
@@ -35,6 +36,8 @@ namespace Hollow
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(1.0f);
 		mParticleColor = glm::vec3(0.0f);
+		mMinColor = glm::vec3(0.0f);
+		mMaxColor = glm::vec3(0.0f);
 		mPixelSize = 0.0f;
 
 		mDType = -1;
@@ -115,7 +118,7 @@ namespace Hollow
 		}
 		if (data.HasMember("ParticleColor"))
 		{
-			mParticleColor = JSONHelper::GetVec3F(data["ParticleColor"].GetArray());
+			mParticleColor = mMinColor = mMaxColor = JSONHelper::GetVec3F(data["ParticleColor"].GetArray());
 		}
 		if(data.HasMember("Size"))
 		{
@@ -124,6 +127,18 @@ namespace Hollow
 		if (data.HasMember("Direction"))
 		{
 			mDirection = JSONHelper::GetVec3F(data["Direction"].GetArray());
+		}
+		if (data.HasMember("MinColor"))
+		{
+			mMinColor = JSONHelper::GetVec3F(data["MinColor"].GetArray());
+		}
+		if (data.HasMember("MaxColor"))
+		{
+			mMaxColor = JSONHelper::GetVec3F(data["MaxColor"].GetArray());
+		}
+		if (data.HasMember("MoveWithObject"))
+		{
+			mMoveWithObject = data["MoveWithObject"].GetBool();
 		}
 	}
 
@@ -145,6 +160,9 @@ namespace Hollow
 		JSONHelper::Write("PixelSize", mPixelSize, writer);
 		JSONHelper::Write("Active", mActive, writer);
 		JSONHelper::Write("ParticleColor", mParticleColor, writer);
+		JSONHelper::Write("MinColor", mMinColor, writer);
+		JSONHelper::Write("MaxColor", mMaxColor, writer);
+		JSONHelper::Write("MoveWithObject", mMoveWithObject, writer);
 	}
 
 	void ParticleEmitter::DebugDisplay()
@@ -165,5 +183,8 @@ namespace Hollow
 		ImGui::InputFloat3("Center Offset", (float*)&mCenterOffset);
 		ImGui::InputFloat("PixelSize", &mPixelSize);
 		ImGui::ColorEdit3("Particle Color", &mParticleColor[0], ImGuiColorEditFlags_Float);
+		ImGui::ColorEdit3("Start Color", &mMinColor[0], ImGuiColorEditFlags_Float);
+		ImGui::ColorEdit3("End Color", &mMaxColor[0], ImGuiColorEditFlags_Float);
+		ImGui::Checkbox("Move With Object", &mMoveWithObject);
 	}	
 }

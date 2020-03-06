@@ -16,9 +16,9 @@ layout(std430, binding = 3) buffer ModelBlock
 
 uniform mat4 Projection;
 uniform mat4 View;
-uniform mat4 Model;
 
 out vec2 TexCoord;
+out vec3 ParticleColor;
 
 void main()
 {
@@ -28,7 +28,8 @@ void main()
 	}
 	else
 	{
-		gl_Position = Projection * View * Model * data[gl_InstanceID].mModel * vec4(position,1.0);
+		gl_Position = Projection * View * data[gl_InstanceID].mModel * vec4(position,1.0);
 	}
 	TexCoord = textureCoordinates;
+	ParticleColor = data[gl_InstanceID].more_data.gba;
 }

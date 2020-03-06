@@ -11,7 +11,7 @@
       "Type": "Body",
       "Mass": 0.00001,
       "RigidbodyType": "DYNAMIC",
-      "UseGravity" : false
+      "UseGravity": false
     },
     {
       "Type": "Collider",
@@ -32,7 +32,21 @@
     {
       "Type": "Attack",
       "Script": "FollowTarget",
-      "Target":  4
+      "Target": 4
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 1000,
+      "EmissionRate": 10,
+      "Shape": 1,
+      "Life": [ 0.1, 0.4 ],
+      "Speed": [ 1.0, 2.0 ],
+      "Size": [ 0.01, 0.05 ],
+      "ModelShape": "CUBE",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 0.0, 1.0, 1.0 ],
+      "MaxColor": [ 0.0, 0.0, 1.0 ],
+      "Area": [ 0.4, 0.4, 0.4 ]
     }
   ]
 }

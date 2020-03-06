@@ -105,6 +105,7 @@
     <None Include="Resources\Scripts\SlowRotate.lua" />
     <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
     <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
+    <None Include="Resources\Shaders\TrailingModelParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

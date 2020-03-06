@@ -1038,7 +1038,11 @@ namespace Hollow {
 			particle.emitter->mpComputeShader->SetVec2("SpeedRange", particle.emitter->mSpeedRange);
 			particle.emitter->mpComputeShader->SetVec2("LifeRange", particle.emitter->mLifeRange);
 			particle.emitter->mpComputeShader->SetVec2("ScaleRange", particle.emitter->mSizeRange);
+			particle.emitter->mpComputeShader->SetVec3("MinColor", particle.emitter->mMinColor);
+			particle.emitter->mpComputeShader->SetVec3("MaxColor", particle.emitter->mMaxColor);
 			particle.emitter->mpComputeShader->SetVec3("Direction", particle.emitter->mDirection);
+			particle.emitter->mpComputeShader->SetMat4("Model", particle.emitter->mModelMatrix);
+			particle.emitter->mpComputeShader->SetInt("ActiveParticleCount", particle.emitter->mCount);
 			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mMaxCount / 128, 1, 1);
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();
@@ -1081,7 +1085,6 @@ namespace Hollow {
 					else
 					{
 						mpModelParticleShader->SetInt("HasTexture", 0);
-						mpModelParticleShader->SetVec3("DiffuseColor", particle.emitter->mParticleColor);
 					}
 					mesh->mpVAO->Bind();
 					mesh->mpVBO->Bind();
