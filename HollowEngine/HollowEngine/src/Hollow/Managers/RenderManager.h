@@ -116,6 +116,7 @@ namespace Hollow {
 		CameraData mMainCamera;
 		CameraData mUICamera;
 		std::vector<CameraData> mSecondaryCameras;
+		LightData mGlobalLight;
 
 
 		friend class LocalizationManager;
@@ -174,6 +175,8 @@ namespace Hollow {
 		Shader* mpParticleShader;
 		ShaderStorageBuffer* mpParticlesPositionStorage;
 		Shader* mpModelParticleShader;
+		Shader* mpModelParticleDataClearShader;
+		Shader* mpPointParticleDataClearShader;
 		ShaderStorageBuffer* mpParticlesModelStorage;
 		bool ShowParticles;
 		bool PauseParticles;

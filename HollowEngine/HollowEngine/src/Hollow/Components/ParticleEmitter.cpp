@@ -23,7 +23,7 @@ namespace Hollow
 		mDrawCount = 0;
 		
 		mActive = true;
-		mMoveWithObject = true;
+		mLighting = false;
 		mTexture = nullptr;
 		mModelMatrix = glm::mat4(1.0f);
 		mpComputeShader = nullptr;
@@ -38,6 +38,8 @@ namespace Hollow
 		mParticleColor = glm::vec3(0.0f);
 		mMinColor = glm::vec3(0.0f);
 		mMaxColor = glm::vec3(0.0f);
+		mSpecular = glm::vec3(1.0f);
+		mShininess = 0.0f;
 		mPixelSize = 0.0f;
 
 		mDType = -1;
@@ -136,9 +138,17 @@ namespace Hollow
 		{
 			mMaxColor = JSONHelper::GetVec3F(data["MaxColor"].GetArray());
 		}
-		if (data.HasMember("MoveWithObject"))
+		if (data.HasMember("Lighting"))
 		{
-			mMoveWithObject = data["MoveWithObject"].GetBool();
+			mLighting = data["Lighting"].GetBool();
+		}
+		if(data.HasMember("Specular"))
+		{
+			mSpecular = JSONHelper::GetVec3F(data["Specular"].GetArray());
+		}
+		if(data.HasMember("Shininess"))
+		{
+			mShininess = data["Shininess"].GetFloat();
 		}
 	}
 
@@ -162,7 +172,9 @@ namespace Hollow
 		JSONHelper::Write("ParticleColor", mParticleColor, writer);
 		JSONHelper::Write("MinColor", mMinColor, writer);
 		JSONHelper::Write("MaxColor", mMaxColor, writer);
-		JSONHelper::Write("MoveWithObject", mMoveWithObject, writer);
+		JSONHelper::Write("Lighting", mLighting, writer);
+		JSONHelper::Write("Specular", mSpecular, writer);
+		JSONHelper::Write("Shininess", mShininess, writer);
 	}
 
 	void ParticleEmitter::DebugDisplay()
@@ -185,6 +197,8 @@ namespace Hollow
 		ImGui::ColorEdit3("Particle Color", &mParticleColor[0], ImGuiColorEditFlags_Float);
 		ImGui::ColorEdit3("Start Color", &mMinColor[0], ImGuiColorEditFlags_Float);
 		ImGui::ColorEdit3("End Color", &mMaxColor[0], ImGuiColorEditFlags_Float);
-		ImGui::Checkbox("Move With Object", &mMoveWithObject);
+		ImGui::Checkbox("Lighting", &mLighting);
+		ImGui::InputFloat3("Particle Specular", (float*)&mSpecular);
+		ImGui::InputFloat("Particle Shininess", &mShininess);
 	}	
 }

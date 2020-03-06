@@ -39,6 +39,11 @@ namespace Hollow
 			light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;// +glm::vec3(i, 0.5, i);
 			//light.mPosition = mGameObjects[i]->GetComponent<Transform>()->mPosition;
 
+			if(clight->mType == GLOBAL)
+			{
+				RenderManager::Instance().mGlobalLight = light;
+			}
+
 			RenderManager::Instance().mLightData.push_back(light);
 		}
 	}

@@ -97,6 +97,13 @@ namespace Hollow {
 			mpModelParticleShader = mpParticleShader;
 		}
 
+		// ParticleDataClearShader
+		if(data.HasMember("ParticleDataClearShader"))
+		{
+			mpPointParticleDataClearShader = new Shader(data["ParticleDataClearShader"].GetArray()[0].GetString());
+			mpModelParticleDataClearShader = new Shader(data["ParticleDataClearShader"].GetArray()[1].GetString());
+		}
+
 		// Init AA Shader
 		mpAAShader = new Shader("Resources/Shaders/ShadowDebug.vert", "Resources/Shaders/fxaa.frag");
 		mpFinalBuffer = new FrameBuffer(mpWindow->GetWidth(), mpWindow->GetHeight(), 1, true);
@@ -1062,13 +1069,25 @@ namespace Hollow {
 				GLCall(glDrawArrays(GL_POINTS, 0, particle.emitter->mCount));
 				mpParticleShader->Unbind();
 				particle.emitter->mTexture->Unbind(4);
-				mpParticlesPositionStorage->Unbind(3);
 				particle.emitter->mpParticleVAO->Unbind();
+
+				// Clear Particles Data
+				/*mpPointParticleDataClearShader->Use();
+				mpPointParticleDataClearShader->DispatchCompute(MAX_PARTICLES_COUNT / 128, 1, 1);
+				ShaderStorageBuffer::PutMemoryBarrier();
+				mpPointParticleDataClearShader->Unbind();*/
+				mpParticlesPositionStorage->Unbind(3);
 			}
 			else if (particle.emitter->mType == MODEL)
 			{				
 				mpModelParticleShader->Use();
 				mpModelParticleShader->SetMat4("Model", particle.emitter->mModelMatrix);
+				mpModelParticleShader->SetMat4("NormalTr", glm::inverse(particle.emitter->mModelMatrix));
+				mpModelParticleShader->SetInt("Lighting", particle.emitter->mLighting);
+				mpModelParticleShader->SetVec3("Specular", particle.emitter->mSpecular);
+				mpModelParticleShader->SetFloat("Shininess", particle.emitter->mShininess);
+				mpModelParticleShader->SetVec3("LightPos", mGlobalLight.mPosition);
+				mpModelParticleShader->SetVec3("LightColor", mGlobalLight.mColor);
 				particle.emitter->mpParticleVAO->Bind();
 				for (Mesh* mesh : particle.emitter->mParticleModel)
 				{
@@ -1103,8 +1122,14 @@ namespace Hollow {
 					}
 				}
 				mpModelParticleShader->Unbind();
-				mpParticlesModelStorage->Unbind(3);
 				particle.emitter->mpParticleVAO->Unbind();
+				
+				// Clear Particles Data
+				/*mpModelParticleDataClearShader->Use();
+				mpModelParticleDataClearShader->DispatchCompute(MAX_PARTICLES_COUNT * 0.5f / 128, 1, 1);
+				ShaderStorageBuffer::PutMemoryBarrier();
+				mpModelParticleDataClearShader->Unbind();*/
+				mpParticlesModelStorage->Unbind(3);
 			}
 		}
 		glDisable(GL_BLEND);

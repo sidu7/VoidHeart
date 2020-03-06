@@ -58,7 +58,9 @@ namespace Hollow
 		unsigned long mMaxCount;
 		unsigned long mEmissionRate;
 		unsigned long mCount;
-		bool mMoveWithObject;
+		bool mLighting;
+		glm::vec3 mSpecular;
+		float mShininess;
 		
 		// For Point particles
 		Texture* mTexture;
