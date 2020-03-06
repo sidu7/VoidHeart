@@ -23,6 +23,7 @@ namespace BulletHell
 			float mParticleSize;
 			std::string mParticleTexturePath;
 			float mCooldown;
+			glm::vec3 mLightColor; 
 			std::string mUITexturePath;
 
 			float mRightHandCooldown = 0.0f;

@@ -36,7 +36,8 @@
       "UIRotation": 0.0,
       "ParticleSize": 0.0,
       "ParticleTexture": "Resources/Textures/rocks.png",
-      "Cooldown": 1.0
+      "Cooldown": 1.0,
+      "LightColor": [0.1, 0.6, 0.1]
     }
   ]
 }
