@@ -5,7 +5,7 @@ function ApplyDynamicConstraints()
 	local XConstraint = 7
 	local ZMinConstraint = 2
 	local ZMaxConstraint = 14
-	local t = 0.07
+	local t = 0.08
 	-----------------------------------------	
 	local transform = gameObject:GetTransform()
 	

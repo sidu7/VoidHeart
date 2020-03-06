@@ -38,13 +38,8 @@
           "Type": "Transform",
           "Position": [
             0.0,
-            50.0,
-            40.0
-          ],
-          "Scale": [
-            1.0,
-            1.0,
-            1.0
+            0.0,
+            0.0
           ]
         },
         {
@@ -63,7 +58,12 @@
           "ShadowMapFarPlane": 128.0,
           "BlurDistance": 5,
           "Alpha": 0.009999999776482582,
-          "MD": 0.5
+          "MD": 0.5,
+          "FOV": 80.0
+        },
+        {
+          "Type": "Script",
+          "Scripts": [ "LightFollow" ]
         }
       ]
     }
