@@ -35,8 +35,11 @@ uniform vec2 SpeedRange;
 uniform vec2 ScaleRange;
 uniform vec2 LifeRange;
 uniform vec3 Center;
+uniform vec3 MinColor;
+uniform vec3 MaxColor;
 uniform bool Pause;
 uniform bool Active;
+uniform mat4 Model;
 
 highp float rand(vec2 co)
 {
@@ -82,10 +85,13 @@ void main()
 		}
 	}
 
-	each_particle[gid].mPos = pos;
 	float scale = rand(pos.zy) * (ScaleRange.y - ScaleRange.x) + ScaleRange.x;
 	mat4 temp = mat4(scale);
 	temp[3] = vec4(pos,1.0f);
+	temp = Model * temp;
+	each_particle[gid].mPos = pos;
 	data[gid].mModel = temp;
 	data[gid].more_data.x = each_particle[gid].speed;
+	float factor = each_particle[gid].currentlife / each_particle[gid].life;
+	data[gid].more_data.yzw = mix(MinColor,MaxColor,factor);
 }
