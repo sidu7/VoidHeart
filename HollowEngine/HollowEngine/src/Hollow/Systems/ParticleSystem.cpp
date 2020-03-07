@@ -55,13 +55,13 @@ namespace Hollow
 			ParticleEmitter* emitter = mGameObjects[i]->GetComponent<ParticleEmitter>();
 
 			float fps = 1.0f / FrameRateController::Instance().GetFrameTime();
-			float deltaParticles = emitter->mEmissionRate / fps;		
-			if (emitter->mDrawCount + deltaParticles < emitter->mMaxCount)
-			{
-				emitter->mDrawCount += deltaParticles;
-			}
+			float deltaParticles = emitter->mEmissionRate;					
 			if(emitter->mActive)
 			{
+				if (emitter->mDrawCount + deltaParticles <= emitter->mMaxCount)
+				{
+					emitter->mDrawCount += deltaParticles;
+				}
 				emitter->mCount = emitter->mDrawCount;
 			}
 			else
@@ -99,6 +99,6 @@ namespace Hollow
 		}
 
 		emitter->mpParticleStorage->ReleaseBufferPointer();
-		emitter->mpParticleVAO = new VertexArray();					
+		emitter->mpParticleVAO = new VertexArray();
 	}
 }

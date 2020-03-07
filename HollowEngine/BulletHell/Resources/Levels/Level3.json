@@ -44,6 +44,7 @@
         },
         {
           "Type": "Light",
+          "LightType":  0,
           "Color": [
             1.0,
             1.0,

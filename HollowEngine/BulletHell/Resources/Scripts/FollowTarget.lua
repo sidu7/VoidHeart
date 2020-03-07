@@ -2,6 +2,8 @@ function FollowTarget()
 	local attack = gameObject:GetAttack()
 	local target = attack.target
 	local position = gameObject:GetTransform().position
+
+	
 	if target ~= nil then
 	if target:GetTransform() then
 		local targetTransform = target:GetTransform()
@@ -17,6 +19,12 @@ function FollowTarget()
 		local body = gameObject:GetBody()
 		local speed = 6.0
 		body.velocity = speed * vec3.new(xDirNorm, 0.0, zDirNorm)
+
+		local particle = gameObject:GetParticleEmitter()
+
+		if particle ~= nil then
+			particle.direction = vec3.new(xDirNorm, 0.0, zDirNorm)
+		end
 	end
 	end
 end

@@ -29,6 +29,10 @@ namespace Hollow
 
 	void Light::Serialize(rapidjson::Value::Object data)
 	{
+		if(data.HasMember("LightType"))
+		{
+			mType = (LightType)data["LightType"].GetUint();
+		}
 		if (data.HasMember("Color"))
 		{
 			mColor = JSONHelper::GetVec3F(data["Color"].GetArray());
@@ -81,6 +85,7 @@ namespace Hollow
 
 	void Light::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
 	{
+		JSONHelper::Write<int>("LightType", mType, writer);
 		JSONHelper::Write<glm::vec3>("Color", mColor, writer);
 		JSONHelper::Write<bool>("CastShadow", mCastShadow, writer);
 		if (mCastShadow)
@@ -104,6 +109,7 @@ namespace Hollow
 
 	void Light::DebugDisplay()
 	{
+		ImGui::InputInt("Light Type", (int*)&mType);
 		ImGui::ColorPicker3("Color", &mColor[0]);
 		ImGui::InputFloat("Radius", &mRadius);
 		ImGui::InputFloat3("Position", &mPosition[0]);

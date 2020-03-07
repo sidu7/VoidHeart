@@ -23,6 +23,7 @@ namespace Hollow
 		mDrawCount = 0;
 		
 		mActive = true;
+		mLighting = false;
 		mTexture = nullptr;
 		mModelMatrix = glm::mat4(1.0f);
 		mpComputeShader = nullptr;
@@ -35,6 +36,10 @@ namespace Hollow
 		mCenterOffset = glm::vec3(0.0f);
 		mAreaOfEffect = glm::vec3(1.0f);
 		mParticleColor = glm::vec3(0.0f);
+		mMinColor = glm::vec3(0.0f);
+		mMaxColor = glm::vec3(0.0f);
+		mSpecular = glm::vec3(1.0f);
+		mShininess = 0.0f;
 		mPixelSize = 0.0f;
 
 		mDType = -1;
@@ -115,7 +120,7 @@ namespace Hollow
 		}
 		if (data.HasMember("ParticleColor"))
 		{
-			mParticleColor = JSONHelper::GetVec3F(data["ParticleColor"].GetArray());
+			mParticleColor = mMinColor = mMaxColor = JSONHelper::GetVec3F(data["ParticleColor"].GetArray());
 		}
 		if(data.HasMember("Size"))
 		{
@@ -124,6 +129,26 @@ namespace Hollow
 		if (data.HasMember("Direction"))
 		{
 			mDirection = JSONHelper::GetVec3F(data["Direction"].GetArray());
+		}
+		if (data.HasMember("MinColor"))
+		{
+			mMinColor = JSONHelper::GetVec3F(data["MinColor"].GetArray());
+		}
+		if (data.HasMember("MaxColor"))
+		{
+			mMaxColor = JSONHelper::GetVec3F(data["MaxColor"].GetArray());
+		}
+		if (data.HasMember("Lighting"))
+		{
+			mLighting = data["Lighting"].GetBool();
+		}
+		if(data.HasMember("Specular"))
+		{
+			mSpecular = JSONHelper::GetVec3F(data["Specular"].GetArray());
+		}
+		if(data.HasMember("Shininess"))
+		{
+			mShininess = data["Shininess"].GetFloat();
 		}
 	}
 
@@ -145,6 +170,11 @@ namespace Hollow
 		JSONHelper::Write("PixelSize", mPixelSize, writer);
 		JSONHelper::Write("Active", mActive, writer);
 		JSONHelper::Write("ParticleColor", mParticleColor, writer);
+		JSONHelper::Write("MinColor", mMinColor, writer);
+		JSONHelper::Write("MaxColor", mMaxColor, writer);
+		JSONHelper::Write("Lighting", mLighting, writer);
+		JSONHelper::Write("Specular", mSpecular, writer);
+		JSONHelper::Write("Shininess", mShininess, writer);
 	}
 
 	void ParticleEmitter::DebugDisplay()
@@ -165,5 +195,10 @@ namespace Hollow
 		ImGui::InputFloat3("Center Offset", (float*)&mCenterOffset);
 		ImGui::InputFloat("PixelSize", &mPixelSize);
 		ImGui::ColorEdit3("Particle Color", &mParticleColor[0], ImGuiColorEditFlags_Float);
+		ImGui::ColorEdit3("Start Color", &mMinColor[0], ImGuiColorEditFlags_Float);
+		ImGui::ColorEdit3("End Color", &mMaxColor[0], ImGuiColorEditFlags_Float);
+		ImGui::Checkbox("Lighting", &mLighting);
+		ImGui::InputFloat3("Particle Specular", (float*)&mSpecular);
+		ImGui::InputFloat("Particle Shininess", &mShininess);
 	}	
 }

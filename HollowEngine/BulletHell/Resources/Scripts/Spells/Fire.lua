@@ -2,6 +2,7 @@ function PlayerAttack ()
 	local go = CreatePrefabAtPosition("PlayerFire", gameObject:GetTransform().position)
 	local body = go:GetBody()
 	
+	
     local transform = gameObject:GetTransform()
     local rot = transform.rotation
     local angle = rot.y
@@ -24,6 +25,9 @@ function PlayerAttack ()
 	local transform = go:GetTransform()
 	transform.position = body.position
 		
+	local particle = go:GetParticleEmitter()
+	particle.direction = vec3.new(-xDir, 0.0, -zDir);
+
 	PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
 end
 
