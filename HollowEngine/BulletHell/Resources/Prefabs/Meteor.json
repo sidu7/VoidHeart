@@ -1,50 +1,52 @@
 {
-    "Type": "PLAYER_BULLET_LOB",
-    "Tag": "FIREEARTH",
-    "Components": [
-        {
-            "Type": "Transform",
-            "Position": [ 0.0, 0.0, 0.0 ],
-            "Scale": [ 2.5, 2.5, 2.5 ]
-        },
-        {
-            "Type": "Body",
-            "Mass": 0.00001,
-            "RigidbodyType": "DYNAMIC",
-            "UseGravity": false
-        },
-        {
-            "Type": "Collider",
-            "Shape": "BALL"
-        },
-        {
-            "Type": "Model",
-            "Shape": "BALL",
-            "CastShadow": true
-        },
-        {
-            "Type": "Material",
-            "Specular": [ 1.0, 1.0, 1.0 ],
-            "Diffuse": [ 0.65, 0.16, 0.16 ],
-            "Shininess": 10.0,
-            "Texture": "Resources/Textures/cracks.png"
-        },
-        {
-            "Type": "Script",
-            "DestroyScripts": [ "Destroy/CreateMeteorSplash" ]
-        },
-        {
-            "Type": "ParticleEmitter",
-            "MaxCount": 10000,
-            "EmissionRate": 100,
-            "Shape": 0,
-            "Texture": "Resources/Textures/star.png",
-            "Area": [ 1.0, 1.0, 1.0 ],
-            "Life": [ 2.0, 5.0 ],
-            "Speed": [ 0.0, 0.0 ],
-            "ComputeShader": "Resources/Shaders/RainParticles.comp",
-            "CenterOffset": [ 0.0, 0.0, 0.0 ],
-            "PixelSize": 0.1
-        }
-    ]
+  "Type": "PLAYER_BULLET_LOB",
+  "Tag": "FIREEARTH",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL",
+      "HasCustomScale": true,
+      "MinBounds": [ -2.0, -2.0, -2.0 ],
+      "MaxBounds": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Meteor.obj",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/Meteor.png"
+    },
+    {
+      "Type": "Script",
+      "DestroyScripts": [ "Destroy/CreateMeteorSplash", "Rotate"]
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 10000,
+      "EmissionRate": 100,
+      "Shape": 0,
+      "Texture": "Resources/Textures/star.png",
+      "Area": [ 1.0, 1.0, 1.0 ],
+      "Life": [ 2.0, 5.0 ],
+      "Speed": [ 0.0, 0.0 ],
+      "ComputeShader": "Resources/Shaders/RainParticles.comp",
+      "CenterOffset": [ 0.0, 0.0, 0.0 ],
+      "PixelSize": 0.1
+    }
+  ]
 }

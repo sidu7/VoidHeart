@@ -44,7 +44,7 @@ end
 ---[[
 local hpPickup = CreatePrefabAtPosition("Pickup_HP", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
 local speedPickup = CreatePrefabAtPosition("Pickup_Speed", vec3.new(coords.y * roomSize + roomSize/2 - 5, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
-local invinciblePickup = CreatePrefabAtPosition("Pickup_Invincible", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 + 15.0))
+local invinciblePickup = CreatePrefabAtPosition("Pickup_Invincible", vec3.new(coords.y * roomSize + roomSize/2 + 5, 1.5, coords.x * roomSize + roomSize/2 + 8.0))
 local rofPickup = CreatePrefabAtPosition("Pickup_RateOfFire", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 - 15.0))
 --]]
 
