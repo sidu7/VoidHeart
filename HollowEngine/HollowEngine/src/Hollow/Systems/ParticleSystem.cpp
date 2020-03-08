@@ -14,6 +14,7 @@
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/ScriptingManager.h"
+#include "Hollow/Managers/ResourceManager.h"
 
 
 namespace Hollow
@@ -27,7 +28,14 @@ namespace Hollow
 			UpdateAttributes(object->GetComponent<ParticleEmitter>());
 		}
 	}
-	
+
+	void ParticleSystem::ChangeComputeShader(GameObject* object, std::string path)
+	{
+		ParticleEmitter* particle = object->GetComponent<ParticleEmitter>();
+
+		particle->mpComputeShader = ResourceManager::Instance().LoadShader(path);
+	}
+
 	void ParticleSystem::Init()
 	{
 		// Send ParticleEmitter component to lua

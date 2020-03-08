@@ -246,6 +246,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\Bloom.vert" />
     <None Include="Resources\Shaders\CenterModelParticles.comp" />
     <None Include="Resources\Shaders\CenterParticles.comp" />
+    <None Include="Resources\Shaders\ChargingModelParticles.comp" />
     <None Include="Resources\Shaders\Debug.frag" />
     <None Include="Resources\Shaders\Debug.vert" />
     <None Include="Resources\Shaders\Deferred.frag" />

@@ -16,6 +16,7 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Systems/ParticleSystem.h"
 
 namespace Hollow
 {
@@ -212,6 +213,9 @@ namespace Hollow
 
 		//FRAMERATE CONTROLLER
 		lua.set_function("GetFrameTime", &FrameRateController::GetFrameTime, std::ref(FrameRateController::Instance()));
+
+		//Particle System
+		lua.set_function("ChangeParticleShader", &ParticleSystem::ChangeComputeShader, std::ref(*static_cast<ParticleSystem*>(SystemManager::Instance().GetSystem<ParticleSystem>())));
 
 	}
 

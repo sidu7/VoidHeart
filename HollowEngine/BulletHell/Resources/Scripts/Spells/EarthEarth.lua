@@ -26,6 +26,12 @@ function ChargeRock()
 	if transform then
 		transform.scale = vec3.new(attack.chargeTime, attack.chargeTime, attack.chargeTime)
 	end
+
+	local particle = rockObject:GetParticleEmitter()
+	if particle then
+		particle.extraData.x = 1.7;
+	end
+
 	-- Update shape radius for physics
 	if body then
 		ChangeRadius(rockObject)
@@ -56,6 +62,15 @@ function ReleaseRock()
 		local attackSpeed = 70.0
 		body.velocity = attackSpeed * vec3.new(xDir, 0.0, zDir)
 	end
+
+	local particle = rockObject:GetParticleEmitter()
+	if particle then
+		ChangeParticleShader(rockObject,"Resources/Shaders/TrailingModelParticles.comp")
+		particle.scaleRange = vec2.new(0.05,0.1)
+		particle.areaOfEffect = rockObject:GetTransform().scale
+		particle.lifeRange = vec2.new(0.05,0.2)
+	end
+
 	rockObject = nil
 	
 	local attack = gameObject:GetAttack()
