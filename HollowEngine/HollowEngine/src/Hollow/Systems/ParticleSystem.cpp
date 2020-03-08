@@ -41,6 +41,7 @@ namespace Hollow
 			"lifeRange",&ParticleEmitter::mLifeRange,
 			"direction", &ParticleEmitter::mDirection,
 			"color", &ParticleEmitter::mParticleColor,
+			"extraData", &ParticleEmitter::mExtraData,
 			"areaOfEffect",&ParticleEmitter::mAreaOfEffect
 			);
 

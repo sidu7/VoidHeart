@@ -41,9 +41,23 @@
             "Tag": "Beam",
             "UseForward": true
         },
-		{
-            "Type": "DestroyTimer",
-            "MaxTime": 3.0
-        }
+      {
+        "Type": "DestroyTimer",
+        "MaxTime": 3.0
+      },
+      {
+        "Type": "ParticleEmitter",
+        "MaxCount": 1000,
+        "EmissionRate": 11,
+        "Shape": 1,
+        "Life": [ 2.4, 2.4 ],
+        "Speed": [ 1.0, 2.0 ],
+        "Size": [ 0.01, 0.05 ],
+        "ModelShape": "CUBE",
+        "ComputeShader": "Resources/Shaders/HelixModelParticles.comp",
+        "MinColor": [ 1.0, 1.0, 0.0 ],
+        "MaxColor": [ 1.0, 0.0, 0.0 ],
+        "ExtraData": [ 1.0, 3.0, 0.0, 0.0 ]
+      }
     ]
 }

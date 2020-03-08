@@ -68,6 +68,11 @@ function Update()
 
 	movement.moveDebuffFactor = 1.0; -- reset debuff for this frame
 
+	-- temp: --
+	local particle = gameObject:GetParticleEmitter()
+	particle.extraData.z = particle.extraData.z + GetFrameTime()
+	-- temp --
+
     ApplyLinearImpulse(gameObject, impulse)
 
     local body = gameObject:GetBody()
