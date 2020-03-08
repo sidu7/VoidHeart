@@ -1,0 +1,113 @@
+#version 430 compatibility
+#extension GL_ARB_COMPUTE_SHADER : enable
+#extension GL_ARB_SHADER_STORAGE_BUFFER_OBJECT : enable
+#extension GL_EXT_gpu_shader4: enable
+
+struct Particle
+{
+	vec3 mPos;
+	float speed;
+	float life;
+	float currentlife;
+	vec3 direction;
+};
+
+layout(std430, binding = 2) buffer ParticleDataBlock
+{
+	Particle each_particle[];
+};
+
+struct ParticleData
+{
+	mat4 mModel;
+	vec4 more_data;
+};
+
+layout(std430, binding = 3) buffer ModelBlock
+{
+	ParticleData data[];
+};
+
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+
+uniform float DeltaTime;
+uniform vec2 SpeedRange;
+uniform vec2 ScaleRange;
+uniform vec2 LifeRange;
+uniform vec3 Center;
+uniform vec3 MinColor;
+uniform vec3 MaxColor;
+uniform bool Pause;
+uniform bool Active;
+uniform vec3 Direction; // Axis of rotation of helix
+uniform vec4 ExtraData; // x = Radius, y = Length of Helix
+uniform mat4 Model;
+uniform mat4 RotationMatrix;
+uniform int ActiveParticleCount;
+
+highp float rand(vec2 co)
+{
+	highp float a = 12.9898;
+	highp float b = 78.233;
+	highp float c = 43758.5453;
+	highp float dt = dot(co.xy, vec2(a, b));
+	highp float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
+}
+
+void main()
+{
+	uint gid = gl_GlobalInvocationID.x;
+
+	const float pi = 22.0f/7.0f;
+	
+	each_particle[gid].currentlife = each_particle[gid].currentlife - DeltaTime;
+	vec3 pos = each_particle[gid].mPos;
+
+	float radius = ExtraData.x;
+	float length = ExtraData.y;
+
+	if(!Pause && gid < ActiveParticleCount)
+	{
+		if(Active)
+		{
+			if(each_particle[gid].currentlife > 0)
+			{
+				float vel = each_particle[gid].speed;
+				float t = gid + ExtraData.z * vel;
+				//float t1 = 1.0f - each_particle[gid].currentlife / each_particle[gid].life;
+				float t1 = 1.0f - float(gid)/ActiveParticleCount;
+
+				pos = (RotationMatrix * vec4(radius * cos(t), t1 * length, radius * sin(t),1.0f)).xyz;
+			}
+			else
+			{
+				pos = vec3(0.0f,0.0f,0.0f);				
+				each_particle[gid].life = rand(pos.yx) * (LifeRange.y - LifeRange.x) + LifeRange.x;
+				each_particle[gid].currentlife = each_particle[gid].life;
+				each_particle[gid].speed = SpeedRange.x;
+			}
+		}
+		else
+		{
+			each_particle[gid].life = 0.0f;
+			each_particle[gid].currentlife = 0.0f;
+			each_particle[gid].speed = 0.0f;
+			each_particle[gid].direction = vec3(0.0f);
+			each_particle[gid].mPos = vec3(0.0f);
+		}
+	}
+
+	float scale = rand(pos.zy) * (ScaleRange.y - ScaleRange.x) + ScaleRange.x;
+	mat4 temp = mat4(scale);
+	temp[3] = vec4(pos,1.0f);
+	mat4 m = Model;
+	m[3] = vec4(Center,1.0f);
+	temp = m * temp;
+	each_particle[gid].mPos = pos;
+
+	data[gid].mModel = temp;
+	data[gid].more_data.x = each_particle[gid].speed;
+	float factor = each_particle[gid].currentlife / each_particle[gid].life;
+	data[gid].more_data.yzw = mix(MinColor,MaxColor,factor);
+}

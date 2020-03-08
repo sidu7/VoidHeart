@@ -41,6 +41,16 @@ function Rotate()
     end
 
     transform:Rotate(rot)
+
+	-- temp: --
+	local particle = gameObject:GetParticleEmitter()
+	if particle ~= nil then
+		particle.extraData.z = particle.extraData.z + GetFrameTime()
+		local playerPos = player:GetTransform().position
+		particle.direction = VecNormalize(transform.position - playerPos)
+		particle.center = playerPos
+	end
+	-- temp --
         
 end
 

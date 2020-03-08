@@ -67,7 +67,7 @@ function Update()
 	impulse = impulse * speed * movement.moveDebuffFactor;
 
 	movement.moveDebuffFactor = 1.0; -- reset debuff for this frame
-
+	
     ApplyLinearImpulse(gameObject, impulse)
 
     local body = gameObject:GetBody()

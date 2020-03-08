@@ -108,6 +108,7 @@
     <None Include="Resources\Shaders\TrailingModelParticles.comp" />
     <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
     <None Include="Resources\Shaders\PointParticleDataClear.comp" />
+    <None Include="Resources\Shaders\HelixModelParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

@@ -75,6 +75,23 @@ namespace Hollow
 			sol::meta_function::multiplication, mult_overloads
 			);
 
+		auto mult_overloads4 = sol::overload(
+			[](const glm::vec4& v1, const glm::vec4& v2) -> glm::vec4 { return v1 * v2; },
+			[](const glm::vec4& v1, float f) -> glm::vec4 { return v1 * f; },
+			[](float f, const glm::vec4& v1) -> glm::vec4 { return f * v1; }
+		);
+
+		lua.new_usertype<glm::vec4>("vec4",
+			sol::constructors<glm::vec4(), glm::vec4(float), glm::vec4(float, float, float, float)>(),
+			"x", &glm::vec4::x,
+			"y", &glm::vec4::y,
+			"z", &glm::vec4::z,
+			"w", &glm::vec4::w,
+			"__add", [](const glm::vec4& l, const glm::vec4& r) { return glm::vec4(l.x + r.x, l.y + r.y, l.z + r.z, l.w + r.w); },
+			"__sub", [](const glm::vec4& l, const glm::vec4& r) { return glm::vec4(l.x - r.x, l.y - r.y, l.z - r.z, l.z - r.z); },
+			sol::meta_function::multiplication, mult_overloads4
+			);
+
 		auto mult_overloads2 = sol::overload(
 			[](const glm::vec2& v1, const glm::vec2& v2) -> glm::vec2 { return v1 * v2; },
 			[](const glm::vec2& v1, float f) -> glm::vec2 { return v1 * f; },
