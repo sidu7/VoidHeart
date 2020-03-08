@@ -96,6 +96,11 @@ namespace Hollow {
 		GLCall(glUniform3f(glGetUniformLocation(mProgram, name.c_str()), x, y, z));
 	}
 
+	void Shader::SetVec4(const std::string& name, glm::vec4& v) const
+	{
+		GLCall(glUniform4fv(glGetUniformLocation(mProgram, name.c_str()), 1, &v[0]));
+	}
+
 	void Shader::SetMat4(const std::string& name, const glm::mat4& mat) const
 	{
 		GLCall(glUniformMatrix4fv(glGetUniformLocation(mProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]));

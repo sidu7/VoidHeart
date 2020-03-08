@@ -91,6 +91,8 @@ namespace Hollow {
 		/// <param name="z">The z value in the vec3</param>
 		HOLLOW_API void SetVec3(const std::string& name, float x, float y, float z) const;
 
+		HOLLOW_API void SetVec4(const std::string& name, glm::vec4& v) const;
+
 		/// <summary>
 		/// Sets a Mat4 in the shader program with the given name/key
 		/// </summary>

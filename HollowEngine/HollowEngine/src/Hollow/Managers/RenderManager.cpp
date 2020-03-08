@@ -1049,8 +1049,13 @@ namespace Hollow {
 			particle.emitter->mpComputeShader->SetVec3("MaxColor", particle.emitter->mMaxColor);
 			particle.emitter->mpComputeShader->SetVec3("Direction", particle.emitter->mDirection);
 			particle.emitter->mpComputeShader->SetMat4("Model", particle.emitter->mModelMatrix);
+			particle.emitter->mpComputeShader->SetVec4("ExtraData", particle.emitter->mExtraData);
 			particle.emitter->mpComputeShader->SetInt("ActiveParticleCount", particle.emitter->mCount);
-			particle.emitter->mpComputeShader->DispatchCompute(particle.emitter->mMaxCount / 128, 1, 1);
+			if(particle.emitter->mNeedRotation)
+			{
+				particle.emitter->mpComputeShader->SetMat4("RotationMatrix", GraphicsMath::RotationFromTwoVectors(glm::vec3(0.0f,1.0f,0.0f),particle.emitter->mDirection));
+			}
+			particle.emitter->mpComputeShader->DispatchCompute(std::ceil((float)particle.emitter->mCount / 128), 1, 1);
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();
 			particle.emitter->mpParticleStorage->Unbind(2);

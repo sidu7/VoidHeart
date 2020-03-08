@@ -1,5 +1,5 @@
 function CreateBeam()
-	local go = CreatePrefabAtPosition("PlayerBeam", gameObject:GetTransform().position)
+	local go = CreatePrefabAtPosition("PlayerBeam", gameObject:GetTransform().position)	
 end
 
 function CheckValidAttack()

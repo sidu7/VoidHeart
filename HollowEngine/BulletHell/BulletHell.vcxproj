@@ -259,6 +259,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\GBuffer.vert" />
     <None Include="Resources\Shaders\Global.frag" />
     <None Include="Resources\Shaders\Global.vert" />
+    <None Include="Resources\Shaders\HelixModelParticles.comp" />
     <None Include="Resources\Shaders\HorizontalBlur.comp" />
     <None Include="Resources\Shaders\LocalLight.frag" />
     <None Include="Resources\Shaders\LocalLight.vert" />

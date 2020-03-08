@@ -2,6 +2,7 @@
 #include "Hollow/Core/Core.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+#include "Hollow/Utils/Log.h"
 
 namespace Hollow
 {
@@ -26,6 +27,22 @@ namespace Hollow
 			// Make the matrix for that, assuming that Y is your 'side' vector; makes the model 'pitch'
 			glm::mat4 glmrotZ = glm::rotate(angleZ, glm::vec3(0.0f, 1.0f, 0.0f));
 			return glmrotXY * glmrotZ;
+		}
+
+		HOLLOW_API static glm::mat4 RotationFromTwoVectors(const glm::vec3& vector1, const glm::vec3& vector2)
+		{
+			glm::vec3 v = glm::cross(vector1, vector2);
+			float s = glm::length(v);
+			float c = glm::dot(vector1,vector2);
+			if(c == -1.0f)
+			{
+				HW_CORE_ERROR("Opposite Facing vectors");
+			}
+
+			glm::mat4 I(1.0f);
+			glm::mat4 Vx = glm::matrixCross4(v);
+
+			return I + Vx + Vx * Vx * (1 / (1 + c));
 		}
 
 		/// <summary>

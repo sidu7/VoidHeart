@@ -59,6 +59,7 @@ namespace Hollow
 		unsigned long mEmissionRate;
 		unsigned long mCount;
 		bool mLighting;
+		bool mNeedRotation;
 		glm::vec3 mSpecular;
 		float mShininess;
 		
@@ -82,6 +83,7 @@ namespace Hollow
 		glm::vec3 mParticleColor;
 		glm::vec3 mMinColor;
 		glm::vec3 mMaxColor;
+		glm::vec4 mExtraData;
 		Shader* mpComputeShader;
 		ShaderStorageBuffer* mpParticleStorage;
 		VertexArray* mpParticleVAO;
