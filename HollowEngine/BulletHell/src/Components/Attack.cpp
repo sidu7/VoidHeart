@@ -15,6 +15,8 @@ namespace BulletHell
 		mIsFired = false;
 		mIsActive = true;
 		mChargeTime = 0.0f;
+        mIsFired2 = false;
+        mShouldAttack2 = true;
 	}
 
 	void Attack::Serialize(rapidjson::Value::Object data)

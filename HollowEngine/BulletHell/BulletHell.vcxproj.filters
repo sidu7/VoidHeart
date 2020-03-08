@@ -105,6 +105,9 @@
     <None Include="Resources\Scripts\SlowRotate.lua" />
     <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
     <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
+    <None Include="Resources\Prefabs\EnemyBoss2.json" />
+    <None Include="Resources\Scripts\EnemyBoss2Movement.lua" />
+    <None Include="Resources\Scripts\EnemyBoss2Fire.lua" />
     <None Include="Resources\Shaders\TrailingModelParticles.comp" />
     <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
     <None Include="Resources\Shaders\PointParticleDataClear.comp" />
