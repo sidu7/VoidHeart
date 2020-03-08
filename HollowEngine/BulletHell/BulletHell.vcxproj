@@ -203,6 +203,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\Camera.json" />
     <None Include="Resources\Json data\Cloud.json" />
     <None Include="Resources\Json data\EnemyAOE.json" />
+    <None Include="Resources\Prefabs\EnemyBoss2.json" />
     <None Include="Resources\Prefabs\EnemyBoss1.json" />
     <None Include="Resources\Prefabs\UIMinimap.json" />
     <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
@@ -238,6 +239,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\AreaDamage.lua" />
     <None Include="Resources\Scripts\EnemyGrow.lua" />
     <None Include="Resources\Scripts\SlowRotate.lua" />
+    <None Include="Resources\Scripts\EnemyBoss2Fire.lua" />
+    <None Include="Resources\Scripts\EnemyBoss2Movement.lua" />
     <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Ambient.frag" />
