@@ -88,8 +88,14 @@ namespace Hollow
 	GameObject* ResourceManager::LoadPrefabAtPosition(std::string prefabName, glm::vec3 pos)
 	{
 		GameObject* pGo = LoadGameObjectFromFile(std::string("Resources/Prefabs/") + prefabName + std::string(".json"));
+
 		Body* pBody = pGo->GetComponent<Body>();
-		pBody->mPosition = pos;
+		if(pBody)
+			pBody->mPosition = pos;
+
+		Transform* pTr = pGo->GetComponent<Transform>();
+		pTr->mPosition = pos;
+
 		return pGo;
 	}
 

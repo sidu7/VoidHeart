@@ -33,6 +33,7 @@ namespace BulletHell
 		, mDoorGOs{ nullptr }
 		, mIsUnlocked(false)
         , mIsLockedFirstTime(false)
+		, mLightOffsetFromDoor(3.5f)
     {
     }
 
@@ -47,6 +48,7 @@ namespace BulletHell
         , mDistFromEntrance(0)
         , mDoorGOs{ nullptr }
         , mIsUnlocked(false)
+		, mLightOffsetFromDoor(3.5f)
     {
     }
 
@@ -159,12 +161,20 @@ namespace BulletHell
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + halfWallLength),
                 glm::vec3(mWallThickness, mWallHeight, mWallLength));
-             
+
     		// DOOR
+			glm::vec3 doorPos = glm::vec3(mRoomY * mRoomSize + mRoomSize, halfDoorHeight, mRoomX * mRoomSize + halfRoomSize);
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
-                                            glm::vec3(mRoomY * mRoomSize + mRoomSize, halfDoorHeight , mRoomX * mRoomSize + halfRoomSize),
+                                            doorPos,
                                             glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
             mDoorGOs[2] = door;
+
+			// LIGHTS ON BOTH SIDES OF THE DOOR
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x + mWallThickness, doorPos.y, doorPos.z + mLightOffsetFromDoor));
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x - mWallThickness, doorPos.y, doorPos.z + mLightOffsetFromDoor));
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x + mWallThickness, doorPos.y, doorPos.z - mLightOffsetFromDoor));
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x - mWallThickness, doorPos.y, doorPos.z - mLightOffsetFromDoor));
+
     		// RIGHT WALL (second Part)
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + mRoomSize, halfWallHeight, mRoomX * mRoomSize + (mRoomSize- halfWallLength)),
@@ -186,10 +196,18 @@ namespace BulletHell
                 glm::vec3(mWallLength, mWallHeight, mWallThickness));
 
             // DOOR
+			glm::vec3 doorPos = glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfDoorHeight, mRoomX * mRoomSize + mRoomSize);
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
-                                        glm::vec3(mRoomY * mRoomSize + halfRoomSize, halfDoorHeight, mRoomX * mRoomSize + mRoomSize),
+                                        doorPos,
                                         glm::vec3(mDoorWidth, mDoorHeight, mDoorThickness));
             mDoorGOs[4] = door;
+
+			// LIGHTS ON BOTH SIDES OF THE DOOR
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x + mLightOffsetFromDoor, doorPos.y, doorPos.z + mWallThickness));
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x + mLightOffsetFromDoor, doorPos.y, doorPos.z - mWallThickness));
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x - mLightOffsetFromDoor, doorPos.y, doorPos.z + mWallThickness));
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x - mLightOffsetFromDoor, doorPos.y, doorPos.z - mWallThickness));
+
             // BOTTOM WALL (second Part)
             Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Wall",
                 glm::vec3(mRoomY * mRoomSize + (mRoomSize - halfWallLength), halfWallHeight, mRoomX * mRoomSize + mRoomSize),

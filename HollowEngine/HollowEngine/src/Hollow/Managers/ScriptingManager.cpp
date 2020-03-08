@@ -161,6 +161,16 @@ namespace Hollow
 			"alphaValue", &Material::mAlphaValue
 			);
 
+		lua.new_usertype<Light>("Light",
+			sol::constructors<Light()>(),
+			"lookAt", &Light::mLookAtPoint,
+			"color", &Light::mColor,
+			"radius", &Light::mRadius,
+			"position", &Light::mPosition
+			);
+
+		// Testing branches
+
 		// GAMEOBJECT
         mGameObjectType = lua.new_usertype<GameObject>("GameObject",
             sol::constructors<GameObject()>(),
@@ -171,6 +181,7 @@ namespace Hollow
 			"GetCollider", &GameObject::GetComponent<Collider>,
             "isActive", &GameObject::mActive,
 			"GetCamera", &GameObject::GetComponent<Camera>,
+			"GetLight", &GameObject::GetComponent<Light>,
 			"tag", &GameObject::mTag,
             "type", &GameObject::mType
 			);
