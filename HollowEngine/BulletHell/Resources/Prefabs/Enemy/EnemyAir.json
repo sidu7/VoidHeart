@@ -1,0 +1,64 @@
+{
+  "Type" :  "ENEMY",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 10.0, 10.0, 10.0 ],
+      "Scale": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 10.0,
+      "isFrictionLess": true,
+      "RigidbodyType": "Static"
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Turret.fbx",
+      "ModelHasOffset": true,
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+	  "Diffuse": [-1.0, -1.0, -1.0],
+      "Shininess": 1.0,
+      "MaterialData": "Resources/Models/Turret.fbx"
+    },
+    {
+      "Type": "Animator",
+      "BoneData": "Resources/Models/Turret.fbx",
+      "Animations": [
+        [
+          "Walking",
+          "Resources/Models/Turret.fbx"
+        ]
+      ],
+      "BlendFactor": 1.0
+    },
+    {
+      "Type": "StateMachine",
+      "StateFile": "Resources/State data/npcstate.json",
+      "StartState": "Walking"
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "EnemyStayStill" ]
+    },
+    {
+      "Type": "Attack",
+      "Script": "Enemy/AirAttack",
+      "BaseAttackTime": 0.7
+    },
+    {
+      "Type": "Health",
+      "HitPoints": 10,
+      "IsAlive": true,
+      "Invincible": false,
+      "InvincibleTime": 3.0
+    }
+  ]
+}
