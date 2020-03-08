@@ -24,6 +24,7 @@ namespace Hollow
 		
 		mActive = true;
 		mLighting = false;
+		mNeedRotation = false;
 		mTexture = nullptr;
 		mModelMatrix = glm::mat4(1.0f);
 		mpComputeShader = nullptr;
@@ -143,6 +144,10 @@ namespace Hollow
 		{
 			mLighting = data["Lighting"].GetBool();
 		}
+		if (data.HasMember("NeedRotation"))
+		{
+			mNeedRotation = data["NeedRotation"].GetBool();
+		}
 		if(data.HasMember("Specular"))
 		{
 			mSpecular = JSONHelper::GetVec3F(data["Specular"].GetArray());
@@ -181,6 +186,7 @@ namespace Hollow
 		JSONHelper::Write("Specular", mSpecular, writer);
 		JSONHelper::Write("Shininess", mShininess, writer);
 		JSONHelper::Write("ExtraData", mExtraData, writer);
+		JSONHelper::Write("NeedRotation", mNeedRotation, writer);
 	}
 
 	void ParticleEmitter::DebugDisplay()
@@ -207,5 +213,6 @@ namespace Hollow
 		ImGui::InputFloat3("Particle Specular", (float*)&mSpecular);
 		ImGui::InputFloat("Particle Shininess", &mShininess);
 		ImGui::InputFloat4("Extra Data", &mExtraData[0]);
+		ImGui::Checkbox("Need Rotation Matrix", &mNeedRotation);
 	}	
 }

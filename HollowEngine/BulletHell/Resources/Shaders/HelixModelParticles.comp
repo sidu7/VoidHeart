@@ -39,9 +39,10 @@ uniform vec3 MinColor;
 uniform vec3 MaxColor;
 uniform bool Pause;
 uniform bool Active;
-uniform vec3 Direction; // Direction in which helix moves
+uniform vec3 Direction; // Axis of rotation of helix
 uniform vec4 ExtraData; // x = Radius, y = Length of Helix
 uniform mat4 Model;
+uniform mat4 RotationMatrix;
 uniform int ActiveParticleCount;
 
 highp float rand(vec2 co)
@@ -73,18 +74,18 @@ void main()
 			if(each_particle[gid].currentlife > 0)
 			{
 				float vel = each_particle[gid].speed;
-				float t = gid * ExtraData.z;
+				float t = gid + ExtraData.z * vel;
 				//float t1 = 1.0f - each_particle[gid].currentlife / each_particle[gid].life;
-				float t1 = float(gid)/ActiveParticleCount;
+				float t1 = 1.0f - float(gid)/ActiveParticleCount;
 
-				pos = vec3(radius * cos(t),t1 * length,radius * sin(t));
+				pos = (RotationMatrix * vec4(radius * cos(t), t1 * length, radius * sin(t),1.0f)).xyz;
 			}
 			else
 			{
-				pos = vec3(-radius,0.0f,0.0f);				
+				pos = vec3(0.0f,0.0f,0.0f);				
 				each_particle[gid].life = rand(pos.yx) * (LifeRange.y - LifeRange.x) + LifeRange.x;
 				each_particle[gid].currentlife = each_particle[gid].life;
-				each_particle[gid].speed = 1.0f;
+				each_particle[gid].speed = SpeedRange.x;
 			}
 		}
 		else
@@ -100,7 +101,9 @@ void main()
 	float scale = rand(pos.zy) * (ScaleRange.y - ScaleRange.x) + ScaleRange.x;
 	mat4 temp = mat4(scale);
 	temp[3] = vec4(pos,1.0f);
-	temp = Model * temp;
+	mat4 m = Model;
+	m[3] = vec4(Center,1.0f);
+	temp = m * temp;
 	each_particle[gid].mPos = pos;
 
 	data[gid].mModel = temp;

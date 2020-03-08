@@ -42,6 +42,7 @@ namespace Hollow
 			"direction", &ParticleEmitter::mDirection,
 			"color", &ParticleEmitter::mParticleColor,
 			"extraData", &ParticleEmitter::mExtraData,
+			"center",&ParticleEmitter::mCenterOffset,
 			"areaOfEffect",&ParticleEmitter::mAreaOfEffect
 			);
 
