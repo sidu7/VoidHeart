@@ -36,7 +36,8 @@
       "UIRotation": 1.570796,
       "ParticleSize": 0.0,
       "ParticleTexture": "Resources/Textures/star.png",
-      "Cooldown": 0.5
+      "Cooldown": 0.5,
+      "LightColor": [0.6, 0.1, 0.1]
     }
   ]
 }

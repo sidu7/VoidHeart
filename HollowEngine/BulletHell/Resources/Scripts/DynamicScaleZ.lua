@@ -15,6 +15,10 @@ function ScaleZ()
 	local transform = gameObject:GetTransform()
 	transform.position = body.position
 	transform.scale.z = depth
+	local particle = gameObject:GetParticleEmitter()
+	if particle ~= nil then
+		particle.extraData.y = depth
+	end
 	ChangeRadius(gameObject)
 end
 

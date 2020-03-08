@@ -108,6 +108,10 @@
     <None Include="Resources\Prefabs\EnemyBoss2.json" />
     <None Include="Resources\Scripts\EnemyBoss2Movement.lua" />
     <None Include="Resources\Scripts\EnemyBoss2Fire.lua" />
+    <None Include="Resources\Shaders\TrailingModelParticles.comp" />
+    <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
+    <None Include="Resources\Shaders\PointParticleDataClear.comp" />
+    <None Include="Resources\Shaders\HelixModelParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Attack.cpp">

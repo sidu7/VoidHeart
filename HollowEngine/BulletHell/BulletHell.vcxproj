@@ -262,15 +262,18 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\GBuffer.vert" />
     <None Include="Resources\Shaders\Global.frag" />
     <None Include="Resources\Shaders\Global.vert" />
+    <None Include="Resources\Shaders\HelixModelParticles.comp" />
     <None Include="Resources\Shaders\HorizontalBlur.comp" />
     <None Include="Resources\Shaders\LocalLight.frag" />
     <None Include="Resources\Shaders\LocalLight.vert" />
     <None Include="Resources\Shaders\ModelParticleSystem.frag" />
     <None Include="Resources\Shaders\ModelParticleSystem.vert" />
+    <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
     <None Include="Resources\Shaders\ParticleSystem.frag" />
     <None Include="Resources\Shaders\ParticleSystem.vert" />
     <None Include="Resources\Shaders\Phong.frag" />
     <None Include="Resources\Shaders\Phong.vert" />
+    <None Include="Resources\Shaders\PointParticleDataClear.comp" />
     <None Include="Resources\Shaders\RainParticles.comp" />
     <None Include="Resources\Shaders\ShadowDebug.frag" />
     <None Include="Resources\Shaders\ShadowDebug.vert" />
@@ -280,6 +283,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\Skydome.vert" />
     <None Include="Resources\Shaders\TextRendering.frag" />
     <None Include="Resources\Shaders\TextRendering.vert" />
+    <None Include="Resources\Shaders\TrailingModelParticles.comp" />
     <None Include="Resources\Shaders\UIShader.frag" />
     <None Include="Resources\Shaders\UIShader.vert" />
     <None Include="Resources\Shaders\VerticalBlur.comp" />

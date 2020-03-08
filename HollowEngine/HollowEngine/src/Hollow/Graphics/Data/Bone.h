@@ -25,7 +25,7 @@ namespace Hollow
 			else if (mBoneWeights[1] == 0.0f) { mBoneIndex[1] = index; mBoneWeights[1] = weight; }
 			else if (mBoneWeights[2] == 0.0f) { mBoneIndex[2] = index; mBoneWeights[2] = weight; }
 			else if (mBoneWeights[3] == 0.0f) { mBoneIndex[3] = index; mBoneWeights[3] = weight; }
-			else { HW_CORE_ERROR("Bones weights overflowed"); }
+			//else { HW_CORE_ERROR("Bones weights overflowed"); }
 		}
 	};
 

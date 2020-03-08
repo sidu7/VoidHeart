@@ -33,6 +33,12 @@
       "Parent": 0,
       "Offset": [ 0.0, 0.0, 0.0 ],
       "Tag": "Hand"
+    },
+    {
+      "Type": "Light",
+      "Color": [ 0.3, 0.3, 0.3 ],
+      "Radius": 2,
+      "CastShadow": false
     }
   ]
 }
