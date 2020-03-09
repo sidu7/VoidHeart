@@ -5,10 +5,9 @@ namespace Hollow
 {
 	class ShaderStorageBuffer
 	{
-	private:
+	public:
 		unsigned int mSize;
 		unsigned int mRendererID;
-	public:
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ShaderStorageBuffer"/> class.
 		/// </summary>

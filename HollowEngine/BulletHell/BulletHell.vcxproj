@@ -267,6 +267,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\ModelParticleSystem.frag" />
     <None Include="Resources\Shaders\ModelParticleSystem.vert" />
     <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
+    <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
     <None Include="Resources\Shaders\ParticleSystem.frag" />
     <None Include="Resources\Shaders\ParticleSystem.vert" />
     <None Include="Resources\Shaders\Phong.frag" />

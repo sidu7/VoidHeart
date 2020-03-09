@@ -3,6 +3,11 @@ function CreateIceWave()
 	lhWave.tag = "LHWave"
 	local rhWave = CreatePrefabAtPosition("IceWave", gameObject:GetTransform().position)
 	rhWave.tag = "RHWave"
+
+	local particle = gameObject:GetParticleEmitter()
+	if particle then
+		particle.active = false
+	end
 	
 	-- Calculate right vectors
 	local up = vec3.new(0.0, 1.0, 0.0)

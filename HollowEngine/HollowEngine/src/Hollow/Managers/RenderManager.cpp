@@ -1074,6 +1074,11 @@ namespace Hollow {
 			{
 				mpParticlesModelStorage->Bind(3);
 			}
+
+			if(particle.emitter->mModelVertexParticles)
+			{
+				particle.emitter->mpModelVerticesStorage->Bind(5);
+			}
 			
 			particle.emitter->mpComputeShader->Use();
 			particle.emitter->mpComputeShader->SetInt("Pause", PauseParticles);
@@ -1098,6 +1103,11 @@ namespace Hollow {
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();
 			particle.emitter->mpParticleStorage->Unbind(2);
+
+			if (particle.emitter->mModelVertexParticles)
+			{
+				particle.emitter->mpModelVerticesStorage->Unbind(5);
+			}
 
 			if (particle.emitter->mType == POINT)
 			{
@@ -1132,6 +1142,7 @@ namespace Hollow {
 				mpModelParticleShader->SetFloat("Shininess", particle.emitter->mShininess);
 				mpModelParticleShader->SetVec3("LightPos", mGlobalLight.mPosition);
 				mpModelParticleShader->SetVec3("LightColor", mGlobalLight.mColor);
+				mpModelParticleShader->SetFloat("Alpha", particle.emitter->mAlpha);
 				particle.emitter->mpParticleVAO->Bind();
 				for (Mesh* mesh : particle.emitter->mParticleModel)
 				{

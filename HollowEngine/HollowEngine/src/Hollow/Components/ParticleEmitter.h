@@ -62,6 +62,8 @@ namespace Hollow
 		bool mNeedRotation;
 		glm::vec3 mSpecular;
 		float mShininess;
+		float mAlpha;
+		float mFadeSpeed;
 		
 		// For Point particles
 		Texture* mTexture;
@@ -71,6 +73,8 @@ namespace Hollow
 		// For Model particles
 		std::vector<Mesh*> mParticleModel;
 		std::vector<MaterialData*> mParticleMaterials;
+		ShaderStorageBuffer* mpModelVerticesStorage;
+		bool mModelVertexParticles;
 
 		ParticleType mType;
 		bool mActive;

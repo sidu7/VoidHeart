@@ -23,6 +23,14 @@ function AirDash()
 		impulse = impulse + direction * dashSpeed
 		impulse.y = 0.0
 		PlaySFX("Resources/Audio/SFX/PlayerDash.wav")
+
+		local particle = gameObject:GetParticleEmitter()
+		if particle then
+			particle.active = true
+			particle.direction = VecNormalize(vec3.new(-xDir,0,-zDir));
+			particle.count = 0
+		end
+
 		ApplyLinearImpulse(gameObject, impulse)
 	end
 end
@@ -33,6 +41,12 @@ function CheckValidAttack()
 		AirDash()
 		attack.currentAttackTime = 0.0
 		attack.shouldAttack = false
+	end
+	if attack.currentAttackTime >= 0.5 then
+		local particle = gameObject:GetParticleEmitter()
+		if particle then
+			particle.active = false
+		end
 	end
 end
 

@@ -16,6 +16,7 @@ uniform bool HasTexture;
 uniform bool Lighting;
 uniform vec3 LightPos;
 uniform vec3 LightColor;
+uniform float Alpha;
 
 const float pi = 22.0f/7.0f;
 
@@ -53,11 +54,11 @@ void main()
 
 		vec3 BRDF = (Kd/pi) + ((F*D)/(4*pow(LH,2)));
 
-		FragColor = vec4(Ii * NL * BRDF,1);
+		FragColor = vec4(Ii * NL * BRDF,Alpha);
 	}
 	else
 	{
-		FragColor = vec4(Kd,1.0f);
+		FragColor = vec4(Kd,Alpha);
 	}
 	
 	bloom = FragColor;
