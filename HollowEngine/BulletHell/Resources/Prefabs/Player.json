@@ -120,6 +120,7 @@
       "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
       "MinColor": [ 0.5, 0.5, 0.5 ],
       "MaxColor": [ 1.0, 1.0, 1.0 ],
+      "ExtraData": [2.0,0.0,0.0,0.0],
       "Active": false,
       "FadeSpeed": 5.0
     }

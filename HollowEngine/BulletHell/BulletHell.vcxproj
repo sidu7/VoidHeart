@@ -253,6 +253,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\Deferred.vert" />
     <None Include="Resources\Shaders\Diffuse.frag" />
     <None Include="Resources\Shaders\Diffuse.vert" />
+    <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
     <None Include="Resources\Shaders\DirectionModelParticles.comp" />
     <None Include="Resources\Shaders\DirectionParticles.comp" />
     <None Include="Resources\Shaders\fxaa.frag" />

@@ -57,7 +57,11 @@ namespace Hollow
 			"areaOfEffect",&ParticleEmitter::mAreaOfEffect,
 			"emissionRate", &ParticleEmitter::mEmissionRate,
 			"drawCount", &ParticleEmitter::mDrawCount,
-			"count", &ParticleEmitter::mCount
+			"count", &ParticleEmitter::mCount,
+			"maxCount",&ParticleEmitter::mMaxCount,
+			"fadeRate",&ParticleEmitter::mFadeSpeed,
+			"minColor", &ParticleEmitter::mMinColor,
+			"maxColor", &ParticleEmitter::mMaxColor
 			);
 
 		// Add get ParticleEmitter component to lua
