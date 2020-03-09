@@ -1,28 +1,112 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\AISettings.cpp" />
+    <ClCompile Include="src\Components\Attack.cpp" />
+    <ClCompile Include="src\Components\Behavior.cpp" />
+    <ClCompile Include="src\Components\CharacterStats.cpp" />
+    <ClCompile Include="src\Components\DestroyTimer.cpp" />
+    <ClCompile Include="src\Components\Health.cpp" />
+    <ClCompile Include="src\Components\Magic.cpp" />
+    <ClCompile Include="src\Components\Movement.cpp" />
+    <ClCompile Include="src\Components\ParentOffset.cpp" />
+    <ClCompile Include="src\Components\Pickup.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonFloor.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp" />
+    <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp" />
+    <ClCompile Include="src\Components\Spell.cpp" />
+    <ClCompile Include="src\GameLogic\GameLogicManager.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Systems\AttackSystem.cpp" />
+    <ClCompile Include="src\Systems\BehaviorSystem.cpp" />
+    <ClCompile Include="src\Systems\DestroySystem.cpp" />
+    <ClCompile Include="src\Systems\HandSystem.cpp" />
+    <ClCompile Include="src\Systems\HealthSystem.cpp" />
+    <ClCompile Include="src\Systems\MagicSystem.cpp" />
+    <ClCompile Include="src\Systems\MovementSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Components\CharacterStats.h" />
+    <ClInclude Include="src\Components\Pickup.h" />
+    <ClInclude Include="src\Events\DeathEvent.h" />
+    <ClInclude Include="src\Components\AISettings.h" />
+    <ClInclude Include="src\Components\Attack.h" />
+    <ClInclude Include="src\Components\Behavior.h" />
+    <ClInclude Include="src\Components\DestroyTimer.h" />
+    <ClInclude Include="src\Components\Health.h" />
+    <ClInclude Include="src\Components\Magic.h" />
+    <ClInclude Include="src\Components\ParentOffset.h" />
+    <ClInclude Include="src\Components\Spell.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonFloor.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonManager.h" />
+    <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
+    <ClInclude Include="src\Events\CycleSpellEvent.h" />
+    <ClInclude Include="src\Events\PickupTimedEvent.h" />
+    <ClInclude Include="src\GameLogic\GameLogicManager.h" />
+    <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
+    <ClInclude Include="src\GameMetaData\GameEventType.h" />
+    <ClInclude Include="src\GameMetaData\GameObjectType.h" />
+    <ClInclude Include="src\Components\Movement.h" />
+    <ClInclude Include="src\Systems\AttackSystem.h" />
+    <ClInclude Include="src\Systems\BehaviorSystem.h" />
+    <ClInclude Include="src\Systems\DestroySystem.h" />
+    <ClInclude Include="src\Systems\HandSystem.h" />
+    <ClInclude Include="src\Systems\HealthSystem.h" />
+    <ClInclude Include="src\Systems\MagicSystem.h" />
+    <ClInclude Include="src\Systems\MovementSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Json data\Camera.json" />
+    <None Include="Resources\Json data\Cloud.json" />
+    <None Include="Resources\Json data\EnemyAOE.json" />
+    <None Include="Resources\Prefabs\EnemyBoss2.json" />
+    <None Include="Resources\Prefabs\EnemyBoss1.json" />
+    <None Include="Resources\Prefabs\UIMinimap.json" />
+    <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
+    <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
+    <None Include="Resources\Scripts\ShootInDiagonalDirections.lua" />
+    <None Include="Resources\Prefabs\EnemyTurretAOE.json" />
+    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
+    <None Include="Resources\Scripts\AreaSlow.lua" />
+    <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
+    <None Include="Resources\Scripts\EnemyStayStill.lua" />
+    <None Include="Resources\Scripts\EnemyRunsAway.lua" />
+    <None Include="Resources\Prefabs\Floor.json" />
+    <None Include="Resources\Levels\Level3.json" />
+    <None Include="Resources\Localization\Hindi.json" />
+    <None Include="Resources\Localization\Japanese.json" />
+    <None Include="Resources\Prefabs\Player.json" />
+    <None Include="Resources\Prefabs\UIIcon.json" />
+    <None Include="Resources\Scripts\BossAngry.lua" />
+    <None Include="Resources\Scripts\BossHappy.lua" />
+    <None Include="Resources\Scripts\BossPist.lua" />
+    <None Include="Resources\Scripts\BossSad.lua" />
+    <None Include="Resources\Scripts\CirclePlayer.lua" />
+    <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
+    <None Include="Resources\Scripts\GameLogic.lua" />
+    <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
+    <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
+    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
+    <None Include="Resources\Scripts\GameConfig.lua" />
+    <None Include="Resources\Scripts\PlayerAttack.lua" />
+    <None Include="Resources\Scripts\PlayerMovement.lua" />
+    <None Include="Resources\Scripts\SetupLevel.lua" />
+    <None Include="Resources\Scripts\ShootInTheLookDir.lua" />
+    <None Include="Resources\Scripts\AreaDamage.lua" />
+    <None Include="Resources\Scripts\EnemyGrow.lua" />
+    <None Include="Resources\Scripts\SlowRotate.lua" />
+    <None Include="Resources\Scripts\EnemyBoss2Fire.lua" />
+    <None Include="Resources\Scripts\EnemyBoss2Movement.lua" />
+    <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\Settings.json" />
     <None Include="Resources\Shaders\Ambient.frag" />
     <None Include="Resources\Shaders\Ambient.vert" />
     <None Include="Resources\Shaders\Bloom.frag" />
     <None Include="Resources\Shaders\Bloom.vert" />
+    <None Include="Resources\Shaders\CenterModelParticles.comp" />
     <None Include="Resources\Shaders\CenterParticles.comp" />
     <None Include="Resources\Shaders\Debug.frag" />
     <None Include="Resources\Shaders\Debug.vert" />
@@ -30,18 +114,25 @@
     <None Include="Resources\Shaders\Deferred.vert" />
     <None Include="Resources\Shaders\Diffuse.frag" />
     <None Include="Resources\Shaders\Diffuse.vert" />
+    <None Include="Resources\Shaders\DirectionModelParticles.comp" />
+    <None Include="Resources\Shaders\DirectionParticles.comp" />
     <None Include="Resources\Shaders\fxaa.frag" />
     <None Include="Resources\Shaders\GBuffer.frag" />
     <None Include="Resources\Shaders\GBuffer.vert" />
     <None Include="Resources\Shaders\Global.frag" />
     <None Include="Resources\Shaders\Global.vert" />
+    <None Include="Resources\Shaders\HelixModelParticles.comp" />
     <None Include="Resources\Shaders\HorizontalBlur.comp" />
     <None Include="Resources\Shaders\LocalLight.frag" />
     <None Include="Resources\Shaders\LocalLight.vert" />
+    <None Include="Resources\Shaders\ModelParticleSystem.frag" />
+    <None Include="Resources\Shaders\ModelParticleSystem.vert" />
+    <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
     <None Include="Resources\Shaders\ParticleSystem.frag" />
     <None Include="Resources\Shaders\ParticleSystem.vert" />
     <None Include="Resources\Shaders\Phong.frag" />
     <None Include="Resources\Shaders\Phong.vert" />
+    <None Include="Resources\Shaders\PointParticleDataClear.comp" />
     <None Include="Resources\Shaders\RainParticles.comp" />
     <None Include="Resources\Shaders\ShadowDebug.frag" />
     <None Include="Resources\Shaders\ShadowDebug.vert" />
@@ -49,225 +140,15 @@
     <None Include="Resources\Shaders\ShadowMap.vert" />
     <None Include="Resources\Shaders\Skydome.frag" />
     <None Include="Resources\Shaders\Skydome.vert" />
+    <None Include="Resources\Shaders\TextRendering.frag" />
+    <None Include="Resources\Shaders\TextRendering.vert" />
+    <None Include="Resources\Shaders\TrailingModelParticles.comp" />
     <None Include="Resources\Shaders\UIShader.frag" />
     <None Include="Resources\Shaders\UIShader.vert" />
     <None Include="Resources\Shaders\VerticalBlur.comp" />
-    <None Include="Resources\Scripts\test.lua" />
     <None Include="Resources\State data\npcstate.json" />
     <None Include="Resources\State data\playerstate.json" />
-    <None Include="Resources\Shaders\TextRendering.vert" />
-    <None Include="Resources\Shaders\TextRendering.frag" />
     <None Include="src\GameMetaData\CollisionMask.data" />
-    <None Include="Resources\Levels\Level3.json" />
-    <None Include="Resources\Scripts\BossAngry.lua" />
-    <None Include="Resources\Scripts\BossHappy.lua" />
-    <None Include="Resources\Scripts\BossPist.lua" />
-    <None Include="Resources\Scripts\BossSad.lua" />
-    <None Include="Resources\Scripts\PlayerAttack.lua" />
-    <None Include="Resources\Scripts\PlayerMovement.lua" />
-    <None Include="Resources\Localization\Hindi.json" />
-    <None Include="Resources\Localization\Japanese.json" />
-    <None Include="Resources\Prefabs\Player.json" />
-    <None Include="Resources\Prefabs\Floor.json" />
-    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
-    <None Include="Resources\Scripts\SetupLevel.lua" />
-    <None Include="Resources\Scripts\GameConfig.lua" />
-    <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
-    <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
-    <None Include="Resources\Prefabs\UIIcon.json" />
-    <None Include="Resources\Scripts\CirclePlayer.lua" />
-    <None Include="Resources\Scripts\ShootInTheLookDir.lua" />
-    <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
-    <None Include="Resources\Scripts\EnemyRunsAway.lua" />
-    <None Include="Resources\Scripts\EnemyStayStill.lua" />
-    <None Include="Resources\Prefabs\EnemyBoss1.json" />
-    <None Include="Resources\Scripts\GameLogic.lua" />
-    <None Include="Resources\Json data\Camera.json" />
-    <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Scripts\ShootInDiagonalDirections.lua" />
-    <None Include="Resources\Json data\Camera.json" />
-    <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\Camera.json" />
-    <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\EnemyAOE.json" />
-    <None Include="Resources\Prefabs\EnemyTurretAOE.json" />
-    <None Include="Resources\Scripts\AreaDamage.lua" />
-    <None Include="Resources\Scripts\EnemyGrow.lua" />
-    <None Include="Resources\Shaders\ModelParticleSystem.frag" />
-    <None Include="Resources\Shaders\ModelParticleSystem.vert" />
-    <None Include="Resources\Shaders\CenterModelParticles.comp" />
-    <None Include="Resources\Shaders\DirectionModelParticles.comp" />
-    <None Include="Resources\Shaders\DirectionParticles.comp" />
-    <None Include="Resources\Scripts\AreaSlow.lua" />
-    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
-    <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
-    <None Include="Resources\Prefabs\UIMinimap.json" />
-    <None Include="Resources\Scripts\SlowRotate.lua" />
-    <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
-    <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
-    <None Include="Resources\Prefabs\EnemyBoss2.json" />
-    <None Include="Resources\Scripts\EnemyBoss2Movement.lua" />
-    <None Include="Resources\Scripts\EnemyBoss2Fire.lua" />
-    <None Include="Resources\Shaders\TrailingModelParticles.comp" />
-    <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
-    <None Include="Resources\Shaders\PointParticleDataClear.comp" />
-    <None Include="Resources\Shaders\HelixModelParticles.comp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Components\Attack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\DestroyTimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\Health.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\Movement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\AttackSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\DestroySystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\HealthSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\MovementSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\Behavior.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\BehaviorSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\Magic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\MagicSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DungeonGeneration\DungeonFloor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DungeonGeneration\DungeonManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DungeonGeneration\DungeonRoom.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\Spell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\ParentOffset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\HandSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\AISettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameLogic\GameLogicManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\Pickup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Components\CharacterStats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Components\Attack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\DestroyTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Health.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Movement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameMetaData\GameEventType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameMetaData\GameObjectType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\AttackSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\DestroySystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\HealthSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\MovementSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Behavior.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\BehaviorSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Magic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\MagicSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DungeonGeneration\DungeonFloor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DungeonGeneration\DungeonManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DungeonGeneration\DungeonRoom.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameMetaData\DungeonRoomType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Spell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\ParentOffset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\HandSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Events\CycleSpellEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\AISettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Events\DeathEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameLogic\GameLogicManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Pickup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\CharacterStats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Events\PickupTimedEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <None Include="Resources\Scripts\CirclingAroundRoomCenter.lua" />
   </ItemGroup>
 </Project>

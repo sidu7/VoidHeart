@@ -24,9 +24,18 @@
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-	  "Diffuse": [3.0, 0.0, 0.0],
+      "Diffuse": [ 3.0, 0.0, 0.0 ],
       "Shininess": 10.0,
       "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "CirclingAroundRoomCenter" ]
+    },
+    {
+      "Type": "Health",
+      "HitPoints": 25,
+      "IsAlive": true
     }
   ]
 }

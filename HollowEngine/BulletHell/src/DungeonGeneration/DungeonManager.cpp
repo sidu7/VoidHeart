@@ -178,10 +178,9 @@ namespace BulletHell
 		ImGui::Text("Seed: %u", mSeed);
 	}
 
-	float DungeonManager::CastRay()
+	float DungeonManager::CastRay(const glm::vec3& start, const glm::vec3& dir)
 	{
-		Hollow::Transform* pPlTr = mpPlayerGo->GetComponent<Hollow::Transform>();
-		Ray r{ pPlTr->mPosition, glm::normalize(pPlTr->GetForward()) };
+		Ray r{ start, glm::normalize(dir) };
 
 		IntersectionData id, closest;
 		closest.object = nullptr;

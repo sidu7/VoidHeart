@@ -154,7 +154,7 @@ function MoveToCenter()
 	local xDirNorm = xDir / dirLength
 	local zDirNorm = zDir / dirLength
 
-    if (dirLength > 1) then -- walking to the center
+    if (dirLength > 0.1) then -- walking to the center
         -- look at the target
         local rot = vec3.new(0.0, 0.0, 0.0)
         local tangent = xDirNorm / zDirNorm
@@ -186,6 +186,12 @@ function MoveToCenter()
         local body = gameObject:GetBody()
         body.velocity = vec3.new(0.0, 0.0, 0.0)
         LookAtThePlayer()
+
+        -- once at the center signal to attacking script to spawn rocks
+        local attack = gameObject:GetAttack()
+        if (attack.isFired2 ~= true) then
+            attack.shouldAttack2 = true
+        end
     end
 end
 
@@ -196,6 +202,8 @@ function Update()
     if (hitPoints < maxHealth / 3) then
         MoveToCenter()
     elseif (hitPoints < maxHealth * 2 / 3) then
+        local material = gameObject:GetMaterial()
+        material.diffuse = vec3.new(0,0,0)
         MoveToCenter()
     else
         local attack = gameObject:GetAttack()

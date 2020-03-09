@@ -206,6 +206,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\EnemyBoss2.json" />
     <None Include="Resources\Prefabs\EnemyBoss1.json" />
     <None Include="Resources\Prefabs\UIMinimap.json" />
+    <None Include="Resources\Scripts\CirclingAroundRoomCenter.lua" />
     <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
     <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
     <None Include="Resources\Scripts\ShootInDiagonalDirections.lua" />
