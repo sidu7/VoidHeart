@@ -26,7 +26,7 @@
 
 
 #define MAX_REGULAR_ROOMS 8
-#define MAX_BOSS_ROOMS 3
+#define MAX_BOSS_ROOMS 4
 
 namespace BulletHell
 {
@@ -262,7 +262,7 @@ namespace BulletHell
 		{
 			roomNum = Random::RangeSeeded(1, MAX_BOSS_ROOMS);
 			roomName = "Boss/Room" + std::to_string(roomNum);
-			roomName = "Boss/Room3";
+			roomName = "Boss/Room4";
 		}
 		else
 		{

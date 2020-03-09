@@ -11,7 +11,7 @@ function ScaleZ()
     local playerPos = playerTransform.position
     local direction = playerTransform:forward()
 
-    local depth = DCastRay(vec3.new(playerPos.x, playerPos.y,playerPos.z), vec3.new(direction.x, direction.y, direction.z))
+    local depth = DCastRay(playerPos, direction)
 	
 	local body = gameObject:GetBody()
 	local front = VecNormalize(player:GetTransform():forward())
