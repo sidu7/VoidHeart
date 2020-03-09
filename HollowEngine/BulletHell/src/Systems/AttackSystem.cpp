@@ -31,7 +31,8 @@ namespace BulletHell
 			"target", &Attack::mpTarget,
 			"chargeTime", &Attack::mChargeTime,
             "IsFired2", &Attack::mIsFired2,
-            "shouldAttack2", &Attack::mShouldAttack2
+            "shouldAttack2", &Attack::mShouldAttack2,
+			"isActive", &Attack::mIsActive
 			);
 
 		// Add get attack component to lua

@@ -43,118 +43,57 @@ function AreaDamage()
 	dashFlag = false
 end
 
-function ShootInDirection(dirX, dirY, dirZ)
-    -----------------------------------------
+function SetPillarNearestPlayer()
+	-----------------------------------------
     -- playtesting vars
-	local bulletSpeed = 10.0
-    -----------------------------------------
-    local transform = gameObject:GetTransform()
-	local spawnPos = transform.position
-
-	local bulletPrefabPath = "Resources/Json data/Bullet.json"
-	local bullet = CreateGameObject(bulletPrefabPath)
-    local bulletTransform = bullet:GetTransform()
-	local bulletBody = bullet:GetBody()
-    
-    -- Setting position
-    bulletBody.position = spawnPos
-    bulletTransform.position = spawnPos
-
-    -- Setting velocity
-    local direction = vec3.new(dirX, dirY, dirZ)
-    local length = dirX * dirX + dirY * dirY + dirZ * dirZ
-    direction = direction * (1 / length);
-    bulletBody.velocity = bulletSpeed * direction
-    bulletBody.useGravity = true
-end
-
-function CreateLargeFireball()
-	local bulletSpeed = 25.0
-    
-    --  acquire target 
-    local target = player
-    if (target == nil or target.isActive == false) then
-        return
-    end
-    local targetTransform = target:GetTransform()
-    local targetPos = targetTransform.position
-    
-    local transform = gameObject:GetTransform()
-	local spawnPos = transform.position
-
-
-    -- Create bullet
-	local bullet = CreatePrefabAtPosition("EnemyLargeFireball", gameObject:GetTransform().position)
-    local bulletTransform = bullet:GetTransform()
-    local bulletBody = bullet:GetBody()
+	local offset = vec3.new(0.0, 2.0, 0.0)
+	-----------------------------------------
+	-- Get the current room/pillars
+	local floor = GetDungeonFloor(currentFloor)
+	local currentRoomObj = floor:GetRoomFromIndex(currentRoom)
+	local pillars = currentRoomObj.obstacles
+	local playerBody = player:GetBody()
 	
-    -- Setting position
-    bulletBody.position = spawnPos
-    bulletTransform.position = spawnPos
-		
-    -- calculate direction/velocity
-    local xDir = targetPos.x - spawnPos.x
-	local zDir = targetPos.z - spawnPos.z
-	local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
-	local xDirNorm = xDir / dirLength
-	local zDirNorm = zDir / dirLength
-    bulletBody.velocity = bulletSpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
-
-	-- Change Color
-	material = bullet:GetMaterial()
-	material.diffuse = vec3.new(4.0, 0.0, 0.0)
+	-- Find pillar closest to the player
+	local closestPillarIndex = 0
+	local closestPillarDistance = 100000000.0
+	for k=1,#pillars do
+		local pillarDistance = VecLength(playerBody.position - pillars[k]:GetTransform().position)
+		if pillarDistance < closestPillarDistance then
+			closestPillarIndex = k
+			closestPillarDistance = pillarDistance
+		end
+	end
+	closestPillar = pillars[closestPillarIndex]
 end
 
-function ShootInAllDirections()
-    
-	local offset = 0
-    local numBullets = 20
-    for i = 0, numBullets do
-	    local theta = (i / numBullets * math.pi * 2) + math.rad(offset)
-        ShootInDirection(math.cos(theta), 0.5, math.sin(theta))
-    end
+function SetPillarFurthestPlayer()
+-----------------------------------------
+    -- playtesting vars
+	local offset = vec3.new(0.0, 2.0, 0.0)
+	-----------------------------------------
+	-- Get the current room/pillars
+	local floor = GetDungeonFloor(currentFloor)
+	local currentRoomObj = floor:GetRoomFromIndex(currentRoom)
+	local pillars = currentRoomObj.obstacles
+	local playerBody = player:GetBody()
+	
+	-- Find pillar closest to the player
+	local furthestPillarIndex = 0
+	local furthestPillarDistance = -1.0
+	for k=1,#pillars do
+		local pillarDistance = VecLength(playerBody.position - pillars[k]:GetTransform().position)
+		if pillarDistance > furthestPillarDistance then
+			furthestPillarIndex = k
+			furthestPillarDistance = pillarDistance
+		end
+	end
+	closestPillar = pillars[furthestPillarIndex]
 end
 
-function FlameThrower()
-    --  acquire target 
-    local target = player
-    if (target == nil or target.isActive == false) then
-        return
-    end
-    local targetTransform = target:GetTransform()
-    local targetPos = targetTransform.position
-    local transform = gameObject:GetTransform()
-	local spawnPos = vec3.new(transform.position.x, transform.position.y, transform.position.z)
-    spawnPos.y = spawnPos.y + transform.scale.y * 0.30
-    local forward = vec3. new(transform:forward().x, transform:forward().y, transform:forward().z)
-    forward = VecNormalize(forward)
-	spawnPos = spawnPos + forward
-
-	local go = CreatePrefabAtPosition("PlayerFlames", spawnPos)
-    go.type = 5
-	local body = go:GetBody()
-
-    -- calculate direction
-    local xDir = targetPos.x - spawnPos.x
-    local yDir = targetPos.y - spawnPos.y
-	local zDir = targetPos.z - spawnPos.z
-	local dirLength = math.sqrt(xDir*xDir + yDir * yDir + zDir*zDir)
-	local xDirNorm = xDir / dirLength
-    local yDirNorm = yDir / dirLength
-	local zDirNorm = zDir / dirLength
-
-
-	local attackSpeed = 5.0
-	local enemyVelocity = gameObject:GetBody().velocity
-	body.velocity = enemyVelocity + attackSpeed * vec3.new(xDirNorm, yDirNorm, zDirNorm)
-	-- Add player velocity
-
-	transform = go:GetTransform()
-	transform.position = body.position
-
-	-- Change Color
-	material = go:GetMaterial()
-	material.diffuse = vec3.new(4.0, 0.0, 0.0)
+function JumpInAir()
+	local impulse = vec3.new(0.0, 16000.0, 0.0)
+	ApplyLinearImpulse(gameObject, impulse)
 end
 
 function PhaseOneBehavior()
@@ -164,27 +103,103 @@ function PhaseOneBehavior()
 	local phaseOneAOETime = 0.5
     -----------------------------------------
 	local attack = gameObject:GetAttack()
-	
-	if dashFlag then
-		AreaDamage()
-		attack.baseAttackTime = phaseOneDashTime
-	else
-		DashAtPlayer()
-		attack.baseAttackTime = phaseOneAOETime
+	attack.shouldAttack = attack.currentAttackTime > attack.baseAttackTime
+	if attack.shouldAttack then
+		if dashFlag then
+			AreaDamage()
+			attack.baseAttackTime = phaseOneDashTime
+		else
+			DashAtPlayer()
+			attack.baseAttackTime = phaseOneAOETime
+		end
+		attack.currentAttackTime = 0.0
 	end
 end
 
 function PhaseTwoBehavior()
+-----------------------------------------
+    -- playtesting vars
+	local minDistanceToPillar = 2.5
+	local jumpDelayTime = 2.5
+	-----------------------------------------
 	local attack = gameObject:GetAttack()
-	ShootInAllDirections()
-    attack.baseAttackTime = 3
+	local position = gameObject:GetBody().position
+	local distance = VecLength(centerPillar:GetBody().position - position)
+	-- Once boss is close enough to center pillar start countdown to jump
+	if distance < minDistanceToPillar and not dashFlag then
+		attack.currentAttackTime = 0.0
+		attack.baseAttackTime = jumpDelayTime
+		dashFlag = true
+	end
+	
+	-- After countdown is reached, find pillar to jump to
+	if dashFlag and attack.currentAttackTime > attack.baseAttackTime then
+		SetPillarNearestPlayer()
+		JumpInAir()
+		attack.shouldAttack = false
+		attack.baseAttackTime = 1000.0
+		dashFlag = false
+	end
+	
+	-- Once close enough to the pillar to jump to activate attack
+	if closestPillar ~= nil then 
+		
+		local distanceToPillar = VecLength(closestPillar:GetBody().position - position)
+		if distanceToPillar < minDistanceToPillar then
+			-- Activate actual attack
+			AreaDamage()
+			closestPillar = nil
+		end
+	end
+    
 end
 
 function PhaseThreeBehavior()
+	-----------------------------------------
+    -- playtesting vars
+	local totalAttackCycleTime = 64.0
+	local dashTime = 6.0
+	local AOETime = dashTime + 0.5
+	local getPillarTime = totalAttackCycleTime / 2.0
+	local moveToPillarTime = getPillarTime + 0.5
+	
+	local minDistanceToPillar = 2.5
+    -----------------------------------------
 	local attack = gameObject:GetAttack()
+	attack.baseAttackTime = totalAttackCycleTime
+	
+	if attack.currentAttackTime > dashTime and attack.currentAttackTime < AOETime then
+		-- Dash at player, dont reset or set anything
+		if not dashFlag then
+			DashAtPlayer()
+		end
+	elseif attack.currentAttackTime > AOETime and
+	attack.currentAttackTime < getPillarTime then
+		-- Cast AOE, set timer to next cycle to get pillar
+		if dashFlag then
+			AreaDamage()
+			attack.currentAttackTime = getPillarTime
+			dashFlag = false
+		end
+	elseif attack.currentAttackTime > getPillarTime and
+	attack.currentAttackTime < moveToPillarTime then
+		-- Get pillar to move to
+		SetPillarFurthestPlayer()
+	elseif attack.currentAttackTime > moveToPillarTime then
+		-- Check if close enough to pillar to give life and transition back into dash attack, reset pillar and current attack timer
+		local position = gameObject:GetBody().position
+		local pillarPosition = closestPillar:GetBody().position
+		local distance = VecLength(pillarPosition - position)
+		if(distance < minDistanceToPillar) then
+			closestPillar:GetAttack().shouldAttack = true
+			closestPillar:GetAttack().isActive = true
+			closestPillar = nil
+			attack.currentAttackTime = 0.0
+		end
+	end	
 end
 
-function Shoot()
+function Update()
 	-----------------------------------------
     -- playtesting vars
 	local maxHealth = 200
@@ -203,15 +218,6 @@ function Shoot()
 		-- Third phase
 		PhaseThreeBehavior()
 	end
-	
-end
-
-function Update()
-	local attack = gameObject:GetAttack()
-	if attack.currentAttackTime > attack.baseAttackTime then
-	    Shoot()
-        attack.currentAttackTime = 0
-    end
 end
 
 Update()

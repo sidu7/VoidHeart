@@ -69,7 +69,8 @@ namespace BulletHell
             "LockDownRoom", &DungeonRoom::LockDownRoom,
             "getEnemyCount", &DungeonRoom::GetEnemyCount,
             "GetID", &DungeonRoom::GetID,
-			"Enemies", &DungeonRoom::mEnemies
+			"Enemies", &DungeonRoom::mEnemies,
+			"obstacles", &DungeonRoom::mObstacles
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));

@@ -3,7 +3,7 @@ function Shoot()
     -- playtesting vars
 	local bulletSpeed = 15.0
     -----------------------------------------
-	    
+	   
     local transform = gameObject:GetTransform()
 	local spawnPos = transform.position
 
@@ -23,19 +23,15 @@ function Shoot()
 	local zDirNorm = zDir / dirLength
 	
     -- look at the target
-    local rot = vec3.new(0.0, 0.0, 0.0)
     local tangent = xDirNorm / zDirNorm
     local radians = math.atan(tangent)
     local degree = radians * 180 / math.pi
-    if zDirNorm >= 0 then  
-	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+	local rot = vec3.new(0.0, degree, 0.0)
+    if zDirNorm < 0 then  
+	    rot = rot + vec3.new(0.0, 180.0, 0.0)
     end
-    if zDirNorm < 0 then 
-	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
-    end
-    
+    transform:Rotate(rot)
+	
 	local attack = gameObject:GetAttack()
 	if attack.currentAttackTime > attack.baseAttackTime then
         -- Create bullet
@@ -45,18 +41,14 @@ function Shoot()
 	    local bulletBody = bullet:GetBody()
    
         -- Setting position
-        bulletBody.position = spawnPos
-        bulletTransform.position = spawnPos
+        bulletBody.position = spawnPos + vec3.new(0.0, 1.0, 0.0)
+        bulletTransform.position = bulletBody.position
 
         -- Setting velocity
         bulletBody.velocity = bulletSpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
-    
-        -- Setting rotation
-        bulletTransform:Rotate(rot);
 
         attack.currentAttackTime = 0
     end
-
 end
 
 function Update()
