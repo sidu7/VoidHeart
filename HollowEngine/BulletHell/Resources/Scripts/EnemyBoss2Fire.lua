@@ -115,10 +115,22 @@
 function SpawnRock(dirX, dirY, dirZ)
     local distanceFromBoss = 2
     -----------------------------------------
-    local transform = gameObject:GetTransform()
-	local spawnPos = transform.position
+    if (player == nil or player.isActive == false) then
+        return
+    end
+    local playerTransform = player:GetTransform()
+    local playerPos = playerTransform.position
+    local room = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom)
+	local roomCoords = room:GetCoords()
+    local centerX = (roomCoords.y + roomCoords.y + 1) * roomSize / 2 
+    local centerZ = (roomCoords.x + roomCoords.x + 1) * roomSize / 2 
+    local centerPos = vec3.new(centerX, playerPos.y, centerZ) 
     
-	local rockPrefabPath = "Resources/Json data/Bullet.json"
+
+    local transform = gameObject:GetTransform()
+	local spawnPos = centerPos
+    
+	local rockPrefabPath = "Resources/Json data/CirclingBullet.json"
 	local rock = CreateGameObject(rockPrefabPath)
     local rockTransform = rock:GetTransform()
 	local rockBody = rock:GetBody()
@@ -139,10 +151,41 @@ function SpawnRocks()
 	    local theta = (i / numRocks * math.pi * 2) + math.rad(offset)
         SpawnRock(math.cos(theta), 0.5, math.sin(theta))
     end
-    local attack = gameObject:GetAttack()
-    attack.IsFired2 = true
+end
+
+function SpawnLaser(dirX, dirY, dirZ)
+    local distanceFromBoss = 2
+    -----------------------------------------
+    if (player == nil or player.isActive == false) then
+        return
+    end
+    local playerTransform = player:GetTransform()
+    local playerPos = playerTransform.position
     
-    print("spawning rock")
+    local transform = gameObject:GetTransform()
+	local spawnPos = transform.position
+    
+	local rockPrefabPath = "Resources/Json data/EnemyBeam.json"
+	local rock = CreateGameObject(rockPrefabPath)
+    local rockTransform = rock:GetTransform()
+	local rockBody = rock:GetBody()
+    
+    -- Setting position
+    local direction = vec3.new(dirX, dirY, dirZ)
+    local length = dirX * dirX + dirY * dirY + dirZ * dirZ
+    direction = direction * (1 / length);
+    rockBody.position = spawnPos + direction * distanceFromBoss
+    rockTransform.position = spawnPos + direction * distanceFromBoss
+
+end
+
+function SpawnLasers()
+	local offset = math.pi / 3
+    local numRocks = 3
+    for i = 0, numRocks do
+	    local theta = (i / numRocks * math.pi * 2) + math.rad(offset)
+        SpawnLaser(math.cos(theta), 0.5, math.sin(theta))
+    end
 end
 
 function Update()
@@ -151,32 +194,36 @@ function Update()
 	local attack = gameObject:GetAttack()
     local hitPoints = health.hitPoints
 	local attack = gameObject:GetAttack()
+    
     if (hitPoints < maxHealth / 3) then
 	    if attack.currentAttackTime > attack.baseAttackTime then
             --CreateLargeFireball()
         --    attack.currentAttackTime = 0
         end
-        print(hitPoints)
         --attack.baseAttackTime = 3
     elseif (hitPoints < maxHealth * 2 / 3) then
         
-        local attack = gameObject:GetAttack()
         attack.baseAttackTime = 10
-        attack.IsFired = false;
-        attack.shouldAttack = true;
-        if (attack.IsFired2 == false) then
+        if (attack.shouldAttack2 == true and attack.IsFired2 == false) then
             SpawnRocks()
+            attack.shouldAttack2 = false
+            attack.IsFired2 = true
+            
         end
 
         if (attack.currentAttackTime > attack.baseAttackTime) then
             attack.currentAttackTime = 0
         elseif (attack.currentAttackTime > attack.baseAttackTime / 2) then
+            if (attack.shouldAttack == true) then
+                SpawnLasers()
+                attack.shouldAttack = false
+            end
+        else
+            attack.shouldAttack = true
         end
-        --ShootInAllDirections()
-       -- attack.baseAttackTime = 3
     else 
-        print(hitPoints)
-	    --handled by EnemyBoss2Movement.lua
+        attack.shouldAttack2 = false
+	    --melee handled by EnemyBoss2Movement.lua
     end
 end
 
