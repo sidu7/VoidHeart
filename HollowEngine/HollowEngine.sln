@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MarbleBall", "MarbleBall\Ma
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tetris", "Tetris\Tetris.vcxproj", "{73CD9D6C-50D3-453E-8710-0D5927AE2B72}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AmalgamageSetup", "AmalgamageSetup\AmalgamageSetup.vdproj", "{9E22B372-4C22-4FF1-A677-382EBFED30A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -33,6 +35,8 @@ Global
 		{73CD9D6C-50D3-453E-8710-0D5927AE2B72}.Debug|x64.Build.0 = Debug|x64
 		{73CD9D6C-50D3-453E-8710-0D5927AE2B72}.Release|x64.ActiveCfg = Release|x64
 		{73CD9D6C-50D3-453E-8710-0D5927AE2B72}.Release|x64.Build.0 = Release|x64
+		{9E22B372-4C22-4FF1-A677-382EBFED30A1}.Debug|x64.ActiveCfg = Debug
+		{9E22B372-4C22-4FF1-A677-382EBFED30A1}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

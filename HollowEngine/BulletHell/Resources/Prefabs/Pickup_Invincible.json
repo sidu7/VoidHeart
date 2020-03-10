@@ -1,11 +1,11 @@
 {
-    
-    "Type": "PICKUP",
-    "Active": true,
-    "Components": [
+
+  "Type": "PICKUP",
+  "Active": true,
+  "Components": [
     {
       "Type": "Transform",
-      "Scale": [ 1.0, 1.0, 1.0 ]
+      "Scale": [ 0.5, 0.5, 0.5 ]
     },
     {
       "Type": "Body",
@@ -21,25 +21,36 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Heart.obj",
+      "Model": "Resources/Models/InvinciblePotion.obj",
       "ModelHasOffset": false,
       "CastShadow": true
     },
     {
       "Type": "Material",
-      "Shininess": 1000.0,
-        "Diffuse": [ 0.0, 1.0, 0.0, 1.0 ],
-        "Specular": [0.5,0.5,0.5,1.0]
+      "Texture": "Resources/Textures/InvinciblePotion.png",
+      "Specular": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "Shininess": 10.0,
+      "MaterialTextures": false
     },
-      {
-        "Type": "Pickup",
-        "PickupType": 6,
-        "BuffValue": 10.0,
-        "EffectTime": 0.0
-      },
-      {
-        "Type": "Script",
-        "Scripts": ["SlowRotate"]
-      }
+    {
+      "Type": "Pickup",
+      "PickupType": 6,
+      "BuffValue": 10.0,
+      "EffectTime": 0.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "SlowRotate" ]
+    },
+    {
+      "Type": "Light",
+      "Color": [ 0.3, 0.3, 0.8 ],
+      "Radius": 3,
+      "CastShadow": false
+    }
   ]
 }

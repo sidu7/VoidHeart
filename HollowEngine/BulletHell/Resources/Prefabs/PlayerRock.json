@@ -4,8 +4,8 @@
     "Components": [
         {
             "Type": "Transform",
-            "Position": [ 0.5, 10.0, 0.0 ],
-            "Scale": [ 0.7, 0.7, 0.7 ]
+            "Position": [ 0.0, 0.0, 0.0 ],
+            "Scale": [ 1.0, 1.0, 1.0 ]
         },
         {
             "Type": "Body",
@@ -18,16 +18,24 @@
             "Shape": "BALL"
         },
         {
-            "Type": "Model",
-            "Shape": "BALL",
-            "CastShadow": true
+          "Type": "Model",
+          "Model": "Resources/Models/Rock.obj",
+          "CastShadow": true
         },
-        {
-            "Type": "Material",
-            "Specular": [ 1.0, 1.0, 1.0 ],
-            "Diffuse": [ 0.0, 2.0, 0.0 ],
-            "Shininess": 10.0,
-            "Texture": "Resources/Textures/cracks.png"
-        }
+      {
+        "Type": "Material",
+        "Texture": "Resources/Textures/RockMaterial.png",
+        "Specular": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "Shininess": 10.0,
+        "MaterialTextures": false
+      },
+      {
+        "Type": "Script",
+        "Scripts":  ["SlowRotateXYZ"]
+      }
     ]
 }
