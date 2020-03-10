@@ -893,7 +893,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </None>
     <None Include="src\GameMetaData\DungeonRoomType.enum" />
     <None Include="src\GameMetaData\GameEvents.enum" />
-    <None Include="src\GameMetaData\GameEventsMap.data" />
+    <None Include="src\GameMetaData\GameEventsMap.data">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="src\GameMetaData\GameObjectType.enum" />
   </ItemGroup>
   <ItemGroup>
