@@ -23,6 +23,8 @@
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
 #include "Events/PickupTimedEvent.h"
+#include "Hollow/Utils/UniqueID.h"
+#include "Hollow/Components/Body.h"
 
 
 #define MAX_REGULAR_ROOMS 8
@@ -30,6 +32,8 @@
 
 namespace BulletHell
 {
+	bool GameLogicManager::hasGameStarted;
+	
     GameLogicManager::GameLogicManager() 
 	{
 		// Preload all rooms into map
@@ -50,28 +54,93 @@ namespace BulletHell
 
     void GameLogicManager::Init()
     {
+		hasGameStarted = false;
+		RegisterLuaBindings();
+
+		// Init globals
+		Hollow::SceneManager::Instance().LoadLevel("Level3");
+    	Hollow::ScriptingManager::Instance().RunScript("Globals");
+
+    	// Construct Room 
+		ConstructMainMenuRoom();
+		DungeonManager::Instance().GetCurrentRoom().UnlockRoom();
+
+		CreateRoomLabels();
+    	
+    	// Set player position
+		DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
+		Hollow::Body* pBody = DungeonManager::Instance().mpPlayerGo->GetComponent<Hollow::Body>();
+    	pBody->mPosition = glm::vec3(DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
+			1.5,
+			DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2);
+    	
+    }
+
+    void GameLogicManager::StartNewGame()
+    {
+		hasGameStarted = true;
+    	
 		SubscribeToEvents();
-        Hollow::SceneManager::Instance().LoadLevel("Level3");
-        Hollow::ScriptingManager::Instance().RunScript("GameConfig");
+		Hollow::SceneManager::Instance().LoadLevel("Level3");
+		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
 
 
-        BulletHell::DungeonManager::Instance().ConfigureDungeon();
-        BulletHell::DungeonManager::Instance().Init();
+		BulletHell::DungeonManager::Instance().ConfigureDungeon();
+		BulletHell::DungeonManager::Instance().Init();
 
 
-        Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
+		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
 
-        BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
-        Hollow::SystemManager::Instance().OnSceneInit();
+		BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
+		Hollow::SystemManager::Instance().OnSceneInit();
 
 
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
 		mCountDeadEnemies = 0;
-
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(GameLogicManager::DropRandomPickup));
     }
 
-    void GameLogicManager::MoveToNextFloor()
+	void GameLogicManager::RegisterLuaBindings()
+	{
+		// LUA Bindings for Dungeon Classes
+		// Send attack component to lua
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<DungeonFloor>("DungeonFloor",
+			sol::constructors<DungeonFloor()>(),
+			"GetRoom", &DungeonFloor::GetRoom,
+			"GetRoomFromIndex", &DungeonFloor::GetRoomFromIndex,
+			"GetFloorNum", &DungeonFloor::GetFloorNumber,
+			"GetRegularRoom", &DungeonFloor::GetRegularRoom,
+			"GetRoomCount", &DungeonFloor::GetRoomCount,
+			"GetEntrance", &DungeonFloor::GetEntrance,
+			"GetEntranceIndex", &DungeonFloor::GetEntranceIndex,
+			"GetBossIndex", &DungeonFloor::GetBossIndex
+			);
+
+		lua.new_usertype<DungeonRoom>("DungeonRoom",
+			sol::constructors<DungeonRoom()>(),
+			"GetFloorNum", &DungeonRoom::GetFloorNum,
+			"GetDoorBits", &DungeonRoom::GetDoorBits,
+			"GetCoords", &DungeonRoom::GetCoords,
+			"IsCleared", &DungeonRoom::IsCleared,
+			"UnlockRoom", &DungeonRoom::UnlockRoom,
+			"LockDownRoom", &DungeonRoom::LockDownRoom,
+			"getEnemyCount", &DungeonRoom::GetEnemyCount,
+			"GetID", &DungeonRoom::GetID,
+			"Enemies", &DungeonRoom::mEnemies
+			);
+
+		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
+		lua.set_function("PopulateRoom", &GameLogicManager::PopulateRoom, std::ref(GameLogicManager::Instance()));
+		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
+		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
+		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
+		lua.set_function("DCastRay", &DungeonManager::CastRay, std::ref(DungeonManager::Instance()));
+
+
+	}
+
+	void GameLogicManager::MoveToNextFloor()
     {
 
         auto& lua = Hollow::ScriptingManager::Instance().lua;
@@ -91,12 +160,26 @@ namespace BulletHell
         Hollow::SystemManager::Instance().OnSceneInit();
     }
 
-    void GameLogicManager::SubscribeToEvents()
+	void GameLogicManager::CreateRoomLabels()
+	{
+		glm::vec3 roomCenter = glm::vec3(DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
+			0.5,
+			DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2);
+    	
+		// Place Text Objects
+		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Options", roomCenter + glm::vec3(-DungeonRoom::mRoomSize / 2, 0.0f, 0.0f));
+		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Credits", roomCenter + glm::vec3(DungeonRoom::mRoomSize / 2, 0.0f, 0.0f));
+		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("NewGame", roomCenter + glm::vec3(0.0f, 0.0f, -DungeonRoom::mRoomSize / 2));
+		Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Exit", roomCenter + glm::vec3(0.0f, 0.0f, DungeonRoom::mRoomSize / 2));    	
+	}
+
+	void GameLogicManager::SubscribeToEvents()
     {
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_SHIELD, EVENT_CALLBACK(GameLogicManager::OnBulletHitShield));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(GameLogicManager::DropRandomPickup));
     }
 
 	void GameLogicManager::OnPickupCollected(Hollow::GameEvent& event)
@@ -133,6 +216,23 @@ namespace BulletHell
 		// Add the buffs to the object
 		AddBuffs(pte->mpObject1, &pte->mPickup);
 	}
+
+    void GameLogicManager::ConstructMainMenuRoom()
+    {
+    	// Setup variables for MainMenuRoom construction
+		DungeonManager::Instance().ConfigureDungeon();
+    	
+		DungeonFloor mainMenuFloor(3, 3, 0);
+		mainMenuFloor.GetRoom(0, 1).Set(DungeonRoomType::REGULAR, Hollow::GenerateUniqueID<DungeonRoom>(), DungeonRoom::DoorDirrection::DOWN, 0, 0, 1);
+		mainMenuFloor.GetRoom(2, 1).Set(DungeonRoomType::REGULAR, Hollow::GenerateUniqueID<DungeonRoom>(), DungeonRoom::DoorDirrection::UP, 0, 2, 1);
+		mainMenuFloor.GetRoom(1, 0).Set(DungeonRoomType::OPTIONS, Hollow::GenerateUniqueID<DungeonRoom>(), DungeonRoom::DoorDirrection::RIGHT, 0, 1, 0);
+		mainMenuFloor.GetRoom(1, 2).Set(DungeonRoomType::CREDITS, Hollow::GenerateUniqueID<DungeonRoom>(), DungeonRoom::DoorDirrection::LEFT, 0, 1, 2);
+		mainMenuFloor.GetRoom(1, 1).Set(DungeonRoomType::MAIN_MENU, Hollow::GenerateUniqueID<DungeonRoom>(), 15, 0, 1, 1);
+		
+    	mainMenuFloor.ConstructFloor();
+
+    	DungeonManager::Instance().GetFloors().push_back(mainMenuFloor);
+    }
 
     Hollow::GameObject* GameLogicManager::GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset)
     {

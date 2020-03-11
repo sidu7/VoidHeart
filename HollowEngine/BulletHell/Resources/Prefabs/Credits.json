@@ -1,0 +1,23 @@
+{
+  "Type":"TEXTMESH",
+  "Tag": "Options",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 2.5, 2.5, 2.5 ]
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Credits.obj",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 0.65, 0.16, 0.16 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    }
+  ]
+}

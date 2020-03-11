@@ -41,9 +41,8 @@ function UpdateCurrentRoom( )
 
     --print("curr: ", currentRoom)
     -- Lock or Unlock Room
-    local room = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom)
     if room:IsCleared() then
-	    room:UnlockRoom()
+		room:UnlockRoom()
     else 
 	    room:LockDownRoom()
     end

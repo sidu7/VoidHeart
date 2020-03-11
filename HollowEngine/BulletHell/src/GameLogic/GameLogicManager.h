@@ -23,9 +23,15 @@ namespace BulletHell
         GameLogicManager(GameLogicManager&&) = delete;
         GameLogicManager& operator=(GameLogicManager&&) = delete;
         static GameLogicManager& Instance();
+
+		static bool hasGameStarted;
     public:
         void Init();
 
+		void StartNewGame();
+
+		void RegisterLuaBindings();
+		
         void SubscribeToEvents();
 		
 		// Load enemies, obstacles, pick ups, and traps into room
@@ -41,9 +47,12 @@ namespace BulletHell
 		void OnPickupCollected(Hollow::GameEvent& event);
 		void OnPickupEffectEnd(Hollow::GameEvent& event);
 
+		void ConstructMainMenuRoom();
 
         void MoveToNextFloor();
 
+		void CreateRoomLabels();
+		
         // Generates Enemy in the room given by roomCoords at the position offset
         Hollow::GameObject* GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
 

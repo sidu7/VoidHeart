@@ -32,7 +32,7 @@ namespace BulletHell
         bool SetSeed(unsigned seed);
         unsigned GetSeed();
 
-        std::vector<DungeonFloor> GetFloors() const;
+        std::vector<DungeonFloor>& GetFloors();
         DungeonFloor& GetFloor(int index);
         DungeonRoom& GetCurrentRoom();
         void Print() const;
@@ -40,6 +40,7 @@ namespace BulletHell
 		void DebugDisplay();
 
 		float CastRay();
+        void OnCurrentRoomUpdated(int current, int previousIndex);
     private:
         int length;
         int breadth;
@@ -48,7 +49,6 @@ namespace BulletHell
 
         void SubscribeToEvents();
         void OnDeath(Hollow::GameEvent& event);
-        void OnCurrentRoomUpdated(int current, int previousIndex);
         void OnFloorCleared(Hollow::GameEvent& event);
     public:
 		Hollow::GameObject* mpPlayerGo;

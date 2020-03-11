@@ -18,6 +18,3 @@ doorThickness = 0.5
 -- Enemy
 firstFloorEnemyCount = 2
 
--- Globals
-currentFloor = 0
-currentRoom = 0

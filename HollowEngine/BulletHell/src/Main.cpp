@@ -43,8 +43,11 @@ class GameLayer : public Hollow::Layer
 {
 	void OnUpdate(float dt)
 	{
-		// Update Game managers here
-		Hollow::ScriptingManager::Instance().RunScript("GameLogic");
+		if (BulletHell::GameLogicManager::hasGameStarted)
+		{
+			// Update Game managers here
+			Hollow::ScriptingManager::Instance().RunScript("RoomLogic");
+		}
 	}
 };
 
