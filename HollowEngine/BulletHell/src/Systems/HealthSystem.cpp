@@ -152,15 +152,15 @@ namespace BulletHell
 						// Play should have full hp
 						if (playerHealth >= (UIIndex + 1)*2)
 						{
-							pUIImg->TexturePath = "Resources/Textures/HPIcon.png";
+							pUIImg->TexturePath = "Resources/Textures/UI/HPIcon.png";
 						}
 						else if (playerHealth <= (UIIndex) * 2)
 						{
-							pUIImg->TexturePath = "Resources/Textures/EmptyHPIcon.png";
+							pUIImg->TexturePath = "Resources/Textures/UI/EmptyHPIcon.png";
 						}
 						else
 						{
-							pUIImg->TexturePath = "Resources/Textures/HalfHPIcon.png";
+							pUIImg->TexturePath = "Resources/Textures/UI/HalfHPIcon.png";
 						 }
 						pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
 					}
@@ -363,7 +363,7 @@ namespace BulletHell
 		Hollow::GameObject* pUIObj = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/UIIcon.json");
 		//Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
 		Hollow::UIImage* pUIImg = pUIObj->GetComponent<Hollow::UIImage>();
-		pUIImg->TexturePath = "Resources/Textures/HPIcon.png";
+		pUIImg->TexturePath = "Resources/Textures/UI/HPIcon.png";
 		pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
 
 		Hollow::UITransform* pUITr = pUIObj->GetComponent<Hollow::UITransform>();

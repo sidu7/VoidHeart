@@ -1,21 +1,20 @@
-function Grow()
+function GrowWall()
 	-----------------------------------------
     -- playtesting vars
-	local maxScale = vec3.new(3.0, 3.0, 1.0)
-	local scaleRate = 16.0 -- percent increase per frame
+	local maxScale = vec3.new(3.0, 1.5, 1.0)
+	local scaleRate = 10.0 -- percent increase per frame
     -----------------------------------------
 	
-	
-	local destroy = gameObject:GetDestroyTimer()
 	local transform = gameObject:GetTransform()
 	--local particles = gameObject:GetParticleEmitter()
 	local change = 1.0 + scaleRate / 100.0
 	-- No rotation hacky fix
-	
 	transform:Rotate(transform.rotation)
+	
 	-- Update scales
 	if (transform.scale.x < maxScale.x) then
-		transform.scale.x = transform.scale.x * change
+		--transform.scale.x = transform.scale.x * change
+		transform.scale.x = maxScale.x
 	end
 
 	if (transform.scale.y < maxScale.y) then
@@ -23,8 +22,11 @@ function Grow()
 	end
 	
 	if (transform.scale.z < maxScale.z) then
-		transform.scale.z = transform.scale.z * change
+		--transform.scale.z = transform.scale.z * change
+		transform.scale.z = maxScale.z
 	end
+	
+	transform.position.y = transform.scale.y * change
 	
 	--[[
 	else
@@ -44,4 +46,4 @@ function Grow()
 	end
 end
 
-Grow()
+GrowWall()

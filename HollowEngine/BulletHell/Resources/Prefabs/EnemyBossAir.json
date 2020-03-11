@@ -1,0 +1,70 @@
+{
+    "Type": "ENEMY",
+    "Tag": "Boss",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 3.0, 3.0, 3.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 10000.0,
+      "isFrictionLess": true,
+      "RigidbodyType": "DYNAMIC"
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX",
+	  "HasCustomScale": true,
+      "MinBounds": [ -0.9, -1.5, -0.9],
+      "MaxBounds": [ 0.9, 4.5, 0.9]
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Boss1.fbx",
+      "ModelHasOffset": true,
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+	  "Diffuse": [1.0, 1.0, 1.0],
+      "Shininess": 1.0,
+      "MaterialData": "Resources/Models/Boss1.fbx"
+    },
+    {
+      "Type": "Animator",
+      "BoneData": "Resources/Models/Boss1.fbx",
+      "Animations": [
+        [
+          "Walking",
+          "Resources/Models/Boss1.fbx"
+        ]
+      ],
+      "BlendFactor": 1.0
+    },
+    {
+      "Type": "StateMachine",
+      "StateFile": "Resources/State data/npcstate.json",
+      "StartState": "Walking"
+    },
+    {
+      "Type": "Script",
+      "Scripts": [
+        "Boss/AirMovement"
+      ]
+    },
+    {
+      "Type": "Attack",
+      "Script": "Boss/AirAttack",
+      "BaseAttackTime": 0.4
+    },
+    {
+      "Type": "Health",
+      "HitPoints": 200,
+      "IsAlive": true,
+      "Invincible": false,
+      "InvincibleTime": 3.0
+    }
+  ]
+}

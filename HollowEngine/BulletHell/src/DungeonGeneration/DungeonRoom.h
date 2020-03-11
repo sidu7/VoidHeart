@@ -56,6 +56,7 @@ namespace BulletHell
         bool mIsLockedFirstTime;
         Hollow::GameObject* mDoorGOs[9]; // doors at 1,2,4,8 indices
         std::vector<Hollow::GameObject*> mEnemies;
+		std::vector<Hollow::GameObject*> mObstacles;
         DungeonRoomType mRoomType;
     private:    	
         Hollow::GameObject* mMinimapObject;

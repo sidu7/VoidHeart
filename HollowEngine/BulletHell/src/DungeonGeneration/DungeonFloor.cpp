@@ -387,7 +387,7 @@ namespace BulletHell
 
     Hollow::GameObject* DungeonFloor::CreateMinimapElement(const glm::vec2& position, const glm::vec2& scale, float angle, const std::string texturePath, bool isVisible)
     {
-        Hollow::GameObject* roomUI = HandSystem::CreateUIObject(scale, position, texturePath);
+        Hollow::GameObject* roomUI = HandSystem::CreateUIObject(scale, position, 0, texturePath);
 
         Hollow::UIImage* pUIImage = roomUI->GetComponent<Hollow::UIImage>();
         pUIImage->mIsVisible = isVisible;

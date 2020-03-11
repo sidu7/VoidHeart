@@ -200,96 +200,707 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Json data\Camera.json" />
-    <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\EnemyAOE.json" />
-    <None Include="Resources\Prefabs\EnemyBoss1.json" />
-    <None Include="Resources\Prefabs\UIMinimap.json" />
-    <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
-    <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
-    <None Include="Resources\Scripts\ShootInDiagonalDirections.lua" />
-    <None Include="Resources\Prefabs\EnemyTurretAOE.json" />
-    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
-    <None Include="Resources\Scripts\AreaSlow.lua" />
-    <None Include="Resources\Scripts\EnemyGrowSlow.lua" />
-    <None Include="Resources\Scripts\EnemyStayStill.lua" />
-    <None Include="Resources\Scripts\EnemyRunsAway.lua" />
-    <None Include="Resources\Prefabs\Floor.json" />
-    <None Include="Resources\Levels\Level3.json" />
-    <None Include="Resources\Localization\Hindi.json" />
-    <None Include="Resources\Localization\Japanese.json" />
-    <None Include="Resources\Prefabs\Player.json" />
-    <None Include="Resources\Prefabs\UIIcon.json" />
-    <None Include="Resources\Scripts\BossAngry.lua" />
-    <None Include="Resources\Scripts\BossHappy.lua" />
-    <None Include="Resources\Scripts\BossPist.lua" />
-    <None Include="Resources\Scripts\BossSad.lua" />
-    <None Include="Resources\Scripts\CirclePlayer.lua" />
-    <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
-    <None Include="Resources\Scripts\GameLogic.lua" />
-    <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
-    <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
+    <None Include="Resources\Audio\SFX\PlayerHit.m4a">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\GameData\BulletDamageValues.data">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Bullet.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\BulletBoss.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Camera.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\CirclingBullet.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Cloud.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Enemy.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\EnemyAOE.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\EnemyAOESlow.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\EnemyBeam.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\FollowBullet.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\HomingBullet.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Light.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\LocalLight.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Player.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\PlayerBullet.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Quad.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Boss\Room1.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Boss\Room2.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Boss\Room3.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Boss\Room4.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room1.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room2.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room3.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room4.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room5.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room6.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room7.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Rooms\Room8.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Shuriken.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\UIElement.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\Wall.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Levels\Level1.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Levels\Level2.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Levels\Wall.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Localization\English.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\ArcherWalking.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Boss1.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\bunny.ply">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Cloud.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Goblin.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Idle.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Jump.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\NarutoRun.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Plane.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Running.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\scene.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Turret.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Walking.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Models\Warlock.fbx">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\AirSpell.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Door.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\DWall.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EarthSpell.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Enemy.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyBoss1.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyBoss2.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyBossAir.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyCircleLookdir.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyFollowLookdir.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyLargeFireball.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyRunsawayLookdir.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyTurretAOE.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyTurretCardinal.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyTurretdiagonal.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\EnemyTurretTarget.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Enemy\EnemyAir.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\FireSpell.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Floor.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Hand.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\IceWave.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\joker.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\LargeFireball.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\MeleeCollider.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Meteor.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\newlight.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Pickup_Damage.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Pickup_HP.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Pickup_Invincible.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Pickup_RateOfFire.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Pickup_Speed.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Player.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerAOE.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerBeam.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerBubble.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerFire.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerFlames.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerRock.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerTest.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerWall.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\PlayerWater.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\SteamTrap.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\uibody.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\UICooldownIcon.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\UIIcon.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\UIMinimap.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Wall.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\WaterSpell.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Boss2LaserLogic.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Boss\AirAttack.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Boss\AirMovement.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\CameraUpdate.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\CirclingAroundRoomCenter.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Combine.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\CreateObject.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\CreateWater.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Destroy\CreateEnemyFireballs.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Destroy\CreateFireballs.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Destroy\CreateMeteorSplash.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\DynamicCameraConstraints.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\DynamicCameraUpdate.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\DynamicScaleZ.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyAttack.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyBoss1Fire.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyBoss1Movement.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyBossMovement.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Enemy\PillarAttack.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\FollowBulletAttack.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\FollowTarget.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Grow.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\GrowWall.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\HomingBulletAttack.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Left.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\LightFollow.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\QuickGrow.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Right.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Rotate.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\RotateMove.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\RotateWithPlayer.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\ShootInDiagonalDirections.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\AreaSlow.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyGrowSlow.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyStayStill.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyRunsAway.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Levels\Level3.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Localization\Hindi.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Localization\Japanese.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\BossAngry.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\BossHappy.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\BossPist.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\BossSad.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\CirclePlayer.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyFollowsPlayer.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\GameLogic.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\ShootAtThePlayer.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\ShootInCardinalDirections.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
-    <None Include="Resources\Scripts\GameConfig.lua" />
-    <None Include="Resources\Scripts\PlayerAttack.lua" />
-    <None Include="Resources\Scripts\PlayerMovement.lua" />
-    <None Include="Resources\Scripts\SetupLevel.lua" />
-    <None Include="Resources\Scripts\ShootInTheLookDir.lua" />
-    <None Include="Resources\Scripts\AreaDamage.lua" />
-    <None Include="Resources\Scripts\EnemyGrow.lua" />
-    <None Include="Resources\Scripts\SlowRotate.lua" />
-    <None Include="Resources\Scripts\test.lua" />
-    <None Include="Resources\Settings.json" />
-    <None Include="Resources\Shaders\Ambient.frag" />
-    <None Include="Resources\Shaders\Ambient.vert" />
-    <None Include="Resources\Shaders\Bloom.frag" />
-    <None Include="Resources\Shaders\Bloom.vert" />
-    <None Include="Resources\Shaders\CenterModelParticles.comp" />
-    <None Include="Resources\Shaders\CenterParticles.comp" />
-    <None Include="Resources\Shaders\ChargingModelParticles.comp" />
-    <None Include="Resources\Shaders\Debug.frag" />
-    <None Include="Resources\Shaders\Debug.vert" />
-    <None Include="Resources\Shaders\Deferred.frag" />
-    <None Include="Resources\Shaders\Deferred.vert" />
-    <None Include="Resources\Shaders\Diffuse.frag" />
-    <None Include="Resources\Shaders\Diffuse.vert" />
-    <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
-    <None Include="Resources\Shaders\DirectionModelParticles.comp" />
-    <None Include="Resources\Shaders\DirectionParticles.comp" />
-    <None Include="Resources\Shaders\fxaa.frag" />
-    <None Include="Resources\Shaders\GBuffer.frag" />
-    <None Include="Resources\Shaders\GBuffer.vert" />
-    <None Include="Resources\Shaders\Global.frag" />
-    <None Include="Resources\Shaders\Global.vert" />
-    <None Include="Resources\Shaders\HelixModelParticles.comp" />
-    <None Include="Resources\Shaders\HorizontalBlur.comp" />
-    <None Include="Resources\Shaders\LocalLight.frag" />
-    <None Include="Resources\Shaders\LocalLight.vert" />
-    <None Include="Resources\Shaders\ModelParticleSystem.frag" />
-    <None Include="Resources\Shaders\ModelParticleSystem.vert" />
-    <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
-    <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
-    <None Include="Resources\Shaders\ParticleSystem.frag" />
-    <None Include="Resources\Shaders\ParticleSystem.vert" />
-    <None Include="Resources\Shaders\Phong.frag" />
-    <None Include="Resources\Shaders\Phong.vert" />
-    <None Include="Resources\Shaders\PointParticleDataClear.comp" />
-    <None Include="Resources\Shaders\RainParticles.comp" />
-    <None Include="Resources\Shaders\ShadowDebug.frag" />
-    <None Include="Resources\Shaders\ShadowDebug.vert" />
-    <None Include="Resources\Shaders\ShadowMap.frag" />
-    <None Include="Resources\Shaders\ShadowMap.vert" />
-    <None Include="Resources\Shaders\Skydome.frag" />
-    <None Include="Resources\Shaders\Skydome.vert" />
-    <None Include="Resources\Shaders\TextRendering.frag" />
-    <None Include="Resources\Shaders\TextRendering.vert" />
-    <None Include="Resources\Shaders\TrailingModelParticles.comp" />
-    <None Include="Resources\Shaders\UIShader.frag" />
-    <None Include="Resources\Shaders\UIShader.vert" />
-    <None Include="Resources\Shaders\VerticalBlur.comp" />
-    <None Include="Resources\State data\npcstate.json" />
-    <None Include="Resources\State data\playerstate.json" />
-    <None Include="src\GameMetaData\CollisionMask.data" />
+    <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\GameConfig.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\PlayerAttack.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\PlayerMovement.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\SetupLevel.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\ShootInTheLookDir.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\AreaDamage.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyGrow.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\SlowRotate.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyBoss2Fire.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\EnemyBoss2Movement.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\SlowRotateXYZ.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\Air.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\AirAir.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\AirEarth.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\AirWater.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\Earth.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\EarthEarth.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\EarthWater.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\Empty.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\Fire.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\FireAir.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\FireEarth.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\FireFire.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\FireWater.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\Water.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\Spells\WaterWater.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\test.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\UICooldownScale.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Settings.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Ambient.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Ambient.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Bloom.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Bloom.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\CenterModelParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\CenterParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Debug.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Debug.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Deferred.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Deferred.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Diffuse.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Diffuse.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\DirectionModelParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\DirectionParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\fxaa.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\GBuffer.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\GBuffer.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Global.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Global.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\HelixModelParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\HorizontalBlur.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\LocalLight.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\LocalLight.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ModelParticleSystem.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ModelParticleSystem.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ModelParticleDataClear.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ParticleSystem.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ParticleSystem.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Phong.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Phong.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\PointParticleDataClear.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\RainParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ShadowDebug.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ShadowDebug.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ShadowMap.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ShadowMap.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Skydome.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\Skydome.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\TextRendering.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\TextRendering.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\TrailingModelParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\UIShader.frag">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\UIShader.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\VerticalBlur.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Skydomes\Milkyway_Light.hdr">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Skydomes\Milkyway_small.hdr">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Skydomes\Newport_Loft_Ref.hdr">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Skydomes\Newport_Loft_Ref.irr.hdr">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Skydomes\Road_to_MonumentValley_Ref.hdr">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Skydomes\Road_to_MonumentValley_Ref.irr.hdr">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\State data\npcstate.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\State data\playerstate.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="src\GameMetaData\CollisionMask.data">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="src\GameMetaData\DungeonRoomType.enum" />
+    <None Include="src\GameMetaData\GameEvents.enum" />
+    <None Include="src\GameMetaData\GameEventsMap.data">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="src\GameMetaData\GameObjectType.enum" />
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\CharacterStats.h" />
@@ -320,6 +931,241 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\Systems\HealthSystem.h" />
     <ClInclude Include="src\Systems\MagicSystem.h" />
     <ClInclude Include="src\Systems\MovementSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\Audio\SFX\1Up.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\BossCharging.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\BossChargingAttack.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\BossHit.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\EarthMelee.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\lose.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\PlayerAttack.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\PlayerDash.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\PlayerHit.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\Win.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\Songs\test.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\arial.ttf">
+      <DeploymentContent>true</DeploymentContent>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Resources\Models\AirPillar.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\DWall.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\Heart.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\InvinciblePotion.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\MeleeCollider.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\Meteor.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\Rock.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\AirPillar.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\bricks2.jpg">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\bricks2_height.jpg">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\bricks2_normal.jpg">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\cracks.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\fire.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\HUD.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\InvinciblePotion.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\MeleeCollider.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Meteor.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom1.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom2corner.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom2stright.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom3.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom4.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapEntranceRoom1.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapEntranceRoom2corner.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapEntranceRoom2stright.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapEntranceRoom3.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapEntranceRoom4.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapFoggedRoom.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapPlayer.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom1.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom2corner.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom2stright.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom3.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom4.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\RockMaterial.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\rocks.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\star.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Air.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\AirAir.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\AirEarth.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\AirWater.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Combined.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\CombinedCooldown.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Earth.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\EarthEarth.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\EarthWater.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\EmptyHPIcon.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Fire.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\FireAir.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\FireEarth.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\FireFire.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\FireWater.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\HalfHPIcon.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Hightlight.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\HPIcon.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Test.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Water.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\WaterWater.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\water.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

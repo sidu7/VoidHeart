@@ -5,17 +5,6 @@
       "Type": "Transform"
     },
     {
-      "Type": "UITransform",
-      "Position": [ 1200.000, 50.0 ],
-      "Scale": [ 50, 50 ]
-    },
-    {
-      "Type": "UIImage",
-      "Image": "Resources/Textures/UITest.png",
-      "Shape": "QUAD",
-      "Color": [ 0.0, 0.0, 0.0 ]
-    },
-    {
       "Type": "ParticleEmitter",
       "MaxCount": 1000,
       "EmissionRate": 100,

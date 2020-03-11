@@ -8,6 +8,7 @@
 #include "Hollow/Components/Light.h"
 #include "Hollow/Components/Script.h"
 #include "Hollow/Components/Collider.h"
+#include "Hollow/Components/UITransform.h"
 
 #include "Hollow/Physics/Broadphase/Shape.h"
 
@@ -170,7 +171,14 @@ namespace Hollow
 			"position", &Light::mPosition
 			);
 
-		// Testing branches
+		lua.new_usertype<UITransform>("UITransform",
+			sol::constructors<UITransform()>(),
+			"position", &UITransform::mPosition,
+			"scale", &UITransform::mScale,
+			"layer", &UITransform::mLayer,
+			"rotation", &UITransform::mRotation,
+			"tilt", &UITransform::mTilt
+			);
 
 		// GAMEOBJECT
         mGameObjectType = lua.new_usertype<GameObject>("GameObject",
@@ -183,6 +191,7 @@ namespace Hollow
             "isActive", &GameObject::mActive,
 			"GetCamera", &GameObject::GetComponent<Camera>,
 			"GetLight", &GameObject::GetComponent<Light>,
+			"GetUITransform", &GameObject::GetComponent<UITransform>,
 			"tag", &GameObject::mTag,
             "type", &GameObject::mType
 			);
