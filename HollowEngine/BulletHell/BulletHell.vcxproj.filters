@@ -244,9 +244,6 @@
     <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
     <None Include="Resources\Shaders\PointParticleDataClear.comp" />
     <None Include="Resources\Shaders\HelixModelParticles.comp" />
-    <None Include="Resources\Shaders\ChargingModelParticles.comp" />
-    <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
-    <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
     <None Include="Resources\Prefabs\Wall.json" />
     <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Scripts\Boss2LaserLogic.lua" />
@@ -304,6 +301,9 @@
     <None Include="src\GameMetaData\GameEvents.enum" />
     <None Include="src\GameMetaData\GameEventsMap.data" />
     <None Include="src\GameMetaData\GameObjectType.enum" />
+    <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
+    <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
+    <None Include="Resources\Shaders\ChargingModelParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />
