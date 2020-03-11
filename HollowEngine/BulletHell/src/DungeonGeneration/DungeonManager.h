@@ -39,8 +39,8 @@ namespace BulletHell
    	
 		void DebugDisplay();
 
-		float CastRay();
         void OnCurrentRoomUpdated(int current, int previousIndex);
+		float CastRay(const glm::vec3& start, const glm::vec3& dir);
     private:
         int length;
         int breadth;

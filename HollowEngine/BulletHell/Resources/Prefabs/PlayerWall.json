@@ -1,50 +1,50 @@
 {
-    "Type": "DESTRUCTIBLE_WALL",
-    "Components": [
-        {
-            "Type": "Transform",
-            "Scale": [
-                0.2,
-                0.2,
-                0.2
-            ]
-        },
-        {
-            "Type": "Body",
-            "RigidbodyType": "STATIC",
-			"IsFrictionLess": false,
-			"UseGravity": false
-        },
-        {
-            "Type": "Collider",
-            "Shape": "BOX"
-        },
-        {
-            "Type": "DestroyTimer",
-            "MaxTime": 10.0
-        },
-        {
-            "Type": "Model",
-            "Shape": "CUBE",
-            "CastShadow": true
-        },
-        {
-            "Type": "Material",
-            "Specular": [ 1.0, 1.0, 1.0 ],
-            "Diffuse": [ 2.0, 2.0, 1.0 ],
-            "Shininess": 10.0,
-            "Texture": "Resources/Textures/cracks.png"
-        },
-		{
-			"Type": "Health",
-			"HitPoints": 20,
-			"IsAlive": true,
-			"Invincible": false,
-			"InvincibleTime": 0.02
-		},
-		{
-			"Type": "Script",
-			"Scripts": ["GrowWall"]
-		}
-    ]
+  "Type": "DESTRUCTIBLE_WALL",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Scale": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    {
+      "Type": "Body",
+      "RigidbodyType": "STATIC",
+      "IsFrictionLess": false,
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 10.0
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/DWall.obj",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 2.0, 2.0, 1.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "Health",
+      "HitPoints": 20,
+      "IsAlive": true,
+      "Invincible": false,
+      "InvincibleTime": 0.02
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "GrowWall" ]
+    }
+  ]
 }

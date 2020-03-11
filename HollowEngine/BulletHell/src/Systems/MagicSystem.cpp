@@ -11,6 +11,7 @@
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -21,6 +22,21 @@ namespace BulletHell
 
 	void MagicSystem::Init()
 	{
+		// Tell lua about magic component
+		auto& lua = Hollow::ScriptingManager::Instance().lua;
+
+		lua.new_usertype<Magic::SpellData>("SpellData",
+			"cooldown", &Magic::SpellData::mCooldown,
+			"combinedCooldown", &Magic::SpellData::mCombinedCooldown);
+
+		lua.new_usertype<Magic>("Magic",
+			sol::constructors<Magic()>(),
+			"combinedSpell", &Magic::mCombinedSpell
+			);
+
+		// Add get magic component to lua
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetMagic"] = &Hollow::GameObject::GetComponent<Magic>;
+
 		// Set callback functions
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_SPELL_COLLECT, EVENT_CALLBACK(MagicSystem::OnSpellCollect));
 	}

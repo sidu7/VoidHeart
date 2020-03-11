@@ -8,6 +8,7 @@
 #include "Hollow/Components/Light.h"
 #include "Hollow/Components/Script.h"
 #include "Hollow/Components/Collider.h"
+#include "Hollow/Components/UITransform.h"
 
 #include "Hollow/Physics/Broadphase/Shape.h"
 
@@ -72,6 +73,23 @@ namespace Hollow
 			"__add", [](const glm::vec3& l, const glm::vec3& r) { return glm::vec3(l.x + r.x, l.y + r.y, l.z + r.z); },
 			"__sub", [](const glm::vec3& l, const glm::vec3& r) { return glm::vec3(l.x - r.x, l.y - r.y, l.z - r.z); },
 			sol::meta_function::multiplication, mult_overloads
+			);
+
+		auto mult_overloads4 = sol::overload(
+			[](const glm::vec4& v1, const glm::vec4& v2) -> glm::vec4 { return v1 * v2; },
+			[](const glm::vec4& v1, float f) -> glm::vec4 { return v1 * f; },
+			[](float f, const glm::vec4& v1) -> glm::vec4 { return f * v1; }
+		);
+
+		lua.new_usertype<glm::vec4>("vec4",
+			sol::constructors<glm::vec4(), glm::vec4(float), glm::vec4(float, float, float, float)>(),
+			"x", &glm::vec4::x,
+			"y", &glm::vec4::y,
+			"z", &glm::vec4::z,
+			"w", &glm::vec4::w,
+			"__add", [](const glm::vec4& l, const glm::vec4& r) { return glm::vec4(l.x + r.x, l.y + r.y, l.z + r.z, l.w + r.w); },
+			"__sub", [](const glm::vec4& l, const glm::vec4& r) { return glm::vec4(l.x - r.x, l.y - r.y, l.z - r.z, l.z - r.z); },
+			sol::meta_function::multiplication, mult_overloads4
 			);
 
 		auto mult_overloads2 = sol::overload(
@@ -152,7 +170,14 @@ namespace Hollow
 			"position", &Light::mPosition
 			);
 
-		// Testing branches
+		lua.new_usertype<UITransform>("UITransform",
+			sol::constructors<UITransform()>(),
+			"position", &UITransform::mPosition,
+			"scale", &UITransform::mScale,
+			"layer", &UITransform::mLayer,
+			"rotation", &UITransform::mRotation,
+			"tilt", &UITransform::mTilt
+			);
 
 		// GAMEOBJECT
         mGameObjectType = lua.new_usertype<GameObject>("GameObject",
@@ -165,6 +190,7 @@ namespace Hollow
             "isActive", &GameObject::mActive,
 			"GetCamera", &GameObject::GetComponent<Camera>,
 			"GetLight", &GameObject::GetComponent<Light>,
+			"GetUITransform", &GameObject::GetComponent<UITransform>,
 			"tag", &GameObject::mTag,
             "type", &GameObject::mType
 			);

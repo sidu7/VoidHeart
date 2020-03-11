@@ -5,7 +5,7 @@
     {
       "Type": "Transform",
       "Position": [ 0.0, 0.0, 0.0 ],
-      "Scale": [ 2.5, 2.5, 2.5 ]
+      "Scale": [ 1.0, 1.0, 1.0 ]
     },
     {
       "Type": "Body",
@@ -15,23 +15,25 @@
     },
     {
       "Type": "Collider",
-      "Shape": "BALL"
+      "Shape": "BALL",
+      "HasCustomScale": true,
+      "MinBounds": [ -2.0, -2.0, -2.0 ],
+      "MaxBounds": [ 2.0, 2.0, 2.0 ]
     },
     {
       "Type": "Model",
-      "Shape": "BALL",
+      "Model": "Resources/Models/Meteor.obj",
       "CastShadow": true
     },
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 0.65, 0.16, 0.16 ],
       "Shininess": 10.0,
-      "Texture": "Resources/Textures/cracks.png"
+      "Texture": "Resources/Textures/Meteor.png"
     },
     {
       "Type": "Script",
-      "DestroyScripts": [ "Destroy/CreateMeteorSplash" ]
+      "DestroyScripts": [ "Destroy/CreateMeteorSplash", "Rotate"]
     },
     {
       "Type": "ParticleEmitter",

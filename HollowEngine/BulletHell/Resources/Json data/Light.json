@@ -6,7 +6,7 @@
     },
     {
       "Type": "Light",
-      "Color": [ 1.0, 1.0, 1.0 ],
+      "Color": [ 0.3, 0.3, 0.3 ],
       "CastShadow": true,
       "ShadowMapSize": [ 1024, 1024 ],
       "ShadowMapNearPlane": 0.01,

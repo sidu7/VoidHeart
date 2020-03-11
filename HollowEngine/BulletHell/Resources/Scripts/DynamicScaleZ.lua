@@ -4,7 +4,14 @@ function ScaleZ()
     -----------------------------------------
 	
 	-- Cast a ray from the player to get the nearest object
-	local depth = DCastRay()
+	if (player == nil and player.isActive ~= true) then
+        return
+    end
+    local playerTransform = player:GetTransform()
+    local playerPos = playerTransform.position
+    local direction = playerTransform:forward()
+
+    local depth = DCastRay(playerPos, direction)
 	
 	local body = gameObject:GetBody()
 	local front = VecNormalize(player:GetTransform():forward())
@@ -15,6 +22,10 @@ function ScaleZ()
 	local transform = gameObject:GetTransform()
 	transform.position = body.position
 	transform.scale.z = depth
+	local particle = gameObject:GetParticleEmitter()
+	if particle ~= nil then
+		particle.extraData.y = depth
+	end
 	ChangeRadius(gameObject)
 end
 
