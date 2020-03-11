@@ -1014,6 +1014,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Object Include="Resources\Models\Credits.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\DWall.obj">
       <DeploymentContent>true</DeploymentContent>
@@ -1023,6 +1024,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Object Include="Resources\Models\Exit.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Heart.obj">
       <DeploymentContent>true</DeploymentContent>
@@ -1047,10 +1049,12 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Object Include="Resources\Models\NewGame.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Options.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Rock.obj">
       <DeploymentContent>true</DeploymentContent>
