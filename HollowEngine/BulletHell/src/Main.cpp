@@ -43,8 +43,13 @@ class GameLayer : public Hollow::Layer
 {
 	void OnUpdate(float dt)
 	{
-		// Update Game managers here
-		Hollow::ScriptingManager::Instance().RunScript("GameLogic");
+		BulletHell::GameLogicManager::Instance().Update();
+		
+		if (BulletHell::GameLogicManager::hasGameStarted)
+		{
+			// Update Game managers here
+			Hollow::ScriptingManager::Instance().RunScript("RoomLogic");
+		}
 	}
 };
 
@@ -58,9 +63,15 @@ public:
 		Application::Init("Resources/Settings.json");
 
 		PushLayer(new GameLayer());
+		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::ON_EXIT_GAME, EVENT_CALLBACK(BulletHellGame::ExitGame));
 		BulletHell::GameLogicManager::Instance().Init();
 	}
 
+	void ExitGame(Hollow::GameEvent& ge)
+	{
+		ExitApplication();
+	}
+	
 	~BulletHellGame()
 	{
 		HW_TRACE("BulletHell Prototype Closing");

@@ -18,6 +18,8 @@ namespace BulletHell
 		/// </summary>
 		void Init() override;
 
+		void OnSceneInit() override;
+		
 		/// <summary>
 		/// Updates the System every frame.
 		/// </summary>

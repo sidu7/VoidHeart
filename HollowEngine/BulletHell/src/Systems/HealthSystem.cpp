@@ -59,6 +59,13 @@ namespace BulletHell
 		
 	}
 
+	void HealthSystem::OnSceneInit()
+	{
+		// Clear old UIIcons
+		mPlayerHPUIIcons.clear();
+		// Readd new UIIcons
+	}
+
 	void HealthSystem::Update()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
@@ -94,17 +101,15 @@ namespace BulletHell
 			{
 				pHealth->mIsAlive = false;
 				std::string gameEndText = "";
-
-				DeathEvent death(mGameObjects[i]->mType);
-				death.mpObject1 = mGameObjects[i];
-				Hollow::EventManager::Instance().BroadcastToSubscribers(death);
 				
 				// Check type of object destroyed
 				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
 				{
 					//YOU LOSE
-
-					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
+					if(mGameObjects[i]->mActive != false)
+					{
+						Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
+					}
 					//gameEndText = "You Lose!";
                     gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["LOSE"];
                     // Empty HP UI array
@@ -114,6 +119,12 @@ namespace BulletHell
                         //delete UIIcon;
                     }
                     mPlayerHPUIIcons.clear();
+					mGameObjects[i]->mActive = false;
+					// Send event to destroy object
+					DeathEvent death(mGameObjects[i]->mType);
+					death.mpObject1 = mGameObjects[i];
+					Hollow::EventManager::Instance().BroadcastToSubscribers(death);
+					return;
 				}
 				if (mGameObjects[i]->mType == (int)GameObjectType::ENEMY)
 				{
@@ -123,6 +134,9 @@ namespace BulletHell
 					gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["WIN"];
 				}
 				// Send event to destroy object
+				DeathEvent death(mGameObjects[i]->mType);
+				death.mpObject1 = mGameObjects[i];
+				Hollow::EventManager::Instance().BroadcastToSubscribers(death);
 				Hollow::GameObjectManager::Instance().DeleteGameObject(mGameObjects[i]);
 			}
 			// Create new UI object

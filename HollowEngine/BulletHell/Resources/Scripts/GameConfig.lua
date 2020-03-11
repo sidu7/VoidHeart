@@ -1,8 +1,10 @@
 -- Stores all Configuration values for the game
+currentFloor = 0
+currentRoom = 0
 
 -- Dungeon Configuration
 firstFloorRoomCount = 10
-numFloors = 5
+numFloors = 2
 dungeonLength = 6
 dungeonBreadth = 6
 
@@ -18,6 +20,3 @@ doorThickness = 0.5
 -- Enemy
 firstFloorEnemyCount = 2
 
--- Globals
-currentFloor = 0
-currentRoom = 0

@@ -136,6 +136,11 @@ namespace Hollow {
 		mLayerStack.PushOverlay(layer);
 	}
 
+	void Application::ExitApplication()
+	{
+		mIsRunning = false;
+	}
+
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		mIsRunning = false;

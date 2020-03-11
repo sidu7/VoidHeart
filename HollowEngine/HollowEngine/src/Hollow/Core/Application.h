@@ -52,7 +52,8 @@ namespace Hollow {
 		/// </summary>
 		/// <param name="layer">The layer pointer.</param>
 		HOLLOW_API void PushOverlay(Layer* layer);
-		
+
+		HOLLOW_API void ExitApplication();
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 

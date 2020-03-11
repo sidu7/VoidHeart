@@ -1,0 +1,22 @@
+{
+  "Type":"TEXTMESH",
+  "Tag": "Options",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0,0.0,0.0 ],
+      "Scale": [ 1.2, 1.2, 1.2 ]
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Exit.obj",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 0.0, 0.0, 0.0 ],
+      "Shininess": 10.0
+    }
+  ]
+}

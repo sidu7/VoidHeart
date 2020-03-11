@@ -1,0 +1,18 @@
+{
+  "Type": "UIICON",
+  "Components": [
+    {
+      "Type": "UITransform",
+      "Position": [ 660, 400 ],
+      "Scale": [ 1024, 600 ],
+      "Layer": 2
+    },
+    {
+      "Type": "UIImage",
+      "Image": "Resources/Textures/UI/Credits.png",
+      "Shape": "QUAD",
+      "Color": [ 0.0, 0.0, 0.0 ],
+      "Alpha":  0.0
+    }
+  ]
+}
