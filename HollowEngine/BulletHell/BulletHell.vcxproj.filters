@@ -236,6 +236,13 @@
     <None Include="Resources\Prefabs\UICooldownIcon.json" />
     <None Include="Resources\Prefabs\UIIcon.json" />
     <None Include="Resources\Prefabs\UIMinimap.json" />
+    <None Include="Resources\Scripts\SlowRotate.lua" />
+    <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
+    <None Include="Resources\Scripts\EnemyBoss1Movement.lua" />
+    <None Include="Resources\Shaders\TrailingModelParticles.comp" />
+    <None Include="Resources\Shaders\ModelParticleDataClear.comp" />
+    <None Include="Resources\Shaders\PointParticleDataClear.comp" />
+    <None Include="Resources\Shaders\HelixModelParticles.comp" />
     <None Include="Resources\Prefabs\Wall.json" />
     <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Scripts\Boss2LaserLogic.lua" />
@@ -300,6 +307,9 @@
     <None Include="Resources\Scripts\Globals.lua" />
     <None Include="Resources\Scripts\RoomLogic.lua" />
     <None Include="Resources\Prefabs\CreditsUI.json" />
+    <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
+    <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
+    <None Include="Resources\Shaders\ChargingModelParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

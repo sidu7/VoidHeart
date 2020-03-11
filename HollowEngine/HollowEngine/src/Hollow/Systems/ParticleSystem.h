@@ -33,6 +33,8 @@ namespace Hollow
 		/// <param name="object">The object to add.</param>
 		HOLLOW_API void AddGameObject(GameObject* object);
 
+		HOLLOW_API void ChangeComputeShader(GameObject* object, std::string path);
+
 	private:
 		void CalculateParticleMatrices(ParticleEmitter* emitter);
 		void CalculateParticlePositions(ParticleEmitter* emitter, glm::vec3 center);

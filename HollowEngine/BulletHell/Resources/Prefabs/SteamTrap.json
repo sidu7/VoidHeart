@@ -17,11 +17,6 @@
       "Shape": "BALL"
     },
     {
-      "Type": "Model",
-      "Shape": "BALL",
-      "CastShadow": true
-    },
-    {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
       "Diffuse": [ 10.0, 3.0, 10.0 ],
@@ -39,15 +34,17 @@
     {
       "Type": "ParticleEmitter",
       "MaxCount": 10000,
-      "EmissionRate": 100,
-      "Shape": 0,
-      "Texture": "Resources/Textures/star.png",
-      "Area": [ 1.0, 1.0, 1.0 ],
-      "Life": [ 2.0, 5.0 ],
-      "Speed": [ 0.0, 0.0 ],
-      "ComputeShader": "Resources/Shaders/RainParticles.comp",
-      "CenterOffset": [ 0.0, 0.0, 0.0 ],
-      "PixelSize": 0.1
+      "EmissionRate": 10,
+      "Shape": 1,
+      "Life": [ 0.5, 1.0 ],
+      "Speed": [ 1.0, 1.0 ],
+      "Size": [ 0.1, 0.5 ],
+      "ModelShape": "SPHERE",
+      "ComputeShader": "Resources/Shaders/ChargingModelParticles.comp",
+      "MinColor": [ 0.0, 0.74, 1.0 ],
+      "MaxColor": [ 1.0, 0.0, 0.0 ],
+      "ExtraData": [ 1.0, 0.0, 0.0, 0.0 ],
+      "Lighting": true
     }
   ]
 }

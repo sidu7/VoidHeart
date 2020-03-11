@@ -4,9 +4,11 @@
 
 #include "Hollow/Components/ParticleEmitter.h"
 #include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Model.h"
 
 #include "Hollow/Graphics/VertexBuffer.h"
 #include "Hollow/Graphics/VertexArray.h"
+#include "Hollow/Graphics/ElementArrayBuffer.h"
 #include "Hollow/Graphics/Mesh.h"
 #include "Hollow/Graphics/ShaderStorageBuffer.h"
 #include "Hollow/Graphics/Data/ParticleData.h"
@@ -14,6 +16,8 @@
 #include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/ScriptingManager.h"
+#include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Components/Animator.h"
 
 
 namespace Hollow
@@ -27,7 +31,14 @@ namespace Hollow
 			UpdateAttributes(object->GetComponent<ParticleEmitter>());
 		}
 	}
-	
+
+	void ParticleSystem::ChangeComputeShader(GameObject* object, std::string path)
+	{
+		ParticleEmitter* particle = object->GetComponent<ParticleEmitter>();
+
+		particle->mpComputeShader = ResourceManager::Instance().LoadShader(path);
+	}
+
 	void ParticleSystem::Init()
 	{
 		// Send ParticleEmitter component to lua
@@ -43,7 +54,14 @@ namespace Hollow
 			"color", &ParticleEmitter::mParticleColor,
 			"extraData", &ParticleEmitter::mExtraData,
 			"center",&ParticleEmitter::mCenterOffset,
-			"areaOfEffect",&ParticleEmitter::mAreaOfEffect
+			"areaOfEffect",&ParticleEmitter::mAreaOfEffect,
+			"emissionRate", &ParticleEmitter::mEmissionRate,
+			"drawCount", &ParticleEmitter::mDrawCount,
+			"count", &ParticleEmitter::mCount,
+			"maxCount",&ParticleEmitter::mMaxCount,
+			"fadeRate",&ParticleEmitter::mFadeSpeed,
+			"minColor", &ParticleEmitter::mMinColor,
+			"maxColor", &ParticleEmitter::mMaxColor
 			);
 
 		// Add get ParticleEmitter component to lua
@@ -65,17 +83,26 @@ namespace Hollow
 					emitter->mDrawCount += deltaParticles;
 				}
 				emitter->mCount = emitter->mDrawCount;
+				emitter->mAlpha = 1.0f;
 			}
 			else
 			{
 				emitter->mDrawCount = 0;
+				emitter->mAlpha -= FrameRateController::Instance().GetFrameTime() * emitter->mFadeSpeed;
 			}
 
 			Transform* transform = mGameObjects[i]->GetComponent<Transform>();
 			ParticleData particle;
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, transform->mPosition + emitter->mCenterOffset);
-			emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
+			if(emitter->mModelVertexParticles)
+			{
+				emitter->mModelMatrix = transform->mTransformationMatrix;
+			}
+			else
+			{
+				emitter->mModelMatrix = glm::scale(model, emitter->mAreaOfEffect);
+			}			
 			particle.emitter = emitter;
 			
 			RenderManager::Instance().mParticleData.push_back(particle);
@@ -102,5 +129,36 @@ namespace Hollow
 
 		emitter->mpParticleStorage->ReleaseBufferPointer();
 		emitter->mpParticleVAO = new VertexArray();
+
+				
+		Model* model = emitter->mpOwner->GetComponent<Model>();
+		if(model && emitter->mModelVertexParticles)
+		{
+			int count = 0;
+			for (auto mesh : model->mMeshes)
+			{
+				count += mesh->mpEBO->GetCount();
+			}
+			
+			emitter->mpModelVerticesStorage = new ShaderStorageBuffer();
+			emitter->mpModelVerticesStorage->CreateBuffer(count * sizeof(glm::vec3));
+			glm::vec3* verts = static_cast<glm::vec3*>(emitter->mpModelVerticesStorage->GetBufferWritePointer(true));
+			int j = 0;
+			for(auto mesh : model->mMeshes)
+			{
+				glm::vec3* vertices = static_cast<glm::vec3*>(mesh->mpVBO->GetBufferReadPointer());
+				unsigned int* indices = static_cast<unsigned int*>(mesh->mpEBO->GetBufferReadPointer());
+				
+				for(int i = 0; i < mesh->mpEBO->GetCount(); ++i)
+				{
+					verts[j++] = vertices[indices[i]];
+				}
+
+				mesh->mpVBO->ReleaseBufferPointer();
+				mesh->mpEBO->ReleaseBufferPointer();
+			}
+			emitter->mMaxCount = emitter->mEmissionRate = count;
+			emitter->mpModelVerticesStorage->ReleaseBufferPointer();
+		}
 	}
 }
