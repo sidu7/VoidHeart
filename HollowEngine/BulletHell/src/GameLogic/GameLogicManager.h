@@ -28,7 +28,8 @@ namespace BulletHell
     public:
         void Init();
 
-		void StartNewGame();
+		void Update();
+
 
 		void RegisterLuaBindings();
 		
@@ -47,24 +48,33 @@ namespace BulletHell
 		void OnPickupCollected(Hollow::GameEvent& event);
 		void OnPickupEffectEnd(Hollow::GameEvent& event);
 
-		void ConstructMainMenuRoom();
-
+		// Gameplay Methods
+		void CreateMainMenu();
+		void StartNewGame();
         void MoveToNextFloor();
 
+		// Main Menu Methods
+		void ConstructMainMenuRoom();
 		void CreateRoomLabels();
+		void CreateOptionsUI();
+		void CreateCreditsUI();
+		void CreateExitConfirmationUI();
 		
         // Generates Enemy in the room given by roomCoords at the position offset
         Hollow::GameObject* GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
 
+		// Event Callbacks
         void OnRoomLockDownDelayed(Hollow::GameEvent& event);
+		
 	private: 
 		void InitializeRoomsMap();
 		void AddBuffs(Hollow::GameObject* pGo, Pickup* pPickup);
 		void LoadRoomJsons(std::string roomPrefix, int count);
-
 		void OnBulletHitShield(Hollow::GameEvent& event);
 
 	private:
+		ImGuiWindowFlags mWindowFlags;
+		Hollow::GameObject* mCreditsUIObject;
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
 		std::vector<std::string> mPickupPrefabNames;
 		int mCountDeadEnemies;

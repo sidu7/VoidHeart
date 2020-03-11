@@ -23,6 +23,11 @@ namespace Hollow
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
+			if(!mGameObjects[i]->mActive)
+			{
+				continue;
+			}
+			
 			UITransform* uitransform = mGameObjects[i]->GetComponent<UITransform>();
 			UIImage* uiimage = mGameObjects[i]->GetComponent<UIImage>();
             if (uiimage->mIsVisible)

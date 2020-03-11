@@ -65,6 +65,7 @@ namespace Hollow {
 	
 	void GameObjectManager::DeleteAllGameObjects()
 	{
+		mDeletionList.clear();
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
 			mGameObjects[i]->Destroy();

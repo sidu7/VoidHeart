@@ -42,44 +42,6 @@ namespace BulletHell
         Generate();
 
         SubscribeToEvents();
-    	
-		// LUA Bindings for Dungeon Classes
-		// Send attack component to lua
-		auto& lua = Hollow::ScriptingManager::Instance().lua;
-
-		lua.new_usertype<DungeonFloor>("DungeonFloor",
-			sol::constructors<DungeonFloor()>(),
-			"GetRoom", &DungeonFloor::GetRoom,
-			"GetRoomFromIndex", &DungeonFloor::GetRoomFromIndex,
-			"GetFloorNum", &DungeonFloor::GetFloorNumber,
-			"GetRegularRoom", &DungeonFloor::GetRegularRoom,
-			"GetRoomCount", &DungeonFloor::GetRoomCount,
-			"GetEntrance", &DungeonFloor::GetEntrance,
-			"GetEntranceIndex", &DungeonFloor::GetEntranceIndex,
-            "GetBossIndex", &DungeonFloor::GetBossIndex
-			);
-
-		lua.new_usertype<DungeonRoom>("DungeonRoom",
-			sol::constructors<DungeonRoom()>(),
-			"GetFloorNum", &DungeonRoom::GetFloorNum,
-			"GetDoorBits", &DungeonRoom::GetDoorBits,
-			"GetCoords", &DungeonRoom::GetCoords,
-			"IsCleared", &DungeonRoom::IsCleared,
-            "UnlockRoom", &DungeonRoom::UnlockRoom,
-            "LockDownRoom", &DungeonRoom::LockDownRoom,
-            "getEnemyCount", &DungeonRoom::GetEnemyCount,
-            "GetID", &DungeonRoom::GetID,
-			"Enemies", &DungeonRoom::mEnemies,
-			"obstacles", &DungeonRoom::mObstacles
-			);
-
-		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
-		lua.set_function("PopulateRoom", &GameLogicManager::PopulateRoom, std::ref(GameLogicManager::Instance()));
-		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
-		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
-		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
-		lua.set_function("DCastRay", &DungeonManager::CastRay, std::ref(DungeonManager::Instance()));
-
 		
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
@@ -109,7 +71,9 @@ namespace BulletHell
         }
         mFloors.clear();
 
-        GameLogicManager::Instance().Init();
+		// was this here to construct a new dungeon?
+		// did Init have dungeon construction in it
+        //GameLogicManager::Instance().Init();
     }
 
     bool DungeonManager::SetSeed(unsigned seed)

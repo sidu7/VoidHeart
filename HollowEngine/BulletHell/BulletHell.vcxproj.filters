@@ -75,7 +75,6 @@
     <None Include="Resources\Scripts\BossSad.lua" />
     <None Include="Resources\Scripts\CirclePlayer.lua" />
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
-    <None Include="Resources\Scripts\GameLogic.lua" />
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
@@ -300,6 +299,7 @@
     <None Include="Resources\Prefabs\Options.json" />
     <None Include="Resources\Scripts\Globals.lua" />
     <None Include="Resources\Scripts\RoomLogic.lua" />
+    <None Include="Resources\Prefabs\CreditsUI.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

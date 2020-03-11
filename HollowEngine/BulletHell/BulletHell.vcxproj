@@ -359,6 +359,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\Credits.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\CreditsUI.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Prefabs\Door.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -651,9 +654,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\GameLogic.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\ShootAtThePlayer.lua">

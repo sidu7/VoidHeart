@@ -19,7 +19,3 @@ doorThickness = 0.5
 
 -- Enemy
 firstFloorEnemyCount = 0
-
-player = CreatePrefabAtPosition("Player", vec3.new(0.0,0.0,0.0))
-local gameObjectPath = "Resources/Json data/Camera.json"
-camera = CreateGameObject(gameObjectPath)
