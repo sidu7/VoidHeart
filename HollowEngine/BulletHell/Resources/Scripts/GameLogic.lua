@@ -44,6 +44,7 @@ function UpdateCurrentRoom( )
     local room = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom)
     if room:IsCleared() then
 	    room:UnlockRoom()
+		--PlaySFX("Resources/Audio/SFX/DoorUnlock.wav")
     else 
 	    room:LockDownRoom()
     end

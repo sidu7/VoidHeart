@@ -7,6 +7,7 @@
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/AudioManager.h"
 
 #include "Hollow/Components/Script.h"
 #include "Hollow/Components/Transform.h"
@@ -26,7 +27,7 @@
 
 
 #define MAX_REGULAR_ROOMS 8
-#define MAX_BOSS_ROOMS 4
+#define MAX_BOSS_ROOMS 3
 
 namespace BulletHell
 {
@@ -124,6 +125,9 @@ namespace BulletHell
 
 		}
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
+
+		// Play a nice sound effect
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/OnPickup.wav");
 	}
 
 	void GameLogicManager::OnPickupEffectEnd(Hollow::GameEvent& event)
@@ -175,6 +179,8 @@ namespace BulletHell
 				pA->mIsActive = true;
 			}
 		}
+
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorLock.wav");
     }
 
     void GameLogicManager::InitializeRoomsMap()
@@ -262,7 +268,7 @@ namespace BulletHell
 		{
 			roomNum = Random::RangeSeeded(1, MAX_BOSS_ROOMS);
 			roomName = "Boss/Room" + std::to_string(roomNum);
-			roomName = "Boss/Room4";
+			//roomName = "Boss/Room4";
 		}
 		else
 		{

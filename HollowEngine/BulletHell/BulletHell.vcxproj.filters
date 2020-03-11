@@ -317,6 +317,8 @@
     <Media Include="Resources\Audio\SFX\PlayerHit.wav" />
     <Media Include="Resources\Audio\SFX\Win.wav" />
     <Media Include="Resources\Audio\Songs\test.wav" />
+    <Media Include="Resources\Audio\SFX\OnPickup.wav" />
+    <Media Include="Resources\Audio\SFX\DoorLock.wav" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\arial.ttf" />
@@ -329,6 +331,8 @@
     <Object Include="Resources\Models\MeleeCollider.obj" />
     <Object Include="Resources\Models\Meteor.obj" />
     <Object Include="Resources\Models\Rock.obj" />
+    <Object Include="Resources\Models\SpeedPotion.obj" />
+    <Object Include="Resources\Models\RofPotion.obj" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\AirPillar.png" />
@@ -383,5 +387,7 @@
     <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom2stright.png" />
     <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom3.png" />
     <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom4.png" />
+    <Image Include="Resources\Textures\RofPotion.png" />
+    <Image Include="Resources\Textures\SpeedPotion.png" />
   </ItemGroup>
 </Project>
