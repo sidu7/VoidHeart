@@ -21,10 +21,13 @@ namespace Hollow
 		mMaxCount = 0;
 		mEmissionRate = 0;
 		mDrawCount = 0;
+		mAlpha = 1.0f;
+		mFadeSpeed = 1.0f;
 		
 		mActive = true;
 		mLighting = false;
 		mNeedRotation = false;
+		mModelVertexParticles = false;
 		mTexture = nullptr;
 		mModelMatrix = glm::mat4(1.0f);
 		mpComputeShader = nullptr;
@@ -160,6 +163,14 @@ namespace Hollow
 		{
 			mExtraData = JSONHelper::GetVec4F(data["ExtraData"].GetArray());
 		}
+		if(data.HasMember("ModelVerticesParticles"))
+		{
+			mModelVertexParticles = data["ModelVerticesParticles"].GetBool();
+		}
+		if(data.HasMember("FadeSpeed"))
+		{
+			mFadeSpeed = data["FadeSpeed"].GetFloat();
+		}
 	}
 
 	void ParticleEmitter::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -187,6 +198,8 @@ namespace Hollow
 		JSONHelper::Write("Shininess", mShininess, writer);
 		JSONHelper::Write("ExtraData", mExtraData, writer);
 		JSONHelper::Write("NeedRotation", mNeedRotation, writer);
+		JSONHelper::Write("ModelVerticesParticles", mModelVertexParticles, writer);
+		JSONHelper::Write("FadeSpeed", mFadeSpeed, writer);
 	}
 
 	void ParticleEmitter::DebugDisplay()
@@ -214,5 +227,7 @@ namespace Hollow
 		ImGui::InputFloat("Particle Shininess", &mShininess);
 		ImGui::InputFloat4("Extra Data", &mExtraData[0]);
 		ImGui::Checkbox("Need Rotation Matrix", &mNeedRotation);
+		ImGui::Checkbox("Model Vertices Particles", &mModelVertexParticles);
+		ImGui::InputFloat("Fade Speed", &mFadeSpeed);
 	}	
 }

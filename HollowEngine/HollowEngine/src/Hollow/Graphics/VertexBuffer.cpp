@@ -24,7 +24,8 @@ namespace Hollow {
 	{
 		Bind();
 		mCount = static_cast<unsigned>(count);
-		GLCall(glBufferData(GL_ARRAY_BUFFER, count * size, data, GL_STATIC_DRAW));
+		mSize = static_cast<unsigned>(size * count);
+		GLCall(glBufferData(GL_ARRAY_BUFFER, mSize, data, GL_STATIC_DRAW));
 	}
 
 	void VertexBuffer::AddStreamingData(unsigned int size) const
@@ -37,7 +38,8 @@ namespace Hollow {
 	{
 		Bind();
 		mCount = count;
-		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, count * size, data));
+		mSize = size * count;
+		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, mSize, data));
 	}
 
 	void VertexBuffer::Bind() const
@@ -48,5 +50,18 @@ namespace Hollow {
 	void VertexBuffer::Unbind() const
 	{
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	}
+
+	void* VertexBuffer::GetBufferReadPointer() const
+	{
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, mRendererID));
+		GLbitfield flag = GL_MAP_READ_BIT;
+		return glMapBufferRange(GL_ARRAY_BUFFER, 0, mSize, flag);
+	}
+
+	void VertexBuffer::ReleaseBufferPointer() const
+	{
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, mRendererID));
+		GLCall(glUnmapBuffer(GL_ARRAY_BUFFER));
 	}
 }

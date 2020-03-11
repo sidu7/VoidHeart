@@ -14,6 +14,7 @@ namespace Hollow {
 	private:
 		unsigned int mRendererID;
 		unsigned int mCount;
+		unsigned int mSize;
 	public:
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VertexBuffer"/> class.
@@ -62,5 +63,11 @@ namespace Hollow {
 		/// </summary>
 		/// <returns>Number of vertices</returns>
 		HOLLOW_API unsigned int GetVerticesCount() { return mCount; }
+		
+		HOLLOW_API unsigned int GetSize() { return mSize; }
+
+		HOLLOW_API void* GetBufferReadPointer() const;
+
+		HOLLOW_API void ReleaseBufferPointer() const;
 	};
 }

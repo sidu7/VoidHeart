@@ -23,6 +23,22 @@ function AirDash()
 		impulse = impulse + direction * dashSpeed
 		impulse.y = 0.0
 		PlaySFX("Resources/Audio/SFX/PlayerDash.wav")
+
+		local particle = gameObject:GetParticleEmitter()
+		if particle.active ~= true then
+			particle.active = true
+			ChangeParticleShader(gameObject,"Resources/Shaders/TrailingModelParticles.comp")
+			particle.scaleRange = vec2.new(0.05, 0.1)
+			particle.speedRange = vec2.new(1.0,1.0)
+			particle.lifeRange = vec2.new(1.0,1.0)
+			particle.minColor = vec3.new(0.5, 0.5, 0.5)
+			particle.maxColor = vec3.new(1.0, 1.0, 1.0)
+			particle.fadeRate = 5.0
+			particle.count = 0
+			particle.maxCount = 10000
+		end
+		particle.direction = VecNormalize(vec3.new(-xDir,0,-zDir));
+
 		ApplyLinearImpulse(gameObject, impulse)
 	end
 end
@@ -33,6 +49,12 @@ function CheckValidAttack()
 		AirDash()
 		attack.currentAttackTime = 0.0
 		attack.shouldAttack = false
+	end
+	if attack.currentAttackTime >= 0.5 then
+		local particle = gameObject:GetParticleEmitter()
+		if particle then
+			particle.active = false
+		end
 	end
 end
 
