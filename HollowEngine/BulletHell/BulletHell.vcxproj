@@ -644,8 +644,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
-    <DeploymentContent>true</DeploymentContent>
+    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua">
+      <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\GameConfig.lua">
       <DeploymentContent>true</DeploymentContent>
@@ -752,6 +752,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Shaders\CenterParticles.comp">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Shaders\ChargingModelParticles.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Shaders\Debug.frag">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -768,6 +771,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Shaders\Diffuse.vert">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\DirectionalConeParticles.comp">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Shaders\DirectionModelParticles.comp">
@@ -810,6 +816,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Shaders\ModelParticleDataClear.comp">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\ModelVerticesTrailing.comp">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Shaders\ParticleSystem.frag">
@@ -898,7 +907,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="src\GameMetaData\GameEventsMap.data">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="src\GameMetaData\GameObjectType.enum" />
+    <None Include="src\GameMetaData\GameObjectType.enum">
       <DeploymentContent>true</DeploymentContent>
     </None>
   </ItemGroup>
