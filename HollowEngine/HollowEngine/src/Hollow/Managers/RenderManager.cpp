@@ -85,6 +85,42 @@ namespace Hollow {
 		ShowParticles = true;
 		GLCall(glEnable(GL_PROGRAM_POINT_SIZE));
 
+
+		// Random Numbers
+		mpRandomNumbersStorage = new ShaderStorageBuffer();
+		mpRandomNumbersStorage->CreateBuffer(MAX_PARTICLES_COUNT * 3 * sizeof(glm::vec4));
+	
+		glm::vec4* randoms = static_cast<glm::vec4*>(mpRandomNumbersStorage->GetBufferWritePointer(true));
+
+		auto randomizer = Random::Range(0.0f, 1.0f);
+		auto random2 = Random::Range(-1.0f, 1.0f);
+
+		for (unsigned int i = 0; i < MAX_PARTICLES_COUNT * 3; ++i)
+		{
+			if (i >= MAX_PARTICLES_COUNT)
+			{
+				glm::vec3 p = glm::vec3(2.0f);
+				do
+				{
+					float x = random2(); float y = random2(); float z = random2();
+					p = glm::vec3(x, y, z);
+				} while (glm::length(p) > 1.0f);
+				randoms[i] = glm::vec4(p,0.0f);
+			}
+			else if (i < MAX_PARTICLES_COUNT)
+			{
+				float x = randomizer(); float y = randomizer(); float z = randomizer(); float w = randomizer();
+				randoms[i] = glm::vec4(x,y,z,w);
+			}
+			else
+			{
+				float x = random2(); float y = random2(); float z = random2(); float w = random2();
+				randoms[i] = glm::vec4(x, y, z, w);
+			}
+		}
+		
+		mpRandomNumbersStorage->ReleaseBufferPointer();
+
 		// Model Particles
 		if (data.HasMember("ModelParticleShader"))
 		{
@@ -1023,6 +1059,8 @@ namespace Hollow {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		mpRandomNumbersStorage->Bind(4);
+
 		for (unsigned int i = 0; i < mParticleData.size(); ++i)
 		{
 			ParticleData& particle = mParticleData[i];
@@ -1035,6 +1073,11 @@ namespace Hollow {
 			else if (particle.emitter->mType == MODEL)
 			{
 				mpParticlesModelStorage->Bind(3);
+			}
+
+			if(particle.emitter->mModelVertexParticles)
+			{
+				particle.emitter->mpModelVerticesStorage->Bind(5);
 			}
 			
 			particle.emitter->mpComputeShader->Use();
@@ -1051,6 +1094,7 @@ namespace Hollow {
 			particle.emitter->mpComputeShader->SetMat4("Model", particle.emitter->mModelMatrix);
 			particle.emitter->mpComputeShader->SetVec4("ExtraData", particle.emitter->mExtraData);
 			particle.emitter->mpComputeShader->SetInt("ActiveParticleCount", particle.emitter->mCount);
+			particle.emitter->mpComputeShader->SetInt("RandomNumberSize", MAX_PARTICLES_COUNT * 3);
 			if(particle.emitter->mNeedRotation)
 			{
 				particle.emitter->mpComputeShader->SetMat4("RotationMatrix", GraphicsMath::RotationFromTwoVectors(glm::vec3(0.0f,1.0f,0.0f),particle.emitter->mDirection));
@@ -1059,6 +1103,11 @@ namespace Hollow {
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();
 			particle.emitter->mpParticleStorage->Unbind(2);
+
+			if (particle.emitter->mModelVertexParticles)
+			{
+				particle.emitter->mpModelVerticesStorage->Unbind(5);
+			}
 
 			if (particle.emitter->mType == POINT)
 			{
@@ -1093,6 +1142,7 @@ namespace Hollow {
 				mpModelParticleShader->SetFloat("Shininess", particle.emitter->mShininess);
 				mpModelParticleShader->SetVec3("LightPos", mGlobalLight.mPosition);
 				mpModelParticleShader->SetVec3("LightColor", mGlobalLight.mColor);
+				mpModelParticleShader->SetFloat("Alpha", particle.emitter->mAlpha);
 				particle.emitter->mpParticleVAO->Bind();
 				for (Mesh* mesh : particle.emitter->mParticleModel)
 				{
@@ -1137,6 +1187,8 @@ namespace Hollow {
 				mpParticlesModelStorage->Unbind(3);
 			}
 		}
+
+		mpRandomNumbersStorage->Unbind(4);
 		glDisable(GL_BLEND);
 		glDisable(GL_DEPTH_TEST);
 	}

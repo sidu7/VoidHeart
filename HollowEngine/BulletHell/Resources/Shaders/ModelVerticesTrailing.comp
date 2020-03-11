@@ -33,6 +33,11 @@ layout(std430, binding = 4) buffer Randoms
 	vec4 randoms[];
 };
 
+layout(std430, binding = 5) buffer Vertices
+{
+	vec3 vertex[];
+};
+
 layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
 
 uniform float DeltaTime;
@@ -70,6 +75,11 @@ void main()
 	each_particle[gid].currentlife = each_particle[gid].currentlife - DeltaTime;
 	vec3 pos = each_particle[gid].mPos;
 
+
+	mat4 m = mat4(0.5f);
+	m[3].w = 1.0f;
+	m = Model * m;
+
 	if(!Pause && gid < ActiveParticleCount)
 	{
 		if(Active)
@@ -77,10 +87,9 @@ void main()
 			if(each_particle[gid].currentlife <= 0)
 			{
 				// Sphere spawning
-				index = int(rand(pos.yz) * (RandomNumberSize/3) + (RandomNumberSize/3));
-				vec3 p = randoms[index].xyz;
+				vec3 p = vertex[gid];
 				
-				pos = (Model * vec4(p,1.0f)).xyz;
+				pos = (m * vec4(p,1.0f)).xyz;
 
 				index = GetIndex(rand(pos.yx));
 				each_particle[gid].life = randoms[index].x * (LifeRange.y - LifeRange.x) + LifeRange.x;
@@ -90,10 +99,11 @@ void main()
 		}
 		else
 		{
-			if(each_particle[gid].currentlife <= 0)
-			{
-				each_particle[gid].speed = 0.0f;
-			}
+			each_particle[gid].life = 0.0f;
+			each_particle[gid].currentlife = 0.0f;
+			each_particle[gid].speed = 0.0f;
+			each_particle[gid].direction = vec3(0.0f);
+			each_particle[gid].mPos = vec3(0.0f);
 		}
 	}
 

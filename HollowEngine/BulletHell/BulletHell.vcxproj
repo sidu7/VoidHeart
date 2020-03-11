@@ -645,6 +645,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
+    <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Scripts\GameConfig.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -897,6 +899,8 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="src\GameMetaData\GameObjectType.enum" />
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\CharacterStats.h" />

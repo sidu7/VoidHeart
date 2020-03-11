@@ -8,6 +8,7 @@ namespace Hollow {
 	private:
 		unsigned int mRendererID;
 		unsigned int mCount;
+		unsigned int mSize;
 	public:
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ElementArrayBuffer"/> class.
@@ -41,5 +42,10 @@ namespace Hollow {
 		/// </summary>
 		/// <returns>Number of elements in the buffer</returns>
 		HOLLOW_API inline unsigned int GetCount() const { return mCount; }
+		HOLLOW_API inline unsigned int GetSize() const { return mSize; }
+
+		HOLLOW_API void* GetBufferReadPointer() const;
+
+		HOLLOW_API void ReleaseBufferPointer() const;
 	};
 }

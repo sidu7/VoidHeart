@@ -1,5 +1,9 @@
 function CreateBeam()
-	local go = CreatePrefabAtPosition("PlayerBeam", gameObject:GetTransform().position)	
+	local go = CreatePrefabAtPosition("PlayerBeam", gameObject:GetTransform().position)
+	local particle = gameObject:GetParticleEmitter()
+	if particle then
+		particle.active = false
+	end
 end
 
 function CheckValidAttack()

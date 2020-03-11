@@ -34,6 +34,21 @@
         "MaterialTextures": false
       },
       {
+        "Type": "ParticleEmitter",
+        "MaxCount": 10000,
+        "EmissionRate": 100,
+        "Shape": 1,
+        "Life": [ 1.0, 1.5 ],
+        "Speed": [ 1.0, 1.0 ],
+        "Size": [ 0.01, 0.05 ],
+        "Model": "Resources/Models/Cloud.fbx",
+        "ComputeShader": "Resources/Shaders/ChargingModelParticles.comp",
+        "MinColor": [ 0.5, 0.27, 0.07 ],
+        "MaxColor": [ 1.0, 0.0, 0.0 ],
+        "ExtraData": [ 1.0, 0.0, 0.0, 0.0 ],
+        "Lighting" : true        
+      },
+      {
         "Type": "Script",
         "Scripts":  ["SlowRotateXYZ"]
       }
