@@ -356,6 +356,12 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\AirSpell.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\Credits.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\CreditsUI.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Prefabs\Door.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -407,6 +413,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\Enemy\EnemyAir.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\Exit.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Prefabs\FireSpell.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -431,7 +440,13 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\Meteor.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\NewGame.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Prefabs\newlight.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Prefabs\Options.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Prefabs\Pickup_Damage.json">
@@ -563,6 +578,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\FollowTarget.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\Globals.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Scripts\Grow.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -582,6 +600,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\Right.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\RoomLogic.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\Rotate.lua">
@@ -633,9 +654,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\GameLogic.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\ShootAtThePlayer.lua">
@@ -987,9 +1005,17 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
+    <Object Include="Resources\Models\Credits.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
     <Object Include="Resources\Models\DWall.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\Exit.obj">
+      <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Heart.obj">
@@ -1010,6 +1036,14 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Object Include="Resources\Models\Meteor.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\NewGame.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\Options.obj">
+      <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Rock.obj">

@@ -41,7 +41,7 @@ namespace BulletHell
         void CreateMinimap();
         Hollow::GameObject* CreateMinimapRoomAt(int roomIndex);
         void OnRoomEnter(int newIndex, int oldIndex);
-
+        std::vector<DungeonRoom>& GetRooms() { return mRooms; }
     private:
         std::vector<DungeonRoom> mRooms; // 1D representation of a 2D array
 		std::vector<int> mIndexRegularRooms; // stores index to regular rooms (No Entrance/Boss) 

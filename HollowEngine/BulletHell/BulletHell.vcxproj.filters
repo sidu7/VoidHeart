@@ -75,7 +75,6 @@
     <None Include="Resources\Scripts\BossSad.lua" />
     <None Include="Resources\Scripts\CirclePlayer.lua" />
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
-    <None Include="Resources\Scripts\GameLogic.lua" />
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
     <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
@@ -301,6 +300,13 @@
     <None Include="src\GameMetaData\GameEvents.enum" />
     <None Include="src\GameMetaData\GameEventsMap.data" />
     <None Include="src\GameMetaData\GameObjectType.enum" />
+    <None Include="Resources\Prefabs\Credits.json" />
+    <None Include="Resources\Prefabs\Exit.json" />
+    <None Include="Resources\Prefabs\NewGame.json" />
+    <None Include="Resources\Prefabs\Options.json" />
+    <None Include="Resources\Scripts\Globals.lua" />
+    <None Include="Resources\Scripts\RoomLogic.lua" />
+    <None Include="Resources\Prefabs\CreditsUI.json" />
     <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
     <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
     <None Include="Resources\Shaders\ChargingModelParticles.comp" />
@@ -329,6 +335,10 @@
     <Object Include="Resources\Models\MeleeCollider.obj" />
     <Object Include="Resources\Models\Meteor.obj" />
     <Object Include="Resources\Models\Rock.obj" />
+    <Object Include="Resources\Models\Credits.obj" />
+    <Object Include="Resources\Models\Exit.obj" />
+    <Object Include="Resources\Models\NewGame.obj" />
+    <Object Include="Resources\Models\Options.obj" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\AirPillar.png" />

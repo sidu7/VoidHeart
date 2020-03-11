@@ -1,0 +1,23 @@
+{
+  "Type":"TEXTMESH",
+  "Tag": "Options",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0,0.0,0.0 ],
+      "Rotation": [0, -90, 0],
+      "Scale": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Credits.obj",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 0.0, 0.0, 0.0 ],
+      "Shininess": 10.0
+    }
+  ]
+}

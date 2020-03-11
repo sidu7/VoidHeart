@@ -579,6 +579,8 @@ namespace BulletHell
             texturePath += "4";
             break;
         default: // no default
+			texturePath += "1";
+			HW_INFO("Entrance Room incorrect number of doors. Using Default minimap texture.");
             break;
         }
         texturePath += ".png";

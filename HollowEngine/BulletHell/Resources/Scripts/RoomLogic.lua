@@ -11,10 +11,12 @@ function CheckRoomBounds(playerPos, coords)
 end
 
 function UpdateCurrentRoom( )
+	--[[
 	if (player == nil or player.isActive == false) then
         RegenerateDungeon()
         return
     end
+	--]]
     local playerPosition = player:GetBody().position
 
 	-- check position against adjacent rooms
@@ -41,9 +43,8 @@ function UpdateCurrentRoom( )
 
     --print("curr: ", currentRoom)
     -- Lock or Unlock Room
-    local room = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom)
     if room:IsCleared() then
-	    room:UnlockRoom()
+		room:UnlockRoom()
     else 
 	    room:LockDownRoom()
     end
