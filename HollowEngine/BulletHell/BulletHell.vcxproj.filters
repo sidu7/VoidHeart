@@ -294,6 +294,12 @@
     <None Include="src\GameMetaData\GameEvents.enum" />
     <None Include="src\GameMetaData\GameEventsMap.data" />
     <None Include="src\GameMetaData\GameObjectType.enum" />
+    <None Include="Resources\Prefabs\Credits.json" />
+    <None Include="Resources\Prefabs\Exit.json" />
+    <None Include="Resources\Prefabs\NewGame.json" />
+    <None Include="Resources\Prefabs\Options.json" />
+    <None Include="Resources\Scripts\Globals.lua" />
+    <None Include="Resources\Scripts\RoomLogic.lua" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />
@@ -319,6 +325,10 @@
     <Object Include="Resources\Models\MeleeCollider.obj" />
     <Object Include="Resources\Models\Meteor.obj" />
     <Object Include="Resources\Models\Rock.obj" />
+    <Object Include="Resources\Models\Credits.obj" />
+    <Object Include="Resources\Models\Exit.obj" />
+    <Object Include="Resources\Models\NewGame.obj" />
+    <Object Include="Resources\Models\Options.obj" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\AirPillar.png" />
