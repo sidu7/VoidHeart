@@ -77,7 +77,6 @@
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
-    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
     <None Include="Resources\Scripts\GameConfig.lua" />
     <None Include="Resources\Scripts\PlayerAttack.lua" />
     <None Include="Resources\Scripts\PlayerMovement.lua" />
@@ -399,5 +398,6 @@
     <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom4.png" />
     <Image Include="Resources\Textures\RofPotion.png" />
     <Image Include="Resources\Textures\SpeedPotion.png" />
+    <Image Include="Resources\Textures\UI\Credits.png" />
   </ItemGroup>
 </Project>

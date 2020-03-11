@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_3C694709883C45C2AFA4F5B7328F7252"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_425F3F530FB242E49869FA82016FAF55"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -86,6 +92,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -140,6 +154,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C694709883C45C2AFA4F5B7328F7252"
+            {
+            "SourcePath" = "8:..\\BulletHell\\imgui.ini"
+            "TargetName" = "8:imgui.ini"
+            "Tag" = "8:"
+            "Folder" = "8:_089C75865AD04A3CB40FBB4F8E72178D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_425F3F530FB242E49869FA82016FAF55"
             {
             "SourcePath" = "8:..\\HollowEngine\\dll\\Release\\fmod.dll"
@@ -317,7 +351,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AmalgamageSetup"
         "ProductCode" = "8:{175C2DA4-1FAF-4E75-BE7C-D4FC04720550}"
-        "PackageCode" = "8:{CADBC1B1-15E3-456F-A66F-1796820D833A}"
+        "PackageCode" = "8:{C341718F-C20D-4AF9-A414-1E64BF45C4EB}"
         "UpgradeCode" = "8:{604617DF-4797-490D-B228-80265F68C061}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

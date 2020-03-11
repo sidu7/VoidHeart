@@ -662,9 +662,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Resources\Scripts\GameConfig.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -1186,6 +1183,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="Resources\Textures\UI\CombinedCooldown.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Credits.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="Resources\Textures\UI\Earth.png">
