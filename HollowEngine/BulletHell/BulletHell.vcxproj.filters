@@ -309,6 +309,7 @@
     <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
     <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
     <None Include="Resources\Shaders\ChargingModelParticles.comp" />
+    <None Include="Resources\Json data\UICamera.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

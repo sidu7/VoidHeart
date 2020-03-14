@@ -293,6 +293,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\Shuriken.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Json data\UICamera.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Json data\UIElement.json">
       <DeploymentContent>true</DeploymentContent>
     </None>

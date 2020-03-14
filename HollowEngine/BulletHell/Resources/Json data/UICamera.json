@@ -1,0 +1,23 @@
+{
+  "Type": "UICAMERA",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Camera",
+      "Yaw": -90.0,
+      "MovementSpeed": 5.0,
+      "MouseSensitivity": 0.10000000149011612,
+      "Zoom": 45.0,
+      "Near": 0.10000000149011612,
+      "Far": 1000.0,
+      "IsActive": true,
+      "CameraType": 1,
+      "ProjectionType": 1,
+      "ViewPortPosition": [ 0, 0 ],
+      "ViewPortSize": [ 1280, 720 ]
+    }
+  ]
+}

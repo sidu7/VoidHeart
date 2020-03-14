@@ -2,7 +2,7 @@
   "Enemies": [{"EnemyType": "EnemyFollowLookdir",
 				"Position": [17, 18]},
 				{"EnemyType": "EnemyFollowLookdir",
-				"Position": [20, 1]}],
+				"Position": [13, 14]}],
   "Obstacles": [{"ObstacleType": "Wall",
 				"Position": [16, 16]}]
 }

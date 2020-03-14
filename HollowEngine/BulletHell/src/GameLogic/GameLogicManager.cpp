@@ -77,8 +77,8 @@ namespace BulletHell
 		hasGameStarted = false;
 		// Init globals
 		Hollow::ScriptingManager::Instance().RunScript("Globals");
-		Hollow::SceneManager::Instance().LoadLevel("Level3");
-		Hollow::ScriptingManager::Instance().RunScript("test");
+		//Hollow::SceneManager::Instance().LoadLevel("Level3");
+		Hollow::ScriptingManager::Instance().RunScript("InitPlayer");
 		Hollow::SystemManager::Instance().OnSceneInit();
 
 		// Construct Room 
@@ -148,7 +148,7 @@ namespace BulletHell
 		SubscribeToEvents();
 		Hollow::SceneManager::Instance().LoadLevel("Level3");
 		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
-		Hollow::ScriptingManager::Instance().RunScript("test");
+		Hollow::ScriptingManager::Instance().RunScript("InitPlayer");
 		Hollow::SystemManager::Instance().OnSceneInit();
 
 
@@ -477,6 +477,7 @@ namespace BulletHell
 		{
 			roomNum = Random::RangeSeeded(1, MAX_REGULAR_ROOMS);
 			roomName = "Room" + std::to_string(roomNum);
+			HW_TRACE("{0}", roomName);
 		}
 		
 		rapidjson::Document root;
