@@ -6,6 +6,8 @@
 #include "Hollow/Managers/ResourceManager.h"
 
 #include "Hollow/Components/Body.h"
+#include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Collider.h"
 #include "Hollow/Components/Material.h"
 #include "Hollow/Components/Script.h"
 #include "GameMetaData/GameEventType.h"
@@ -167,6 +169,8 @@ namespace BulletHell
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
                                             doorPos,
                                             glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
+            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-0.25f, -2.5f, -2.0f),
+                glm::vec3(0.25f, 2.5f, 2.0f));
             mDoorGOs[2] = door;
 
 			// LIGHTS ON BOTH SIDES OF THE DOOR
@@ -200,7 +204,14 @@ namespace BulletHell
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
                                         doorPos,
                                         glm::vec3(mDoorWidth, mDoorHeight, mDoorThickness));
-            mDoorGOs[4] = door;
+            Hollow::Transform* pTr = door->GetComponent<Hollow::Transform>();
+        	pTr->Rotate(glm::vec3(0.0f, 90.0f, 0.0f));
+            // HORRIBLEEEE
+        	door->GetComponent<Hollow::Body>()->mQuaternion = pTr->mQuaternion;
+            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-2.0f, -2.5f, -0.25f),
+                glm::vec3(2.0f, 2.5f, 0.25f));
+            
+             mDoorGOs[4] = door;
 
 			// LIGHTS ON BOTH SIDES OF THE DOOR
 			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x + mLightOffsetFromDoor, doorPos.y, doorPos.z + mWallThickness));
@@ -239,7 +250,7 @@ namespace BulletHell
                 if (mDoorGOs[1 << i] != nullptr)
                 {
                     Hollow::Body* pB = mDoorGOs[1 << i]->GetComponent<Hollow::Body>();
-                    pB->mPosition.y = 6.0f;
+                    pB->mPosition.y = -1.25f;
                     HW_TRACE("Door Opened {0}", 1 << i);
                 }
             }
@@ -256,7 +267,7 @@ namespace BulletHell
                 if (mDoorGOs[1 << i] != nullptr && mDoorGOs[1 << i]->mActive)
                 {
                     Hollow::Body* pB = mDoorGOs[1 << i]->GetComponent<Hollow::Body>();
-                    pB->mPosition.y = 2.0f;
+                    pB->mPosition.y = 2.5f;
                 }
             }
 
