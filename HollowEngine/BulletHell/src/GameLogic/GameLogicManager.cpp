@@ -67,18 +67,35 @@ namespace BulletHell
 		mWindowFlags |= ImGuiWindowFlags_NoResize;
 		mWindowFlags |= ImGuiWindowFlags_NoCollapse;
 		mWindowFlags |= ImGuiWindowFlags_NoBackground;
+
+		InitGlobalGameObjects();
 		
 		CreateMainMenu();
     }
 
+	void GameLogicManager::InitGlobalGameObjects()
+	{
+		Hollow::ScriptingManager::Instance().RunScript("InitGlobalObjects");
+		sol::state& smLua = Hollow::ScriptingManager::Instance().lua;
+		mpPlayerGO = smLua["player"];
+		mpCamera = smLua["camera"];
+		mpUICamera = smLua["UICamera"];
+		mpGlobalLight = smLua["globalLight"];
+	}
+
+	void GameLogicManager::ClearNonGlobalGameObjects()
+	{
+		std::vector<Hollow::GameObject*> gameObjectExceptions = { mpPlayerGO, mpCamera, mpUICamera, mpGlobalLight };
+		Hollow::GameObjectManager::Instance().DeleteAllGameObjectsExcept(gameObjectExceptions);
+	}
 
 	void GameLogicManager::CreateMainMenu()
 	{
 		hasGameStarted = false;
 		// Init globals
 		Hollow::ScriptingManager::Instance().RunScript("Globals");
-		//Hollow::SceneManager::Instance().LoadLevel("Level3");
-		Hollow::ScriptingManager::Instance().RunScript("InitPlayer");
+		
+		// Call scene init for all systems
 		Hollow::SystemManager::Instance().OnSceneInit();
 
 		// Construct Room 
@@ -88,8 +105,8 @@ namespace BulletHell
 		CreateRoomLabels();
 
 		// Set player position
-		DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
-		Hollow::Body* pBody = DungeonManager::Instance().mpPlayerGo->GetComponent<Hollow::Body>();
+		DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
+		Hollow::Body* pBody = mpPlayerGO->GetComponent<Hollow::Body>();
 		pBody->mPosition = glm::vec3(DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
 			1.5,
 			DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2);
@@ -146,20 +163,22 @@ namespace BulletHell
 		hasGameStarted = true;
     	
 		SubscribeToEvents();
-		Hollow::SceneManager::Instance().LoadLevel("Level3");
+
+		// Configure game settings
 		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
-		Hollow::ScriptingManager::Instance().RunScript("InitPlayer");
+
+		// Clear non-global game objects
+		ClearNonGlobalGameObjects();
+
+		// Call scene init for all systems
 		Hollow::SystemManager::Instance().OnSceneInit();
 
-
+		// Reset dungeon values and init with values from GameConfig.lua
 		BulletHell::DungeonManager::Instance().ConfigureDungeon();
 		BulletHell::DungeonManager::Instance().Regenerate();
 		BulletHell::DungeonManager::Instance().Init();
 
-
 		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
-
-		BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
 		
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
 		mCountDeadEnemies = 0;
@@ -218,14 +237,15 @@ namespace BulletHell
 		HW_TRACE("{0}", currentFloor);
     	
         lua["currentFloor"] = currentFloor;
-        Hollow::SceneManager::Instance().LoadLevel("Level3");
+        //Hollow::SceneManager::Instance().LoadLevel("Level3");
+		ClearNonGlobalGameObjects();
         DungeonManager::Instance().Construct(currentFloor);
-		Hollow::ScriptingManager::Instance().RunScript("test");
-		Hollow::SystemManager::Instance().OnSceneInit();
+		//Hollow::ScriptingManager::Instance().RunScript("test");
+		//Hollow::SystemManager::Instance().OnSceneInit();
 
         Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
         
-        BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
+        BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
         Hollow::SystemManager::Instance().OnSceneInit();
     }
 
@@ -326,6 +346,7 @@ namespace BulletHell
 
 	void GameLogicManager::ConstructMainMenuRoom()
     {
+		HW_TRACE("Creating MainMenu");
     	// Setup variables for MainMenuRoom construction
 		DungeonManager::Instance().ConfigureDungeon();
     	
@@ -558,6 +579,8 @@ namespace BulletHell
 			// Kick back to main menu
 			DungeonManager::Instance().Regenerate();
 			CreateMainMenu();
+			// Heres your meatballs
+			mpPlayerGO->GetComponent<Health>()->mHitPoints = 1;
 		}
 	}
 

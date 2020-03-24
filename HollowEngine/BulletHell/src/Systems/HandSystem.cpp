@@ -120,7 +120,7 @@ namespace BulletHell
 		mpCombinedCooldownUI = nullptr;
 		mpLeftHand = nullptr;
 		mpRightHand = nullptr;
-		mpPlayerObject = nullptr;
+
 		for (auto& UI : mLeftHandUI)
 		{
 			UI = nullptr;

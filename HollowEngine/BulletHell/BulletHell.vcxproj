@@ -593,6 +593,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\HomingBulletAttack.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\InitGlobalObjects.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Scripts\Left.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>

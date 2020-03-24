@@ -47,7 +47,7 @@ namespace Hollow {
 		if (!mDeletionList.empty())
 		{
 			for (auto GameObject : mDeletionList) {
-				
+
 				// Delete Everywhere
 				mGameObjects.erase(std::find(mGameObjects.begin(), mGameObjects.end(), GameObject));
 				SystemManager::Instance().DeleteGameObjectInSystems(GameObject);
@@ -62,7 +62,7 @@ namespace Hollow {
 			mDeletionList.clear();
 		}
 	}
-	
+
 	void GameObjectManager::DeleteAllGameObjects()
 	{
 		mDeletionList.clear();
@@ -73,6 +73,21 @@ namespace Hollow {
 		}
 		mGameObjects.clear();
 		SystemManager::Instance().DeleteAllGameObjectsInSystems();
+	}
+
+	void GameObjectManager::DeleteAllGameObjectsExcept(const std::vector<GameObject*>& gameObjectExceptions)
+	{
+		for (auto& pGO : mGameObjects)
+		{
+			// Delete the object if it is not found in exceptions
+			if (std::find(gameObjectExceptions.begin(), gameObjectExceptions.end(), pGO) == gameObjectExceptions.end())
+			{
+				HW_CORE_TRACE("Deleting Object ID {0}", pGO->mID);
+
+				// Add to deletion list
+				mDeletionList.push_back(pGO);
+			}
+		}
 	}
 
 }

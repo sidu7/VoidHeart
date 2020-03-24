@@ -27,9 +27,10 @@ namespace BulletHell
 		static bool hasGameStarted;
     public:
         void Init();
+		void InitGlobalGameObjects();
+		void ClearNonGlobalGameObjects();
 
 		void Update();
-
 
 		void RegisterLuaBindings();
 		
@@ -75,6 +76,10 @@ namespace BulletHell
 	private:
 		ImGuiWindowFlags mWindowFlags;
 		Hollow::GameObject* mCreditsUIObject;
+		Hollow::GameObject* mpPlayerGO;
+		Hollow::GameObject* mpCamera;
+		Hollow::GameObject* mpUICamera;
+		Hollow::GameObject* mpGlobalLight;
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
 		std::vector<std::string> mPickupPrefabNames;
 		int mCountDeadEnemies;

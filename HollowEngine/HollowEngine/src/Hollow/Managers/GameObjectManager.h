@@ -34,6 +34,11 @@ namespace Hollow{
 		/// Deletes all game objects.
 		/// </summary>
 		HOLLOW_API void DeleteAllGameObjects();
+
+		/// <summary>
+		/// Deletes all games objects except those in a vector
+		/// </summary>
+		HOLLOW_API void DeleteAllGameObjectsExcept(const std::vector<GameObject*>& gameObjectExceptions);
 		
 		/// <summary>
 		/// Gets the game objects.
