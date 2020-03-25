@@ -97,5 +97,15 @@ namespace Hollow
 		
 		mMinBounds = min;
 		mMaxBounds = max;
+
+		// Set local shape and shape bounds
+		if (mpShape->mType == ShapeType::BOX)
+		{
+			static_cast<ShapeAABB*>(mpShape)->mMin = min;
+			static_cast<ShapeAABB*>(mpShape)->mMax = max;
+
+			static_cast<ShapeAABB*>(mpLocalShape)->mMin = min;
+			static_cast<ShapeAABB*>(mpLocalShape)->mMax = max;
+		}
 	}
 }

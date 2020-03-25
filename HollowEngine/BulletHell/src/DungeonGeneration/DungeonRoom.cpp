@@ -169,8 +169,8 @@ namespace BulletHell
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
                                             doorPos,
                                             glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
-            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-0.25f, -2.5f, -2.0f),
-                glm::vec3(0.25f, 2.5f, 2.0f));
+            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-0.5f, -2.5f, -2.0f),
+                glm::vec3(0.5f, 2.5f, 2.0f));
             mDoorGOs[2] = door;
 
 			// LIGHTS ON BOTH SIDES OF THE DOOR
