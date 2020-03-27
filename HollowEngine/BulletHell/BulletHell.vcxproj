@@ -203,6 +203,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Audio\SFX\PlayerHit.m4a">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Audio\Songs\MainMenu.ogg">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\GameData\BulletDamageValues.data">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -528,6 +531,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\CameraUpdate.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\CheatCodes.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\CirclingAroundRoomCenter.lua">
@@ -949,6 +955,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
     <ClInclude Include="src\Events\CycleSpellEvent.h" />
     <ClInclude Include="src\Events\PickupTimedEvent.h" />
+    <ClInclude Include="src\Events\PlayerDeathEvent.h" />
     <ClInclude Include="src\GameLogic\GameLogicManager.h" />
     <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />

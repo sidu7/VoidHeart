@@ -19,3 +19,6 @@ doorThickness = 0.5
 
 -- Enemy
 firstFloorEnemyCount = 0
+
+-- Cheat codes
+gameMuted = false

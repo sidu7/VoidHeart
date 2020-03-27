@@ -21,7 +21,7 @@ namespace Hollow {
 			/// <summary>
 			/// Initializes manager data.
 			/// </summary>
-			HOLLOW_API void Init();
+			HOLLOW_API void Init(rapidjson::Value::Object& data);
 		
 			/// <summary>
 			/// Cleans manager data.
@@ -48,7 +48,7 @@ namespace Hollow {
 			/// <summary>
 			/// Mutes all audio channels.
 			/// </summary>
-			HOLLOW_API void Mute();
+			HOLLOW_API void Mute(bool muteFlag);
 		
 			/// <summary>
 			/// Mutes the channel.

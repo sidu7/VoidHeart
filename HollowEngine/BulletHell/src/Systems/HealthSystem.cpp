@@ -20,7 +20,9 @@
 
 #include "Components/Health.h"
 #include "Components/CharacterStats.h"
+
 #include "Events/DeathEvent.h"
+#include "Events/PlayerDeathEvent.h"
 
 namespace BulletHell
 {
@@ -29,17 +31,7 @@ namespace BulletHell
 	void HealthSystem::Init()
 	{
 		// Set event callback functions
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnBulletHitPlayer));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_FLOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitFloor));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
-        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DESTRUCTIBLE_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitDestructibleWall));
-
-		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
+		SubscribeToEvents();
 
 		std::ifstream file("Resources/GameData/BulletDamageValues.data");
 		std::string line;
@@ -86,21 +78,21 @@ namespace BulletHell
 				if (pHealth->mCurrentInvincibleTime > pHealth->mInvincibleTime)
 				{
 					pHealth->mInvincible = false;
+					pHealth->mCurrentInvincibleTime = 0.0;
 				}
 			}
 
 			// Check for invincibility
-			if (Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT)
+			/*if (Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT)
 				&& !pHealth->mInvincible && pHealth->mpOwner->mType == (int)GameObjectType::PLAYER)
 			{
 				pHealth->mInvincible = true;
 				pHealth->mCurrentInvincibleTime = 0.0f;
-			}
+			}*/
 
 			if (pHealth->mHitPoints < 0)
 			{
 				pHealth->mIsAlive = false;
-				std::string gameEndText = "";
 				
 				// Check type of object destroyed
 				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
@@ -110,28 +102,17 @@ namespace BulletHell
 					{
 						Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
 					}
-					//gameEndText = "You Lose!";
-                    gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["LOSE"];
                     // Empty HP UI array
-                    for (auto UIIcon : mPlayerHPUIIcons)
-                    {
-                        Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
-                        //delete UIIcon;
-                    }
                     mPlayerHPUIIcons.clear();
-					mGameObjects[i]->mActive = false;
-					// Send event to destroy object
-					DeathEvent death(mGameObjects[i]->mType);
-					death.mpObject1 = mGameObjects[i];
-					Hollow::EventManager::Instance().BroadcastToSubscribers(death);
+					
+					// Broadcast player death even
+					Hollow::EventManager::Instance().BroadcastToSubscribers(PlayerDeathEvent());
 					return;
 				}
 				if (mGameObjects[i]->mType == (int)GameObjectType::ENEMY)
 				{
 					//YOU WIN
 					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/win.wav");
-					//gameEndText = "You Win!";
-					gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["WIN"];
 				}
 				// Send event to destroy object
 				DeathEvent death(mGameObjects[i]->mType);
@@ -140,12 +121,12 @@ namespace BulletHell
 				Hollow::GameObjectManager::Instance().DeleteGameObject(mGameObjects[i]);
 			}
 			// Create new UI object
-			//if (mGameObjects[i]->mTag == "Player")
 			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER && pHealth->mIsAlive)
 			{
 				// Populate UIIcons
 				if (mPlayerHPUIIcons.empty())
 				{
+					HW_WARN("NO HP UI");
 					int numUIIcons = pHealth->mHitPoints / 2;
 					for (int i = 0; i < numUIIcons; ++i)
 					{
@@ -193,6 +174,19 @@ namespace BulletHell
 
 	void HealthSystem::HandleBroadcastEvent(Hollow::GameEvent& event)
 	{
+	}
+
+	void HealthSystem::SubscribeToEvents()
+	{
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnBulletHitPlayer));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_FLOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitFloor));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DESTRUCTIBLE_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitDestructibleWall));
 	}
 
 	void HealthSystem::OnBulletHitPlayer(Hollow::GameEvent& event)
@@ -266,12 +260,6 @@ namespace BulletHell
     void HealthSystem::OnFloorCleared(Hollow::GameEvent& event)
     {
         // Empty HP UI array
-        //for (auto UIIcon : mPlayerHPUIIcons)
-        {
-
-            //Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
-            //delete UIIcon;
-        }
         mPlayerHPUIIcons.clear();
     }
 
@@ -375,7 +363,6 @@ namespace BulletHell
 	void HealthSystem::CreateHPUIIcon(int index)
 	{
 		Hollow::GameObject* pUIObj = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/UIIcon.json");
-		//Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
 		Hollow::UIImage* pUIImg = pUIObj->GetComponent<Hollow::UIImage>();
 		pUIImg->TexturePath = "Resources/Textures/UI/HPIcon.png";
 		pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);

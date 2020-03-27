@@ -5,6 +5,8 @@
 #include "Components/Magic.h"
 #include "Components/Spell.h"
 
+#include "GameLogic/GameLogicManager.h"
+
 #include "Events/CycleSpellEvent.h"
 
 #include "Hollow/Components/Transform.h"
@@ -43,16 +45,19 @@ namespace BulletHell
 			);
 
 		Hollow::ScriptingManager::Instance().mGameObjectType["GetParentOffset"] = &Hollow::GameObject::GetComponent<ParentOffset>;
+
+		mGlobalObjectsInit = false;
 	}
 
 	void HandSystem::OnSceneInit()
 	{
-		// Hand creation, need to be careful if hand objects get deleted during level load
-		float UIScale = 128.0f;
-		mpLeftHand = CreateHand(glm::vec3(-1.0f, 0.0f, 0.0f), "left", glm::vec2(UIScale, UIScale), glm::vec2(128, 128));
-		mpRightHand = CreateHand(glm::vec3(1.0f, 0.0f, 0.0f), "right", glm::vec2(UIScale, UIScale), glm::vec2(1150, 128));
-
-		CreateUIObjects();
+		if (!mGlobalObjectsInit)
+		{
+			// Create hand objects and UI, add them to global list
+			InitGlobalHandObjects();
+			// Hacky fix for now, can't ensure hand system will be init after player has been created
+			mGlobalObjectsInit = true;
+		}
 	}
 
 	void HandSystem::Update()
@@ -79,7 +84,14 @@ namespace BulletHell
 				}
 				else
 				{
-					pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition;
+					// THIS ONLY WORKS UNDER THE ASSUMPTION THAT THE OBJECT
+					// IS HANDS ROTATING AROUND A PLAYER
+					// YOU MAY GET WACKY RESULTS IF USING THIS OUTSIDE OF PLAYER
+					// IF ROTATION IS NOT DESIRED THE LINE OF CODE BELOW WILL DO SO
+					//pTr->mPosition = pParentOffset->mOffset + pParentTr->mPosition;
+
+					// Consider parent rotation
+					pTr->mPosition = glm::rotateY(pParentOffset->mOffset, glm::radians(pParentTr->mRotation.y)) + pParentTr->mPosition;
 				}
 
 				Hollow::Body* pBody = mGameObjects[i]->GetComponent<Hollow::Body>();
@@ -114,13 +126,13 @@ namespace BulletHell
 
 	void HandSystem::OnDeleteAllGameObjects()
 	{
+		HW_ERROR("DELETING ALL GAME OBJECTS");
 		mpCombinedHandUI = nullptr;
 		mpLeftHandUI = nullptr;
 		mpRightHandUI = nullptr;
 		mpCombinedCooldownUI = nullptr;
 		mpLeftHand = nullptr;
 		mpRightHand = nullptr;
-
 		for (auto& UI : mLeftHandUI)
 		{
 			UI = nullptr;
@@ -133,6 +145,17 @@ namespace BulletHell
 
 	void HandSystem::HandleBroadcastEvent(Hollow::GameEvent& event)
 	{
+	}
+
+	void HandSystem::InitGlobalHandObjects()
+	{
+		float UIScale = 128.0f;
+		mpLeftHand = CreateHand(glm::vec3(1.0f, 0.0f, 0.0f), "left", glm::vec2(UIScale, UIScale), glm::vec2(128, 128));
+		mpRightHand = CreateHand(glm::vec3(-1.0f, 0.0f, 0.0f), "right", glm::vec2(UIScale, UIScale), glm::vec2(1150, 128));
+
+		CreateUIObjects();
+		AddHandObjectsToGlobal();
+		SetHighlightUIActive(false);
 	}
 
 	Hollow::GameObject* HandSystem::CreateHand(const glm::vec3& offset, const std::string& tag, const glm::vec2& UIScale, const glm::vec2& UIPosition)
@@ -170,10 +193,32 @@ namespace BulletHell
 
 	}
 
+	void HandSystem::AddHandObjectsToGlobal()
+	{
+		GameLogicManager::Instance().AddGlobalGameObject(mpRightHand);
+		GameLogicManager::Instance().AddGlobalGameObject(mpLeftHand);
+		
+		GameLogicManager::Instance().AddGlobalGameObject(mpRightHandUI);
+		GameLogicManager::Instance().AddGlobalGameObject(mpLeftHandUI);
+		
+		GameLogicManager::Instance().AddGlobalGameObject(mpCombinedHandUI);
+		GameLogicManager::Instance().AddGlobalGameObject(mpCombinedCooldownUI);
+
+		for (Hollow::GameObject* pGO : mLeftHandUI)
+		{
+			GameLogicManager::Instance().AddGlobalGameObject(pGO);
+		}
+		for (Hollow::GameObject* pGO : mRightHandUI)
+		{
+			GameLogicManager::Instance().AddGlobalGameObject(pGO);
+		}		
+	}
+
 	void HandSystem::SubscribeToEvents()
 	{
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::CYCLE_SPELL, EVENT_CALLBACK(HandSystem::CycleSpell));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_SPELL_COLLECT, EVENT_CALLBACK(HandSystem::CollectSpell));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::PLAYER_DEATH, EVENT_CALLBACK(HandSystem::OnPlayerDeath));
 	}
 
 	Hollow::GameObject* HandSystem::CreateUIObject(const glm::vec2& scale, const glm::vec2& position, const int layer, const std::string& texturePath, const std::string& objectFilePath)
@@ -338,8 +383,23 @@ namespace BulletHell
 
 	void HandSystem::CollectSpell(Hollow::GameEvent& event)
 	{
+		SetHighlightUIActive(true);
 		mpLeftHandUI->GetComponent<Hollow::UITransform>()->mLayer = 2;
 		mpRightHandUI->GetComponent<Hollow::UITransform>()->mLayer = 2;
+	}
+
+	void HandSystem::OnPlayerDeath(Hollow::GameEvent& event)
+	{
+		// Reset hand UI images
+		mpCombinedHandUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Combined.png");
+		SetHighlightUIActive(false);
+	}
+
+	void HandSystem::SetHighlightUIActive(bool active)
+	{
+		mpCombinedCooldownUI->mActive = active;
+		mpLeftHandUI->mActive = active;
+		mpRightHandUI->mActive = active;
 	}
 
 }

@@ -19,4 +19,3 @@ doorThickness = 0.5
 
 -- Enemy
 firstFloorEnemyCount = 2
-

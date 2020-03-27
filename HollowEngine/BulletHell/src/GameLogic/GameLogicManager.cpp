@@ -78,20 +78,29 @@ namespace BulletHell
 		Hollow::ScriptingManager::Instance().RunScript("InitGlobalObjects");
 		sol::state& smLua = Hollow::ScriptingManager::Instance().lua;
 		mpPlayerGO = smLua["player"];
-		mpCamera = smLua["camera"];
-		mpUICamera = smLua["UICamera"];
-		mpGlobalLight = smLua["globalLight"];
+		AddGlobalGameObject(mpPlayerGO);
+		AddGlobalGameObject(smLua["camera"]);
+		AddGlobalGameObject(smLua["UICamera"]);
+		AddGlobalGameObject(smLua["globalLight"]);
 	}
 
 	void GameLogicManager::ClearNonGlobalGameObjects()
 	{
-		std::vector<Hollow::GameObject*> gameObjectExceptions = { mpPlayerGO, mpCamera, mpUICamera, mpGlobalLight };
-		Hollow::GameObjectManager::Instance().DeleteAllGameObjectsExcept(gameObjectExceptions);
+		Hollow::GameObjectManager::Instance().DeleteAllGameObjectsExcept(mGlobalGameObjects);
+	}
+
+	void GameLogicManager::AddGlobalGameObject(Hollow::GameObject* pGO)
+	{
+		mGlobalGameObjects.push_back(pGO);
 	}
 
 	void GameLogicManager::CreateMainMenu()
 	{
 		hasGameStarted = false;
+
+		// Clear non-global game objects
+		ClearNonGlobalGameObjects();
+
 		// Init globals
 		Hollow::ScriptingManager::Instance().RunScript("Globals");
 		
@@ -131,6 +140,7 @@ namespace BulletHell
 	
 	void GameLogicManager::Update()
 	{
+		CheckCheatCodes();
     	if(hasGameStarted)
     	{
 			return;
@@ -228,7 +238,6 @@ namespace BulletHell
 
 	void GameLogicManager::MoveToNextFloor()
     {
-
         auto& lua = Hollow::ScriptingManager::Instance().lua;
         int currentFloor = lua["currentFloor"].get<int>();
         DungeonManager::Instance().GetFloor(currentFloor).ResetFloor();
@@ -237,11 +246,8 @@ namespace BulletHell
 		HW_TRACE("{0}", currentFloor);
     	
         lua["currentFloor"] = currentFloor;
-        //Hollow::SceneManager::Instance().LoadLevel("Level3");
 		ClearNonGlobalGameObjects();
         DungeonManager::Instance().Construct(currentFloor);
-		//Hollow::ScriptingManager::Instance().RunScript("test");
-		//Hollow::SystemManager::Instance().OnSceneInit();
 
         Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
         
@@ -303,6 +309,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_SHIELD, EVENT_CALLBACK(GameLogicManager::OnBulletHitShield));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(GameLogicManager::DropRandomPickup));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::PLAYER_DEATH, EVENT_CALLBACK(GameLogicManager::OnPlayerDeath));
     }
 
 	void GameLogicManager::OnPickupCollected(Hollow::GameEvent& event)
@@ -342,7 +349,6 @@ namespace BulletHell
 		// Add the buffs to the object
 		AddBuffs(pte->mpObject1, &pte->mPickup);
 	}
-
 
 	void GameLogicManager::ConstructMainMenuRoom()
     {
@@ -407,7 +413,12 @@ namespace BulletHell
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorLock.wav");
     }
 
-    void GameLogicManager::InitializeRoomsMap()
+	void GameLogicManager::CheckCheatCodes()
+	{
+		Hollow::ScriptingManager::Instance().RunScript("CheatCodes");
+	}
+
+	void GameLogicManager::InitializeRoomsMap()
 	{
 		// Loads all room files into map
 		// for all room files
@@ -558,7 +569,8 @@ namespace BulletHell
 
 	void GameLogicManager::DropRandomPickup(Hollow::GameEvent& event)
 	{
-		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
+		//if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
+		// Assuming every death event is sent by an ENEMY
 		{
 			mCountDeadEnemies++;
 
@@ -573,15 +585,19 @@ namespace BulletHell
 				Hollow::ResourceManager::Instance().LoadPrefabAtPosition(mPickupPrefabNames[randomIndex], pTr->mPosition);
 			}
 		}
-    	// Todo: make some meatballs to go with the upcoming spaghetti
-		else if(event.mpObject1->mType == (int)GameObjectType::PLAYER)
-		{
-			// Kick back to main menu
-			DungeonManager::Instance().Regenerate();
-			CreateMainMenu();
-			// Heres your meatballs
-			mpPlayerGO->GetComponent<Health>()->mHitPoints = 1;
-		}
+	}
+
+	void GameLogicManager::OnPlayerDeath(Hollow::GameEvent& event)
+	{
+		// Kick back to main menu
+		HW_WARN("Player Death");
+		DungeonManager::Instance().Regenerate();
+		CreateMainMenu();
+		Health* pPlayerHealth = mpPlayerGO->GetComponent<Health>();
+		pPlayerHealth->mHitPoints = 10;
+		pPlayerHealth->mIsAlive = true;
+
+		// Reset intial values in any systems/components e.g. Spell Collected flag
 	}
 
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)
