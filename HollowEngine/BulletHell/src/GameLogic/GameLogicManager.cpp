@@ -47,7 +47,7 @@ namespace BulletHell
 		mPickupPrefabNames.push_back("Pickup_Invincible");
 		mPickupPrefabNames.push_back("Pickup_RateOfFire");
 		mPickupPrefabNames.push_back("Pickup_Speed");
-		std::cout << "Initialized: GameLogicManager" << std::endl; 
+		HW_INFO("Initialized: GameLogicManager");
 	}
 
     GameLogicManager& GameLogicManager::Instance()
@@ -232,8 +232,6 @@ namespace BulletHell
 		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
 		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
 		lua.set_function("DCastRay", &DungeonManager::CastRay, std::ref(DungeonManager::Instance()));
-
-
 	}
 
 	void GameLogicManager::MoveToNextFloor()
@@ -243,7 +241,7 @@ namespace BulletHell
         DungeonManager::Instance().GetFloor(currentFloor).ResetFloor();
         currentFloor++;
 
-		HW_TRACE("{0}", currentFloor);
+		HW_TRACE("Current Floor: {0}", currentFloor);
     	
         lua["currentFloor"] = currentFloor;
 		ClearNonGlobalGameObjects();
@@ -304,7 +302,6 @@ namespace BulletHell
 
 	void GameLogicManager::SubscribeToEvents()
     {
-		HW_WARN("GAME LOGIC SUB EVENTS");
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));
