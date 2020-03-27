@@ -9,7 +9,7 @@ currentRoom = floor:GetEntranceIndex()
 print("currentRoom ",currentRoom)
 
 local coords = floor:GetEntrance():GetCoords()
---CreatePrefabAtPosition("EnemyBoss2", vec3.new(coords.y * roomSize + roomSize/2 + 8, 1, coords.x * roomSize + roomSize/2 + 8))
+CreatePrefabAtPosition("EnemyBoss2", vec3.new(coords.y * roomSize + roomSize/2 + 8, 1, coords.x * roomSize + roomSize/2 + 8))
 --CreatePrefabAtPosition("EnemyTurretAOE", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2 - 3))
 --CreatePrefabAtPosition("EnemyFollowLookdir", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2))
 --CreatePrefabAtPosition("EnemyTurretTarget", vec3.new(coords.y * roomSize + roomSize/2 - 3, 0.5, coords.x * roomSize + roomSize/2))

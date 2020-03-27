@@ -56,13 +56,12 @@ function Rotate()
     end
 
 
-	--[[ temp: --
+	--[[ temp: --]]
 	local particle = gameObject:GetParticleEmitter()
 	if particle ~= nil then
 		particle.extraData.z = particle.extraData.z + GetFrameTime()
-		local playerPos = player:GetTransform().position
-		particle.direction = VecNormalize(transform.position - playerPos)
-		particle.center = playerPos
+		particle.direction = VecNormalize(transform.position - centerPos)
+		particle.center = centerPos
 	end
 	-- temp --]]
         
@@ -88,7 +87,6 @@ function ScaleZ()
 	local position = transform.position
     local dirFromCenter = position - centerPos
     local dirNorm = VecNormalize(dirFromCenter)
-
     local start = centerPos + dirNorm
 	local depth = DCastRay(start, dirNorm)
 	
@@ -102,21 +100,20 @@ function ScaleZ()
     --position = vec3.new(newPosition.x, newPosition.y, newPosition.z)
 
 	--body.position = position--start + vec3.new(dirNorm.x*(depth/2.0), 0.0, dirNorm.z*(depth/2.0))
-	--print(position)
 
 	-- Update shape radius for physics
     --transform.position = body.position
-	transform.scale.z = depth
-
-	--[[local particle = gameObject:GetParticleEmitter()
+	transform.scale.z = 20
+    
+	--[[]]local particle = gameObject:GetParticleEmitter()
 	if particle ~= nil then
 		particle.extraData.y = depth
-	end--]]
+	end--[[]]
 	ChangeRadius(gameObject)
 end
 
 
-function CalculatePosition()
+function Translate()
     local radius = 2
     local rotationSpeed = 5
     ------------------------
@@ -139,21 +136,23 @@ function CalculatePosition()
     local radiusDirNorm = VecNormalize(radiusDir)
     --position = centerPos + radiusDirNorm * radius 
     
-    local offset = vec3.new(0,0,transform.scale.z)
+    -- radial
+    local offset = radiusDirNorm * (transform.scale.z * 0.5 + 1)
+    offset.y = playerPos.y 
+    --local offset = vec3.new(0,0,transform.scale.z)
     --local offset = (transform.scale.z / 2) * radiusDirNorm
    -- position = position + (transform.scale.z / 2) * radiusDirNorm
     radiusDir.y = 0
-    local newPosition = centerPos + offset
+    local body = gameObject:GetBody()
+    body.position = centerPos + offset
     --position = vec3.new(newPosition.x, newPosition.y, newPosition.z)
-    --print(offset)
-    --print(newPosition)
-    --print(position)
+
+    --rotational
     local upDir = vec3.new(0,1,0)
     local movingDir = VecCross(upDir, radiusDir)
     local movingDirNorm = VecNormalize(movingDir)
     
-    position.y = playerPos.y
-    local body = gameObject:GetBody()
+    transform.position.y = playerPos.y
 
     --local halfScale = transform.scale.z / 2
     --local radiusDirScaled = vec3.new(halfScale * radiusDirNorm.x, halfScale * radiusDirNorm.y, halfScale * radiusDirNorm.z)
@@ -163,11 +162,11 @@ function CalculatePosition()
 end
 
 function Update()
-    ScaleZ()
-
     Rotate()
 
-    CalculatePosition()
+    ScaleZ()
+
+    Translate()
 end
 
 Update()

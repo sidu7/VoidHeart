@@ -1,0 +1,56 @@
+{
+  "Type": "PLAYER_BULLET_LOB",
+  "Tag": "FIREEARTH",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "DYNAMIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL",
+      "HasCustomScale": true,
+      "MinBounds": [ -2.0, -2.0, -2.0 ],
+      "MaxBounds": [ 2.0, 2.0, 2.0 ]
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/Meteor.obj",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/Meteor.png"
+    },
+    {
+      "Type": "Script",
+      "DestroyScripts": [ "Destroy/CreateMeteorSplash", "Rotate"]
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 10000,
+      "EmissionRate": 100,
+      "Shape": 1,
+      "Life": [ 0.05, 0.2 ],
+      "Speed": [ 1.0, 2.0 ],
+      "Size": [ 0.09, 0.1 ],
+      "Model": "Resources/Models/Cloud.fbx",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 0.5, 0.5, 0.5 ],
+      "MaxColor": [ 1.5, 0.5, 0.5 ],
+      "Area": [ 1.5, 1.5, 1.5 ],
+      "Lighting": true,
+      "Shininess": 1.0,
+      "Specular": [ 0.2, 0.2, 0.2 ]
+    }
+  ]
+}

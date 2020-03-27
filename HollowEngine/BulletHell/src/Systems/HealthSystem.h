@@ -1,5 +1,6 @@
 #pragma once
 #include "Hollow/Systems/System.h"
+#include "Components/Health.h"
 
 namespace Hollow
 {
@@ -47,10 +48,12 @@ namespace BulletHell
 		void OnAOEDamageHitPlayer(Hollow::GameEvent& event);
 		void OnPlayerAOEHitEnemy(Hollow::GameEvent& event);
 		void OnBulletHitDestructibleWall(Hollow::GameEvent& event);
-
-		void HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet);
+		void OnEnemyAoeHitPlayer(Hollow::GameEvent& event);
+        
+		void HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet, bool isBulletDestructible = true);
 
 		void CreateHPUIIcon(int index);
+        void TakeDamage(Health* target, int damageTaken, float invincibilityTime);
 
 	private:
 		std::vector<Hollow::GameObject*> mPlayerHPUIIcons;

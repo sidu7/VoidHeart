@@ -154,7 +154,7 @@ function SpawnRocks()
 end
 
 function SpawnLaser(dirX, dirY, dirZ)
-    local distanceFromBoss = 2
+    local distanceFromBoss = 3
     -----------------------------------------
     if (player == nil or player.isActive == false) then
         return
@@ -163,8 +163,8 @@ function SpawnLaser(dirX, dirY, dirZ)
     local playerPos = playerTransform.position
     
     local transform = gameObject:GetTransform()
-	local spawnPos = transform.position
-    
+	local spawnPos = vec3.new(transform.position.x, transform.position.y, transform.position.z)
+    spawnPos.y = spawnPos.y 
 	local rockPrefabPath = "Resources/Json data/EnemyBeam.json"
 	local rock = CreateGameObject(rockPrefabPath)
     local rockTransform = rock:GetTransform()
@@ -175,17 +175,42 @@ function SpawnLaser(dirX, dirY, dirZ)
     local length = dirX * dirX + dirY * dirY + dirZ * dirZ
     direction = direction * (1 / length);
     rockBody.position = spawnPos + direction * distanceFromBoss
-    rockTransform.position = spawnPos + direction * distanceFromBoss
+    rockTransform.position = rockBody.position
 
 end
 
 function SpawnLasers()
 	local offset = math.pi / 3
-    local numRocks = 3
-    for i = 0, numRocks do
-	    local theta = (i / numRocks * math.pi * 2) + math.rad(offset)
+    local numLasers = 3
+    for i = 1, numLasers do
+	    local theta = (i / numLasers * math.pi * 2) + math.rad(offset)
         SpawnLaser(math.cos(theta), 0.5, math.sin(theta))
     end
+end
+
+function MeteorShower()
+	for i=0, 10, 1 do
+		local go = CreatePrefabAtPosition("EnemyMeteor", gameObject:GetTransform().position)
+		local body = go:GetBody()
+		
+		local transform = gameObject:GetTransform()
+		local rot = transform.rotation
+		local angle = rot.y
+		angle = angle * math.pi / 180
+		local xDir = math.sin(angle)
+		local zDir = math.cos(angle)
+
+		local xOffset = math.random(-5, 5)
+		local zOffset = math.random(-5, 5)
+
+		body.position = transform.position + vec3.new(6.0 * xDir + xOffset, 15.0 + 5.0 * i, 6.0 * zDir + zOffset)
+	
+		local attackSpeed = 20.0
+		body.velocity = attackSpeed * vec3.new(0.0, -1.0, 0.0)
+
+		transform = go:GetTransform()
+		transform.position = body.position
+	end
 end
 
 function Update()
@@ -194,11 +219,13 @@ function Update()
 	local attack = gameObject:GetAttack()
     local hitPoints = health.hitPoints
 	local attack = gameObject:GetAttack()
-    
+    print(hitPoints)
     if (hitPoints < maxHealth / 3) then
+        attack.baseAttackTime = 1.5
 	    if attack.currentAttackTime > attack.baseAttackTime then
+            MeteorShower()
             --CreateLargeFireball()
-        --    attack.currentAttackTime = 0
+            attack.currentAttackTime = 0
         end
         --attack.baseAttackTime = 3
     elseif (hitPoints < maxHealth * 2 / 3) then
