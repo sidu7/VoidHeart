@@ -69,6 +69,8 @@ namespace BulletHell
 		mWindowFlags |= ImGuiWindowFlags_NoBackground;
 
 		InitGlobalGameObjects();
+
+		SubscribeToEvents();
 		
 		CreateMainMenu();
     }
@@ -171,8 +173,6 @@ namespace BulletHell
 	void GameLogicManager::StartNewGame()
     {
 		hasGameStarted = true;
-    	
-		SubscribeToEvents();
 
 		// Configure game settings
 		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
@@ -304,6 +304,7 @@ namespace BulletHell
 
 	void GameLogicManager::SubscribeToEvents()
     {
+		HW_WARN("GAME LOGIC SUB EVENTS");
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));
@@ -453,6 +454,7 @@ namespace BulletHell
 		case PickupType::SPEED_FACTOR:
 		{
 			pStats->mMovementSpeedFactor += pPickup->mBuffValue;
+			HW_TRACE("Giving the player {0} speed for {1}", pPickup->mBuffValue, pPickup->mEffectTime);
 			break;
 		}
 		case PickupType::SPEED:
@@ -589,13 +591,28 @@ namespace BulletHell
 
 	void GameLogicManager::OnPlayerDeath(Hollow::GameEvent& event)
 	{
-		// Kick back to main menu
 		HW_WARN("Player Death");
+
+		// Kick back to main menu
 		DungeonManager::Instance().Regenerate();
 		CreateMainMenu();
+
+		// Reset player health
 		Health* pPlayerHealth = mpPlayerGO->GetComponent<Health>();
 		pPlayerHealth->mHitPoints = 10;
 		pPlayerHealth->mIsAlive = true;
+
+		// Reset player stats
+		// TODO: Find some way to parse this from JSON/Lua and store default values
+		CharacterStats* pPlayerStats = mpPlayerGO->GetComponent<CharacterStats>();
+		pPlayerStats->mMovementSpeed = 1000.0f;
+		pPlayerStats->mMovementSpeedFactor = 1.0f;
+		pPlayerStats->mFireRate = 1.0f;
+		pPlayerStats->mDamageFactor = 1.0f;
+		pPlayerStats->mDashSpeed = 1000.0f;
+
+		// Clear event manager so that any delayed events don't fire
+		Hollow::EventManager::Instance().ClearDelayedEvents();
 
 		// Reset intial values in any systems/components e.g. Spell Collected flag
 	}
