@@ -207,6 +207,7 @@ namespace Hollow
 
 		// AUDIO
 		lua.set_function("PlaySFX", &AudioManager::PlayEffect, std::ref(AudioManager::Instance()));
+		lua.set_function("Mute", &AudioManager::Mute, std::ref(AudioManager::Instance()));
 
 		// INPUT
 		lua.set_function("IsKeyPressed", &InputManager::IsKeyPressed, std::ref(InputManager::Instance()));

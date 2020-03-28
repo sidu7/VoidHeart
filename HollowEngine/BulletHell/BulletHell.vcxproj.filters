@@ -57,6 +57,7 @@
     <ClInclude Include="src\Systems\HealthSystem.h" />
     <ClInclude Include="src\Systems\MagicSystem.h" />
     <ClInclude Include="src\Systems\MovementSystem.h" />
+    <ClInclude Include="src\Events\PlayerDeathEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Scripts\EnemyBoss1Fire.lua" />
@@ -77,7 +78,6 @@
     <None Include="Resources\Scripts\EnemyFollowsPlayer.lua" />
     <None Include="Resources\Scripts\ShootAtThePlayer.lua" />
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua" />
-    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua" />
     <None Include="Resources\Scripts\GameConfig.lua" />
     <None Include="Resources\Scripts\PlayerAttack.lua" />
     <None Include="Resources\Scripts\PlayerMovement.lua" />
@@ -244,7 +244,6 @@
     <None Include="Resources\Shaders\PointParticleDataClear.comp" />
     <None Include="Resources\Shaders\HelixModelParticles.comp" />
     <None Include="Resources\Prefabs\Wall.json" />
-    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Scripts\Boss2LaserLogic.lua" />
     <None Include="Resources\Scripts\CameraUpdate.lua" />
     <None Include="Resources\Scripts\Combine.lua" />
@@ -310,6 +309,14 @@
     <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
     <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
     <None Include="Resources\Shaders\ChargingModelParticles.comp" />
+    <None Include="Resources\Json data\UICamera.json" />
+    <None Include="Resources\Scripts\InitGlobalObjects.lua" />
+    <None Include="Resources\Audio\Songs\MainMenu.ogg" />
+    <None Include="Resources\Scripts\CheatCodes.lua" />
+    <None Include="Resources\Prefabs\EnemyMeteor.json" />
+    <None Include="Resources\Scripts\Boss\EnemyCreateMeteorSplash.lua" />
+    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
+    <None Include="Resources\Shaders\WhirlwindParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />
@@ -323,6 +330,8 @@
     <Media Include="Resources\Audio\SFX\PlayerHit.wav" />
     <Media Include="Resources\Audio\SFX\Win.wav" />
     <Media Include="Resources\Audio\Songs\test.wav" />
+    <Media Include="Resources\Audio\SFX\OnPickup.wav" />
+    <Media Include="Resources\Audio\SFX\DoorLock.wav" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Fonts\arial.ttf" />
@@ -339,6 +348,8 @@
     <Object Include="Resources\Models\Exit.obj" />
     <Object Include="Resources\Models\NewGame.obj" />
     <Object Include="Resources\Models\Options.obj" />
+    <Object Include="Resources\Models\SpeedPotion.obj" />
+    <Object Include="Resources\Models\RofPotion.obj" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\AirPillar.png" />
@@ -393,5 +404,8 @@
     <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom2stright.png" />
     <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom3.png" />
     <Image Include="Resources\Textures\Minimap\UIMinimapRegularRoom4.png" />
+    <Image Include="Resources\Textures\RofPotion.png" />
+    <Image Include="Resources\Textures\SpeedPotion.png" />
+    <Image Include="Resources\Textures\UI\Credits.png" />
   </ItemGroup>
 </Project>

@@ -1,3 +1,2 @@
-player = CreatePrefabAtPosition("Player", vec3.new(0.0,0.0,0.0))
-local gameObjectPath = "Resources/Json data/Camera.json"
-camera = CreateGameObject(gameObjectPath)
+-- Used for testing purposes!
+Broken garbage to throw error

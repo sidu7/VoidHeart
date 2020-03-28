@@ -30,7 +30,9 @@ namespace BulletHell
 
 		void CheckAndCycleSpell(Magic::SpellData** hand, SpellType spellType, const std::string& handString);
 
+		// Event handling
 		void OnSpellCollect(Hollow::GameEvent& event);
+		void OnPlayerDeath(Hollow::GameEvent& event);
 
 	private:
 		float mDeltaTime;

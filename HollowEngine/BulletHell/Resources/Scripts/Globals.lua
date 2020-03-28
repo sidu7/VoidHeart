@@ -20,6 +20,9 @@ doorThickness = 3
 -- Enemy
 firstFloorEnemyCount = 0
 
+-- Cheat codes
+gameMuted = false
+
 -- Utils
 function GetRoomCenterPosition()
 	local coords = GetDungeonFloor(currentFloor):GetEntrance():GetCoords()

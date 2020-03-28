@@ -1,19 +1,37 @@
 {
+  "Type": "LIGHT",
   "Components": [
     {
       "Type": "Transform",
-      "Position": [ 0.0, 40.0, 20.0 ]
+      "Position": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "Type": "Light",
-      "Color": [ 0.3, 0.3, 0.3 ],
+      "LightType": 0,
+      "Color": [
+        1.0,
+        1.0,
+        1.0
+      ],
       "CastShadow": true,
-      "ShadowMapSize": [ 1024, 1024 ],
-      "ShadowMapNearPlane": 0.01,
+      "ShadowMapSize": [
+        1024.0,
+        1024.0
+      ],
+      "ShadowMapNearPlane": 0.009999999776482582,
       "ShadowMapFarPlane": 128.0,
       "BlurDistance": 5,
-      "Alpha": 0.01,
-      "MD": 0.5
+      "Alpha": 0.009999999776482582,
+      "MD": 0.5,
+      "FOV": 80.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "LightFollow" ]
     }
   ]
 }

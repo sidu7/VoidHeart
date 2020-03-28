@@ -28,8 +28,12 @@ namespace BulletHell
     public:
         void Init();
 
-		void Update();
+		// Global game object handling
+		void InitGlobalGameObjects();
+		void ClearNonGlobalGameObjects();
+		void AddGlobalGameObject(Hollow::GameObject* pGO);
 
+		void Update();
 
 		void RegisterLuaBindings();
 		
@@ -41,7 +45,9 @@ namespace BulletHell
 		// Loads objects from a room json based on object type string
 		void CreateObjectsInRoom(DungeonRoom& room, const rapidjson::Value::Object& data, const std::string& objects, const std::string& type, bool addToEnemylist);
 
+		// Event handling
 		void DropRandomPickup(Hollow::GameEvent& event);
+		void OnPlayerDeath(Hollow::GameEvent& event);
 
         // Create a PickUp at the centre of the room
         void CreatePickUpInRoom(DungeonRoom& room);
@@ -67,6 +73,7 @@ namespace BulletHell
         void OnRoomLockDownDelayed(Hollow::GameEvent& event);
 		
 	private: 
+		void CheckCheatCodes();
 		void InitializeRoomsMap();
 		void AddBuffs(Hollow::GameObject* pGo, Pickup* pPickup);
 		void LoadRoomJsons(std::string roomPrefix, int count);
@@ -74,7 +81,9 @@ namespace BulletHell
 
 	private:
 		ImGuiWindowFlags mWindowFlags;
+		std::vector<Hollow::GameObject*> mGlobalGameObjects;
 		Hollow::GameObject* mCreditsUIObject;
+		Hollow::GameObject* mpPlayerGO;
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
 		std::vector<std::string> mPickupPrefabNames;
 		int mCountDeadEnemies;

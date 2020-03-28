@@ -1,5 +1,6 @@
 {
   "Type": "ENEMY_AOE_DAMAGE",
+  "Tag" : "AOE_APPLIES_IMPULSE",
   "Components": [
     {
       "Type": "Transform",

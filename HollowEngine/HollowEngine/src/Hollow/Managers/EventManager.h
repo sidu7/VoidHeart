@@ -61,6 +61,8 @@ namespace Hollow
 		/// Cleans manager data.
 		/// </summary>
 		HOLLOW_API void CleanUp();
+
+		HOLLOW_API void ClearDelayedEvents();
 	private:
 		std::unordered_map<int, int> mGameObjectPairEventMap;
 		std::vector<GameEvent*> mDelayedEvents;

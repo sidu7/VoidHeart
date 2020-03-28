@@ -17,18 +17,27 @@ namespace BulletHell
         static Hollow::GameObject* CreateUIObject(const glm::vec2& scale, const glm::vec2& position, const int layer, const std::string& texturePath, const std::string& objectFilePath = "Resources/Prefabs/UIIcon.json");
 	    
 	private:
+		// Init functions
+		void InitGlobalHandObjects();
 		Hollow::GameObject* CreateHand(const glm::vec3& offset, const std::string& tag, const glm::vec2& UIScale, const glm::vec2& UIPosition);
 		void CreateUIObjects();
+		void AddHandObjectsToGlobal();
 		void SubscribeToEvents();
 
+		// Update functions
 		void UpdateSpellUI();
 		void UpdateHandSpellUI(const std::string& handString);
 		void UpdateCombinedSpellUI();
 
+		// Event handling
 		void CycleSpell(Hollow::GameEvent& event);
 		void CollectSpell(Hollow::GameEvent& event);
+		void OnPlayerDeath(Hollow::GameEvent& event);
+
+		void SetHighlightUIActive(bool active);
 
 	private:
+		bool mGlobalObjectsInit;
 		Hollow::GameObject* mpLeftHandUI;
 		Hollow::GameObject* mpRightHandUI;
 		Hollow::GameObject* mpCombinedHandUI;

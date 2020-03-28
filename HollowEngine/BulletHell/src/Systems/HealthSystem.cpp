@@ -18,9 +18,10 @@
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
 
-#include "Components/Health.h"
 #include "Components/CharacterStats.h"
+
 #include "Events/DeathEvent.h"
+#include "Events/PlayerDeathEvent.h"
 
 namespace BulletHell
 {
@@ -29,17 +30,7 @@ namespace BulletHell
 	void HealthSystem::Init()
 	{
 		// Set event callback functions
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnBulletHitPlayer));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_FLOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitFloor));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
-        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DESTRUCTIBLE_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitDestructibleWall));
-
-		//Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_C)
+		SubscribeToEvents();
 
 		std::ifstream file("Resources/GameData/BulletDamageValues.data");
 		std::string line;
@@ -86,21 +77,13 @@ namespace BulletHell
 				if (pHealth->mCurrentInvincibleTime > pHealth->mInvincibleTime)
 				{
 					pHealth->mInvincible = false;
+					pHealth->mCurrentInvincibleTime = 0.0;
 				}
-			}
-
-			// Check for invincibility
-			if (Hollow::InputManager::Instance().IsControllerTriggerTriggered(SDL_CONTROLLER_AXIS_TRIGGERLEFT)
-				&& !pHealth->mInvincible && pHealth->mpOwner->mType == (int)GameObjectType::PLAYER)
-			{
-				pHealth->mInvincible = true;
-				pHealth->mCurrentInvincibleTime = 0.0f;
 			}
 
 			if (pHealth->mHitPoints < 0)
 			{
 				pHealth->mIsAlive = false;
-				std::string gameEndText = "";
 				
 				// Check type of object destroyed
 				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
@@ -110,28 +93,17 @@ namespace BulletHell
 					{
 						Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
 					}
-					//gameEndText = "You Lose!";
-                    gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["LOSE"];
                     // Empty HP UI array
-                    for (auto UIIcon : mPlayerHPUIIcons)
-                    {
-                        Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
-                        //delete UIIcon;
-                    }
                     mPlayerHPUIIcons.clear();
-					mGameObjects[i]->mActive = false;
-					// Send event to destroy object
-					DeathEvent death(mGameObjects[i]->mType);
-					death.mpObject1 = mGameObjects[i];
-					Hollow::EventManager::Instance().BroadcastToSubscribers(death);
+					
+					// Broadcast player death even
+					Hollow::EventManager::Instance().BroadcastToSubscribers(PlayerDeathEvent());
 					return;
 				}
 				if (mGameObjects[i]->mType == (int)GameObjectType::ENEMY)
 				{
 					//YOU WIN
 					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/win.wav");
-					//gameEndText = "You Win!";
-					gameEndText = Hollow::LocalizationManager::Instance().mCurrentLanguageMap["WIN"];
 				}
 				// Send event to destroy object
 				DeathEvent death(mGameObjects[i]->mType);
@@ -140,12 +112,12 @@ namespace BulletHell
 				Hollow::GameObjectManager::Instance().DeleteGameObject(mGameObjects[i]);
 			}
 			// Create new UI object
-			//if (mGameObjects[i]->mTag == "Player")
 			if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER && pHealth->mIsAlive)
 			{
 				// Populate UIIcons
 				if (mPlayerHPUIIcons.empty())
 				{
+					HW_WARN("NO HP UI");
 					int numUIIcons = pHealth->mHitPoints / 2;
 					for (int i = 0; i < numUIIcons; ++i)
 					{
@@ -195,6 +167,19 @@ namespace BulletHell
 	{
 	}
 
+	void HealthSystem::SubscribeToEvents()
+	{
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnBulletHitPlayer));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitWall));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitDoor));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_FLOOR, EVENT_CALLBACK(HealthSystem::OnBulletHitFloor));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_BULLET_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerBulletHitEnemy));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(HealthSystem::OnFloorCleared));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_ENEMY_AOE_DAMAGE_HIT_PLAYER, EVENT_CALLBACK(HealthSystem::OnAOEDamageHitPlayer));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_AOE_HIT_ENEMY, EVENT_CALLBACK(HealthSystem::OnPlayerAOEHitEnemy));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_DESTRUCTIBLE_WALL, EVENT_CALLBACK(HealthSystem::OnBulletHitDestructibleWall));
+	}
+
 	void HealthSystem::OnBulletHitPlayer(Hollow::GameEvent& event)
 	{
 		Hollow::GameObject* pPlayer = nullptr;
@@ -207,7 +192,7 @@ namespace BulletHell
 		else
 		{
 			// Call handle function with input reversed
-			HandleBulletDamage(event.mpObject2, event.mpObject1);
+			HandleBulletDamage(event.mpObject2, event.mpObject1, true);
 			pPlayer = event.mpObject2;
 		}
 			
@@ -254,11 +239,11 @@ namespace BulletHell
 	{		
 		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
 		{
-			HandleBulletDamage(event.mpObject1, event.mpObject2);
+			HandleBulletDamage(event.mpObject1, event.mpObject2, true);
 		}
 		else
 		{
-			HandleBulletDamage(event.mpObject2, event.mpObject1);
+			HandleBulletDamage(event.mpObject2, event.mpObject1,true);
 		}
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/BossHit.wav");
 	}
@@ -266,12 +251,6 @@ namespace BulletHell
     void HealthSystem::OnFloorCleared(Hollow::GameEvent& event)
     {
         // Empty HP UI array
-        //for (auto UIIcon : mPlayerHPUIIcons)
-        {
-
-            //Hollow::GameObjectManager::Instance().DeleteGameObject(UIIcon);
-            //delete UIIcon;
-        }
         mPlayerHPUIIcons.clear();
     }
 
@@ -289,17 +268,17 @@ namespace BulletHell
 			gameobject = event.mpObject2;
 			aoe = event.mpObject1;
 		}
-		Health* pHealth = gameobject->GetComponent<Health>();
-		if (!pHealth->mInvincible)
-		{
-			--pHealth->mHitPoints;
-		}
-		glm::vec3 impulse = glm::vec3(0.0f);
-		glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
-		glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
-		glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
-		impulse = direction * 10000.0f;
-		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
+        HandleBulletDamage(gameobject, aoe, false);
+
+        if (aoe->mTag == "AOE_APPLIES_IMPULSE")
+        {
+            glm::vec3 impulse = glm::vec3(0.0f);
+            glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
+            glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
+            glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
+            impulse = direction * 10000.0f;
+            Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
+        }
 	}
 
 	void HealthSystem::OnPlayerAOEHitEnemy(Hollow::GameEvent& event)
@@ -316,17 +295,16 @@ namespace BulletHell
 			gameobject = event.mpObject2;
 			aoe = event.mpObject1;
 		}
-		Health* pHealth = gameobject->GetComponent<Health>();
-		if (!pHealth->mInvincible)
-		{
-			--pHealth->mHitPoints;
-		}
-		glm::vec3 impulse = glm::vec3(0.0f);
-		glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
-		glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
-		glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
-		impulse = direction * 50.0f;
-		Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
+        HandleBulletDamage(gameobject, aoe, false);
+        if (aoe->mTag != "AIREARTH")
+        {
+            glm::vec3 impulse = glm::vec3(0.0f);
+            glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
+            glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
+            glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
+            impulse = direction * 50.0f;
+            Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
+        }
 	}
 
 	void HealthSystem::OnBulletHitDestructibleWall(Hollow::GameEvent& event)
@@ -346,14 +324,33 @@ namespace BulletHell
 
 		// Damage the wall
 		Health* pWallHealth = pDWall->GetComponent<Health>();
-		int damageTaken = 2;
-		pWallHealth->mHitPoints -= damageTaken;
+        TakeDamage(pWallHealth, 2, 3);
 	}
+    void HealthSystem::OnEnemyAoeHitPlayer(Hollow::GameEvent& event)
+    {
+        Hollow::GameObject* player = nullptr;
 
-	void HealthSystem::HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet)
+        if (event.mpObject1->mType == (int)GameObjectType::PLAYER)
+        {
+            player = event.mpObject1;
+        }
+        else
+        {
+            player = event.mpObject2;
+        }
+
+        // Damage the wall
+        Health* pPlayerHealth = player->GetComponent<Health>();
+        TakeDamage(pPlayerHealth, 1, 3);
+    }
+
+	void HealthSystem::HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet, bool isBulletDestructible)
 	{
 		// Destroy player bullet
-		Hollow::GameObjectManager::Instance().DeleteGameObject(pBullet);
+        if (isBulletDestructible)
+        {
+            Hollow::GameObjectManager::Instance().DeleteGameObject(pBullet);
+        }
 
 		int damage = mMapBulletDamage[pBullet->mTag];
 		
@@ -366,16 +363,17 @@ namespace BulletHell
 
 		// Decrease player health, object hit must have a health component
 		Health* pHealth = pObjectHit->GetComponent<Health>();
-		if (pHealth && !pHealth->mInvincible)
-		{
-			pHealth->mHitPoints = pHealth->mHitPoints - damage;
-		}		
+        float invincibilityTime = 0.5f;
+        if (pObjectHit->mType == (int)GameObjectType::PLAYER)
+        {
+            invincibilityTime = 3.0f;
+        }
+        TakeDamage(pHealth, damage, invincibilityTime);
 	}
 
 	void HealthSystem::CreateHPUIIcon(int index)
 	{
 		Hollow::GameObject* pUIObj = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/UIIcon.json");
-		//Hollow::UIText* pUIText = pUI->GetComponent<Hollow::UIText>();
 		Hollow::UIImage* pUIImg = pUIObj->GetComponent<Hollow::UIImage>();
 		pUIImg->TexturePath = "Resources/Textures/UI/HPIcon.png";
 		pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
@@ -385,5 +383,17 @@ namespace BulletHell
 		pUITr->mPosition = glm::vec2(64 * (index + 1), 660);
 		mPlayerHPUIIcons.push_back(pUIObj);
 	}
+
+    void HealthSystem::TakeDamage(Health* target, int damageTaken, float invincibilityTime)
+    {
+        if (target && target->mInvincible) 
+        { 
+            return; 
+        }
+
+        target->mHitPoints -= damageTaken;
+        target->mInvincible = true;
+        target->mInvincibleTime = invincibilityTime;
+    }
 
 }

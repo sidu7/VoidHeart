@@ -43,7 +43,7 @@ end
 
 -- generate random valid pickup
 for i=0, floorNum, 1 do
-	CreatePickUpInRoom(floor:GetRegularRoom(roomCount + i))
+	--CreatePickUpInRoom(floor:GetRegularRoom(roomCount + i))
 end
 
 -- Comment this out if you dont want pickups in starting room

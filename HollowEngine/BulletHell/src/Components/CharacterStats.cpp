@@ -63,7 +63,9 @@ namespace BulletHell
 	void CharacterStats::DebugDisplay()
 	{
 		ImGui::InputFloat("Dash Speed", &mDashSpeed);
+		ImGui::InputFloat("Dash Speed Factor", &mDashSpeed);
 		ImGui::InputFloat("Movement Speed", &mMovementSpeed);
+		ImGui::InputFloat("Movement Speed Factor", &mMovementSpeedFactor);
 		ImGui::InputFloat("Damage", &mDamageFactor);
 		ImGui::InputFloat("Fire Rate", &mFireRate);
 	}
