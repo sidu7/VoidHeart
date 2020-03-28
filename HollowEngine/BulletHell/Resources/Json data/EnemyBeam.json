@@ -1,5 +1,5 @@
 {
-    "Type": "ENEMY",
+    "Type": "ENEMY_AOE",
     "Components": [
         {
             "Type": "Transform",
@@ -17,21 +17,8 @@
             "Shape": "BOX"
         },
         {
-            "Type": "Model",
-            "Shape": "CUBE",
-            "CastShadow": false
-        },
-        {
-            "Type": "Material",
-            "Specular": [ 0.0, 0.0, 0.0 ],
-            "Diffuse": [ 10.0, 10.0, 5.0 ],
-            "Shininess": 1000.0,
-            "Transparent": true,
-            "AlphaValue": 0.2
-        },
-        {
             "Type": "Script",
-            "Scripts": [ "Boss2LaserLogic" ]
+          "Scripts": [ "Boss2LaserLogic" ]
         },
         {
           "Type": "DestroyTimer",
@@ -47,8 +34,8 @@
           "Size": [ 0.1, 0.1 ],
           "ModelShape": "CUBE",
           "ComputeShader": "Resources/Shaders/HelixModelParticles.comp",
-          "MinColor": [ 1.0, 1.0, 0.0 ],
-          "MaxColor": [ 1.0, 0.0, 0.0 ],
+          "MinColor": [ 0.3, 0.13, 0.11 ],
+          "MaxColor": [ 0.25, 0.3, 0.21 ],
           "ExtraData": [ 1.0, 2.0, 0.0, 0.0 ],
           "NeedRotation": true
         }

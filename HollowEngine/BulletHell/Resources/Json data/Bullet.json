@@ -18,6 +18,10 @@
       "Shape": "BALL"
     },
     {
+      "Type": "DestroyTimer",
+      "MaxTime": 0.5
+    },
+    {
       "Type": "Model",
       "Shape": "BALL",
       "CastShadow": true
@@ -25,7 +29,7 @@
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-	  "Diffuse": [3.0, 0.0, 0.0],
+      "Diffuse": [ 3.0, 0.0, 0.0 ],
       "Shininess": 10.0,
       "Texture": "Resources/Textures/cracks.png"
     }

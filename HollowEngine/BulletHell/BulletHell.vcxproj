@@ -410,9 +410,10 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\EnemyTurretTarget.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Prefabs\Enemy\EnemyAir.json">
+    <None Include="Resources\Prefabs\EnemyMeteor.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Prefabs\Exit.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -524,6 +525,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\Boss\AirMovement.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\Boss\EnemyCreateMeteorSplash.lua" />
     <None Include="Resources\Scripts\CameraUpdate.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
