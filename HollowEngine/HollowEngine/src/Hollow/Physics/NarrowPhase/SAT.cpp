@@ -363,8 +363,8 @@ namespace Hollow {
 			glm::mat3& Ra = col1->mpBody->mRotationMatrix;
 			glm::mat3& Rb = col2->mpBody->mRotationMatrix;
 
-			glm::vec3 Ea = col1->mpTr->mScale;
-			glm::vec3 Eb = col2->mpTr->mScale;
+			glm::vec3 Ea = col1->mHasCustomScale ? col1->mpShape->GetHalfExtents() * 2.0f : col1->mpTr->mScale;
+			glm::vec3 Eb = col2->mHasCustomScale ? col2->mpShape->GetHalfExtents() * 2.0f : col2->mpTr->mScale;
 
 			// edge case
 			glm::vec3 pA1 = md1.vertices[md1.edges[md1.edges[edgeQuery.edgeA].prev].toVertex].point;
@@ -561,8 +561,8 @@ namespace Hollow {
 		glm::mat3& Ra = col1->mpBody->mRotationMatrix;
 		glm::mat3& RbTrans = glm::transpose(col2->mpBody->mRotationMatrix);
 
-		glm::vec3 Ea = col1->mpTr->mScale;
-		glm::vec3 Eb = col2->mpTr->mScale;
+		glm::vec3 Ea = col1->mHasCustomScale ? col1->mpShape->GetHalfExtents() * 2.0f : col1->mpTr->mScale;
+		glm::vec3 Eb = col2->mHasCustomScale ? col2->mpShape->GetHalfExtents() * 2.0f : col2->mpTr->mScale;
 
 		// rotation matrix to convert from A's local to B's local
 		//glm::mat3 C = Rb * glm::transpose(Ra);
@@ -627,8 +627,8 @@ namespace Hollow {
 		glm::mat3& Ra = col1->mpBody->mRotationMatrix;
 		glm::mat3& RbTrans = glm::transpose(col2->mpBody->mRotationMatrix);
 
-		glm::vec3 Ea = col1->mpTr->mScale;
-		glm::vec3 Eb = col2->mpTr->mScale;
+		glm::vec3 Ea = col1->mHasCustomScale ? col1->mpShape->GetHalfExtents() * 2.0f : col1->mpTr->mScale;
+		glm::vec3 Eb = col2->mHasCustomScale ? col2->mpShape->GetHalfExtents() * 2.0f : col2->mpTr->mScale;
 
 		// rotation matrix to convert from A's local to B's local
 		glm::mat3 C = RbTrans * Ra;

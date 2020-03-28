@@ -90,4 +90,22 @@ namespace Hollow
 		JSONHelper::Write<bool>("isTrigger", mIsTrigger, writer);
 		JSONHelper::Write<bool>("HasCustomScale", mHasCustomScale, writer);
 	}
+
+	void Collider::SetCustomBounds(glm::vec3 min, glm::vec3 max)
+	{
+		mHasCustomScale = true;
+		
+		mMinBounds = min;
+		mMaxBounds = max;
+
+		// Set local shape and shape bounds
+		if (mpShape->mType == ShapeType::BOX)
+		{
+			static_cast<ShapeAABB*>(mpShape)->mMin = min;
+			static_cast<ShapeAABB*>(mpShape)->mMax = max;
+
+			static_cast<ShapeAABB*>(mpLocalShape)->mMin = min;
+			static_cast<ShapeAABB*>(mpLocalShape)->mMax = max;
+		}
+	}
 }

@@ -312,6 +312,7 @@
     <None Include="Resources\Prefabs\EnemyMeteor.json" />
     <None Include="Resources\Scripts\Boss\EnemyCreateMeteorSplash.lua" />
     <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
+    <None Include="Resources\Shaders\WhirlwindParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

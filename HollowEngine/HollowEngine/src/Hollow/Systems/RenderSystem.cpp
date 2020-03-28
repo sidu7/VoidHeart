@@ -66,7 +66,7 @@ void Hollow::RenderSystem::Update()
 			if (pCollider->mpShape->mType == ShapeType::BOX)
 			{
 				DebugDrawManager::Instance().DebugCube(trans->mPosition,
-					pCollider->mpShape->GetHalfExtents() * 2.0f);
+					pCollider->mpLocalShape->GetHalfExtents() * 2.0f);
 			}
 			else
 			{
