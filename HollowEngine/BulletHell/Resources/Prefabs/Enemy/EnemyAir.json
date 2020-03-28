@@ -1,0 +1,41 @@
+{
+  "Type" :  "WALL",
+  "Tag" : "Pillar",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 10.0,
+      "isFrictionLess": true,
+      "RigidbodyType": "Static"
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "Model",
+      "Model": "Resources/Models/AirPillar.obj",
+      "CastShadow": true
+    },
+    {
+      "Type": "Material",
+	  "Diffuse": [0.0, 0.0, 0.0],
+      "Shininess": 1.0,
+      "Texture": "Resources/Textures/AirPillar.png"
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "EnemyStayStill" ]
+    },
+    {
+      "Type": "Attack",
+      "Script": "Enemy/PillarAttack",
+      "BaseAttackTime": 1.0
+    }
+  ]
+}

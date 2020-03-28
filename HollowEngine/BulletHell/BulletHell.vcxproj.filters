@@ -309,9 +309,9 @@
     <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
     <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
     <None Include="Resources\Shaders\ChargingModelParticles.comp" />
-    <None Include="Resources\Prefabs\Enemy\Meteor.json" />
     <None Include="Resources\Prefabs\EnemyMeteor.json" />
     <None Include="Resources\Scripts\Boss\EnemyCreateMeteorSplash.lua" />
+    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

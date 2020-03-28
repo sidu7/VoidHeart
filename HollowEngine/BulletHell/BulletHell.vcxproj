@@ -413,7 +413,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\EnemyMeteor.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Prefabs\Enemy\Meteor.json" />
+    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Prefabs\Exit.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
