@@ -1,0 +1,51 @@
+{
+  "Type": "BULLET",
+  "Tag": "OODOOM",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BALL"
+    },
+    {
+      "Type": "Material",
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 10.0, 3.0, 10.0 ],
+      "Shininess": 10.0,
+      "Texture": "Resources/Textures/cracks.png"
+    },
+    {
+      "Type": "Script",
+      "DestroyScripts": [ "Destroy/CreateHomingSwarm" ]
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 3.0
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 10000,
+      "EmissionRate": 10,
+      "Shape": 1,
+      "Life": [ 0.5, 1.0 ],
+      "Speed": [ 1.0, 1.0 ],
+      "Size": [ 0.1, 0.5 ],
+      "ModelShape": "SPHERE",
+      "ComputeShader": "Resources/Shaders/ChargingModelParticles.comp",
+      "MinColor": [ 0.0, 0.74, 1.0 ],
+      "MaxColor": [ 1.0, 0.0, 0.0 ],
+      "ExtraData": [ 1.0, 0.0, 0.0, 0.0 ],
+      "Lighting": true
+    }
+  ]
+}
