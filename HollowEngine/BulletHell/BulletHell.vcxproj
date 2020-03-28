@@ -416,9 +416,10 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\EnemyTurretTarget.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Prefabs\Enemy\EnemyAir.json">
+    <None Include="Resources\Prefabs\EnemyMeteor.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Prefabs\Exit.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -530,6 +531,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\Boss\AirMovement.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\Boss\EnemyCreateMeteorSplash.lua" />
     <None Include="Resources\Scripts\CameraUpdate.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -901,6 +903,12 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     </None>
     <None Include="Resources\Shaders\VerticalBlur.comp">
       <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Shaders\WhirlwindParticles.comp">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </None>
     <None Include="Resources\Skydomes\Milkyway_Light.hdr">
       <DeploymentContent>true</DeploymentContent>

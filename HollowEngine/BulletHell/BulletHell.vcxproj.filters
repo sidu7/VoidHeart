@@ -244,7 +244,6 @@
     <None Include="Resources\Shaders\PointParticleDataClear.comp" />
     <None Include="Resources\Shaders\HelixModelParticles.comp" />
     <None Include="Resources\Prefabs\Wall.json" />
-    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Scripts\Boss2LaserLogic.lua" />
     <None Include="Resources\Scripts\CameraUpdate.lua" />
     <None Include="Resources\Scripts\Combine.lua" />
@@ -314,6 +313,10 @@
     <None Include="Resources\Scripts\InitGlobalObjects.lua" />
     <None Include="Resources\Audio\Songs\MainMenu.ogg" />
     <None Include="Resources\Scripts\CheatCodes.lua" />
+    <None Include="Resources\Prefabs\EnemyMeteor.json" />
+    <None Include="Resources\Scripts\Boss\EnemyCreateMeteorSplash.lua" />
+    <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
+    <None Include="Resources\Shaders\WhirlwindParticles.comp" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

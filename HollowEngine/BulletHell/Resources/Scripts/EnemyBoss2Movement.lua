@@ -146,7 +146,6 @@ function MoveToCenter()
     local centerX = (roomCoords.y + roomCoords.y + 1) * roomSize / 2 
     local centerZ = (roomCoords.x + roomCoords.x + 1) * roomSize / 2 
     local targetPos = vec3.new(centerX, position.y, centerZ) 
-    
     -- calculate direction
     local xDir = targetPos.x - position.x
 	local zDir = targetPos.z - position.z
@@ -228,6 +227,9 @@ function Update()
         end
         -- Handled By EnemyBoss2Fire.lua, considering cooldown for each charge
     end
+
+    local body = gameObject:GetBody()
+    body.angularVelocity = vec3.new(0,0,0)
 end
 
 Update()

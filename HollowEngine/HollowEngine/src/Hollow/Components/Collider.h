@@ -17,6 +17,7 @@ namespace Hollow {
 		HOLLOW_API void DebugDisplay() override;
 		HOLLOW_API void Serialize(rapidjson::Value::Object);
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
+		HOLLOW_API void SetCustomBounds(glm::vec3 min, glm::vec3 max);
 	public:
 		Shape* mpShape;
 		Shape* mpLocalShape;
