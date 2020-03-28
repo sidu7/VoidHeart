@@ -1,8 +1,8 @@
 {
-    
-    "Type": "PICKUP",
-    "Active": true,
-    "Components": [
+
+  "Type": "PICKUP",
+  "Active": true,
+  "Components": [
     {
       "Type": "Transform",
       "Scale": [ 1.0, 1.0, 1.0 ]
@@ -21,25 +21,36 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Heart.obj",
+      "Model": "Resources/Models/RofPotion.obj",
       "ModelHasOffset": false,
       "CastShadow": true
     },
     {
       "Type": "Material",
-      "Shininess": 1000.0,
-        "Diffuse": [ 1.0, 1.0, 0.0, 1.0 ],
-        "Specular": [0.5,0.5,0.5,1.0]
+      "Texture": "Resources/Textures/RofPotion.png",
+      "Specular": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "Shininess": 10.0,
+      "MaterialTextures": false
     },
-      {
-        "Type": "Pickup",
-        "PickupType": 2,
-        "BuffValue": 2.0,
-        "EffectTime": 15.0
-      },
-      {
-        "Type": "Script",
-        "Scripts": ["SlowRotate"]
-      }
+    {
+      "Type": "Pickup",
+      "PickupType": 2,
+      "BuffValue": 2.0,
+      "EffectTime": 15.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "SlowRotate" ]
+    },
+    {
+      "Type": "Light",
+      "Color": [ 0.7, 0.7, 0.2 ],
+      "Radius": 3,
+      "CastShadow": false
+    }
   ]
 }

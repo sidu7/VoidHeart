@@ -87,6 +87,12 @@ namespace Hollow {
 		mDelayedEvents.clear();
 	}
 
+	void EventManager::ClearDelayedEvents()
+	{
+		std::for_each(mDelayedEvents.begin(), mDelayedEvents.end(), [](GameEvent* event) {delete event; });
+		mDelayedEvents.clear();
+	}
+
 	void EventManager::BroadcastToSubscribers(GameEvent& event)
 	{
 		if(mEventsMap.find(event.mType) != mEventsMap.end())

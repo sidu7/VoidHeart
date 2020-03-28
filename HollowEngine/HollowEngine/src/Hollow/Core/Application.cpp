@@ -61,15 +61,15 @@ namespace Hollow {
 		MemoryManager::Instance().Init(JSONHelper::GetSettings(data, "Memory"));
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		ScriptingManager::Instance().Init(JSONHelper::GetSettings(data, "Scripting"));
-		SystemManager::Instance().Init();
 		ImGuiManager::Instance().Init(mpWindow);
 		LocalizationManager::Instance().Init(JSONHelper::GetSettings(data, "Localization"));
 		EventManager::Instance().Init(JSONHelper::GetSettings(data, "Events"));
 		ResourceManager::Instance().Init();
-		AudioManager::Instance().Init();
+		AudioManager::Instance().Init(JSONHelper::GetSettings(data, "Audio"));
 		UIManager::Instance().Init();
 		PhysicsManager::Instance().Init(JSONHelper::GetSettings(data, "Physics"));
 		SceneManager::Instance().Init();
+		SystemManager::Instance().Init();
 
 
 		FrameRateController::Instance().SetMaxFrameRate(data["FrameRate"].GetUint());

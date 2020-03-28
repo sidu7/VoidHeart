@@ -38,6 +38,8 @@ namespace BulletHell
 		/// <param name="event">The event.</param>
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
 
+		void SubscribeToEvents();
+
 	private:
 		void OnBulletHitPlayer(Hollow::GameEvent& event);
 		void OnBulletHitWall(Hollow::GameEvent& event);

@@ -39,7 +39,13 @@
       },
       {
         "Type": "Script",
-        "Scripts": ["SlowRotate"]
+        "Scripts": [ "SlowRotate" ]
+      },
+      {
+        "Type": "Light",
+        "Color": [ 1.0, 0.3, 0.3 ],
+        "Radius": 3,
+        "CastShadow": false
       }
   ]
 }

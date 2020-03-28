@@ -7,6 +7,7 @@
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/AudioManager.h"
 
 #include "Hollow/Components/Script.h"
 #include "Hollow/Components/Transform.h"
@@ -31,7 +32,7 @@
 
 
 #define MAX_REGULAR_ROOMS 8
-#define MAX_BOSS_ROOMS 4
+#define MAX_BOSS_ROOMS 3
 
 namespace BulletHell
 {
@@ -46,7 +47,7 @@ namespace BulletHell
 		mPickupPrefabNames.push_back("Pickup_Invincible");
 		mPickupPrefabNames.push_back("Pickup_RateOfFire");
 		mPickupPrefabNames.push_back("Pickup_Speed");
-		std::cout << "Initialized: GameLogicManager" << std::endl; 
+		HW_INFO("Initialized: GameLogicManager");
 	}
 
     GameLogicManager& GameLogicManager::Instance()
@@ -66,18 +67,46 @@ namespace BulletHell
 		mWindowFlags |= ImGuiWindowFlags_NoResize;
 		mWindowFlags |= ImGuiWindowFlags_NoCollapse;
 		mWindowFlags |= ImGuiWindowFlags_NoBackground;
+
+		InitGlobalGameObjects();
+
+		SubscribeToEvents();
 		
 		CreateMainMenu();
     }
 
+	void GameLogicManager::InitGlobalGameObjects()
+	{
+		Hollow::ScriptingManager::Instance().RunScript("InitGlobalObjects");
+		sol::state& smLua = Hollow::ScriptingManager::Instance().lua;
+		mpPlayerGO = smLua["player"];
+		AddGlobalGameObject(mpPlayerGO);
+		AddGlobalGameObject(smLua["camera"]);
+		AddGlobalGameObject(smLua["UICamera"]);
+		AddGlobalGameObject(smLua["globalLight"]);
+	}
+
+	void GameLogicManager::ClearNonGlobalGameObjects()
+	{
+		Hollow::GameObjectManager::Instance().DeleteAllGameObjectsExcept(mGlobalGameObjects);
+	}
+
+	void GameLogicManager::AddGlobalGameObject(Hollow::GameObject* pGO)
+	{
+		mGlobalGameObjects.push_back(pGO);
+	}
 
 	void GameLogicManager::CreateMainMenu()
 	{
 		hasGameStarted = false;
+
+		// Clear non-global game objects
+		ClearNonGlobalGameObjects();
+
 		// Init globals
 		Hollow::ScriptingManager::Instance().RunScript("Globals");
-		Hollow::SceneManager::Instance().LoadLevel("Level3");
-		Hollow::ScriptingManager::Instance().RunScript("test");
+		
+		// Call scene init for all systems
 		Hollow::SystemManager::Instance().OnSceneInit();
 
 		// Construct Room 
@@ -87,8 +116,8 @@ namespace BulletHell
 		CreateRoomLabels();
 
 		// Set player position
-		DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
-		Hollow::Body* pBody = DungeonManager::Instance().mpPlayerGo->GetComponent<Hollow::Body>();
+		DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
+		Hollow::Body* pBody = mpPlayerGO->GetComponent<Hollow::Body>();
 		pBody->mPosition = glm::vec3(DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2,
 			1.5,
 			DungeonRoom::mRoomSize + DungeonRoom::mRoomSize / 2);
@@ -113,6 +142,7 @@ namespace BulletHell
 	
 	void GameLogicManager::Update()
 	{
+		CheckCheatCodes();
     	if(hasGameStarted)
     	{
 			return;
@@ -143,22 +173,22 @@ namespace BulletHell
 	void GameLogicManager::StartNewGame()
     {
 		hasGameStarted = true;
-    	
-		SubscribeToEvents();
-		Hollow::SceneManager::Instance().LoadLevel("Level3");
+
+		// Configure game settings
 		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
-		Hollow::ScriptingManager::Instance().RunScript("test");
+
+		// Clear non-global game objects
+		ClearNonGlobalGameObjects();
+
+		// Call scene init for all systems
 		Hollow::SystemManager::Instance().OnSceneInit();
 
-
+		// Reset dungeon values and init with values from GameConfig.lua
 		BulletHell::DungeonManager::Instance().ConfigureDungeon();
 		BulletHell::DungeonManager::Instance().Regenerate();
 		BulletHell::DungeonManager::Instance().Init();
 
-
 		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
-
-		BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
 		
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
 		mCountDeadEnemies = 0;
@@ -192,7 +222,8 @@ namespace BulletHell
 			"LockDownRoom", &DungeonRoom::LockDownRoom,
 			"getEnemyCount", &DungeonRoom::GetEnemyCount,
 			"GetID", &DungeonRoom::GetID,
-			"Enemies", &DungeonRoom::mEnemies
+			"Enemies", &DungeonRoom::mEnemies,
+			"obstacles", &DungeonRoom::mObstacles
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
@@ -201,29 +232,24 @@ namespace BulletHell
 		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
 		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
 		lua.set_function("DCastRay", &DungeonManager::CastRay, std::ref(DungeonManager::Instance()));
-
-
 	}
 
 	void GameLogicManager::MoveToNextFloor()
     {
-
         auto& lua = Hollow::ScriptingManager::Instance().lua;
         int currentFloor = lua["currentFloor"].get<int>();
         DungeonManager::Instance().GetFloor(currentFloor).ResetFloor();
         currentFloor++;
 
-		HW_TRACE("{0}", currentFloor);
+		HW_TRACE("Current Floor: {0}", currentFloor);
     	
         lua["currentFloor"] = currentFloor;
-        Hollow::SceneManager::Instance().LoadLevel("Level3");
+		ClearNonGlobalGameObjects();
         DungeonManager::Instance().Construct(currentFloor);
-		Hollow::ScriptingManager::Instance().RunScript("test");
-		Hollow::SystemManager::Instance().OnSceneInit();
 
         Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
         
-        BulletHell::DungeonManager::Instance().mpPlayerGo = Hollow::ScriptingManager::Instance().lua["player"];
+        BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
         Hollow::SystemManager::Instance().OnSceneInit();
     }
 
@@ -281,6 +307,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_SHIELD, EVENT_CALLBACK(GameLogicManager::OnBulletHitShield));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(GameLogicManager::DropRandomPickup));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::PLAYER_DEATH, EVENT_CALLBACK(GameLogicManager::OnPlayerDeath));
     }
 
 	void GameLogicManager::OnPickupCollected(Hollow::GameEvent& event)
@@ -308,6 +335,9 @@ namespace BulletHell
 
 		}
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
+
+		// Play a nice sound effect
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/OnPickup.wav");
 	}
 
 	void GameLogicManager::OnPickupEffectEnd(Hollow::GameEvent& event)
@@ -318,9 +348,9 @@ namespace BulletHell
 		AddBuffs(pte->mpObject1, &pte->mPickup);
 	}
 
-
 	void GameLogicManager::ConstructMainMenuRoom()
     {
+		HW_TRACE("Creating MainMenu");
     	// Setup variables for MainMenuRoom construction
 		DungeonManager::Instance().ConfigureDungeon();
     	
@@ -377,9 +407,16 @@ namespace BulletHell
 				pA->mIsActive = true;
 			}
 		}
+
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorLock.wav");
     }
 
-    void GameLogicManager::InitializeRoomsMap()
+	void GameLogicManager::CheckCheatCodes()
+	{
+		Hollow::ScriptingManager::Instance().RunScript("CheatCodes");
+	}
+
+	void GameLogicManager::InitializeRoomsMap()
 	{
 		// Loads all room files into map
 		// for all room files
@@ -414,6 +451,7 @@ namespace BulletHell
 		case PickupType::SPEED_FACTOR:
 		{
 			pStats->mMovementSpeedFactor += pPickup->mBuffValue;
+			HW_TRACE("Giving the player {0} speed for {1}", pPickup->mBuffValue, pPickup->mEffectTime);
 			break;
 		}
 		case PickupType::SPEED:
@@ -464,12 +502,13 @@ namespace BulletHell
 		{
 			roomNum = Random::RangeSeeded(1, MAX_BOSS_ROOMS);
 			roomName = "Boss/Room" + std::to_string(roomNum);
-			roomName = "Boss/Room4";
+			//roomName = "Boss/Room4";
 		}
 		else
 		{
 			roomNum = Random::RangeSeeded(1, MAX_REGULAR_ROOMS);
 			roomName = "Room" + std::to_string(roomNum);
+			HW_TRACE("{0}", roomName);
 		}
 		
 		rapidjson::Document root;
@@ -529,7 +568,8 @@ namespace BulletHell
 
 	void GameLogicManager::DropRandomPickup(Hollow::GameEvent& event)
 	{
-		if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
+		//if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
+		// Assuming every death event is sent by an ENEMY
 		{
 			mCountDeadEnemies++;
 
@@ -544,13 +584,34 @@ namespace BulletHell
 				Hollow::ResourceManager::Instance().LoadPrefabAtPosition(mPickupPrefabNames[randomIndex], pTr->mPosition);
 			}
 		}
-    	// Todo: make some meatballs to go with the upcoming spaghetti
-		else if(event.mpObject1->mType == (int)GameObjectType::PLAYER)
-		{
-			// Kick back to main menu
-			DungeonManager::Instance().Regenerate();
-			CreateMainMenu();
-		}
+	}
+
+	void GameLogicManager::OnPlayerDeath(Hollow::GameEvent& event)
+	{
+		HW_WARN("Player Death");
+
+		// Kick back to main menu
+		DungeonManager::Instance().Regenerate();
+		CreateMainMenu();
+
+		// Reset player health
+		Health* pPlayerHealth = mpPlayerGO->GetComponent<Health>();
+		pPlayerHealth->mHitPoints = 10;
+		pPlayerHealth->mIsAlive = true;
+
+		// Reset player stats
+		// TODO: Find some way to parse this from JSON/Lua and store default values
+		CharacterStats* pPlayerStats = mpPlayerGO->GetComponent<CharacterStats>();
+		pPlayerStats->mMovementSpeed = 1000.0f;
+		pPlayerStats->mMovementSpeedFactor = 1.0f;
+		pPlayerStats->mFireRate = 1.0f;
+		pPlayerStats->mDamageFactor = 1.0f;
+		pPlayerStats->mDashSpeed = 1000.0f;
+
+		// Clear event manager so that any delayed events don't fire
+		Hollow::EventManager::Instance().ClearDelayedEvents();
+
+		// Reset intial values in any systems/components e.g. Spell Collected flag
 	}
 
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)

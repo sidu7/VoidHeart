@@ -37,8 +37,10 @@ namespace BulletHell
 		// Add get magic component to lua
 		Hollow::ScriptingManager::Instance().mGameObjectType["GetMagic"] = &Hollow::GameObject::GetComponent<Magic>;
 
-		// Set callback functions
+		// Set event callback functions
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_SPELL_COLLECT, EVENT_CALLBACK(MagicSystem::OnSpellCollect));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::PLAYER_DEATH, EVENT_CALLBACK(MagicSystem::OnPlayerDeath));
+
 	}
 
 	void MagicSystem::Update()
@@ -260,5 +262,22 @@ namespace BulletHell
 
 		// Destroy spell object
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pSpellObject);
+	}
+	void MagicSystem::OnPlayerDeath(Hollow::GameEvent& event)
+	{
+		// Reset collected spells
+		Magic* pPlayerMagic = mGameObjects[0]->GetComponent<Magic>();
+		pPlayerMagic->mBasicSpells[1]->mCollected = false;
+		pPlayerMagic->mBasicSpells[2]->mCollected = false;
+		pPlayerMagic->mBasicSpells[4]->mCollected = false;
+		pPlayerMagic->mBasicSpells[8]->mCollected = false;
+
+		// Reset current spells
+		pPlayerMagic->mLeftHandScriptPath = "Spells/Empty";
+		pPlayerMagic->mRightHandScriptPath = "Spells/Empty";
+		pPlayerMagic->mCombineHandScriptPath = "Spells/Empty";
+		pPlayerMagic->mLeftHandSpell = nullptr;
+		pPlayerMagic->mRightHandSpell = nullptr;
+		pPlayerMagic->mCombinedSpell = nullptr;
 	}
 }

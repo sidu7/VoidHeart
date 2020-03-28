@@ -21,7 +21,8 @@
 
 namespace BulletHell
 {
-	DungeonManager::DungeonManager() : mSeed(0) { std::cout << "Initialized: DungeonManager" << std::endl; }
+	DungeonManager::DungeonManager() : mSeed(0) { HW_INFO("Initialized: DungeonManager"); SubscribeToEvents();
+	}
 
     DungeonManager& DungeonManager::Instance()
     {
@@ -40,8 +41,6 @@ namespace BulletHell
         //mSeed = 1993539175;
         
         Generate();
-
-        SubscribeToEvents();
 		
 		// Add to ImGui display
 		Hollow::ImGuiManager::Instance().AddDisplayFunction("Dungeon", std::bind(&DungeonManager::DebugDisplay, &DungeonManager::Instance()));
@@ -221,6 +220,7 @@ namespace BulletHell
 
     void DungeonManager::SubscribeToEvents()
 	{
+		HW_WARN("Dungeon Manager Subscibe Events");
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(DungeonManager::OnDeath));
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(DungeonManager::OnFloorCleared));
 	}

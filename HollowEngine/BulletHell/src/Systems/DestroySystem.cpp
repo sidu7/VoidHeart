@@ -10,7 +10,6 @@ namespace BulletHell
 {
 	DestroySystem DestroySystem::instance;
 
-
 	void DestroySystem::Init()
 	{
 		// Send Destroy component to lua

@@ -5,7 +5,7 @@
 #include "ImGuiManager.h"
 
 namespace Hollow {
-	void AudioManager::Init() 
+	void AudioManager::Init(rapidjson::Value::Object& data)
 	{
 		FMOD_RESULT result = FMOD_RESULT::FMOD_OK;
 
@@ -45,6 +45,12 @@ namespace Hollow {
 		mModes[SOUND_BACKGROUND] = FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL;
 		mModes[SOUND_UI] = FMOD_DEFAULT | FMOD_LOOP_OFF;
 
+		// Set starting songs and audio levels based on settings file
+		mMasterVolume = data["Volumes"].GetObject()["Master"].GetFloat();
+		mVolume[SOUND_BACKGROUND] = data["Volumes"].GetObject()["Music"].GetFloat();
+		mVolume[SOUND_EFFECT] = data["Volumes"].GetObject()["SFX"].GetFloat();
+		PlaySong(data["Background"].GetString());
+
 		// Add to ImGui debug display
 		ImGuiManager::Instance().AddDisplayFunction("Audio", std::bind(&AudioManager::DebugDisplay, &AudioManager::Instance()));
 	}
@@ -57,14 +63,6 @@ namespace Hollow {
 
 	void AudioManager::Update()
 	{
-		if (mpCurrentSong == nullptr)
-		{
-			//PlaySong("Resources/Audio/Songs/test.wav");
-		}
-
-		// Check if channels should be muted
-		Mute();
-
 		// Adjust channel volume
 		SetVolume();
 		mpMasterChannel->setVolume(mMasterVolume);
@@ -98,8 +96,11 @@ namespace Hollow {
 		pChannel->setPaused(false);
 	}
 
-	void AudioManager::Mute()
+	void AudioManager::Mute(bool muteFlag)
 	{
+		mMute[SOUND_BACKGROUND] = muteFlag;
+		mMute[SOUND_EFFECT] = muteFlag;
+		mMute[SOUND_UI] = muteFlag;
 		MuteChannel(SOUND_BACKGROUND);
 		MuteChannel(SOUND_EFFECT);
 		MuteChannel(SOUND_UI);

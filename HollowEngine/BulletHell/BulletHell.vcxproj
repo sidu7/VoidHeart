@@ -203,6 +203,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Audio\SFX\PlayerHit.m4a">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Audio\Songs\MainMenu.ogg">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\GameData\BulletDamageValues.data">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -291,6 +294,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Json data\Shuriken.json">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Json data\UICamera.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Json data\UIElement.json">
@@ -529,6 +535,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\CameraUpdate.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\CheatCodes.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Resources\Scripts\CirclingAroundRoomCenter.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -590,6 +599,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\HomingBulletAttack.lua">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Resources\Scripts\InitGlobalObjects.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\Left.lua">
@@ -662,9 +674,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\ShootInCardinalDirections.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\Enemies\Attacks\ShootInLookDirection.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\GameConfig.lua">
@@ -954,6 +963,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <ClInclude Include="src\DungeonGeneration\DungeonRoom.h" />
     <ClInclude Include="src\Events\CycleSpellEvent.h" />
     <ClInclude Include="src\Events\PickupTimedEvent.h" />
+    <ClInclude Include="src\Events\PlayerDeathEvent.h" />
     <ClInclude Include="src\GameLogic\GameLogicManager.h" />
     <ClInclude Include="src\GameMetaData\DungeonRoomType.h" />
     <ClInclude Include="src\GameMetaData\GameEventType.h" />
@@ -980,10 +990,16 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Media Include="Resources\Audio\SFX\BossHit.wav">
       <DeploymentContent>true</DeploymentContent>
     </Media>
+    <Media Include="Resources\Audio\SFX\DoorLock.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
     <Media Include="Resources\Audio\SFX\EarthMelee.wav">
       <DeploymentContent>true</DeploymentContent>
     </Media>
     <Media Include="Resources\Audio\SFX\lose.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </Media>
+    <Media Include="Resources\Audio\SFX\OnPickup.wav">
       <DeploymentContent>true</DeploymentContent>
     </Media>
     <Media Include="Resources\Audio\SFX\PlayerAttack.wav">
@@ -1016,6 +1032,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Object Include="Resources\Models\Credits.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\DWall.obj">
       <DeploymentContent>true</DeploymentContent>
@@ -1025,6 +1042,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Object Include="Resources\Models\Exit.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Heart.obj">
       <DeploymentContent>true</DeploymentContent>
@@ -1049,12 +1067,25 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Object Include="Resources\Models\NewGame.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Options.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Object>
     <Object Include="Resources\Models\Rock.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="Resources\Models\RofPotion.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+    </Object>
+    <Object Include="Resources\Models\SpeedPotion.obj">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -1148,6 +1179,12 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <Image Include="Resources\Textures\rocks.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
+    <Image Include="Resources\Textures\RofPotion.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\SpeedPotion.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
     <Image Include="Resources\Textures\star.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
@@ -1167,6 +1204,9 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="Resources\Textures\UI\CombinedCooldown.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Resources\Textures\UI\Credits.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="Resources\Textures\UI\Earth.png">
