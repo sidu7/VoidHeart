@@ -143,6 +143,7 @@ namespace BulletHell
 	void GameLogicManager::Update()
 	{
 		CheckCheatCodes();
+		CheckKillPlane();
     	if(hasGameStarted)
     	{
 			return;
@@ -232,6 +233,7 @@ namespace BulletHell
 		lua.set_function("RegenerateDungeon", &DungeonManager::Regenerate, std::ref(DungeonManager::Instance()));
 		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
 		lua.set_function("DCastRay", &DungeonManager::CastRay, std::ref(DungeonManager::Instance()));
+		lua.set_function("MoveToNextFloor", &GameLogicManager::MoveToNextFloor, std::ref(GameLogicManager::Instance()));
 	}
 
 	void GameLogicManager::MoveToNextFloor()
@@ -414,6 +416,20 @@ namespace BulletHell
 	void GameLogicManager::CheckCheatCodes()
 	{
 		Hollow::ScriptingManager::Instance().RunScript("CheatCodes");
+	}
+
+	void GameLogicManager::CheckKillPlane()
+	{
+		// Check if any objects are lower than kill plane and delete them if so
+		float minYVal = -10.0f;
+		for (auto& gameObject : Hollow::GameObjectManager::Instance().GetGameObjects())
+		{
+			Hollow::Transform* pTr = gameObject->GetComponent<Hollow::Transform>();
+			if (pTr && pTr->mPosition.y < minYVal)
+			{
+				Hollow::GameObjectManager::Instance().DeleteGameObject(gameObject);
+			}
+		}
 	}
 
 	void GameLogicManager::InitializeRoomsMap()

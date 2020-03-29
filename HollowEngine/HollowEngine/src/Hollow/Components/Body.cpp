@@ -15,7 +15,7 @@ namespace Hollow {
 		mPosition = glm::vec3(0);
 		mPreviousPosition = glm::vec3(0);
 		mVelocity = glm::vec3(0);
-		mAngularVelocity = glm::vec3(0);
+		mAngularVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
 		mTotalForce = glm::vec3(0);
 		mTotalTorque = glm::vec3(0);
 		mQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
@@ -24,7 +24,7 @@ namespace Hollow {
 		mUseGravity = true;
 		
 		mDRigidbodyType = "";
-		mBodyType = Body::DYNAMIC;
+		mBodyType = Body::STATIC;
 	}
 
 	void Body::Clear()

@@ -73,7 +73,10 @@ namespace BulletHell
         void OnRoomLockDownDelayed(Hollow::GameEvent& event);
 		
 	private: 
+		// Cheat codes
 		void CheckCheatCodes();
+
+		void CheckKillPlane();
 		void InitializeRoomsMap();
 		void AddBuffs(Hollow::GameObject* pGo, Pickup* pPickup);
 		void LoadRoomJsons(std::string roomPrefix, int count);

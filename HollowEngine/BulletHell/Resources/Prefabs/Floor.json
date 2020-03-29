@@ -1,5 +1,6 @@
 {
-  "Type" :  "FLOOR",
+  "Type": "FLOOR",
+  "Tag": "Floor",
   "Components": [
     {
       "Type": "Transform",
@@ -8,7 +9,8 @@
     },
     {
       "Type": "Body",
-      "RigidbodyType": "STATIC"
+      "RigidbodyType": "STATIC",
+      "AngularVelocity": [0.0, 0.0, 0.0]
     },
     {
       "Type": "Collider",
