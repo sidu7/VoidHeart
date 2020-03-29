@@ -10,6 +10,7 @@ function ShootInDirection(dirX, dirY, dirZ)
 	local bullet = CreateGameObject(bulletPrefabPath)
     local bulletTransform = bullet:GetTransform()
 	local bulletBody = bullet:GetBody()
+    bullet:GetDestroyTimer().maxTime = 0.3
     
     -- Setting position
     bulletBody.position = spawnPos

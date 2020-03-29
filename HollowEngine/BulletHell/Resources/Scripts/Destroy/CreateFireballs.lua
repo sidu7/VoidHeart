@@ -9,6 +9,8 @@ function CreateFireballs ()
 		body.velocity = vec3.new(attackSpeed*math.cos(theta), 0.0, attackSpeed*math.sin(theta))
 		local transform = go:GetTransform()
 		transform.position = body.position
+
+        go:GetDestroyTimer().maxTime = 0.3
 	end
 end
 

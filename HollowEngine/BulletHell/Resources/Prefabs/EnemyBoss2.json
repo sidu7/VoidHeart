@@ -5,7 +5,7 @@
     {
       "Type": "Transform",
       "Position": [ 10.0, 10.0, 10.0 ],
-      "Scale": [ 4.0, 4.0, 4.0 ]
+      "Scale": [ 2.0, 2.0, 2.0 ]
     },
     {
       "Type": "Body",
@@ -20,26 +20,15 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Boss1.fbx",
-      "ModelHasOffset": true,
+      "Model": "Resources/Models/golem.obj",
+      "ModelHasOffset": false,
       "CastShadow": true
     },
     {
       "Type": "Material",
-	  "Diffuse": [0.0, 0.5, 0.0],
-      "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Boss1.fbx"
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Boss1.fbx",
-      "Animations": [
-        [
-          "Walking",
-          "Resources/Models/Boss1.fbx"
-        ]
-      ],
-      "BlendFactor": 1.0
+      "Shininess": 1000.0,
+      "Diffuse": [ 1.0, 0.0, 0.0, 1.0 ],
+      "Specular": [ 0.5, 0.5, 0.5, 1.0 ]
     },
     {
       "Type": "StateMachine",
@@ -49,8 +38,7 @@
     {
       "Type": "Script",
       "Scripts": [
-        "EnemyBoss2Movement",
-        "OnTakeDamage"
+        "EnemyBoss2Movement", "OnTakeDamage"
       ]
     },
     {
