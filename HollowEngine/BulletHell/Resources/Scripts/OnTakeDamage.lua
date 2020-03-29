@@ -11,8 +11,7 @@ function Cooldown(currentTime, startTime, endTime)
 end
 
 function Update()
-    local health = gameObject:GetHealth()  
-    print(health.currentHitReactionTime)
+    local health = gameObject:GetHealth()
 
     if(health.currentHitReactionTime >= health.hitReactionTime) then
         health.currentHitReactionTime = 0
