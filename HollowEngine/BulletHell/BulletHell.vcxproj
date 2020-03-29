@@ -249,9 +249,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\LocalLight.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Json data\Player.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Resources\Json data\PlayerBullet.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -304,15 +301,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Json data\Wall.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Levels\Level1.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Levels\Level2.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Levels\Wall.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Localization\English.json">
@@ -611,6 +599,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\LightFollow.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\OnTakeDamage.lua" />
     <None Include="Resources\Scripts\QuickGrow.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -642,9 +631,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\EnemyRunsAway.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Levels\Level3.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Localization\Hindi.json">

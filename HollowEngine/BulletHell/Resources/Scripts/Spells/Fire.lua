@@ -20,7 +20,7 @@ function PlayerAttack ()
         zDir = zVelocity
     end
 
-	local attackSpeed = 70.0
+	local attackSpeed = 15.0
 	body.velocity = attackSpeed * vec3.new(xDir, 0.0, zDir)
 	local transform = go:GetTransform()
 	transform.position = body.position
