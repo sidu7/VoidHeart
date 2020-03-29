@@ -1,6 +1,7 @@
 #include <hollowpch.h>
 
 #include "Body.h"
+#include "Transform.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Utils/ImGuiHelper.h"
 
@@ -98,5 +99,10 @@ namespace Hollow {
 		// TODO: Shantanu can deal with this if it causes problems
 		JSONHelper::Write<glm::vec3>("AngularVelocity", mAngularVelocity, writer);
 	}
-	
+
+	void Body::SetPosition(glm::vec3 pos)
+	{
+		mPosition = pos;
+		mpOwner->GetComponent<Transform>()->mPosition = pos;
+	}
 }

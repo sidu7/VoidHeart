@@ -29,6 +29,7 @@
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Components/UITransform.h"
 #include "Hollow/Components/UIImage.h"
+#include "Hollow/Managers/PhysicsManager.h"
 
 
 #define MAX_REGULAR_ROOMS 8
@@ -99,6 +100,7 @@ namespace BulletHell
 	void GameLogicManager::CreateMainMenu()
 	{
 		hasGameStarted = false;
+		Hollow::PhysicsManager::Instance().isPaused = true;
 
 		// Clear non-global game objects
 		ClearNonGlobalGameObjects();
@@ -124,6 +126,8 @@ namespace BulletHell
 
 		mCreditsUIObject = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources\\Prefabs\\CreditsUI.json");
 		mCreditsUIObject->mActive = false;
+
+		Hollow::PhysicsManager::Instance().isPaused = false;
 	}
 	
 	bool CheckRoomBounds(glm::vec3 playerPos, glm::vec2 coords)
@@ -173,7 +177,8 @@ namespace BulletHell
 	void GameLogicManager::StartNewGame()
     {
 		hasGameStarted = true;
-
+		Hollow::PhysicsManager::Instance().isPaused = true;
+    	
 		// Configure game settings
 		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
 
@@ -192,6 +197,9 @@ namespace BulletHell
 		
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
 		mCountDeadEnemies = 0;
+
+		Hollow::PhysicsManager::Instance().mTree.Update();
+		Hollow::PhysicsManager::Instance().isPaused = false;
     }
 
 	void GameLogicManager::RegisterLuaBindings()

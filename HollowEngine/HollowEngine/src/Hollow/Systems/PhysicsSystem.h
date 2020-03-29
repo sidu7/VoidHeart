@@ -40,7 +40,6 @@ namespace Hollow {
 		void Step(float);
 		void InterpolateState(float);
 
-		bool isPaused = false;
 		bool nextStep;
 		bool isApplyFriction = false;
 		float accumulator;

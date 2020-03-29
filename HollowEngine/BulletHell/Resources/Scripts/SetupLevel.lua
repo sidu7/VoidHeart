@@ -9,7 +9,7 @@ currentRoom = floor:GetEntranceIndex()
 print("currentRoom ",currentRoom)
 
 local coords = floor:GetEntrance():GetCoords()
-CreatePrefabAtPosition("EnemyBossWater", vec3.new(coords.y * roomSize + roomSize/2, 10, coords.x * roomSize + roomSize/2))
+--CreatePrefabAtPosition("EnemyBossWater", vec3.new(coords.y * roomSize + roomSize/2, 10, coords.x * roomSize + roomSize/2))
 --CreatePrefabAtPosition("EnemyTurretAOE", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2 - 3))
 --CreatePrefabAtPosition("EnemyFollowLookdir", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2))
 --CreatePrefabAtPosition("EnemyTurretTarget", vec3.new(coords.y * roomSize + roomSize/2 - 3, 0.5, coords.x * roomSize + roomSize/2))
@@ -20,8 +20,7 @@ CreatePrefabAtPosition("EnemyBossWater", vec3.new(coords.y * roomSize + roomSize
 --player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 --player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 - 5)
-local gameObjectPath = "Resources/Json data/Camera.json"
-camera = CreateGameObject(gameObjectPath)
+player:GetTransform().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 - 5)
 
 -- generate a spell in front of the player in the entrance room on the first floor
 if(currentFloor == 0) then
@@ -38,7 +37,7 @@ PopulateRoom(floor:GetRoomFromIndex(bossRoom))
 local roomCount = floor:GetRoomCount() - 2 - 1 - floorNum
 print(roomCount)
 for i=0, roomCount, 1 do
-    PopulateRoom(floor:GetRegularRoom(i))
+   -- PopulateRoom(floor:GetRegularRoom(i))
 end
 
 -- generate random valid pickup
@@ -47,7 +46,7 @@ for i=0, floorNum, 1 do
 end
 
 -- Comment this out if you dont want pickups in starting room
----[[
+--[[
 local hpPickup = CreatePrefabAtPosition("Pickup_HP", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
 local speedPickup = CreatePrefabAtPosition("Pickup_Speed", vec3.new(coords.y * roomSize + roomSize/2 - 5, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
 local invinciblePickup = CreatePrefabAtPosition("Pickup_Invincible", vec3.new(coords.y * roomSize + roomSize/2 + 5, 1.5, coords.x * roomSize + roomSize/2 + 8.0))
@@ -55,7 +54,7 @@ local rofPickup = CreatePrefabAtPosition("Pickup_RateOfFire", vec3.new(coords.y 
 --]]
 
 -- Comment this out if you dont want all spells in starting room
----[[
+--[[
 local fireSpell = CreatePrefabAtPosition("FireSpell", vec3.new(coords.y * roomSize + roomSize/2 + 1.0, 0.5, coords.x * roomSize + roomSize/2 + 10.0))
 local airSpell = CreatePrefabAtPosition("AirSpell", vec3.new(coords.y * roomSize + roomSize/2 - 1.0, 0.5, coords.x * roomSize + roomSize/2 + 10.0))
 local earthSpell = CreatePrefabAtPosition("EarthSpell", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 + 11.0))

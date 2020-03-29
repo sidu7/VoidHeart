@@ -17,15 +17,16 @@ function CreateSteamTrap()
 	local phaseOneDashTime = 3.0
 	local phaseOneAOETime = 0.5
     -----------------------------------------
-	local go = CreatePrefabAtPosition("SteamTrap", gameObject:GetTransform().position)
-	local body = go:GetBody()
+	local trapPath = "Resources/Json data/BossSteamTrap.json"
+	local trap = CreateGameObject(trapPath)
+    local trapTransform = trap:GetTransform()
+	local trapBody = trap:GetBody()
 	
-	transform = go:GetTransform()
-	transform.position = body.position
+	trapTransform.position = trapBody.position
 
-	local particle = go:GetParticleEmitter()
+	local particle = trap:GetParticleEmitter()
 	if particle then
-		particle.extraData.x = transform.scale.x;
+		particle.extraData.x = trapTransform.scale.x;
 	end
 end
 

@@ -29,7 +29,6 @@ namespace Hollow
 
 			if (!pCol->mIsTrigger)
 			{
-				// TODO write inertia formula for spheres
 				glm::mat3 inertia = glm::mat3(0.0f);
 				if (pCol->mpShape->mType == ShapeType::BOX) {
 					inertia[0][0] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
@@ -349,17 +348,24 @@ namespace Hollow
 
 	void PhysicsSystem::Update()
 	{
-		isPaused = InputManager::Instance().IsKeyTriggered("P") == true ? !isPaused : isPaused;
+		PhysicsManager& pm = PhysicsManager::Instance();
+		InputManager& input = InputManager::Instance();
+		
+		pm.isPaused = input.IsKeyTriggered("P") == true ? !pm.isPaused : pm.isPaused;
 
-		nextStep = InputManager::Instance().IsKeyTriggered("SPACE");
+		nextStep = input.IsKeyTriggered("SPACE");
 
+		/*
+		 *Raycast Result Imgui window
 		ImGui::Begin("RayCast Result");
-		ImGui::Text("Mouse X : %f", Hollow::InputManager::Instance().GetMouseX());
-		ImGui::Text("Mouse Y : %f", Hollow::InputManager::Instance().GetMouseY());
-		//if (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_R))
-		if (Hollow::InputManager::Instance().IsMouseButtonTriggered(SDL_BUTTON_LEFT))
+		ImGui::Text("Mouse X : %f", input.GetMouseX());
+		ImGui::Text("Mouse Y : %f", input.GetMouseY());
+		ImGui::End();
+		*/
+		
+		if (input.IsMouseButtonTriggered(SDL_BUTTON_LEFT))
 		{
-			GameObject* pObj = PhysicsManager::Instance().CastRay();
+			GameObject* pObj = pm.CastRay();
 
 			if (pObj)
 			{
@@ -367,21 +373,21 @@ namespace Hollow
 				ImGuiManager::Instance().mSelectedGameObjectID = pObj->mID;
 			}
 		}
-		ImGui::End();
-
-		if(Hollow::InputManager::Instance().IsKeyTriggered("t"))
+		/*
+		 *Tree Debug File generator
+		if(input.IsKeyTriggered("t"))
 		{
 			FILE* file;
 			fopen_s(&file,"C:\\Users\\spand\\Desktop\\tree.txt", "w+");
-			Hollow::PhysicsManager::Instance().DebugTree(Hollow::PhysicsManager::Instance().mTree.GetRoot(), file);
+			pm.DebugTree(pm.mTree.GetRoot(), file);
 			fclose(file);
 		}
-		
+		*/
 		//================Physics Update======================
 		float dt = FrameRateController::Instance().GetFrameTime();
 
 
-		if (!isPaused) {
+		if (!pm.isPaused) {
 			accumulator += dt;
 			while (accumulator > maxPossibleDeltaTime) {
 				//{

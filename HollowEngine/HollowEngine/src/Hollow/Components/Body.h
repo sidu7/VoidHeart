@@ -44,6 +44,8 @@ namespace Hollow {
 		/// <param name="writer">The writer of the JSON file.</param>
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
+		HOLLOW_API void SetPosition(glm::vec3 pos);
+		
 		float mMass, mInverseMass;
 		glm::vec3 mPosition;
 		glm::vec3 mPreviousPosition;
