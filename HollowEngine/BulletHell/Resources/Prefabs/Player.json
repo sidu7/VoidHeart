@@ -77,7 +77,7 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "PlayerMovement" ]
+      "Scripts": [ "PlayerMovement", "OnTakeDamage"]
     },
     {
       "Type": "Movement"
@@ -88,11 +88,13 @@
       "BaseAttackTime": 0.4
     },
     {
-        "Type": "Health",
-        "HitPoints": 10,
-        "IsAlive": true,
-        "Invincible": false,
-        "InvincibleTime": 3.0
+      "Type": "Health",
+      "HitPoints": 10,
+      "IsAlive": true,
+      "Invincible": false,
+      "InvincibleTime": 0.5,
+      "IsHit": false,
+      "HitReactinTime": 0.5
     },
     {
         "Type": "CharacterStats",

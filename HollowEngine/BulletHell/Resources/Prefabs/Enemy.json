@@ -29,14 +29,16 @@
     },
     {
         "Type": "Script",
-      "Scripts": [ "ShootAtThePlayer" ]
+      "Scripts": [ "ShootAtThePlayer", "OnTakeDamage" ]
     },
     {
       "Type": "Health",
       "HitPoints": 10,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 3.0
+      "InvincibleTime": 0.5,
+      "IsHit": false,
+      "HitReactinTime": 0.5
     }
   ]
 }

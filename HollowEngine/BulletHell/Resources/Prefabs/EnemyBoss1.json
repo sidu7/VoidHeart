@@ -47,7 +47,8 @@
     {
       "Type": "Script",
       "Scripts": [
-        "EnemyBoss1Movement"
+        "EnemyBoss1Movement",
+        "OnTakeDamage"
       ]
     },
     {
@@ -60,7 +61,9 @@
       "HitPoints": 200,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 3.0
+      "InvincibleTime": 0.5,
+      "IsHit": false,
+      "HitReactinTime": 0.5
     }
   ]
 }

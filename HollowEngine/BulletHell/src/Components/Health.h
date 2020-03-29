@@ -39,7 +39,10 @@ namespace BulletHell
 		int mHitPoints;
 		bool mIsAlive;
 		bool mInvincible;
+        bool mIsHit; // sending to lua event, if set to true lua script will react and set it to false
 		float mInvincibleTime;
 		float mCurrentInvincibleTime;
+        float mHitReactionTime;
+        float mCurrentHitReactionTime;
 	};
 }
