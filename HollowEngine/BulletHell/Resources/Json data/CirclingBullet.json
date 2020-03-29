@@ -35,7 +35,9 @@
     {
       "Type": "Health",
       "HitPoints": 25,
-      "IsAlive": true
+      "IsAlive": true,
+      "IsHit": false,
+      "HitReactinTime": -1.0
     }
   ]
 }

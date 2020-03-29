@@ -11,7 +11,10 @@ namespace BulletHell
         auto& lua = Hollow::ScriptingManager::Instance().lua;
         lua.new_usertype<Health>("Health",
             sol::constructors<Health()>(),
-            "hitPoints", &Health::mHitPoints);
+            "hitPoints", &Health::mHitPoints,
+            "isHit", & Health::mIsHit,
+            "currentHitReactionTime", &Health::mCurrentHitReactionTime,
+            "hitReactionTime", &Health::mHitReactionTime);
 
         Hollow::ScriptingManager::Instance().mGameObjectType["GetHealth"] = &Hollow::GameObject::GetComponent<Health>;
 	}
@@ -34,6 +37,14 @@ namespace BulletHell
 		{
 			mInvincibleTime = data["InvincibleTime"].GetFloat();
 		}
+        if (data.HasMember("IsHit"))
+        {
+            mIsHit = data["IsHit"].GetBool();
+        }
+        if (data.HasMember("HitReactinTime"))
+        {
+            mHitReactionTime = data["HitReactinTime"].GetFloat();
+        }
 	}
 
 	void Health::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -42,6 +53,8 @@ namespace BulletHell
 		Hollow::JSONHelper::Write<bool>("IsAlive", mIsAlive, writer);
 		Hollow::JSONHelper::Write<bool>("Invincible", mInvincible, writer);
 		Hollow::JSONHelper::Write<float>("InvincibleTime", mInvincibleTime, writer);
+        Hollow::JSONHelper::Write<bool>("IsHit", mIsHit, writer);
+        Hollow::JSONHelper::Write<float>("HitReactionTime", mHitReactionTime, writer);
 	}
 
 	void Health::Clear()
@@ -55,6 +68,7 @@ namespace BulletHell
 		ImGui::Checkbox("Invincible", &mInvincible);
 		ImGui::InputFloat("Invincible Time", &mInvincibleTime);
 		ImGui::InputFloat("Current Invincible Timer", &mCurrentInvincibleTime);
+        ImGui::InputFloat("Reaction Time To Hits", &mHitReactionTime);
 	}
 
 }

@@ -51,7 +51,8 @@
     {
       "Type": "Script",
       "Scripts": [
-        "Boss/AirMovement"
+        "Boss/AirMovement",
+        "OnTakeDamage"
       ]
     },
     {
@@ -64,7 +65,9 @@
       "HitPoints": 200,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 3.0
+      "InvincibleTime": 0.5,
+      "IsHit": false,
+      "HitReactinTime": 0.5
     }
   ]
 }

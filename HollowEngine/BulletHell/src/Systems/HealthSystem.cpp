@@ -155,6 +155,18 @@ namespace BulletHell
 					//pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
 				}
 			}
+            // Update reaction to hit time
+            if (pHealth->mIsHit)
+            {
+                pHealth->mCurrentHitReactionTime += Hollow::FrameRateController::Instance().GetFrameTime();
+
+                // Check if should still be invincible
+                if (pHealth->mCurrentHitReactionTime > pHealth->mHitReactionTime)
+                {
+                    pHealth->mIsHit = false;
+                    pHealth->mCurrentHitReactionTime = 0.0;
+                }
+            }
 		}
 	}
 
@@ -393,7 +405,8 @@ namespace BulletHell
 
         target->mHitPoints -= damageTaken;
         target->mInvincible = true;
-        target->mInvincibleTime = invincibilityTime;
+        target->mInvincibleTime = target->mInvincibleTime;
+        target->mIsHit = true;
     }
 
 }

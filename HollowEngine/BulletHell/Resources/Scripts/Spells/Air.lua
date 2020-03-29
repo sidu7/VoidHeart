@@ -39,17 +39,22 @@ function AirDash()
 		end
 		particle.direction = VecNormalize(vec3.new(-xDir,0,-zDir));
 
-		ApplyLinearImpulse(gameObject, impulse)
+		--ApplyLinearImpulse(gameObject, impulse)
 	end
 end
 
 function CheckValidAttack()
 	local attack = gameObject:GetAttack()
+	local playerStats = player:GetStats()
 	if attack.shouldAttack then
 		AirDash()
+        playerStats.movementSpeedFactor = 2
 		attack.currentAttackTime = 0.0
 		attack.shouldAttack = false
 	end
+    if attack.currentAttackTime > 0.25 then
+        playerStats.movementSpeedFactor = 1
+    end
 	if attack.currentAttackTime >= 0.5 then
 		local particle = gameObject:GetParticleEmitter()
 		if particle then
