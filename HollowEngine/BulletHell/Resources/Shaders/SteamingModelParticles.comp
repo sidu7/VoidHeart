@@ -1,0 +1,116 @@
+#version 430 compatibility
+#extension GL_ARB_COMPUTE_SHADER : enable
+#extension GL_ARB_SHADER_STORAGE_BUFFER_OBJECT : enable
+#extension GL_EXT_gpu_shader4: enable
+
+struct Particle
+{
+	vec3 mPos;
+	float speed;
+	float life;
+	float currentlife;
+	vec3 direction;
+};
+
+layout(std430, binding = 2) buffer ParticleDataBlock
+{
+	Particle each_particle[];
+};
+
+struct ParticleData
+{
+	mat4 mModel;
+	vec4 more_data;
+};
+
+layout(std430, binding = 3) buffer ModelBlock
+{
+	ParticleData data[];
+};
+
+layout(std430, binding = 4) buffer Randoms
+{
+	vec4 randoms[];
+};
+
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+
+uniform float DeltaTime;
+uniform vec2 SpeedRange;
+uniform vec2 ScaleRange;
+uniform vec2 LifeRange;
+uniform vec3 Center;
+uniform vec3 MinColor;
+uniform vec3 MaxColor;
+uniform bool Pause;
+uniform bool Active;
+uniform vec4 ExtraData;
+uniform mat4 Model;
+uniform int RandomNumberSize;
+
+highp float rand(vec2 co)
+{
+	highp float a = 12.9898;
+	highp float b = 78.233;
+	highp float c = 43758.5453;
+	highp float dt = dot(co.xy, vec2(a, b));
+	highp float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
+}
+
+int GetIndex(float rand)
+{
+	return int(rand * RandomNumberSize/3);
+}
+
+void main()
+{
+	uint gid = gl_GlobalInvocationID.x;
+	
+	each_particle[gid].currentlife = each_particle[gid].currentlife - DeltaTime;
+	vec3 pos = each_particle[gid].mPos;
+	int index;
+	if(!Pause)
+	{
+		if (each_particle[gid].currentlife > 0)
+		{
+			float vel = each_particle[gid].speed;
+			vec3 dir = each_particle[gid].direction;
+
+			pos += vel * dir * DeltaTime;
+		}
+		else if(Active)
+		{
+			index = int(rand(pos.yz) * (RandomNumberSize/3) + (RandomNumberSize/3));
+			pos = randoms[index].xyz;
+			pos.y = Model[3].y / 2;
+			index = GetIndex(rand(pos.yx));
+			each_particle[gid].life = randoms[index].z * (LifeRange.y - LifeRange.x) + LifeRange.x;
+			each_particle[gid].currentlife = each_particle[gid].life;
+
+			index = GetIndex(rand(pos.zx));
+			each_particle[gid].speed = randoms[index].y * (SpeedRange.y - SpeedRange.x) + SpeedRange.x;
+			each_particle[gid].direction = vec3(0.0f,1.0,0.0);			
+		}
+		else
+		{
+			each_particle[gid].life = 0.0f;
+			each_particle[gid].currentlife = 0.0f;
+			each_particle[gid].speed = 0.0f;
+			each_particle[gid].direction = vec3(0.0f);
+			each_particle[gid].mPos = vec3(0.0f);
+		}
+	}
+
+	index = GetIndex(rand(pos.zy));
+	float scale = randoms[index].x * (ScaleRange.y - ScaleRange.x) + ScaleRange.x;
+	mat4 temp = mat4(1.0f);
+	temp[0].x = scale; temp[1].y = scale; temp[2].z = scale;
+	temp[3] = vec4(pos,1.0f);
+	temp = Model * temp;
+	each_particle[gid].mPos = pos;
+	data[gid].mModel = temp;
+	data[gid].more_data.x = each_particle[gid].speed;
+	float factor = 1.0f - each_particle[gid].currentlife / each_particle[gid].life;
+	data[gid].more_data.yzw = mix(MinColor,MaxColor,factor);
+}

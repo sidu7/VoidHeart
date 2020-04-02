@@ -54,6 +54,22 @@
       "InvincibleTime": 0.5,
       "IsHit": false,
       "HitReactinTime": 0.5
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 10000,
+      "EmissionRate": 100,
+      "Shape": 1,
+      "Life": [ 1, 1 ],
+      "Speed": [ 1.0, 2.0 ],
+      "Size": [ 0.05, 0.1 ],
+      "ModelShape": "CUBE",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 1.17, 0.08, 0.3 ],
+      "MaxColor": [ 0.45, 0.24, 0.77 ],
+      "ExtraData": [ 1.0, 0.0, 0.0, 0.0 ],
+      "Area": [ 2, 2, 2 ],
+      "MoveWithObject": false
     }
   ]
 }

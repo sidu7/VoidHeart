@@ -31,7 +31,6 @@ function LookForward()
 	    rot = vec3.new(0.0, degree + 180, 0.0)
         transform:Rotate(rot)
     end
-    print(rot)
 end
 
 function RunAtThePlayer()
@@ -219,6 +218,67 @@ function MoveToCenter()
     end
 end
 
+function SteamParticles()
+	local particle = gameObject:GetParticleEmitter()
+	if particle.active ~= true then
+	    particle.active = true
+	    ChangeParticleShader(gameObject,"Resources/Shaders/SteamingModelParticles.comp")
+	    particle.lifeRange = vec2.new(0.01,0.03)
+	    particle.count = 0
+	    particle.maxCount = 10000
+	    particle.minColor = vec3.new( 0.5, 0.27, 0.07 )
+	    particle.maxColor = vec3.new( 1.0, 1.0, 0.0 )
+	    particle.scaleRange = vec2.new(0.01, 0.05)
+	    particle.speedRange = vec2.new(1.0,2.0)
+	    particle.fadeRate = 5.0
+        particle.drawCount = 0
+	end
+end
+
+function TrailingParticles()
+	local particle = gameObject:GetParticleEmitter()
+	if particle.active ~= true then
+		particle.active = true
+		ChangeParticleShader(gameObject,"Resources/Shaders/TrailingModelParticles.comp")
+		particle.scaleRange = vec2.new(0.05, 0.1)
+		particle.speedRange = vec2.new(1.0,2.0)
+		particle.lifeRange = vec2.new(1.0,1.0)
+		particle.minColor = vec3.new( 1.17, 0.08, 0.3 )
+		particle.maxColor = vec3.new( 0.45, 0.24, 0.77)
+		particle.fadeRate = 5.0
+		particle.count = 0
+		particle.maxCount = 10000
+        particle.drawCount = 0
+	end
+	local transform = gameObject:GetTransform()
+    local rot = transform.rotation
+    local angle = rot.y
+    angle = angle * math.pi / 180
+    local xDir = math.sin(angle)
+    local zDir = math.cos(angle)
+	particle.direction = VecNormalize(vec3.new(-xDir,0,-zDir));
+end
+
+function ChangeParticles()
+	local particle = gameObject:GetParticleEmitter()
+	if particle then
+		particle.extraData.x = 2.5
+	end
+	if particle.active ~= true then
+	    particle.active = true
+	    ChangeParticleShader(gameObject,"Resources/Shaders/ChargingModelParticles.comp")
+	    particle.lifeRange = vec2.new(0.1,0.3)
+	    particle.count = 0
+	    particle.maxCount = 10000
+	    particle.minColor = vec3.new( 0.5, 0.27, 0.07 )
+	    particle.maxColor = vec3.new( 1.0, 0.0, 0.0 )
+	    particle.scaleRange = vec2.new(0.01, 0.05)
+	    particle.speedRange = vec2.new(1.0,2.0)
+	    particle.fadeRate = 5.0
+        particle.drawCount = 0
+	end
+end
+
 function Update()
     local maxHealth = 200; 
 	local health = gameObject:GetHealth()
@@ -226,6 +286,10 @@ function Update()
     if (hitPoints < maxHealth / 3) then
         MoveToCenter()
     elseif (hitPoints < maxHealth * 2 / 3) then
+        local particle = gameObject:GetParticleEmitter()
+        if particle then
+		    particle.active = false
+	    end
         local material = gameObject:GetMaterial()
         material.diffuse = vec3.new(0,0,0)
         MoveToCenter()
@@ -234,18 +298,34 @@ function Update()
         attack.baseAttackTime = 9
 	    if (attack.currentAttackTime > attack.baseAttackTime) then
             attack.currentAttackTime = 0
+            local particle = gameObject:GetParticleEmitter()
+            if particle then
+		        particle.active = false
+	        end
         elseif (attack.currentAttackTime > attack.baseAttackTime * 2 / 3) then
             Cooldown(attack.currentAttackTime, attack.baseAttackTime * 2 /3, attack.baseAttackTime)
+            if (attack.IsFired == true) then
+                local particle = gameObject:GetParticleEmitter()
+                if particle then
+		            particle.active = false
+	            end
+            end
             attack.IsFired = false -- resetting after the RunAtThePlayer
             attack.shouldAttack = true -- resets for MeleeAttack
             LookForward()
+            SteamParticles()
         elseif (attack.currentAttackTime > attack.baseAttackTime / 3) then
             if (attack.IsFired == false) then
+                local particle = gameObject:GetParticleEmitter()
+	            if particle then
+		            particle.active = false
+	            end
                 RunAtThePlayer()
                 attack.IsFired = true
                 PlaySFX("Resources/Audio/SFX/BossChargingAttack.wav")
             else
                 LookForward()
+                TrailingParticles()
             end
 
             MeleeAttack()
@@ -254,6 +334,7 @@ function Update()
 	        local body = gameObject:GetBody()
             body.velocity = vec3.new(0.0, 0.0, 0.0)
             Charge(attack.currentAttackTime, 0, attack.baseAttackTime / 3)
+            ChangeParticles()
             --PlaySFX("Resources/Audio/SFX/BossCharging.wav")
         end
         -- Handled By EnemyBoss2Fire.lua, considering cooldown for each charge
