@@ -57,6 +57,8 @@ namespace Hollow {
 		/// </summary>
 		HOLLOW_API void DebugDisplay();
 
+        void ClearParticleMemory();
+
 	private:
 		// Initialization Functions
 		void InitializeSkydome(rapidjson::Value::Object& data);

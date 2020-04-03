@@ -37,14 +37,16 @@
       "Type": "ParticleEmitter",
       "MaxCount": 10000,
       "EmissionRate": 100,
-      "Shape": 0,
-      "Texture": "Resources/Textures/star.png",
-      "Area": [ 1.0, 1.0, 1.0 ],
-      "Life": [ 2.0, 5.0 ],
-      "Speed": [ 0.0, 0.0 ],
-      "ComputeShader": "Resources/Shaders/RainParticles.comp",
-      "CenterOffset": [ 0.0, 0.0, 0.0 ],
-      "PixelSize": 0.1
+      "Shape": 1,
+      "Life": [ 0.05, 0.2 ],
+      "Speed": [ 1.0, 2.0 ],
+      "Size": [ 0.01, 0.05 ],
+      "ModelShape": "CUBE",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 1.0, 1.0, 0.0 ],
+      "MaxColor": [ 1.0, 0.0, 0.0 ],
+      "Area": [ 0.4, 0.4, 0.4 ],
+      "MoveWithObject": false
     }
   ]
 }
