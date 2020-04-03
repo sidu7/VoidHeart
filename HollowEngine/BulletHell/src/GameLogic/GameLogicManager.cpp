@@ -34,7 +34,7 @@
 
 
 #define MAX_REGULAR_ROOMS 8
-#define MAX_BOSS_ROOMS 1
+#define MAX_BOSS_ROOMS 4
 
 namespace BulletHell
 {

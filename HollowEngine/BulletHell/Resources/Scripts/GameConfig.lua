@@ -3,7 +3,7 @@ currentFloor = 0
 currentRoom = 0
 
 -- Dungeon Configuration
-firstFloorRoomCount = 4
+firstFloorRoomCount = 10
 numFloors = 4
 dungeonLength = 6
 dungeonBreadth = 6
