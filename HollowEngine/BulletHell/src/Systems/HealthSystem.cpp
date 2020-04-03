@@ -9,6 +9,7 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/LocalizationManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/ScriptingManager.h"
 
 #include "Hollow/Components/UIText.h"
 #include "Hollow/Components/Transform.h"
@@ -84,15 +85,20 @@ namespace BulletHell
 			if (pHealth->mHitPoints < 0)
 			{
 				pHealth->mIsAlive = false;
-				
+                
 				// Check type of object destroyed
 				if (mGameObjects[i]->mType == (int)GameObjectType::PLAYER)
 				{
-					//YOU LOSE
-					if(mGameObjects[i]->mActive != false)
-					{
-						Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/lose.wav");
-					}
+                    // time for deathAnimation
+                    pHealth->mCurrentDeathTime += Hollow::FrameRateController::Instance().GetFrameTime();
+                    if (pHealth->mCurrentDeathTime < pHealth->mDeathTime)
+                    {
+                        //Hollow::ScriptingManager::Instance().RunScript("OnPlayerDeath");
+                        return; 
+                    }
+                    pHealth->mCurrentDeathTime = 0.0;
+                    pHealth->mIsDying = false;
+
                     // Empty HP UI array
                     mPlayerHPUIIcons.clear();
 					

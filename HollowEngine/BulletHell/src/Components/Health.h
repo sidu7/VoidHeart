@@ -40,9 +40,12 @@ namespace BulletHell
 		bool mIsAlive;
 		bool mInvincible;
         bool mIsHit; // sending to lua event, if set to true lua script will react and set it to false
+        bool mIsDying; // for death animation
 		float mInvincibleTime;
 		float mCurrentInvincibleTime;
         float mHitReactionTime;
         float mCurrentHitReactionTime;
+        float mCurrentDeathTime;
+        float mDeathTime;
 	};
 }

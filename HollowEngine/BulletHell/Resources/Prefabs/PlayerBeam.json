@@ -1,6 +1,6 @@
 {
     "Type": "PLAYER_AOE",
-    "Tag": "AIREARTH",
+    "Tag": "TELEPORT",
     "Components": [
         {
             "Type": "Transform",

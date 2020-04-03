@@ -37,7 +37,9 @@
       "HitPoints": 25,
       "IsAlive": true,
       "IsHit": false,
-      "HitReactinTime": -1.0
+      "HitReactinTime": -1.0,
+      "DeathTime": 2.0,
+      "IsDying": false
     }
   ]
 }

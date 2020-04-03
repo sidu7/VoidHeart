@@ -598,6 +598,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\LightFollow.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\OnDeath.lua" />
     <None Include="Resources\Scripts\OnTakeDamage.lua" />
     <None Include="Resources\Scripts\QuickGrow.lua">
       <DeploymentContent>true</DeploymentContent>

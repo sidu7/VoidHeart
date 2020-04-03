@@ -313,6 +313,7 @@
     <None Include="Resources\Prefabs\Enemy\EnemyAir.json" />
     <None Include="Resources\Shaders\WhirlwindParticles.comp" />
     <None Include="Resources\Scripts\OnTakeDamage.lua" />
+    <None Include="Resources\Scripts\OnDeath.lua" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

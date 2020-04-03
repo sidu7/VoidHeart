@@ -46,7 +46,9 @@
       "Invincible": false,
       "InvincibleTime": 0.5,
       "IsHit": false,
-      "HitReactinTime": 0.5
+      "HitReactinTime": 0.5,
+      "DeathTime": 2.0,
+      "IsDying": false
     }
   ]
 }
