@@ -121,5 +121,17 @@ namespace Hollow {
 		mQuaternion = glm::toQuat(rotate);
 
 		mRotationMatrix = rotate;
+
+		// update the transform as well
+		Transform* pTr = mpOwner->GetComponent<Transform>();
+		
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, mPosition);
+		model *= rotate;
+		model = glm::scale(model, pTr->mScale);
+		pTr->mTransformationMatrix = model;
+		pTr->mRotation = angles;
+		pTr->mRotationMatrix = rotate;
+		pTr->mQuaternion = mQuaternion;
 	}
 }
