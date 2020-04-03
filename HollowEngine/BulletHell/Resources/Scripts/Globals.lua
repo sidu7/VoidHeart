@@ -22,3 +22,18 @@ firstFloorEnemyCount = 0
 
 -- Cheat codes
 gameMuted = false
+
+-- Utils
+function GetRoomCenterPosition()
+	local coords = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom):GetCoords()
+	local pos = vec3.new(coords.y * roomSize + roomSize/2, 1, coords.x * roomSize + roomSize/2)
+	return pos
+end
+
+-- RandomGlobals
+waterBossZOffset = 0
+waterBossTheta = 0
+waterBossCircle = 1
+waterBossCircleCenter = vec3.new(0,0,0)
+waterBossCircleSelected = true
+waterBossMoveDirection = true

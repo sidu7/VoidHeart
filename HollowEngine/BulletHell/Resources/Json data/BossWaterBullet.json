@@ -1,0 +1,56 @@
+{
+    "Type": "BULLET",
+    "Tag": "WATER",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.0, 0.0, 0.0 ],
+            "Scale": [ 0.7, 0.7, 0.7 ]
+        },
+        {
+            "Type": "Body",
+            "Mass": 0.00001,
+            "RigidbodyType": "DYNAMIC",
+            "UseGravity": false
+        },
+        {
+            "Type": "Collider",
+            "Shape": "BALL"
+        },
+        {
+            "Type": "Model",
+            "Shape": "BALL",
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Specular": [ 1.0, 1.0, 1.0 ],
+            "Diffuse": [ 0.0, 2.0, 20.0 ],
+            "Shininess": 10.0,
+            "Texture": "Resources/Textures/cracks.png"
+        },
+        {
+            "Type": "Attack",
+            "Script": "FollowTarget",
+            "Target": 0
+        },
+        {
+            "Type": "DestroyTimer",
+            "MaxTime": 4.0
+        },
+        {
+            "Type": "ParticleEmitter",
+            "MaxCount": 1000,
+            "EmissionRate": 10,
+            "Shape": 1,
+            "Life": [ 0.1, 0.4 ],
+            "Speed": [ 1.0, 2.0 ],
+            "Size": [ 0.01, 0.05 ],
+            "ModelShape": "CUBE",
+            "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+            "MinColor": [ 0.0, 1.0, 1.0 ],
+            "MaxColor": [ 0.0, 0.0, 1.0 ],
+            "Area": [ 0.4, 0.4, 0.4 ]
+        }
+    ]
+}

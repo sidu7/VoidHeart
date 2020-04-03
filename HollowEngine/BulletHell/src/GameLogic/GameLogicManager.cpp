@@ -7,12 +7,15 @@
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/AudioManager.h"
+#include "Hollow/Managers/PhysicsManager.h"
 
 #include "Hollow/Components/Script.h"
 #include "Hollow/Components/Transform.h"
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/UITransform.h"
 #include "Hollow/Components/UIImage.h"
+
+#include "Hollow/Systems/PhysicsSystem.h"
 
 #include "Components/Attack.h"
 #include "Components/Pickup.h"
@@ -98,6 +101,9 @@ namespace BulletHell
 	void GameLogicManager::CreateMainMenu()
 	{
 		hasGameStarted = false;
+
+		Hollow::PhysicsManager::Instance().isPaused = true;
+
 		mIsChangingFloors = false;
 
 		// Clear non-global game objects
@@ -124,6 +130,9 @@ namespace BulletHell
 
 		mCreditsUIObject = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources\\Prefabs\\CreditsUI.json");
 		mCreditsUIObject->mActive = false;
+
+		//Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
+		Hollow::PhysicsManager::Instance().isPaused = false;
 	}
 	
 	bool CheckRoomBounds(glm::vec3 playerPos, glm::vec2 coords)
@@ -174,7 +183,8 @@ namespace BulletHell
 	void GameLogicManager::StartNewGame()
     {
 		hasGameStarted = true;
-
+		Hollow::PhysicsManager::Instance().isPaused = true;
+    	
 		// Configure game settings
 		Hollow::ScriptingManager::Instance().RunScript("GameConfig");
 
@@ -199,6 +209,10 @@ namespace BulletHell
 		
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
 		mCountDeadEnemies = 0;
+
+    	
+		Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
+		Hollow::PhysicsManager::Instance().isPaused = false;
     }
 
 	void GameLogicManager::RegisterLuaBindings()

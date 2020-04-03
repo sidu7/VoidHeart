@@ -1,0 +1,41 @@
+{
+    "Type": "BULLET",
+    "Tag": "OODOOM",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 0.5, 10.0, 0.0 ],
+            "Scale": [ 0.75, 0.75, 0.75 ]
+        },
+        {
+            "Type": "Body",
+            "Mass": 0.00001,
+            "RigidbodyType": "DYNAMIC",
+            "UseGravity": false
+        },
+        {
+            "Type": "Collider",
+            "Shape": "BALL"
+        },
+        {
+            "Type": "DestroyTimer",
+            "MaxTime": 1.0
+        },
+        {
+            "Type": "Script",
+            "DestroyScripts": ["SpawnHoming"]
+        },
+        {
+            "Type": "Model",
+            "Shape": "BALL",
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Specular": [ 1.0, 1.0, 1.0 ],
+            "Diffuse": [ 0.0, 0.0, 3.0 ],
+            "Shininess": 100.0,
+            "Texture": "Resources/Textures/cracks.png"
+        }
+    ]
+}

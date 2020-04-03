@@ -31,11 +31,11 @@ function MoveInCirle()
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
 
 	-- Get Direction to move in circle

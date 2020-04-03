@@ -29,7 +29,6 @@ namespace Hollow
 
 			if (!pCol->mIsTrigger)
 			{
-				// TODO write inertia formula for spheres
 				glm::mat3 inertia = glm::mat3(0.0f);
 				if (pCol->mpShape->mType == ShapeType::BOX) {
 					inertia[0][0] = pCol->mpBody->mMass / 12.0f * (pCol->mpTr->mScale.y * pCol->mpTr->mScale.y + pCol->mpTr->mScale.z * pCol->mpTr->mScale.z);
@@ -89,44 +88,25 @@ namespace Hollow
 		PhysicsManager::Instance().mTree.DeleteTree();
 	}
 
-	void PhysicsSystem::Step(float fixedDeltaTime)
+	void PhysicsSystem::UpdateTree()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			Collider* pCol = mGameObjects[i]->GetComponent<Collider>();
-			Transform* pTrans = mGameObjects[i]->GetComponent<Transform>();
-            
-			if (!pCol->mIsTrigger)
+			if(mGameObjects[i]->mType == 0)
 			{
-				if (pCol->mpShape->mType == BOX)
-				{
-                    glm::mat3& rotMatrix = pTrans->mRotationMatrix;
-					glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
-					glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
-					glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
-					glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-					glm::vec3 rotatedExtents = abs(rotMatrix * x) +
-						abs(rotMatrix * y) +
-						abs(rotMatrix * z);
-
-					// based on normalized body vertices
-					static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
-					static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
-				}
-				else if (pCol->mpShape->mType == BALL)
-				{
-					static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpBody->mPosition;
-				}
+				mGameObjects[i]->GetComponent < Hollow::Body >()->mPosition += glm::vec3(0.0f, 0.0f, 0.0f);
 			}
-			else
-			{
-				static_cast<ShapeAABB*>(pCol->mpShape)->mMin = -static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
-				static_cast<ShapeAABB*>(pCol->mpShape)->mMax = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
-			}
+			
+			PhysicsManager::Instance().UpdateScale(mGameObjects[i]);
 		}
 
 		// balancing the tree
 		PhysicsManager::Instance().mTree.Update();
+	}
+
+	void PhysicsSystem::Step(float fixedDeltaTime)
+	{
+		UpdateTree();
 
 		// finds out intersecting bounding boxes
 		PhysicsManager::Instance().mTree.CalculatePairs();
@@ -301,6 +281,11 @@ namespace Hollow
 
 				pBody->mPreviousQuaternion = pBody->mQuaternion;
 
+				if(pBody->mIsAlwaysVertical)
+				{
+					pBody->mAngularVelocity.x = pBody->mAngularVelocity.z = 0.0f;
+				}
+				
 				// integrate the orientation
 				glm::fquat newQuat = 0.5f * (pBody->mAngularVelocity) * pBody->mQuaternion * fixedDeltaTime;
 				pBody->mQuaternion *= newQuat;
@@ -349,17 +334,24 @@ namespace Hollow
 
 	void PhysicsSystem::Update()
 	{
-		isPaused = InputManager::Instance().IsKeyTriggered("P") == true ? !isPaused : isPaused;
+		PhysicsManager& pm = PhysicsManager::Instance();
+		InputManager& input = InputManager::Instance();
+		
+		pm.isPaused = input.IsKeyTriggered("P") == true ? !pm.isPaused : pm.isPaused;
 
-		nextStep = InputManager::Instance().IsKeyTriggered("SPACE");
+		nextStep = input.IsKeyTriggered("SPACE");
 
+		/*
+		 *Raycast Result Imgui window
 		ImGui::Begin("RayCast Result");
-		ImGui::Text("Mouse X : %f", Hollow::InputManager::Instance().GetMouseX());
-		ImGui::Text("Mouse Y : %f", Hollow::InputManager::Instance().GetMouseY());
-		//if (Hollow::InputManager::Instance().IsKeyPressed(SDL_SCANCODE_R))
-		if (Hollow::InputManager::Instance().IsMouseButtonTriggered(SDL_BUTTON_LEFT))
+		ImGui::Text("Mouse X : %f", input.GetMouseX());
+		ImGui::Text("Mouse Y : %f", input.GetMouseY());
+		ImGui::End();
+		*/
+		
+		if (input.IsMouseButtonTriggered(SDL_BUTTON_LEFT))
 		{
-			GameObject* pObj = PhysicsManager::Instance().CastRay();
+			GameObject* pObj = pm.CastRay();
 
 			if (pObj)
 			{
@@ -367,21 +359,21 @@ namespace Hollow
 				ImGuiManager::Instance().mSelectedGameObjectID = pObj->mID;
 			}
 		}
-		ImGui::End();
-
-		if(Hollow::InputManager::Instance().IsKeyTriggered("t"))
+		/*
+		 *Tree Debug File generator
+		if(input.IsKeyTriggered("t"))
 		{
 			FILE* file;
 			fopen_s(&file,"C:\\Users\\spand\\Desktop\\tree.txt", "w+");
-			Hollow::PhysicsManager::Instance().DebugTree(Hollow::PhysicsManager::Instance().mTree.GetRoot(), file);
+			pm.DebugTree(pm.mTree.GetRoot(), file);
 			fclose(file);
 		}
-		
+		*/
 		//================Physics Update======================
 		float dt = FrameRateController::Instance().GetFrameTime();
 
 
-		if (!isPaused) {
+		if (!pm.isPaused) {
 			accumulator += dt;
 			while (accumulator > maxPossibleDeltaTime) {
 				//{

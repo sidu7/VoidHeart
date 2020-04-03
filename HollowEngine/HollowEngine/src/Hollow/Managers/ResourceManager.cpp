@@ -106,6 +106,7 @@ namespace Hollow
 		pBody->mPosition = pos;
 		
 		Transform* pTr = pGo->GetComponent<Transform>();
+		pTr->mPosition = pos;
 		pTr->mScale = scale;
 
 		PhysicsManager::Instance().UpdateScale(pGo);

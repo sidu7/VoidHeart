@@ -135,6 +135,7 @@ namespace Hollow
 			"velocity", &Body::mVelocity,
 			"angularVelocity", &Body::mAngularVelocity,
 			"position", &Body::mPosition,
+			"RotateBody", &Body::Rotate,
             "useGravity", &Body::mUseGravity
 		);
 
@@ -143,7 +144,7 @@ namespace Hollow
 			"position", &Transform::mPosition,
             "rotation", &Transform::mRotation,
             "forward", &Transform::GetForward,
-            "Rotate", &Transform::Rotate,
+			"Rotate", &Transform::Rotate,
 			"scale", &Transform::mScale
 			);
 

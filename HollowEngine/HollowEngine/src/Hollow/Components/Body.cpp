@@ -1,6 +1,7 @@
 #include <hollowpch.h>
 
 #include "Body.h"
+#include "Transform.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Utils/ImGuiHelper.h"
 
@@ -22,6 +23,7 @@ namespace Hollow {
 		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mIsFrictionLess = false;
 		mUseGravity = true;
+		mIsAlwaysVertical = false;
 		
 		mDRigidbodyType = "";
 		mBodyType = Body::STATIC;
@@ -40,6 +42,7 @@ namespace Hollow {
 		ImGui::InputFloat3("Position", &mPosition[0]);
 		ImGui::InputFloat3("Velocity", &mVelocity[0]);
 		ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
+		ImGui::Checkbox("Always Vertical", &mIsAlwaysVertical);
 		ImGui::Checkbox("Frictionless", &mIsFrictionLess);
 		ImGui::Checkbox("Use Gravity", &mUseGravity);
 	}
@@ -65,6 +68,10 @@ namespace Hollow {
 		if (data.HasMember("IsFrictionLess"))
 		{
 			mIsFrictionLess = data["IsFrictionLess"].GetBool();
+		}
+		if (data.HasMember("IsAlwaysVertical"))
+		{
+			mIsAlwaysVertical = data["IsAlwaysVertical"].GetBool();
 		}
 		if (data.HasMember("UseGravity"))
 		{
@@ -98,5 +105,33 @@ namespace Hollow {
 		// TODO: Shantanu can deal with this if it causes problems
 		JSONHelper::Write<glm::vec3>("AngularVelocity", mAngularVelocity, writer);
 	}
-	
+
+	void Body::SetPosition(glm::vec3 pos)
+	{
+		mPosition = pos;
+		mpOwner->GetComponent<Transform>()->mPosition = pos;
+	}
+
+	void Body::Rotate(glm::vec3 angles)
+	{
+		glm::mat4 rotate = glm::mat4(1.0f);
+		rotate = glm::rotate(rotate, glm::radians(angles.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		rotate = glm::rotate(rotate, glm::radians(angles.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		rotate = glm::rotate(rotate, glm::radians(angles.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		mQuaternion = glm::toQuat(rotate);
+
+		mRotationMatrix = rotate;
+
+		// update the transform as well
+		Transform* pTr = mpOwner->GetComponent<Transform>();
+		
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, mPosition);
+		model *= rotate;
+		model = glm::scale(model, pTr->mScale);
+		pTr->mTransformationMatrix = model;
+		pTr->mRotation = angles;
+		pTr->mRotationMatrix = rotate;
+		pTr->mQuaternion = mQuaternion;
+	}
 }

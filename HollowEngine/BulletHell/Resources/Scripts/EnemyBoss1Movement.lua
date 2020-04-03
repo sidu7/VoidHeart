@@ -24,21 +24,21 @@ function FollowPlayer(isScared)
 	local zDirNorm = zDir / dirLength
 	
     -- look at the target
+    local body = gameObject:GetBody()
     local rot = vec3.new(0.0, 0.0, 0.0)
     local tangent = xDirNorm / zDirNorm
     local radians = math.atan(tangent)
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     
     -- setting the velocity
-    local body = gameObject:GetBody()
     body.velocity = vec3.new(xDirNorm, 0.0, zDirNorm)
 	if (isScared == true) then 
         if (dirLength < scareDistance) then
@@ -100,11 +100,11 @@ function MoveInCirle()
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
 
 	-- Get Direction to move in circle

@@ -80,6 +80,10 @@ namespace Hollow
 			}
 		}
 
+		if(mHasCustomScale)
+		{
+			SetCustomBounds(mMinBounds, mMaxBounds);
+		}
 	}
 
 	HOLLOW_API void Collider::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer> & writer)

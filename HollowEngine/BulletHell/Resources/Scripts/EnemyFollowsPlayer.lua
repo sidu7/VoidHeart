@@ -6,6 +6,7 @@ function FollowPlayer()
 
     local transform = gameObject:GetTransform()
 	local position = transform.position
+    local body = gameObject:GetBody()
 
     --  acquire target 
     local target = player
@@ -29,19 +30,18 @@ function FollowPlayer()
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
 
-    local body = gameObject:GetBody()
     body.velocity = enemySpeed * vec3.new(xDirNorm, 0.0, zDirNorm)
     
     -- collision handling
     if (dirLength < 2.0) then
-        local impulseStrength = vec3.new(1000, 0, 1000)
+        local impulseStrength = vec3.new(200, 0, 200)
         local impulse = vec3.new(xDirNorm, 0.0, zDirNorm)
         impulse  = impulse * impulseStrength
         ApplyLinearImpulse(player, impulse)

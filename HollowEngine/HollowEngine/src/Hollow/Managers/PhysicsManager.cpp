@@ -13,6 +13,7 @@
 #include "RenderManager.h"
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Core/GameMetaData.h"
+#include "SystemManager.h"
 
 namespace Hollow {
 
@@ -209,40 +210,48 @@ namespace Hollow {
 			}
 			file.close();
 		}
-
-
 	}
-
+	
 	void PhysicsManager::UpdateScale(GameObject* pGo)
 	{
 		Collider* pCol = static_cast<Collider*>(pGo->GetComponent<Collider>());
-		if (pCol->mHasCustomScale)
-		{
-			return;
-		}
 
-		if (pCol->mpShape->mType == ShapeType::BOX)
+		if (!pCol->mIsTrigger)
 		{
-			// update local shape (0.5f because we are updating half extents)
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f * (pCol->mpTr->mScale);
-			static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
+			if (pCol->mpShape->mType == BOX)
+			{
 
-			glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
-			glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
-			glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
-			glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-			glm::vec3 rotatedExtents = abs((pCol->mpBody->mRotationMatrix) * x) +
-				abs((pCol->mpBody->mRotationMatrix) * y) +
-				abs((pCol->mpBody->mRotationMatrix) * z);
+				if (!pCol->mHasCustomScale)
+				{
+					// update local shape (0.5f because we are updating half extents)
+					static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMin = -0.5f * (pCol->mpTr->mScale);
+					static_cast<ShapeAABB*>(pCol->mpLocalShape)->mMax = 0.5f * (pCol->mpTr->mScale);
+				}
+				
+				glm::mat3& rotMatrix = pCol->mpTr->mRotationMatrix;
+				glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
+				glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
+				glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
+				glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
+				glm::vec3 rotatedExtents = abs(rotMatrix * x) +
+					abs(rotMatrix * y) +
+					abs(rotMatrix * z);
 
-			// based on normalized body vertices
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
-			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
+				// based on normalized body vertices
+				static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
+				static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
+			}
+			else if (pCol->mpShape->mType == BALL)
+			{
+				static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpTr->mPosition;
+				static_cast<ShapeCircle*>(pCol->mpShape)->mRadius = pCol->mpTr->mScale.x / 2.0f; // this will only be (x||y||z) as its a sphere!
+			}
 		}
-		else if (pCol->mpShape->mType == ShapeType::BALL)
+		else
 		{
-			static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpTr->mPosition;
-			static_cast<ShapeCircle*>(pCol->mpShape)->mRadius = pCol->mpTr->mScale.x / 2.0f; // this will only be (x||y||z) as its a sphere!
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMin = -static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
+			static_cast<ShapeAABB*>(pCol->mpShape)->mMax = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
 		}
+		
 	}
 }

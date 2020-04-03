@@ -35,12 +35,13 @@ namespace Hollow {
 		/// Called when all game objects have to be deleted.
 		/// </summary>
 		HOLLOW_API void OnDeleteAllGameObjects() override;
+
+		HOLLOW_API void UpdateTree();
 		
 	private:
 		void Step(float);
 		void InterpolateState(float);
 
-		bool isPaused = false;
 		bool nextStep;
 		bool isApplyFriction = false;
 		float accumulator;

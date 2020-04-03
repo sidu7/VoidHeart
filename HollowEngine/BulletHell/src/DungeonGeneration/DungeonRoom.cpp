@@ -169,8 +169,8 @@ namespace BulletHell
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
                                             doorPos,
                                             glm::vec3(mDoorThickness, mDoorHeight, mDoorWidth));
-            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-0.5f, -2.5f, -2.0f),
-                glm::vec3(0.5f, 2.5f, 2.0f));
+            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-0.5f, -1.6f, -2.0f),
+                glm::vec3(0.5f, 1.6f, 2.0f));
             mDoorGOs[2] = door;
 
 			// LIGHTS ON BOTH SIDES OF THE DOOR
@@ -204,14 +204,14 @@ namespace BulletHell
             Hollow::GameObject* door = Hollow::ResourceManager::Instance().LoadScaledPrefabAtPosition("Door",
                                         doorPos,
                                         glm::vec3(mDoorWidth, mDoorHeight, mDoorThickness));
-            Hollow::Transform* pTr = door->GetComponent<Hollow::Transform>();
-        	pTr->Rotate(glm::vec3(0.0f, 90.0f, 0.0f));
-            // HORRIBLEEEE
-        	door->GetComponent<Hollow::Body>()->mQuaternion = pTr->mQuaternion;
-            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-2.0f, -2.5f, -0.25f),
-                glm::vec3(2.0f, 2.5f, 0.25f));
-            
-             mDoorGOs[4] = door;
+            door->GetComponent<Hollow::Collider>()->SetCustomBounds(glm::vec3(-0.5f, -1.6f, -2.0f),
+                glm::vec3(0.5f, 1.6f, 2.0f));
+
+        	// Rotate door 90 degrees to face the right way (needs to rotate both components for static objects)
+            door->GetComponent<Hollow::Body>()->Rotate(glm::vec3(0.0f, 90.0f, 0.0f));
+            door->GetComponent<Hollow::Transform>()->Rotate(glm::vec3(0.0f, 90.0f, 0.0f));
+
+        	mDoorGOs[4] = door;
 
 			// LIGHTS ON BOTH SIDES OF THE DOOR
 			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("newLight", glm::vec3(doorPos.x + mLightOffsetFromDoor, doorPos.y, doorPos.z + mWallThickness));

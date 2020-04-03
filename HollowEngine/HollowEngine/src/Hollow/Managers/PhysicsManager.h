@@ -49,6 +49,7 @@ namespace Hollow
 		HOLLOW_API void Init(rapidjson::Value::Object& data);
 
 		HOLLOW_API void UpdateScale(GameObject* pGo);
+
 	public:
 		// Data
 		DynamicAABBTree mTree;
@@ -58,7 +59,9 @@ namespace Hollow
 		std::unordered_map<unsigned int, bool > mCollisionMask;
 
 		void DebugTree(Node* tree, FILE* stream);
+		bool isPaused = false;
 	private:
+		
 		void DebugTreeNullNode(Node* key, int nullcount, FILE* stream);
 		void DebugTreeNode(Node* node, FILE* stream);
 	};

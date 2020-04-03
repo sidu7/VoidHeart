@@ -6,10 +6,11 @@ function GrowWall()
     -----------------------------------------
 	
 	local transform = gameObject:GetTransform()
+	local body = gameObject:GetBody()
 	--local particles = gameObject:GetParticleEmitter()
 	local change = 1.0 + scaleRate / 100.0
 	-- No rotation hacky fix
-	transform:Rotate(transform.rotation)
+	body:RotateBody(transform.rotation)
 	
 	-- Update scales
 	if (transform.scale.x < maxScale.x) then
@@ -38,7 +39,6 @@ function GrowWall()
 		--material.alphaValue = material.alphaValue - material.alphaValue / frameRemain
 	end
 	--]]
-	local body = gameObject:GetBody()
 	-- Update shape radius for physics
 	if body then
 		-- Function actually calls update scale so should be ok for BOX

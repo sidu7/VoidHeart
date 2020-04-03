@@ -34,6 +34,7 @@ function Rotate()
     local centerPos = vec3.new(centerX, playerPos.y, centerZ) 
     
 	local transform = gameObject:GetTransform()
+	local body = gameObject:GetBody()
 	local position = transform.position
 
     local xDir = position.x - centerPos.x
@@ -48,11 +49,11 @@ function Rotate()
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
 
 
