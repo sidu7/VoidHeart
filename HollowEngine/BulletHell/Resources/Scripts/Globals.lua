@@ -25,7 +25,7 @@ gameMuted = false
 
 -- Utils
 function GetRoomCenterPosition()
-	local coords = GetDungeonFloor(currentFloor):GetEntrance():GetCoords()
+	local coords = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom):GetCoords()
 	local pos = vec3.new(coords.y * roomSize + roomSize/2, 1, coords.x * roomSize + roomSize/2)
 	return pos
 end

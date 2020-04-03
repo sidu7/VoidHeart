@@ -14,8 +14,7 @@ end
 function CreateSteamTrap()
 	-----------------------------------------
     -- playtesting vars
-	local phaseOneDashTime = 3.0
-	local phaseOneAOETime = 0.5
+	
     -----------------------------------------
 	local trapPath = "Resources/Json data/BossSteamTrap.json"
 	local trap = CreateGameObject(trapPath)
@@ -34,7 +33,7 @@ end
 function PhaseTwoBehavior()
 -----------------------------------------
     -- playtesting vars
-	local shieldDelayTime = 2.5
+	
 	-----------------------------------------
 	CreateSteamTrap()
     
@@ -67,14 +66,16 @@ function Shoot()
     local hitPoints = health.hitPoints
 	
 	local attack = gameObject:GetAttack()
-	if(hitPoints >= maxHealth * 3.0 / 4.0) then
+	if(hitPoints >= maxHealth * 2.0 / 3.0) then
 		-- First phase
 		PhaseOneBehavior()
 		attack.baseAttackTime = 0.5
-	elseif(hitPoints >= maxHealth / 2.0) then
+	elseif(hitPoints >= maxHealth / 3.0) then
 		-- Second phase
-		PhaseTwoBehavior()
-		attack.baseAttackTime = 2
+		if(attack.shouldAttack2 ==  true) then
+			PhaseTwoBehavior()
+		end
+		attack.baseAttackTime = 4
 	else
 		-- Third phase
 		PhaseThreeBehavior()

@@ -3,9 +3,10 @@ function MoveInSinWave()
 	local oldPos = vec3.new(pos.x, pos.y, pos.z)
 	-----------------------------------------
     -- playtesting vars
-	local waterBossSinFactor = 6
-	local waterBossZOffsetValue = 0.05
-	local waterBossZOffsetLimit = 3 * math.pi
+	local waterBossSinFactor = 8
+	local waterBossZOffsetValue = 0.03
+
+	local waterBossZOffsetLimit = 4 * math.pi
     -----------------------------------------
 	
 	if waterBossMoveDirection then
@@ -108,13 +109,59 @@ function MoveInCircles()
 	LookAt(oldPos, pos)
 end
 
+function MoveToCenter()
+  	local speed = 5.0
+    
+    -- collision handling
+    local transform = gameObject:GetTransform()
+	local position = transform.position
+    -- get room center pos
+	local targetPos = GetRoomCenterPosition()
+    -- calculate direction
+    local xDir = targetPos.x - position.x
+	local zDir = targetPos.z - position.z
+	local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
+	local xDirNorm = xDir / dirLength
+	local zDirNorm = zDir / dirLength
+	print(dirLength)
+    if (dirLength > 0.1) then -- walking to the center
+        -- look at the target
+        local body = gameObject:GetBody()
+        local rot = vec3.new(0.0, 0.0, 0.0)
+        local tangent = xDirNorm / zDirNorm
+        local radians = math.atan(tangent)
+        local degree = radians * 180 / math.pi
+        if zDirNorm >= 0 then  
+	        rot = vec3.new(0.0, degree, 0.0)
+            body:RotateBody(rot)
+        end
+        if zDirNorm < 0 then 
+	        rot = vec3.new(0.0, degree + 180, 0.0)
+            body:RotateBody(rot)
+        end
+    
+        -- setting the velocity
+        body.velocity = speed * vec3.new(xDirNorm, 0.0, zDirNorm)
+    else
+        -- once at the center signal to attacking script to spawn rocks
+        local attack = gameObject:GetAttack()
+        attack.shouldAttack2 = true
+    end
+end
 
 function PhaseOneMovement()
 	MoveInSinWave()
+	local attack = gameObject:GetAttack()
+	attack.shouldAttack2 = false
 end
 
 function PhaseTwoMovement()
-	MoveInCircles()
+	local attack = gameObject:GetAttack()
+    if (attack.shouldAttack2 == true) then
+		MoveInCircles()
+	else
+		MoveToCenter()
+	end
 end
 
 function PhaseThreeMovement()
