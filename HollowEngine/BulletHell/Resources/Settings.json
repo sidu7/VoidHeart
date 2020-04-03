@@ -48,11 +48,11 @@
     "Background": "Resources/Audio/Songs/MainMenu.ogg"
   },
   "Memory": {
-    "GameobjectsPool": 2000,
-    "ComponentsPool": 2000,
+    "GameobjectsPool": 500,
+    "ComponentsPool": 500,
     "CustomPool": [
-      [ "Transform", 3000 ],
-      [ "Body", 1500 ]
+      [ "Transform", 500 ],
+      [ "Body", 500 ]
     ]
   }
 }

@@ -6,6 +6,7 @@ local floorNum = floor:GetFloorNum()
 currentRoom = floor:GetEntranceIndex()
 
 local coords = floor:GetEntrance():GetCoords()
+
 --CreatePrefabAtPosition("EnemyBossWater", vec3.new(coords.y * roomSize + roomSize/2, 10, coords.x * roomSize + roomSize/2))
 --CreatePrefabAtPosition("EnemyTurretAOE", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2 - 3))
 --CreatePrefabAtPosition("EnemyFollowLookdir", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2))
@@ -20,16 +21,31 @@ player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coor
 player:GetBody().velocity = vec3.new(0,0,0) -- this seems to fix the player going below the floor on level load
 player:GetTransform().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 - 5)
 
--- generate a spell in front of the player in the entrance room on the first floor
+
+-- Generate a spell in front of the player in the entrance room on the first floor
 if(currentFloor == 0) then
-    -- TODO instead of doing this we can spawn the player with a random starting spell each time
-    local spell = CreatePrefabAtPosition("FireSpell", vec3.new(coords.y * roomSize + roomSize/2, 1.0, coords.x * roomSize + roomSize/2+5))
+	local spellString = ""
+	local lastSpell = GetSpellOrder()[4]
+	print("Last Spell")
+	print(lastSpell)
+	if(lastSpell == 1) then
+		spellString = "FireSpell"
+	elseif(lastSpell == 2) then
+		spellString = "AirSpell"
+	elseif(lastSpell == 3) then
+		spellString = "EarthSpell"
+	else
+		spellString = "WaterSpell"
+	end
+    local spell = CreatePrefabAtPosition(spellString, vec3.new(coords.y * roomSize + roomSize/2, 1.0, coords.x * roomSize + roomSize/2+5))
+
+	-- Lockdown the room until the spell is collected
+	GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom):LockDownRoom()
 end
 
--- genetate boss in the boss room
+-- Generate boss in the boss room
 local bossRoom = floor:GetBossIndex()
 PopulateRoom(floor:GetRoomFromIndex(bossRoom))
-
 
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
 local roomCount = floor:GetRoomCount() - 2 - 1 - floorNum
@@ -44,7 +60,7 @@ for i=0, floorNum, 1 do
 end
 
 -- Comment this out if you dont want pickups in starting room
----[[
+--[[
 local hpPickup = CreatePrefabAtPosition("Pickup_HP", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
 local speedPickup = CreatePrefabAtPosition("Pickup_Speed", vec3.new(coords.y * roomSize + roomSize/2 - 5, 0.5, coords.x * roomSize + roomSize/2 - 10.0))
 local invinciblePickup = CreatePrefabAtPosition("Pickup_Invincible", vec3.new(coords.y * roomSize + roomSize/2 + 5, 1.5, coords.x * roomSize + roomSize/2 + 8.0))
@@ -52,7 +68,7 @@ local rofPickup = CreatePrefabAtPosition("Pickup_RateOfFire", vec3.new(coords.y 
 --]]
 
 -- Comment this out if you dont want all spells in starting room
----[[
+--[[
 local fireSpell = CreatePrefabAtPosition("FireSpell", vec3.new(coords.y * roomSize + roomSize/2 + 1.0, 0.5, coords.x * roomSize + roomSize/2 + 10.0))
 local airSpell = CreatePrefabAtPosition("AirSpell", vec3.new(coords.y * roomSize + roomSize/2 - 1.0, 0.5, coords.x * roomSize + roomSize/2 + 10.0))
 local earthSpell = CreatePrefabAtPosition("EarthSpell", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2 + 11.0))

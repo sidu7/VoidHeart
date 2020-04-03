@@ -53,7 +53,8 @@
       "Scripts": [
         "Boss/AirMovement",
         "OnTakeDamage"
-      ]
+      ],
+	  "DestroyScripts" : ["Destroy/SpawnAirSpell"]
     },
     {
       "Type": "Attack",
