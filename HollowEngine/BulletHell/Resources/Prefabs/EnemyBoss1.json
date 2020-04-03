@@ -48,7 +48,8 @@
       "Type": "Script",
       "Scripts": [
         "EnemyBoss1Movement"
-      ]
+      ],
+	  "DestroyScripts" : ["Destroy/SpawnFireSpell"]
     },
     {
       "Type": "Attack",

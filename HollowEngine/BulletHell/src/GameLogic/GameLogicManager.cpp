@@ -6,33 +6,32 @@
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
-#include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/AudioManager.h"
 
 #include "Hollow/Components/Script.h"
 #include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Body.h"
+#include "Hollow/Components/UITransform.h"
+#include "Hollow/Components/UIImage.h"
 
 #include "Components/Attack.h"
 #include "Components/Pickup.h"
 #include "Components/Health.h"
 #include "Components/CharacterStats.h"
 
+#include "Events/PickupTimedEvent.h"
+#include "Events/DeathEvent.h"
+
 #include "DungeonGeneration/DungeonRoom.h"
 #include "DungeonGeneration/DungeonManager.h"
-#include "Hollow/Managers/EventManager.h"
-#include "Hollow/Managers/GameObjectManager.h"
+
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
-#include "Events/PickupTimedEvent.h"
-#include "Hollow/Utils/UniqueID.h"
-#include "Hollow/Components/Body.h"
-#include "Hollow/Managers/AudioManager.h"
-#include "Hollow/Components/UITransform.h"
-#include "Hollow/Components/UIImage.h"
 
+#include "Hollow/Utils/UniqueID.h"
 
 #define MAX_REGULAR_ROOMS 8
-#define MAX_BOSS_ROOMS 3
+#define MAX_BOSS_ROOMS 4
 
 namespace BulletHell
 {
@@ -189,6 +188,12 @@ namespace BulletHell
 		BulletHell::DungeonManager::Instance().Regenerate();
 		BulletHell::DungeonManager::Instance().Init();
 
+		// Setup bosses/spell order
+		// TODO: Find a better way to use the seed in the dungeon generator
+		mSpellOrder = { 1, 2, 3, 4 };
+		std::shuffle(mSpellOrder.begin(), mSpellOrder.end(), std::default_random_engine(DungeonManager::Instance().GetSeed()));
+		HW_INFO("Spell Order: {0}, {1}, {2}, {3}", mSpellOrder[0], mSpellOrder[1], mSpellOrder[2], mSpellOrder[3]);
+
 		Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
 		
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
@@ -224,7 +229,8 @@ namespace BulletHell
 			"getEnemyCount", &DungeonRoom::GetEnemyCount,
 			"GetID", &DungeonRoom::GetID,
 			"Enemies", &DungeonRoom::mEnemies,
-			"obstacles", &DungeonRoom::mObstacles
+			"obstacles", &DungeonRoom::mObstacles,
+			"roomType", &DungeonRoom::mRoomType
 			);
 
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
@@ -234,6 +240,7 @@ namespace BulletHell
 		lua.set_function("OnRoomEntered", &DungeonManager::OnCurrentRoomUpdated, std::ref(DungeonManager::Instance()));
 		lua.set_function("DCastRay", &DungeonManager::CastRay, std::ref(DungeonManager::Instance()));
 		lua.set_function("MoveToNextFloor", &GameLogicManager::MoveToNextFloor, std::ref(GameLogicManager::Instance()));
+		lua.set_function("GetSpellOrder", &GameLogicManager::GetSpellOrder, std::ref(GameLogicManager::Instance()));
 	}
 
 	void GameLogicManager::MoveToNextFloor()
@@ -308,8 +315,10 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_BULLET_HIT_SHIELD, EVENT_CALLBACK(GameLogicManager::OnBulletHitShield));
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(GameLogicManager::DropRandomPickup));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(GameLogicManager::OnDeath));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::PLAYER_DEATH, EVENT_CALLBACK(GameLogicManager::OnPlayerDeath));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_HIT_PORTAL, EVENT_CALLBACK(GameLogicManager::OnPlayerHitPortal));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_SPELL_COLLECT, EVENT_CALLBACK(GameLogicManager::OnSpellCollect));
     }
 
 	void GameLogicManager::OnPickupCollected(Hollow::GameEvent& event)
@@ -412,6 +421,13 @@ namespace BulletHell
 
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorLock.wav");
     }
+
+	void GameLogicManager::OnSpellCollect(Hollow::GameEvent& event)
+	{
+		// Mainly used for unlocking starting room
+		DungeonManager::Instance().GetCurrentRoom().UnlockRoom();
+		// Could track stats for end game screen if desired
+	}
 
 	void GameLogicManager::CheckCheatCodes()
 	{
@@ -516,15 +532,17 @@ namespace BulletHell
 		std::string roomName;
 		if(room.mRoomType == DungeonRoomType::BOSS)
 		{
-			roomNum = Random::RangeSeeded(1, MAX_BOSS_ROOMS);
+			// Get boss room based on spell order
+			auto& lua = Hollow::ScriptingManager::Instance().lua;
+			int currentFloor = lua["currentFloor"].get<int>();
+			roomNum = mSpellOrder[currentFloor];
 			roomName = "Boss/Room" + std::to_string(roomNum);
-			//roomName = "Boss/Room4";
+			HW_WARN("Spawning boss: {0}", roomName);
 		}
 		else
 		{
 			roomNum = Random::RangeSeeded(1, MAX_REGULAR_ROOMS);
 			roomName = "Room" + std::to_string(roomNum);
-			HW_TRACE("{0}", roomName);
 		}
 		
 		rapidjson::Document root;
@@ -582,22 +600,32 @@ namespace BulletHell
 		}
 	}
 
-	void GameLogicManager::DropRandomPickup(Hollow::GameEvent& event)
+	void GameLogicManager::DropRandomPickup(Hollow::GameObject* pGO)
 	{
-		//if (event.mpObject1->mType == (int)GameObjectType::ENEMY)
 		// Assuming every death event is sent by an ENEMY
+		mCountDeadEnemies++;
+
+		if (mCountDeadEnemies > mRandomCount)
 		{
-			mCountDeadEnemies++;
+			mCountDeadEnemies = 0;
+			mRandomCount = Random::RangeSeeded(5, 9);
 
-			if (mCountDeadEnemies > mRandomCount)
-			{
-				mCountDeadEnemies = 0;
-				mRandomCount = Random::RangeSeeded(5, 9);
-
-				int randomIndex = Random::RangeSeeded(0, mPickupPrefabNames.size()-1);
+			int randomIndex = Random::RangeSeeded(0, mPickupPrefabNames.size()-1);
 				
-				Hollow::Transform* pTr = event.mpObject1->GetComponent<Hollow::Transform>();
-				Hollow::ResourceManager::Instance().LoadPrefabAtPosition(mPickupPrefabNames[randomIndex], pTr->mPosition);
+			Hollow::Transform* pTr = pGO->GetComponent<Hollow::Transform>();
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition(mPickupPrefabNames[randomIndex], pTr->mPosition);
+		}
+	}
+
+	void GameLogicManager::OnDeath(Hollow::GameEvent& event)
+	{
+		DeathEvent& pDeathEvent = dynamic_cast<DeathEvent&>(event);
+		if (pDeathEvent.mType == (int)GameObjectType::ENEMY)
+		{
+			// Bosses drop spells through their destruction scripts
+			if (pDeathEvent.mpObject1->mTag != "Boss")
+			{
+				DropRandomPickup(pDeathEvent.mpObject1);
 			}
 		}
 	}
@@ -628,6 +656,11 @@ namespace BulletHell
 		Hollow::EventManager::Instance().ClearDelayedEvents();
 
 		// Reset intial values in any systems/components e.g. Spell Collected flag
+	}
+
+	void GameLogicManager::OnPlayerHitPortal(Hollow::GameEvent& event)
+	{
+		MoveToNextFloor();
 	}
 
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)

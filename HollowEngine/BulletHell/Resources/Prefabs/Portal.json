@@ -1,0 +1,43 @@
+{
+    
+    "Type": "PORTAL",
+    "Tag": "Portal",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Scale": [ 2.0, 3.0, 2.0 ]
+        },
+        {
+            "Type": "Body",
+            "RigidbodyType": "STATIC",
+            "IsFrictionLess": false,
+            "UseGravity": false
+        },
+        {
+            "Type": "Model",
+            "Shape": "SPHERE",
+            "CastShadow": false,
+            "ModelHasOffset": false
+        },
+        {
+            "Type": "Collider",
+            "Bounciness": 0.20000000298023225,
+            "Shape": "BOX",
+            "isTrigger": true
+        },
+        {
+            "Type": "Material",
+            "Diffuse": [
+                0.14,
+                0.29,
+                0.59
+            ],
+            "Specular": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Shininess": 10.0
+        }
+    ]
+}

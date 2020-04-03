@@ -27,10 +27,21 @@ function KillAllEnemiesInRoom()
 	end
 end
 
+function SkipToBoss()
+	if IsKeyTriggered("B") then
+		-- Put player in boss room
+		--local floor = GetDungeonFloor(currentFloor)
+		--local coords = floor:GetRoomFromIndex(floor:GetBossIndex()):GetCoords()
+		--player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2)
+		--player:GetTransform().position = player:GetBody().position
+	end
+end
+
 function CheckCheatCodes()
 	MuteAudio()
 	SkipToNextFloor()
 	KillAllEnemiesInRoom()
+	SkipToBoss()
 end
 
 CheckCheatCodes()

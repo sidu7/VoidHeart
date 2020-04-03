@@ -7,16 +7,16 @@ function CheckRoomBounds(playerPos, coords)
 		currentRoom = coords.x * dungeonLength + coords.y
         OnRoomEntered(currentRoom, oldRoomIndex)
 	end
-	--print("room ", coords.x, coords.y)
+	-- print("Room ", coords.x, coords.y)
+end
+
+function CheckIfInFirstRoom(room)
+	-- If current floor is 0
+	-- And current room is entrance (5 in dungeon room enum)
+	return currentFloor == 0 and room.roomType == 5
 end
 
 function UpdateCurrentRoom( )
-	--[[
-	if (player == nil or player.isActive == false) then
-        RegenerateDungeon()
-        return
-    end
-	--]]
     local playerPosition = player:GetBody().position
 
 	-- check position against adjacent rooms
@@ -24,7 +24,6 @@ function UpdateCurrentRoom( )
 	local roomCoords = room:GetCoords()
 	local doors = room:GetDoorBits()
 
-	--print("doors ",doors)
 	if ((doors & 1) == 1) then
 		CheckRoomBounds(playerPosition, ivec2.new(roomCoords.x - 1, roomCoords.y))
 	end
@@ -41,13 +40,16 @@ function UpdateCurrentRoom( )
 		CheckRoomBounds(playerPosition, ivec2.new(roomCoords.x, roomCoords.y - 1))
 	end
 
-    --print("curr: ", currentRoom)
     -- Lock or Unlock Room
-    if room:IsCleared() then
-		room:UnlockRoom()
-    else 
-	    room:LockDownRoom()
-    end
+	if CheckIfInFirstRoom(room) then
+	-- Skip very first room on first floor, will unlock after spell pickup
+	else
+		if room:IsCleared() then
+			room:UnlockRoom()
+		else 
+			room:LockDownRoom()
+		end
+	end
 end
 
 UpdateCurrentRoom()

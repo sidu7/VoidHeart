@@ -46,8 +46,12 @@ namespace BulletHell
 		void CreateObjectsInRoom(DungeonRoom& room, const rapidjson::Value::Object& data, const std::string& objects, const std::string& type, bool addToEnemylist);
 
 		// Event handling
-		void DropRandomPickup(Hollow::GameEvent& event);
 		void OnPlayerDeath(Hollow::GameEvent& event);
+		void OnPlayerHitPortal(Hollow::GameEvent& event);
+		void OnDeath(Hollow::GameEvent& event);
+		void DropRandomPickup(Hollow::GameObject* pGO);
+		void OnRoomLockDownDelayed(Hollow::GameEvent& event);
+		void OnSpellCollect(Hollow::GameEvent& event);
 
         // Create a PickUp at the centre of the room
         void CreatePickUpInRoom(DungeonRoom& room);
@@ -58,6 +62,7 @@ namespace BulletHell
 		void CreateMainMenu();
 		void StartNewGame();
         void MoveToNextFloor();
+		std::vector<int> GetSpellOrder() { return mSpellOrder; }
 
 		// Main Menu Methods
 		void ConstructMainMenuRoom();
@@ -68,9 +73,6 @@ namespace BulletHell
 		
         // Generates Enemy in the room given by roomCoords at the position offset
         Hollow::GameObject* GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
-
-		// Event Callbacks
-        void OnRoomLockDownDelayed(Hollow::GameEvent& event);
 		
 	private: 
 		// Cheat codes
@@ -91,5 +93,6 @@ namespace BulletHell
 		std::vector<std::string> mPickupPrefabNames;
 		int mCountDeadEnemies;
 		int mRandomCount;
+		std::vector<int> mSpellOrder;
     };
 }

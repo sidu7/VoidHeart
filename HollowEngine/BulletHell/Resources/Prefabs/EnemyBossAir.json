@@ -52,7 +52,8 @@
       "Type": "Script",
       "Scripts": [
         "Boss/AirMovement"
-      ]
+      ],
+	  "DestroyScripts" : ["Destroy/SpawnAirSpell"]
     },
     {
       "Type": "Attack",

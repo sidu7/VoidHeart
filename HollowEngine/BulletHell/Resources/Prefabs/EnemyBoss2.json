@@ -50,7 +50,8 @@
       "Type": "Script",
       "Scripts": [
         "EnemyBoss2Movement"
-      ]
+      ],
+	  "DestroyScripts" : ["Destroy/SpawnEarthSpell"]
     },
     {
       "Type": "Attack",
