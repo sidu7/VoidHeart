@@ -5,7 +5,7 @@
     "Components": [
         {
             "Type": "Transform",
-            "Scale": [ 1.0, 5.0, 1.0 ]
+            "Scale": [ 2.0, 5.0, 2.0 ]
         },
         {
             "Type": "Body",

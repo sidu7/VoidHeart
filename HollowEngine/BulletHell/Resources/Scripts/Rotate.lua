@@ -22,7 +22,8 @@ function Rotate()
     -- playtesting vars
     -----------------------------------------
 	local transform = gameObject:GetTransform()
-	
+	local body = gameObject:GetBody()
+
 	local xDirLeftStick = GetAxis(CONTROLLER["LX"])
     local zDirLeftStick = GetAxis(CONTROLLER["LY"])
     local playerTransform = player:GetTransform()
@@ -40,7 +41,7 @@ function Rotate()
         rot = CalculateRotation(xDirRightStick, zDirRightStick)
     end
 
-    transform:Rotate(rot)
+    body:RotateBody(rot)
 
 	-- temp: --
 	local particle = gameObject:GetParticleEmitter()

@@ -30,10 +30,11 @@
 #include "Hollow/Components/UITransform.h"
 #include "Hollow/Components/UIImage.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Systems/PhysicsSystem.h"
 
 
 #define MAX_REGULAR_ROOMS 8
-#define MAX_BOSS_ROOMS 3
+#define MAX_BOSS_ROOMS 1
 
 namespace BulletHell
 {
@@ -127,6 +128,7 @@ namespace BulletHell
 		mCreditsUIObject = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources\\Prefabs\\CreditsUI.json");
 		mCreditsUIObject->mActive = false;
 
+		//Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
 		Hollow::PhysicsManager::Instance().isPaused = false;
 	}
 	
@@ -198,7 +200,8 @@ namespace BulletHell
 		mRandomCount = 3; // first drop after 3 enemies... then randomize
 		mCountDeadEnemies = 0;
 
-		Hollow::PhysicsManager::Instance().mTree.Update();
+    	
+		Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
 		Hollow::PhysicsManager::Instance().isPaused = false;
     }
 

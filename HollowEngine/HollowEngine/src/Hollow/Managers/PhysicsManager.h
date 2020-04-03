@@ -49,6 +49,7 @@ namespace Hollow
 		HOLLOW_API void Init(rapidjson::Value::Object& data);
 
 		HOLLOW_API void UpdateScale(GameObject* pGo);
+
 	public:
 		// Data
 		DynamicAABBTree mTree;

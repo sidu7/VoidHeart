@@ -3,10 +3,10 @@ currentFloor = 0
 currentRoom = 0
 
 -- Dungeon Configuration
-firstFloorRoomCount = 2
-numFloors = 1
-dungeonLength = 2
-dungeonBreadth = 2
+firstFloorRoomCount = 4
+numFloors = 4
+dungeonLength = 6
+dungeonBreadth = 6
 
 -- Room Configuration
 roomSize = 32

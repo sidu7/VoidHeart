@@ -4,7 +4,8 @@ function FollowPlayer(isScared)
 	local enemySpeed = 8.0
     local scareDistance = 10 -- distance at which enemy will run away
     -----------------------------------------
-    local transform = gameObject:GetTransform()
+    local transform = gameObject:GetTransform() 
+    local body = gameObject:GetBody()
 	local position = transform.position
 
     --  acquire target 
@@ -29,11 +30,11 @@ function FollowPlayer(isScared)
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     
     -- setting the velocity
@@ -92,11 +93,11 @@ function MoveInCirle()
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        transform:Rotate(rot)
+        body:RotateBody(rot)
     end
 
 	-- Get Direction to move in circle
@@ -123,10 +124,9 @@ function MoveInCirle()
 end
 
 function Update()
-    print("moving")
 	local health = gameObject:GetHealth()
     local hitPoints = health.hitPoints
-    print(hitPoints)
+    
     if (hitPoints < 33) then
         FollowPlayer(true)
     elseif (hitPoints < 66) then

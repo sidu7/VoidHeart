@@ -23,6 +23,7 @@ namespace Hollow {
 		mPreviousQuaternion = glm::fquat(0.0f, 0.0f, 0.0f, 1.0f);
 		mIsFrictionLess = false;
 		mUseGravity = true;
+		mIsAlwaysVertical = false;
 		
 		mDRigidbodyType = "";
 		mBodyType = Body::DYNAMIC;
@@ -41,6 +42,7 @@ namespace Hollow {
 		ImGui::InputFloat3("Position", &mPosition[0]);
 		ImGui::InputFloat3("Velocity", &mVelocity[0]);
 		ImGui::InputFloat3("AngularVelocity", &mAngularVelocity[0]);
+		ImGui::Checkbox("Always Vertical", &mIsAlwaysVertical);
 		ImGui::Checkbox("Frictionless", &mIsFrictionLess);
 		ImGui::Checkbox("Use Gravity", &mUseGravity);
 	}
@@ -66,6 +68,10 @@ namespace Hollow {
 		if (data.HasMember("IsFrictionLess"))
 		{
 			mIsFrictionLess = data["IsFrictionLess"].GetBool();
+		}
+		if (data.HasMember("IsAlwaysVertical"))
+		{
+			mIsAlwaysVertical = data["IsAlwaysVertical"].GetBool();
 		}
 		if (data.HasMember("UseGravity"))
 		{
@@ -104,5 +110,16 @@ namespace Hollow {
 	{
 		mPosition = pos;
 		mpOwner->GetComponent<Transform>()->mPosition = pos;
+	}
+
+	void Body::Rotate(glm::vec3 angles)
+	{
+		glm::mat4 rotate = glm::mat4(1.0f);
+		rotate = glm::rotate(rotate, glm::radians(angles.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		rotate = glm::rotate(rotate, glm::radians(angles.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		rotate = glm::rotate(rotate, glm::radians(angles.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		mQuaternion = glm::toQuat(rotate);
+
+		mRotationMatrix = rotate;
 	}
 }

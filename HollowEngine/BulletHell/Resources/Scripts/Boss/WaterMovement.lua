@@ -42,11 +42,11 @@ function LookAt(oldPos, pos)
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
-        gameObject:GetTransform():Rotate(rot)
+        gameObject:GetBody():RotateBody(rot)
     end
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
-        gameObject:GetTransform():Rotate(rot)
+        gameObject:GetBody():RotateBody(rot)
     end
 end
 
@@ -56,7 +56,7 @@ function MoveInCircles()
 	local oldPos = vec3.new(pos.x, pos.y, pos.z)
 	-----------------------------------------
     -- playtesting vars
-	local radiusCircle = 7
+	local radiusCircle = 5
     -----------------------------------------
 	local topCircleCenter = vec3.new(0, 0, -radiusCircle)
 	local leftCircleCenter = vec3.new(-radiusCircle * math.cos(math.pi/6), 0, radiusCircle * math.sin(math.pi/6))

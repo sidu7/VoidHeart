@@ -24,7 +24,8 @@
       "Mass": 30.0,
       "RigidbodyType": "DYNAMIC",
       "IsFrictionLess": false,
-      "UseGravity": true
+      "UseGravity": true,
+      "IsAlwaysVertical" :  true
     },
     {
       "Type": "Collider",
@@ -78,9 +79,6 @@
     {
       "Type": "Script",
       "Scripts": [ "PlayerMovement", "OnTakeDamage"]
-    },
-    {
-      "Type": "Movement"
     },
     {
       "Type": "Attack",

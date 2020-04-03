@@ -30,7 +30,7 @@ function Shoot()
     if zDirNorm < 0 then  
 	    rot = rot + vec3.new(0.0, 180.0, 0.0)
     end
-    transform:Rotate(rot)
+    gameObject:GetBody():RotateBody(rot)
 	
 	local attack = gameObject:GetAttack()
 	if attack.currentAttackTime > attack.baseAttackTime then

@@ -88,44 +88,25 @@ namespace Hollow
 		PhysicsManager::Instance().mTree.DeleteTree();
 	}
 
-	void PhysicsSystem::Step(float fixedDeltaTime)
+	void PhysicsSystem::UpdateTree()
 	{
 		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
 		{
-			Collider* pCol = mGameObjects[i]->GetComponent<Collider>();
-			Transform* pTrans = mGameObjects[i]->GetComponent<Transform>();
-            
-			if (!pCol->mIsTrigger)
+			if(mGameObjects[i]->mType == 0)
 			{
-				if (pCol->mpShape->mType == BOX)
-				{
-                    glm::mat3& rotMatrix = pTrans->mRotationMatrix;
-					glm::vec3 extents = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents();
-					glm::vec3 x = glm::vec3(extents.x, 0.0f, 0.0f);
-					glm::vec3 y = glm::vec3(0.0f, extents.y, 0.0f);
-					glm::vec3 z = glm::vec3(0.0f, 0.0f, extents.z);
-					glm::vec3 rotatedExtents = abs(rotMatrix * x) +
-						abs(rotMatrix * y) +
-						abs(rotMatrix * z);
-
-					// based on normalized body vertices
-					static_cast<ShapeAABB*>(pCol->mpShape)->mMin = glm::vec3(-rotatedExtents.x, -rotatedExtents.y, -rotatedExtents.z) + pCol->mpBody->mPosition;
-					static_cast<ShapeAABB*>(pCol->mpShape)->mMax = glm::vec3(rotatedExtents.x, rotatedExtents.y, rotatedExtents.z) + pCol->mpBody->mPosition;
-				}
-				else if (pCol->mpShape->mType == BALL)
-				{
-					static_cast<ShapeCircle*>(pCol->mpShape)->mCenter = pCol->mpBody->mPosition;
-				}
+				mGameObjects[i]->GetComponent < Hollow::Body >()->mPosition += glm::vec3(0.0f, 0.0f, 0.0f);
 			}
-			else
-			{
-				static_cast<ShapeAABB*>(pCol->mpShape)->mMin = -static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
-				static_cast<ShapeAABB*>(pCol->mpShape)->mMax = static_cast<ShapeAABB*>(pCol->mpLocalShape)->GetHalfExtents() + pCol->mpTr->mPosition;
-			}
+			
+			PhysicsManager::Instance().UpdateScale(mGameObjects[i]);
 		}
 
 		// balancing the tree
 		PhysicsManager::Instance().mTree.Update();
+	}
+
+	void PhysicsSystem::Step(float fixedDeltaTime)
+	{
+		UpdateTree();
 
 		// finds out intersecting bounding boxes
 		PhysicsManager::Instance().mTree.CalculatePairs();
@@ -300,6 +281,11 @@ namespace Hollow
 
 				pBody->mPreviousQuaternion = pBody->mQuaternion;
 
+				if(pBody->mIsAlwaysVertical)
+				{
+					pBody->mAngularVelocity.x = pBody->mAngularVelocity.z = 0.0f;
+				}
+				
 				// integrate the orientation
 				glm::fquat newQuat = 0.5f * (pBody->mAngularVelocity) * pBody->mQuaternion * fixedDeltaTime;
 				pBody->mQuaternion *= newQuat;

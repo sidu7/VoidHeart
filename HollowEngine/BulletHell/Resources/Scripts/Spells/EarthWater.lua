@@ -8,7 +8,7 @@ function CreateBarrier()
 	local forward = gameObject:GetTransform():forward()
 	body.position = spawnPosition + forward
 	transform.position = body.position
-	transform:Rotate(gameObject:GetTransform().rotation)
+	body:RotateBody(gameObject:GetTransform().rotation)
 
 end
 

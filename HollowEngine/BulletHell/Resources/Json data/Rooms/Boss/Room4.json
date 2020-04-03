@@ -1,4 +1,26 @@
 {
-	"Enemies": [{"EnemyType": "EnemyBoss2",
-				"Position": [16, 16]}]
+	"Enemies": [
+		{
+			"EnemyType": "EnemyBoss1",
+			"Position": [ 16, 16 ]
+		}
+	],
+	"Obstacles": [
+		{
+			"ObstacleType": "Wall",
+			"Position": [ 8, 8 ]
+		},
+		{
+			"ObstacleType": "Wall",
+			"Position": [ 24, 8 ]
+		},
+		{
+			"ObstacleType": "Wall",
+			"Position": [ 8, 24 ]
+		},
+		{
+			"ObstacleType": "Wall",
+			"Position": [ 24, 24 ]
+		}
+	]
 }

@@ -45,6 +45,8 @@ namespace Hollow {
 		HOLLOW_API void DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) override;
 
 		HOLLOW_API void SetPosition(glm::vec3 pos);
+
+		HOLLOW_API void Rotate(glm::vec3 angles);
 		
 		float mMass, mInverseMass;
 		glm::vec3 mPosition;
@@ -63,6 +65,7 @@ namespace Hollow {
 
 		RigidbodyType mBodyType;
 
+		bool mIsAlwaysVertical; // no rotation around the x or z axis
 		bool mIsFrictionLess;
 		bool mUseGravity;
 	private:

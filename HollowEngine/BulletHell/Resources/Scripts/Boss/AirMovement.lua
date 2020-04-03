@@ -22,6 +22,7 @@ function FollowTarget(target, speedMod)
 	local zDirNorm = zDir / dirLength
 	
     -- look at the target
+    local body = gameObject:GetBody()
     local rot = vec3.new(0.0, 0.0, 0.0)
     local tangent = xDirNorm / zDirNorm
     local radians = math.atan(tangent)
@@ -31,10 +32,9 @@ function FollowTarget(target, speedMod)
     else
 	    rot = vec3.new(0.0, degree + 180, 0.0)
     end
-    transform:Rotate(rot)
+    body:RotateBody(rot)
     
     -- setting the velocity
-    local body = gameObject:GetBody()
     body.velocity = vec3.new(xDirNorm, 0.0, zDirNorm)
     body.velocity = body.velocity * enemySpeed
 
@@ -88,6 +88,7 @@ function MoveTowardsPillar(target, speedMod)
 	local zDirNorm = zDir / dirLength
 	
     -- look at the pillar
+    local body = gameObject:GetBody()
     local rot = vec3.new(0.0, 0.0, 0.0)
     local tangent = xDirNorm / zDirNorm
     local radians = math.atan(tangent)
@@ -97,10 +98,9 @@ function MoveTowardsPillar(target, speedMod)
     else
 	    rot = vec3.new(0.0, degree + 180, 0.0)
     end
-    transform:Rotate(rot)
+    body:RotateBody(rot)
     
     -- setting the velocity
-    local body = gameObject:GetBody()
     body.velocity = vec3.new(xDirNorm, yDirNorm, zDirNorm)
     body.velocity = body.velocity * enemySpeed
 end

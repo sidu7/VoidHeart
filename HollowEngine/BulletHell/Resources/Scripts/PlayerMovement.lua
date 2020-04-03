@@ -59,22 +59,19 @@ function Update()
         rot = CalculateRotation(xDirRightStick, zDirRightStick)
     end
 
-    transform:Rotate(rot)
-
-	-- Apply any movement debuffs
-	local movement = gameObject:GetMovement()
-
-	impulse = impulse * speed * movement.moveDebuffFactor;
-
-	movement.moveDebuffFactor = 1.0; -- reset debuff for this frame
-	
+    local body = gameObject:GetBody()
+    body:RotateBody(rot)
+    
+    impulse = impulse * speed
+    	
     ApplyLinearImpulse(gameObject, impulse)
 
-    local body = gameObject:GetBody()
 
     -- Damp Overall Velocity and Rotation
     body.velocity = body.velocity - 0.8 * body.velocity 
     body.angularVelocity = body.angularVelocity - 0.8* body.angularVelocity;
+    body.angularVelocity.x = 0
+    body.angularVelocity.z = 0
 end
 
 Update()

@@ -22,6 +22,7 @@ function CreateSteamTrap()
     local trapTransform = trap:GetTransform()
 	local trapBody = trap:GetBody()
 	
+	trapBody.position = gameObject:GetTransform().position
 	trapTransform.position = trapBody.position
 
 	local particle = trap:GetParticleEmitter()
@@ -66,18 +67,18 @@ function Shoot()
     local hitPoints = health.hitPoints
 	
 	local attack = gameObject:GetAttack()
-	if(hitPoints >= maxHealth * 2.0 / 3.0) then
+	if(hitPoints >= maxHealth * 3.0 / 4.0) then
 		-- First phase
 		PhaseOneBehavior()
 		attack.baseAttackTime = 0.5
-	elseif(hitPoints >= maxHealth / 3.0) then
+	elseif(hitPoints >= maxHealth / 2.0) then
 		-- Second phase
 		PhaseTwoBehavior()
-		attack.baseAttackTime = 3
+		attack.baseAttackTime = 2
 	else
 		-- Third phase
 		PhaseThreeBehavior()
-		attack.baseAttackTime = 0.1
+		attack.baseAttackTime = 1
 	end
 end
 
