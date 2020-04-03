@@ -1414,6 +1414,17 @@ namespace Hollow {
 		
 	}
 
+    void RenderManager::ClearParticleMemory()
+    {
+        // Clear Particles Data
+        mpParticlesModelStorage->Bind(3);
+        mpModelParticleDataClearShader->Use();
+        mpModelParticleDataClearShader->DispatchCompute(MAX_PARTICLES_COUNT * 0.5f / 128, 1, 1);
+        ShaderStorageBuffer::PutMemoryBarrier();
+        mpModelParticleDataClearShader->Unbind();
+        mpParticlesModelStorage->Unbind(3);
+    }
+
 	void RenderManager::DebugDisplayGBuffer()
 	{
 		if (ImGui::CollapsingHeader("GBuffer"))

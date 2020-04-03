@@ -1,3 +1,38 @@
+function LookForward()
+    -----------------------------------------
+    -- playtesting vars
+	local enemySpeed = 20.0
+	local scareSpeed = 8.0
+    local scareDistance = 10 -- distance at which enemy will run away
+    -----------------------------------------
+    local transform = gameObject:GetTransform()
+	local position = transform.position   
+	-- Get forward position
+	local targetPosX = position.x + transform:forward().x
+	local targetPosZ = position.z + transform:forward().z
+
+    -- calculate direction
+    local xDir = targetPosX - position.x
+	local zDir = targetPosZ - position.z
+	local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
+	local xDirNorm = xDir / dirLength
+	local zDirNorm = zDir / dirLength
+    
+    -- look at the target
+    local rot = vec3.new(0.0, 0.0, 0.0)
+    local tangent = xDirNorm / zDirNorm
+    local radians = math.atan(tangent)
+    local degree = radians * 180 / math.pi
+    if zDirNorm >= 0 then  
+	    rot = vec3.new(0.0, degree, 0.0)
+        transform:Rotate(rot)
+    end
+    if zDirNorm < 0 then 
+	    rot = vec3.new(0.0, degree + 180, 0.0)
+        transform:Rotate(rot)
+    end
+end
+
 function RunAtThePlayer()
     -----------------------------------------
     -- playtesting vars
@@ -6,26 +41,31 @@ function RunAtThePlayer()
     local scareDistance = 10 -- distance at which enemy will run away
     -----------------------------------------
     local transform = gameObject:GetTransform()
-	local position = transform.position
-    --  acquire target 
-    local target = player
+	local position = transform.position   
+	-- Get Player
+	local target = player
     if (target == nil or target.isActive == false) then
         return
     end
     local targetTransform = target:GetTransform()
     local targetPos = targetTransform.position
-    
+
     -- calculate direction
     local xDir = targetPos.x - position.x
 	local zDir = targetPos.z - position.z
 	local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
 	local xDirNorm = xDir / dirLength
 	local zDirNorm = zDir / dirLength
-	
+    
+    -- setting the velocity
+    local body = gameObject:GetBody()
+    body.velocity = vec3.new(xDirNorm, 0.0, zDirNorm)
+	body.velocity = body.velocity * enemySpeed
+    
     -- look at the target
     local body = gameObject:GetBody()
     local rot = vec3.new(0.0, 0.0, 0.0)
-    local tangent = xDirNorm / zDirNorm
+    local tangent = body.velocity.x / body.velocity.z
     local radians = math.atan(tangent)
     local degree = radians * 180 / math.pi
     if zDirNorm >= 0 then  
@@ -35,19 +75,6 @@ function RunAtThePlayer()
     if zDirNorm < 0 then 
 	    rot = vec3.new(0.0, degree + 180, 0.0)
         body:RotateBody(rot)
-    end
-    
-    -- setting the velocity
-    body.velocity = vec3.new(xDirNorm, 0.0, zDirNorm)
-	if (isScared == true) then 
-        if (dirLength < scareDistance) then
-            body.velocity.x = scareDistance * body.velocity.x * -1
-            body.velocity.z = scareDistance * body.velocity.z * -1
-        else
-            body.velocity = vec3.new(0.0, 0.0, 0.0)
-        end    
-    else
-        body.velocity = body.velocity * enemySpeed
     end
 end
 
@@ -90,8 +117,6 @@ end
 function LookAtThePlayer()
 	local transform = gameObject:GetTransform()
 	local selfPos = transform.position
-	local body = gameObject:GetBody()
-    body.velocity = vec3.new(0.0, 0.0, 0.0)
 	-- Get Player
 	local target = player
     if (target == nil or target.isActive == false) then
@@ -194,6 +219,67 @@ function MoveToCenter()
     end
 end
 
+function SteamParticles()
+	local particle = gameObject:GetParticleEmitter()
+	if particle.active ~= true then
+	    particle.active = true
+	    ChangeParticleShader(gameObject,"Resources/Shaders/SteamingModelParticles.comp")
+	    particle.lifeRange = vec2.new(0.01,0.03)
+	    particle.count = 0
+	    particle.maxCount = 10000
+	    particle.minColor = vec3.new( 0.5, 0.27, 0.07 )
+	    particle.maxColor = vec3.new( 1.0, 1.0, 0.0 )
+	    particle.scaleRange = vec2.new(0.01, 0.05)
+	    particle.speedRange = vec2.new(1.0,2.0)
+	    particle.fadeRate = 5.0
+        particle.drawCount = 0
+	end
+end
+
+function TrailingParticles()
+	local particle = gameObject:GetParticleEmitter()
+	if particle.active ~= true then
+		particle.active = true
+		ChangeParticleShader(gameObject,"Resources/Shaders/TrailingModelParticles.comp")
+		particle.scaleRange = vec2.new(0.05, 0.1)
+		particle.speedRange = vec2.new(1.0,2.0)
+		particle.lifeRange = vec2.new(1.0,1.0)
+		particle.minColor = vec3.new( 1.17, 0.08, 0.3 )
+		particle.maxColor = vec3.new( 0.45, 0.24, 0.77)
+		particle.fadeRate = 5.0
+		particle.count = 0
+		particle.maxCount = 10000
+        particle.drawCount = 0
+	end
+	local transform = gameObject:GetTransform()
+    local rot = transform.rotation
+    local angle = rot.y
+    angle = angle * math.pi / 180
+    local xDir = math.sin(angle)
+    local zDir = math.cos(angle)
+	particle.direction = VecNormalize(vec3.new(-xDir,0,-zDir));
+end
+
+function ChangeParticles()
+	local particle = gameObject:GetParticleEmitter()
+	if particle then
+		particle.extraData.x = 2.5
+	end
+	if particle.active ~= true then
+	    particle.active = true
+	    ChangeParticleShader(gameObject,"Resources/Shaders/ChargingModelParticles.comp")
+	    particle.lifeRange = vec2.new(0.1,0.3)
+	    particle.count = 0
+	    particle.maxCount = 10000
+	    particle.minColor = vec3.new( 0.5, 0.27, 0.07 )
+	    particle.maxColor = vec3.new( 1.0, 0.0, 0.0 )
+	    particle.scaleRange = vec2.new(0.01, 0.05)
+	    particle.speedRange = vec2.new(1.0,2.0)
+	    particle.fadeRate = 5.0
+        particle.drawCount = 0
+	end
+end
+
 function Update()
     local maxHealth = 200; 
 	local health = gameObject:GetHealth()
@@ -201,6 +287,10 @@ function Update()
     if (hitPoints < maxHealth / 3) then
         MoveToCenter()
     elseif (hitPoints < maxHealth * 2 / 3) then
+        local particle = gameObject:GetParticleEmitter()
+        if particle then
+		    particle.active = false
+	    end
         local material = gameObject:GetMaterial()
         material.diffuse = vec3.new(0,0,0)
         MoveToCenter()
@@ -209,20 +299,43 @@ function Update()
         attack.baseAttackTime = 9
 	    if (attack.currentAttackTime > attack.baseAttackTime) then
             attack.currentAttackTime = 0
+            local particle = gameObject:GetParticleEmitter()
+            if particle then
+		        particle.active = false
+	        end
         elseif (attack.currentAttackTime > attack.baseAttackTime * 2 / 3) then
             Cooldown(attack.currentAttackTime, attack.baseAttackTime * 2 /3, attack.baseAttackTime)
+            if (attack.IsFired == true) then
+                local particle = gameObject:GetParticleEmitter()
+                if particle then
+		            particle.active = false
+	            end
+            end
             attack.IsFired = false -- resetting after the RunAtThePlayer
             attack.shouldAttack = true -- resets for MeleeAttack
+            LookForward()
+            SteamParticles()
         elseif (attack.currentAttackTime > attack.baseAttackTime / 3) then
             if (attack.IsFired == false) then
+                local particle = gameObject:GetParticleEmitter()
+	            if particle then
+		            particle.active = false
+	            end
                 RunAtThePlayer()
                 attack.IsFired = true
                 PlaySFX("Resources/Audio/SFX/BossChargingAttack.wav")
+            else
+                LookForward()
+                TrailingParticles()
             end
+
             MeleeAttack()
         else
             LookAtThePlayer()
+	        local body = gameObject:GetBody()
+            body.velocity = vec3.new(0.0, 0.0, 0.0)
             Charge(attack.currentAttackTime, 0, attack.baseAttackTime / 3)
+            ChangeParticles()
             --PlaySFX("Resources/Audio/SFX/BossCharging.wav")
         end
         -- Handled By EnemyBoss2Fire.lua, considering cooldown for each charge

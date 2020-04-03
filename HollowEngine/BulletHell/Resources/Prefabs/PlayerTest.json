@@ -94,7 +94,9 @@
       "Invincible": false,
       "InvincibleTime": 300.0,
       "IsHit": false,
-      "HitReactinTime": 0.5
+      "HitReactinTime": 0.5,
+      "DeathTime": 2.0,
+      "IsDying": false
     },
     {
       "Type": "Magic",

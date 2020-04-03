@@ -36,6 +36,8 @@ function AirDash()
 			particle.fadeRate = 5.0
 			particle.count = 0
 			particle.maxCount = 10000
+
+            ClearParticleMemory()
 		end
 		particle.direction = VecNormalize(vec3.new(-xDir,0,-zDir));
 

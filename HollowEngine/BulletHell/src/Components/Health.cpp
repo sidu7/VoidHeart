@@ -14,7 +14,10 @@ namespace BulletHell
             "hitPoints", &Health::mHitPoints,
             "isHit", & Health::mIsHit,
             "currentHitReactionTime", &Health::mCurrentHitReactionTime,
-            "hitReactionTime", &Health::mHitReactionTime);
+            "hitReactionTime", &Health::mHitReactionTime,
+            "currentDeathTime", & Health::mCurrentDeathTime,
+            "deathTime", & Health::mDeathTime,
+            "isDying", & Health::mIsDying);
 
         Hollow::ScriptingManager::Instance().mGameObjectType["GetHealth"] = &Hollow::GameObject::GetComponent<Health>;
 	}
@@ -45,6 +48,14 @@ namespace BulletHell
         {
             mHitReactionTime = data["HitReactinTime"].GetFloat();
         }
+        if (data.HasMember("DeathTime"))
+        {
+            mDeathTime = data["DeathTime"].GetFloat();
+        }
+        if (data.HasMember("IsDying"))
+        {
+            mIsDying = data["IsDying"].GetBool();
+        }
 	}
 
 	void Health::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
@@ -55,6 +66,8 @@ namespace BulletHell
 		Hollow::JSONHelper::Write<float>("InvincibleTime", mInvincibleTime, writer);
         Hollow::JSONHelper::Write<bool>("IsHit", mIsHit, writer);
         Hollow::JSONHelper::Write<float>("HitReactionTime", mHitReactionTime, writer);
+        Hollow::JSONHelper::Write<float>("DeathTime", mDeathTime, writer);
+        Hollow::JSONHelper::Write<bool>("IsDying", mIsDying, writer);
 	}
 
 	void Health::Clear()
@@ -66,9 +79,11 @@ namespace BulletHell
 		ImGui::InputInt("Hit Points", &mHitPoints);
 		ImGui::Checkbox("Is Alive", &mIsAlive);
 		ImGui::Checkbox("Invincible", &mInvincible);
+        ImGui::Checkbox("Is Dying", &mIsDying);
 		ImGui::InputFloat("Invincible Time", &mInvincibleTime);
 		ImGui::InputFloat("Current Invincible Timer", &mCurrentInvincibleTime);
         ImGui::InputFloat("Reaction Time To Hits", &mHitReactionTime);
+        ImGui::InputFloat("Death Time To Hits", &mDeathTime);
 	}
 
 }

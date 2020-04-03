@@ -11,16 +11,17 @@ function Cooldown(currentTime, startTime, endTime)
 end
 
 function Update()
-    local health = gameObject:GetHealth()
+    local health = gameObject:GetHealth()  
 
-    if(health.currentHitReactionTime >= health.hitReactionTime) then
-        health.currentHitReactionTime = 0
-    elseif (health.currentHitReactionTime > 0.5 * health.hitReactionTime) then
-        Cooldown(health.currentHitReactionTime, health.hitReactionTime / 2, health.hitReactionTime)
-    else
-        Charge(health.currentHitReactionTime, 0, health.hitReactionTime / 2)
+    if (health.isHit) then
+        if(health.currentHitReactionTime >= health.hitReactionTime) then
+            health.currentHitReactionTime = 0
+        elseif (health.currentHitReactionTime > 0.5 * health.hitReactionTime) then
+            Cooldown(health.currentHitReactionTime, health.hitReactionTime / 2, health.hitReactionTime)
+        else
+            Charge(health.currentHitReactionTime, 0, health.hitReactionTime / 2)
+        end
     end
-
 end
 
 Update()
