@@ -46,7 +46,8 @@
     {
       "Type": "Script",
       "Scripts": [
-        "EnemyFollowsPlayer"
+        "EnemyFollowsPlayer",
+        "OnTakeDamage"
       ]
     },
     {
@@ -59,7 +60,11 @@
       "HitPoints": 10,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 3.0
+      "InvincibleTime": 0.5,
+      "IsHit": false,
+      "HitReactinTime": 0.5,
+      "DeathTime": 2.0,
+      "IsDying": false
     }
   ]
 }

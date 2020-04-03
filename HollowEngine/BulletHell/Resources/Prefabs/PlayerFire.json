@@ -31,7 +31,7 @@
     },
     {
       "Type": "DestroyTimer",
-      "MaxTime": 0.5
+      "MaxTime": 2.0
     },
     {
       "Type": "ParticleEmitter",

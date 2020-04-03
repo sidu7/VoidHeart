@@ -123,10 +123,8 @@ function MoveInCirle()
 end
 
 function Update()
-    print("moving")
 	local health = gameObject:GetHealth()
     local hitPoints = health.hitPoints
-    print(hitPoints)
     if (hitPoints < 33) then
         FollowPlayer(true)
     elseif (hitPoints < 66) then

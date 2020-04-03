@@ -40,7 +40,11 @@
       "HitPoints": 20,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 0.02
+      "InvincibleTime": 0.02,
+      "IsHit": false,
+      "HitReactinTime": -0.5,
+      "DeathTime": 2.0,
+      "IsDying": false
     },
     {
       "Type": "Script",

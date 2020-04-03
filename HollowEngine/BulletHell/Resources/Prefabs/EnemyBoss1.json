@@ -47,9 +47,10 @@
     {
       "Type": "Script",
       "Scripts": [
-        "EnemyBoss1Movement"
+        "EnemyBoss1Movement",
+        "OnTakeDamage"
       ],
-	  "DestroyScripts" : ["Destroy/SpawnFireSpell"]
+      "DestroyScripts": [ "Destroy/SpawnFireSpell" ]
     },
     {
       "Type": "Attack",
@@ -61,7 +62,11 @@
       "HitPoints": 200,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 3.0
+      "InvincibleTime": 0.5,
+      "IsHit": false,
+      "HitReactinTime": 0.5,
+      "DeathTime": 2.0,
+      "IsDying": false
     }
   ]
 }

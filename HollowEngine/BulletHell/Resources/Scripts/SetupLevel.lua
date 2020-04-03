@@ -4,7 +4,6 @@ local floorNum = floor:GetFloorNum()
 
 -- update current room to the dungeon entrance
 currentRoom = floor:GetEntranceIndex()
-print("Current Room: ",currentRoom)
 
 local coords = floor:GetEntrance():GetCoords()
 --CreatePrefabAtPosition("EnemyBoss2", vec3.new(coords.y * roomSize + roomSize/2 + 8, 1, coords.x * roomSize + roomSize/2 + 8))
@@ -39,7 +38,6 @@ PopulateRoom(floor:GetRoomFromIndex(bossRoom))
 
 -- roomCount is AllRooms - (Entrance & Boss) - (Treasure) - index
 local roomCount = floor:GetRoomCount() - 2 - 1 - floorNum
-print(roomCount)
 for i=0, roomCount, 1 do
     PopulateRoom(floor:GetRegularRoom(i))
 end

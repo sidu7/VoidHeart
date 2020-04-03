@@ -19,19 +19,22 @@
     },
     {
       "Type": "DestroyTimer",
-      "MaxTime": 0.5
+      "MaxTime": 2.0
     },
     {
-      "Type": "Model",
-      "Shape": "BALL",
-      "CastShadow": true
-    },
-    {
-      "Type": "Material",
-      "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 3.0, 0.0, 0.0 ],
-      "Shininess": 10.0,
-      "Texture": "Resources/Textures/cracks.png"
+      "Type": "ParticleEmitter",
+      "MaxCount": 10000,
+      "EmissionRate": 100,
+      "Shape": 1,
+      "Life": [ 0.05, 0.2 ],
+      "Speed": [ 1.0, 2.0 ],
+      "Size": [ 0.01, 0.05 ],
+      "ModelShape": "CUBE",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 1.17, 0.08, 0.3 ],
+      "MaxColor": [ 0.45, 0.24, 0.77 ],
+      "Area": [ 0.4, 0.4, 0.4 ],
+      "MoveWithObject": false
     }
   ]
 }

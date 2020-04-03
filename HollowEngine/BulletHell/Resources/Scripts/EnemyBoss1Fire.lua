@@ -24,7 +24,7 @@ function ShootInDirection(dirX, dirY, dirZ)
 end
 
 function CreateLargeFireball()
-	local bulletSpeed = 25.0
+	local bulletSpeed = 15.0
     
     --  acquire target 
     local target = player
