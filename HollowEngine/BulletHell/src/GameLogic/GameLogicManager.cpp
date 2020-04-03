@@ -98,6 +98,7 @@ namespace BulletHell
 	void GameLogicManager::CreateMainMenu()
 	{
 		hasGameStarted = false;
+		mIsChangingFloors = false;
 
 		// Clear non-global game objects
 		ClearNonGlobalGameObjects();
@@ -260,6 +261,11 @@ namespace BulletHell
         
         BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
         Hollow::SystemManager::Instance().OnSceneInit();
+
+		// Reset player speed to normal
+		mIsChangingFloors = false;
+		CharacterStats* pStats = mpPlayerGO->GetComponent<CharacterStats>();
+		pStats->mMovementSpeed = mPreviousPlayerSpeed;
     }
 
 	void GameLogicManager::CreateRoomLabels()
@@ -319,6 +325,7 @@ namespace BulletHell
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::PLAYER_DEATH, EVENT_CALLBACK(GameLogicManager::OnPlayerDeath));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PLAYER_HIT_PORTAL, EVENT_CALLBACK(GameLogicManager::OnPlayerHitPortal));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_SPELL_COLLECT, EVENT_CALLBACK(GameLogicManager::OnSpellCollect));
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(GameLogicManager::OnFloorCleared));
     }
 
 	void GameLogicManager::OnPickupCollected(Hollow::GameEvent& event)
@@ -424,9 +431,26 @@ namespace BulletHell
 
 	void GameLogicManager::OnSpellCollect(Hollow::GameEvent& event)
 	{
+		DungeonRoom& currentRoom = DungeonManager::Instance().GetCurrentRoom();
+
 		// Mainly used for unlocking starting room
-		DungeonManager::Instance().GetCurrentRoom().UnlockRoom();
-		// Could track stats for end game screen if desired
+		currentRoom.UnlockRoom();
+
+		// Spawn portal to next floor if not in starting room
+		if (currentRoom.mRoomType == DungeonRoomType::BOSS)
+		{
+			glm::vec3 portalPosition = currentRoom.GetCenter();
+			portalPosition.y = 1.5f;
+			portalPosition.z += 3.0f;
+			// TODO: Check if too close to the player
+			//glm::vec3 playerPosition = mpPlayerGO->GetComponent<Hollow::Transform>()->mPosition;
+			Hollow::ResourceManager::Instance().LoadPrefabAtPosition("Portal", portalPosition);
+		}
+	}
+
+	void GameLogicManager::OnFloorCleared(Hollow::GameEvent& event)
+	{
+		MoveToNextFloor();
 	}
 
 	void GameLogicManager::CheckCheatCodes()
@@ -660,7 +684,20 @@ namespace BulletHell
 
 	void GameLogicManager::OnPlayerHitPortal(Hollow::GameEvent& event)
 	{
-		MoveToNextFloor();
+		if (!mIsChangingFloors)
+		{
+			Hollow::GameEvent* fce = new Hollow::GameEvent((int)GameEventType::FLOOR_CLEARED_DELAYED);
+			// Send delayed event
+			Hollow::EventManager::Instance().AddDelayedEvent(fce, 2.0f);
+
+			// Save old player speed
+			// Stop player from moving
+			CharacterStats* pStats = mpPlayerGO->GetComponent<CharacterStats>();
+			mPreviousPlayerSpeed = pStats->mMovementSpeed;
+			pStats->mMovementSpeed = 0.0f;
+
+			mIsChangingFloors = true;
+		}
 	}
 
     void GameLogicManager::CreatePickUpInRoom(DungeonRoom& room)

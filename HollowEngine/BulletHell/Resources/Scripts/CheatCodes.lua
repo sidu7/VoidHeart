@@ -30,10 +30,17 @@ end
 function SkipToBoss()
 	if IsKeyTriggered("B") then
 		-- Put player in boss room
-		--local floor = GetDungeonFloor(currentFloor)
-		--local coords = floor:GetRoomFromIndex(floor:GetBossIndex()):GetCoords()
-		--player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2)
-		--player:GetTransform().position = player:GetBody().position
+		local floor = GetDungeonFloor(currentFloor)
+		local coords = floor:GetRoomFromIndex(floor:GetBossIndex()):GetCoords()
+		currentRoom = coords.x * dungeonLength + coords.y
+		player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2)
+		player:GetTransform().position = player:GetBody().position
+	end
+end
+
+function KillPlayer()
+	if IsKeyTriggered("L") then
+		player:GetHealth().hitPoints = -1
 	end
 end
 
@@ -42,6 +49,7 @@ function CheckCheatCodes()
 	SkipToNextFloor()
 	KillAllEnemiesInRoom()
 	SkipToBoss()
+	KillPlayer()
 end
 
 CheckCheatCodes()

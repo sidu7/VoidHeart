@@ -52,6 +52,7 @@ namespace BulletHell
 		void DropRandomPickup(Hollow::GameObject* pGO);
 		void OnRoomLockDownDelayed(Hollow::GameEvent& event);
 		void OnSpellCollect(Hollow::GameEvent& event);
+		void OnFloorCleared(Hollow::GameEvent& event);
 
         // Create a PickUp at the centre of the room
         void CreatePickUpInRoom(DungeonRoom& room);
@@ -94,5 +95,7 @@ namespace BulletHell
 		int mCountDeadEnemies;
 		int mRandomCount;
 		std::vector<int> mSpellOrder;
+		bool mIsChangingFloors;
+		float mPreviousPlayerSpeed;
     };
 }

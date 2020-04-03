@@ -1,21 +1,24 @@
 #include "DungeonManager.h"
 
-#include "Hollow/Components/Transform.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/ImGuiManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/GameObjectManager.h"
 
-#include "GameMetaData/GameEventType.h"
 #include "Events/DeathEvent.h"
-#include "Hollow/Components/Script.h"
 
 #include "Components/Attack.h"
-#include "GameLogic/GameLogicManager.h"
 
-#include "Hollow/Managers/GameObjectManager.h"
+#include "GameMetaData/GameEventType.h"
+
+#include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Script.h"
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Collider.h"
+
+#include "GameLogic/GameLogicManager.h"
+
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Physics/Broadphase/Shape.h"
 
@@ -194,11 +197,6 @@ namespace BulletHell
         int currentRoom = lua["currentRoom"].get<int>();
     	
         return mFloors[currentFloor].GetRoomFromIndex(currentRoom);
-    }
-
-	void DungeonManager::OnFloorCleared(Hollow::GameEvent& event)
-    {
-        GameLogicManager::Instance().MoveToNextFloor();
     }
 
 	// Called from Lua
