@@ -1,21 +1,24 @@
 #include "DungeonManager.h"
 
-#include "Hollow/Components/Transform.h"
 #include "Hollow/Managers/ResourceManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/ImGuiManager.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/GameObjectManager.h"
 
-#include "GameMetaData/GameEventType.h"
 #include "Events/DeathEvent.h"
-#include "Hollow/Components/Script.h"
 
 #include "Components/Attack.h"
-#include "GameLogic/GameLogicManager.h"
 
-#include "Hollow/Managers/GameObjectManager.h"
+#include "GameMetaData/GameEventType.h"
+
+#include "Hollow/Components/Transform.h"
+#include "Hollow/Components/Script.h"
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/Collider.h"
+
+#include "GameLogic/GameLogicManager.h"
+
 #include "Hollow/Core/GameObject.h"
 #include "Hollow/Physics/Broadphase/Shape.h"
 
@@ -178,17 +181,12 @@ namespace BulletHell
     	
     	if(pDeathEvent.mType == (int)GameObjectType::ENEMY)
     	{
-            auto iter = std::find(room.mEnemies.begin(), room.mEnemies.end(), pDeathEvent.mpObject1);
+			room.mEnemies.erase(std::remove(room.mEnemies.begin(), room.mEnemies.end(), pDeathEvent.mpObject1));
+            /*auto iter = std::find(room.mEnemies.begin(), room.mEnemies.end(), pDeathEvent.mpObject1);
     		if(iter != room.mEnemies.end())
     		{
                 room.mEnemies.erase(iter);
-    		}
-
-    		if(pDeathEvent.mpObject1->mTag == "Boss")
-    		{
-                Hollow::GameEvent* fce = new Hollow::GameEvent((int)GameEventType::FLOOR_CLEARED_DELAYED);
-                Hollow::EventManager::Instance().AddDelayedEvent(fce, 1.0f);
-    		}
+    		}*/
     	}
     }
 
@@ -201,28 +199,18 @@ namespace BulletHell
         return mFloors[currentFloor].GetRoomFromIndex(currentRoom);
     }
 
-	void DungeonManager::OnFloorCleared(Hollow::GameEvent& event)
-    {
-        GameLogicManager::Instance().MoveToNextFloor();
-    }
-
 	// Called from Lua
 	// Fires an event in C++
 	void DungeonManager::OnCurrentRoomUpdated(int current, int previousIndex)
 	{
-        Hollow::GameEvent ge((int)GameEventType::ON_ROOM_ENTERED);
-
         auto& lua = Hollow::ScriptingManager::Instance().lua;
         int currentFloor = lua["currentFloor"].get<int>();
         mFloors[currentFloor].OnRoomEnter(current, previousIndex);
-        //Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
 	}
 
     void DungeonManager::SubscribeToEvents()
 	{
-		HW_WARN("Dungeon Manager Subscibe Events");
         Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(DungeonManager::OnDeath));
-        Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::FLOOR_CLEARED_DELAYED, EVENT_CALLBACK(DungeonManager::OnFloorCleared));
 	}
 
 }

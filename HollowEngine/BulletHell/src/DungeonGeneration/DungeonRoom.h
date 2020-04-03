@@ -32,6 +32,11 @@ namespace BulletHell
 		int GetFloorNum() const { return mFloorNum; }
 		int GetDoorBits() const { return mDoors; }
         int GetEnemyCount() const { return mEnemies.size(); }
+		glm::vec3 GetCenter() const {
+			return glm::vec3(mRow * mRoomSize + mRoomSize / 2.0f,
+				0.0f,
+				mColumn * mRoomSize + mRoomSize / 2.0f);
+		}
     private:
         int TotalDoors() const;
     public:

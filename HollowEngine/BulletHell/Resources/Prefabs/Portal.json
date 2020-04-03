@@ -1,0 +1,63 @@
+{
+  "Type": "PORTAL",
+  "Tag": "Portal",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Scale": [ 0.1, 0.2, 0.1 ]
+    },
+    {
+      "Type": "Body",
+      "RigidbodyType": "STATIC",
+      "IsFrictionLess": false,
+      "UseGravity": false
+    },
+    {
+      "Type": "Model",
+      "Shape": "SPHERE",
+      "CastShadow": false,
+      "ModelHasOffset": false
+    },
+    {
+      "Type": "Collider",
+      "Bounciness": 0.20000000298023225,
+      "Shape": "BOX",
+      "isTrigger": true
+    },
+    {
+      "Type": "Material",
+      "Diffuse": [
+        1.0,
+        2.0,
+        10.0
+      ],
+      "Specular": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "Shininess": 10.0,
+	  "Transparent": true,
+      "AlphaValue": 0.2
+    },
+	{
+		"Type": "Script",
+		"Scripts": ["PortalGrow"]
+	},
+	{
+            "Type": "ParticleEmitter",
+            "MaxCount": 100,
+            "EmissionRate": 10,
+            "Shape": 1,
+            "ModelShape": "CUBE",
+            "Speed": [ 0.3, 1.0 ],
+            "Life": [ 0.5, 1.0 ],
+            "Size": [ 0.05, 0.08 ],
+          "ComputeShader": "Resources/Shaders/CenterModelParticles.comp",
+          "Area": [ 1.3, 1.3, 1.3 ],
+          "MinColor": [ 0.0, 1.0, 0.0 ],
+          "MaxColor": [ 0.0, 0.0, 1.0 ],
+          "Lighting":  true
+        }
+  ]
+}

@@ -34,9 +34,12 @@ namespace Hollow
 	Component* MemoryManager::NewComponent(std::string name)
 	{
 		Component* comp = nullptr;
-		if (mComponentPool.find(name) != mComponentPool.end())
-		{
-			comp = mComponentPool[name].front();
+		//if (mComponentPool.find(name) != mComponentPool.end())
+		//{
+			comp = mComponentPool[name].front()->CreateComponent();
+			comp->Init();
+			return comp;
+		/*	comp = mComponentPool[name].front();
 			mComponentPool[name].pop_front();
 			comp->Init();
 		}
@@ -44,19 +47,24 @@ namespace Hollow
 		{
 			HW_CORE_ERROR("Component {0} not found", name);
 		}
-		return comp;
+		return comp;*/
 	}
 
 	void MemoryManager::DeleteComponent(Component* component)
 	{
 		component->Clear();
-		component->mpOwner = nullptr;
-		mComponentPool[component->mComponentName.c_str()].push_back(component);
+		delete component;
+		//component->Clear();
+		//component->mpOwner = nullptr;
+		//mComponentPool[component->mComponentName.c_str()].push_back(component);
 	}
 
 	GameObject* MemoryManager::NewGameObject()
 	{
-		if (mGameObjectPool.size() > 0)
+		GameObject* pGO = new GameObject();
+		pGO->mActive = true;
+		return pGO;
+		/*if (mGameObjectPool.size() > 0)
 		{
 			GameObject* object = mGameObjectPool.front();
 			object->mActive = true;
@@ -67,13 +75,14 @@ namespace Hollow
 		{
 			HW_CORE_ERROR("All GameObjects used");
 			return nullptr;
-		}
+		}*/
 	}
 
 	void MemoryManager::DeleteGameObject(GameObject* gameobject)
 	{
 		gameobject->mActive = false;
-		mGameObjectPool.push_back(gameobject);
+		delete gameobject;
+		//mGameObjectPool.push_back(gameobject);
 	}
 
 	void MemoryManager::Init(rapidjson::Value::Object& data)
@@ -107,10 +116,10 @@ namespace Hollow
 		}
 
 		//Create GameObjects Pool
-		unsigned int maxObjects = data["GameobjectsPool"].GetUint();
+		/*unsigned int maxObjects = data["GameobjectsPool"].GetUint();
 		for (unsigned int i = 0; i < maxObjects; ++i)
 		{
 			mGameObjectPool.push_back(new GameObject());
-		}
+		}*/
 	}
 }

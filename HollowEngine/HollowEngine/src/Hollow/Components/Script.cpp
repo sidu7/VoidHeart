@@ -13,6 +13,11 @@ namespace Hollow {
 
 	void Script::Clear()
 	{
+		mIsActive = false;
+		mScripts.clear();
+		mScriptCount = 0;
+		mDestroyScripts.clear();
+		mDestroyScriptCount = 0;
 	}
 
 
