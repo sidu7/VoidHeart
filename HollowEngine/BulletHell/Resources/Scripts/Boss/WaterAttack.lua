@@ -60,7 +60,7 @@ end
 function Shoot()
 	-----------------------------------------
     -- playtesting vars
-	local maxHealth = 30
+	local maxHealth = 150
     -----------------------------------------
 	
     local health = gameObject:GetHealth()
