@@ -51,6 +51,38 @@ function LookAt(oldPos, pos)
     end
 end
 
+function MoveInMovingCircles()
+	local roomCenterPos = GetRoomCenterPosition()
+	local pos = gameObject:GetBody().position
+	local oldPos = vec3.new(pos.x, pos.y, pos.z)
+	-----------------------------------------
+    -- playtesting vars
+	local radiusCircle = 7
+	local radiusCenterCircle = 5
+    -----------------------------------------
+	local thetaOffset = math.pi * 0.01
+	local radiusThetaOffset = math.pi * 0.0005
+	local rightCircleCenter = vec3.new(radiusCenterCircle * math.cos(waterBossRadiusTheta), 0, radiusCenterCircle * math.sin(math.pi + waterBossRadiusTheta))
+	local leftCircleCenter = vec3.new(radiusCenterCircle * math.cos(waterBossRadiusTheta2), 0, radiusCenterCircle * math.sin(math.pi + waterBossRadiusTheta2))
+
+	if(gameObject.tag == "Boss") then
+		waterBossRadiusTheta = (waterBossRadiusTheta + radiusThetaOffset) % (2 * math.pi)
+		waterBossTheta = (waterBossTheta + thetaOffset) % (2 * math.pi)
+		pos.x = roomCenterPos.x + rightCircleCenter.x + radiusCircle * math.cos(waterBossTheta)
+		pos.z = roomCenterPos.z + rightCircleCenter.z + radiusCircle * math.sin(math.pi + waterBossTheta)
+	end
+	
+	if(gameObject.tag == "Boss2") then
+		waterBossRadiusTheta2 = (waterBossRadiusTheta2 + radiusThetaOffset) % (2 * math.pi)
+		waterBossTheta2 = (waterBossTheta2 + thetaOffset) % (2 * math.pi)
+		pos.x = roomCenterPos.x + leftCircleCenter.x + radiusCircle * math.cos(waterBossTheta2)
+		pos.z = roomCenterPos.z + leftCircleCenter.z + radiusCircle * math.sin(math.pi + waterBossTheta2)
+	end
+	
+	LookAt(oldPos, pos)
+end
+
+
 function MoveInCircles()
 	local roomCenterPos = GetRoomCenterPosition()
 	local pos = gameObject:GetBody().position
@@ -73,12 +105,10 @@ function MoveInCircles()
 		if waterBossCircle == 1 then
 			waterBossTheta = topCircleTheta
 			circleCenter = topCircleCenter
-		end
-		if waterBossCircle == 2 then
+		elseif waterBossCircle == 2 then
 			waterBossTheta = leftCircleTheta
 			circleCenter = leftCircleCenter
-		end
-		if waterBossCircle == 3 then
+		elseif waterBossCircle == 3 then
 			waterBossTheta = rightCircleTheta
 			circleCenter = rightCircleCenter
 		end
@@ -92,12 +122,10 @@ function MoveInCircles()
 	if waterBossCircle == 1 and math.abs(waterBossTheta - topCircleTheta) < thetaOffset/2 then
 		waterBossCircleSelected = true
 		waterBossCircle = 2
-	end
-	if waterBossCircle == 2 and math.abs(waterBossTheta - leftCircleTheta) < thetaOffset/2 then
+	elseif waterBossCircle == 2 and math.abs(waterBossTheta - leftCircleTheta) < thetaOffset/2 then
 		waterBossCircleSelected = true
 		waterBossCircle = 3
-	end
-	if waterBossCircle == 3 and math.abs(waterBossTheta - rightCircleTheta) < thetaOffset/2 then
+	elseif waterBossCircle == 3 and math.abs(waterBossTheta - rightCircleTheta) < thetaOffset/2 then
 		waterBossCircleSelected = true
 		waterBossCircle = 1
 	end
@@ -123,7 +151,7 @@ function MoveToCenter()
 	local dirLength = math.sqrt(xDir*xDir + zDir*zDir)
 	local xDirNorm = xDir / dirLength
 	local zDirNorm = zDir / dirLength
-	print(dirLength)
+	
     if (dirLength > 0.1) then -- walking to the center
         -- look at the target
         local body = gameObject:GetBody()
@@ -145,7 +173,7 @@ function MoveToCenter()
     else
         -- once at the center signal to attacking script to spawn rocks
         local attack = gameObject:GetAttack()
-        attack.shouldAttack2 = true
+        attack.shouldAttack2 = not attack.shouldAttack2
     end
 end
 
@@ -153,25 +181,57 @@ function PhaseOneMovement()
 	MoveInSinWave()
 	local attack = gameObject:GetAttack()
 	attack.shouldAttack2 = false
+	attack.shouldAttack = true
 end
 
 function PhaseTwoMovement()
 	local attack = gameObject:GetAttack()
-    if (attack.shouldAttack2 == true) then
+    if attack.shouldAttack2 == true then
 		MoveInCircles()
 	else
 		MoveToCenter()
 	end
 end
 
-function PhaseThreeMovement()
+function SetupPhaseThree()
+	-- Create another copy of boss
+	local attack = gameObject:GetAttack()
+	waterBoss2 = CreatePrefabAtPosition("EnemyBossWater", GetRoomCenterPosition() + vec3.new(2,2.5,0))
+	waterBoss2.tag = "Boss2"
+	waterBoss2:GetHealth().hitPoints = gameObject:GetHealth().hitPoints
+	waterBoss2:GetAttack().shouldAttack2 = false -- used for MovingToCenter
+	waterBoss2:GetAttack().shouldAttack = false -- used for SetupPhaseThree
 
+	-- Add new boss to room enemies list
+	local enemies = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom).Enemies
+	enemies[#enemies + 1] = waterBoss2 -- recommended idiom for push_back in lua
+
+	-- Setup Circle positions and radii
+	waterBossRadiusTheta2 = math.pi
+	waterBossTheta2 = 0
+
+	waterBossRadiusTheta = 0
+	waterBossTheta = math.pi
+	gameObject:GetBody().position = GetRoomCenterPosition() + vec3.new(-2,2.5,0)
+
+	attack.shouldAttack = false
+end
+
+function PhaseThreeMovement()
+	local attack = gameObject:GetAttack()
+	if attack.shouldAttack2 == true then
+		MoveToCenter()
+	elseif attack.shouldAttack == true then
+		SetupPhaseThree() -- Setup values for moving in circles
+	else
+		MoveInMovingCircles()
+	end
 end
 
 function Update()
     -----------------------------------------
     -- playtesting vars
-	local maxHealth = 200
+	local maxHealth = 150
     -----------------------------------------
 	
 	local health = gameObject:GetHealth()

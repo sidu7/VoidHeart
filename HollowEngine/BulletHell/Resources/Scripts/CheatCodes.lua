@@ -33,7 +33,7 @@ function SkipToBoss()
 		local floor = GetDungeonFloor(currentFloor)
 		local coords = floor:GetRoomFromIndex(floor:GetBossIndex()):GetCoords()
 		currentRoom = coords.x * dungeonLength + coords.y
-		player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2)
+		player:GetBody().position = vec3.new(coords.y * roomSize + 2, 1.5, coords.x * roomSize + 2)
 		player:GetTransform().position = player:GetBody().position
 	end
 end
