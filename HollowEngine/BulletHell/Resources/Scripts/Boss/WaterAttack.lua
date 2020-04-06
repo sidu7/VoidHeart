@@ -42,24 +42,25 @@ end
 function PhaseThreeBehavior()
 	-----------------------------------------
     -- playtesting vars
-	local totalAttackCycleTime = 64.0
-	local dashTime = 6.0
-	local AOETime = dashTime + 0.5
-	local getPillarTime = totalAttackCycleTime / 2.0
-	local moveToPillarTime = getPillarTime + 0.5
-	
-	local minDistanceToPillar = 2.5
+	local attack1CycleTime = 1
+	local attack2CycleTime = 12
     -----------------------------------------
 	local attack = gameObject:GetAttack()
-	attack.baseAttackTime = totalAttackCycleTime
-	
-	
+	attack.baseAttackTime = attack1CycleTime
+
+	PhaseOneBehavior()
+	waterBossAttackTime = waterBossAttackTime + attack1CycleTime
+
+	if(waterBossAttackTime == attack2CycleTime) then
+		PhaseTwoBehavior()
+		waterBossAttackTime = 0
+	end
 end
 
 function Shoot()
 	-----------------------------------------
     -- playtesting vars
-	local maxHealth = 200
+	local maxHealth = 30
     -----------------------------------------
 	
     local health = gameObject:GetHealth()
@@ -79,7 +80,6 @@ function Shoot()
 	else
 		-- Third phase
 		PhaseThreeBehavior()
-		attack.baseAttackTime = 1
 	end
 end
 

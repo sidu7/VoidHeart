@@ -33,6 +33,10 @@ end
 -- RandomGlobals
 waterBossZOffset = 0
 waterBossTheta = 0
+waterBossTheta2 = 0
+waterBossRadiusTheta = 0
+waterBossRadiusTheta2 = 0
+waterBossAttackTime = 0
 waterBossCircle = 1
 waterBossCircleCenter = vec3.new(0,0,0)
 waterBossCircleSelected = true
