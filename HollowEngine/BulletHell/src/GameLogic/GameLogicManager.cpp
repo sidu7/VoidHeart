@@ -475,7 +475,7 @@ namespace BulletHell
 	void GameLogicManager::CheckKillPlane()
 	{
 		// Check if any objects are lower than kill plane and delete them if so
-		float minYVal = -10.0f;
+		float minYVal = -1.5f;
 		for (auto& gameObject : Hollow::GameObjectManager::Instance().GetGameObjects())
 		{
 			Hollow::Transform* pTr = gameObject->GetComponent<Hollow::Transform>();

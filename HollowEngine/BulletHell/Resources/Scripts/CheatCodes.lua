@@ -44,12 +44,34 @@ function KillPlayer()
 	end
 end
 
+function Invincibility()
+	if playerInvincible then
+		player:GetHealth().invincibile = true
+		player:GetHealth().currentInvincibiltyTime = 0.0
+	end
+	if IsKeyTriggered("I") then
+		playerInvincible = not playerInvincible
+	end
+end
+
+function UnlockAllSpells()
+	if IsKeyTriggered("S") then
+		-- Create actual spell objects right on the player to ensure proper events are fired
+		local fs = CreatePrefabAtPosition("FireSpell", player:GetTransform().position)
+		local as = CreatePrefabAtPosition("AirSpell", player:GetTransform().position)
+		local es = CreatePrefabAtPosition("EarthSpell", player:GetTransform().position)
+		local ws = CreatePrefabAtPosition("WaterSpell", player:GetTransform().position)
+	end
+end
+
 function CheckCheatCodes()
 	MuteAudio()
 	SkipToNextFloor()
 	KillAllEnemiesInRoom()
 	SkipToBoss()
 	KillPlayer()
+	Invincibility()
+	UnlockAllSpells()
 end
 
 CheckCheatCodes()
