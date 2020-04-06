@@ -149,16 +149,15 @@ namespace BulletHell
 
 	void HandSystem::InitGlobalHandObjects()
 	{
-		float UIScale = 128.0f;
-		mpLeftHand = CreateHand(glm::vec3(1.0f, 0.0f, 0.0f), "left", glm::vec2(UIScale, UIScale), glm::vec2(128, 128));
-		mpRightHand = CreateHand(glm::vec3(-1.0f, 0.0f, 0.0f), "right", glm::vec2(UIScale, UIScale), glm::vec2(1150, 128));
+		mpLeftHand = CreateHand(glm::vec3(1.0f, 0.0f, 0.0f), "left");
+		mpRightHand = CreateHand(glm::vec3(-1.0f, 0.0f, 0.0f), "right");
 
 		CreateUIObjects();
 		AddHandObjectsToGlobal();
 		SetHighlightUIActive(false);
 	}
 
-	Hollow::GameObject* HandSystem::CreateHand(const glm::vec3& offset, const std::string& tag, const glm::vec2& UIScale, const glm::vec2& UIPosition)
+	Hollow::GameObject* HandSystem::CreateHand(const glm::vec3& offset, const std::string& tag)
 	{
 		Hollow::GameObject* pHand = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/Hand.json");
 		BulletHell::ParentOffset* pParentOffset = pHand->GetComponent<BulletHell::ParentOffset>();
@@ -170,7 +169,7 @@ namespace BulletHell
 
 	void HandSystem::CreateUIObjects()
 	{
-		const int UIScale = 228;
+		const int UIScale = 128;
 		// Create right/left hand hightlight UI
 		mpRightHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(1150, 128), 0, "Resources/Textures/UI/Hightlight.png");
 		mpLeftHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(128, 128), 0, "Resources/Textures/UI/Hightlight.png");

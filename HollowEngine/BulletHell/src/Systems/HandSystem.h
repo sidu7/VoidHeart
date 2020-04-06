@@ -19,7 +19,7 @@ namespace BulletHell
 	private:
 		// Init functions
 		void InitGlobalHandObjects();
-		Hollow::GameObject* CreateHand(const glm::vec3& offset, const std::string& tag, const glm::vec2& UIScale, const glm::vec2& UIPosition);
+		Hollow::GameObject* CreateHand(const glm::vec3& offset, const std::string& tag);
 		void CreateUIObjects();
 		void AddHandObjectsToGlobal();
 		void SubscribeToEvents();

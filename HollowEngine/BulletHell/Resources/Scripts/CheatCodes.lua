@@ -44,12 +44,23 @@ function KillPlayer()
 	end
 end
 
+function Invincibility()
+	if playerInvincible then
+		player:GetHealth().invincibile = true
+		player:GetHealth().currentInvincibiltyTime = 0.0
+	end
+	if IsKeyTriggered("I") then
+		playerInvincible = not playerInvincible
+	end
+end
+
 function CheckCheatCodes()
 	MuteAudio()
 	SkipToNextFloor()
 	KillAllEnemiesInRoom()
 	SkipToBoss()
 	KillPlayer()
+	Invincibility()
 end
 
 CheckCheatCodes()

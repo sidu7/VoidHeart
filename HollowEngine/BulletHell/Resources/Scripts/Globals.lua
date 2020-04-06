@@ -22,6 +22,7 @@ firstFloorEnemyCount = 0
 
 -- Cheat codes
 gameMuted = false
+playerInvincible = false
 
 -- Utils
 function GetRoomCenterPosition()

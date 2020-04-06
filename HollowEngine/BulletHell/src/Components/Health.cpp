@@ -17,7 +17,10 @@ namespace BulletHell
             "hitReactionTime", &Health::mHitReactionTime,
             "currentDeathTime", & Health::mCurrentDeathTime,
             "deathTime", & Health::mDeathTime,
-            "isDying", & Health::mIsDying);
+            "isDying", & Health::mIsDying,
+			"invincibile", &Health::mInvincible,
+			"currentInvincibiltyTime", &Health::mCurrentInvincibleTime
+			);
 
         Hollow::ScriptingManager::Instance().mGameObjectType["GetHealth"] = &Hollow::GameObject::GetComponent<Health>;
 	}
