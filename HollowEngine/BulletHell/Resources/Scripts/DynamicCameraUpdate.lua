@@ -4,7 +4,9 @@ function SetCameraPosition()
 	local cameraFront = vec3.new(0.0, -1.2, -1.0)
 	-----------------------------------------	
 	local camera = gameObject:GetCamera()
-	
+	if (camera == nil) then
+        return
+    end
 	-- Set camera front direction
 	camera.frontDirection = cameraFront 
 	
