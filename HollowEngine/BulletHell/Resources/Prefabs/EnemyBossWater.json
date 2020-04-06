@@ -58,7 +58,7 @@
     },
     {
       "Type": "Health",
-      "HitPoints": 30,
+      "HitPoints": 200,
       "IsAlive": true,
       "Invincible": false,
       "InvincibleTime": 0.3
