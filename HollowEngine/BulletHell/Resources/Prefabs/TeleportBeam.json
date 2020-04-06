@@ -1,0 +1,50 @@
+{
+  "Type": "PLAYER_AOE",
+  "Tag": "TELEPORT_BEAM",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Scale": [ 1.0, 1.0, 3.0 ]
+    },
+    {
+      "Type": "Body",
+      "Mass": 0.00001,
+      "RigidbodyType": "STATIC",
+      "UseGravity": false
+    },
+    {
+      "Type": "Collider",
+      "Shape": "BOX"
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "TeleportBeamLogic" ]
+    },
+    {
+      "Type": "ParentOffset",
+      "Parent": 0,
+      "Offset": [ 0.0, 0.0, 0.0 ],
+      "Tag": "Beam",
+      "UseForward": true
+    },
+    {
+      "Type": "DestroyTimer",
+      "MaxTime": 10.0
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 10000,
+      "EmissionRate": 100,
+      "Shape": 1,
+      "Life": [ 3.0, 3.0 ],
+      "Speed": [ 2.0, 2.0 ],
+      "Size": [ 0.1, 0.1 ],
+      "ModelShape": "CUBE",
+      "ComputeShader": "Resources/Shaders/HelixModelParticles.comp",
+      "MinColor": [ 0.25, 0.85, 0.945 ],
+      "MaxColor": [ 0.125, 0.35, 0.96 ],
+      "ExtraData": [ 1.0, 2.0, 0.0, 0.0 ]
+    }
+  ]
+}
