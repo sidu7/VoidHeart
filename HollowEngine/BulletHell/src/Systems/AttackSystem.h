@@ -33,6 +33,8 @@ namespace BulletHell
 	private:
 		void FireAttack(Hollow::GameObject* pGameObject);
 
+		void OnDeath(Hollow::GameEvent& event);
+
 	private:
 		float mDeltaTime;
 		Hollow::Body* mpPlayerBody;

@@ -7,6 +7,7 @@
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/ScriptingManager.h"
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/EventManager.h"
 
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
@@ -37,6 +38,9 @@ namespace BulletHell
 
 		// Add get attack component to lua
 		Hollow::ScriptingManager::Instance().mGameObjectType["GetAttack"] = &Hollow::GameObject::GetComponent<Attack>;
+
+		// Event handling
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::DEATH, EVENT_CALLBACK(AttackSystem::OnDeath));
 	}
 
 	void AttackSystem::Update()
@@ -73,6 +77,23 @@ namespace BulletHell
 
 			// Fire player lua script
 			Hollow::ScriptingManager::Instance().RunScript(pAttack->mScriptPath, pAttack->mpOwner);
+		}
+	}
+
+	// Nasty, hacky band aid
+	// Need to check why targets are NOT getting set to nullptr by memory management
+	// Could be off by 1 frame or something
+	// Need to be careful, this may not work for the player
+	void AttackSystem::OnDeath(Hollow::GameEvent& event)
+	{
+		// Set any pointers to null
+		for (unsigned int i = 0; i < mGameObjects.size(); ++i)
+		{
+			Attack* pAttack = mGameObjects[i]->GetComponent<Attack>();
+			if (pAttack->mpTarget == event.mpObject1)
+			{
+				pAttack->mpTarget = nullptr;
+			}
 		}
 	}
 
