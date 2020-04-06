@@ -39,7 +39,7 @@
         },
         {
             "Type": "DestroyTimer",
-            "MaxTime": 5.5
+            "MaxTime": 4
         }
     ]
 }

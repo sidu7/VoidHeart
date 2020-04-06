@@ -110,19 +110,19 @@ namespace BulletHell
 		Magic::SpellData* pCombinedSpell = new Magic::SpellData{ "Fire + Fire", "Spells/FireFire", COMBINED,  0.0f, 0.0f, "", 3.0f, glm::vec3(0.0f), "Resources/Textures/UI/FireFire.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::FIRE, pCombinedSpell);
 
-		pCombinedSpell = new Magic::SpellData{ "Air + Air", "Spells/AirAir", COMBINED,  0.0f, 0.0f, "", 1.0f, glm::vec3(0.0f), "Resources/Textures/UI/AirAir.png" };
+		pCombinedSpell = new Magic::SpellData{ "Air + Air", "Spells/AirAir", COMBINED,  0.0f, 0.0f, "", 5.0f, glm::vec3(0.0f), "Resources/Textures/UI/AirAir.png" };
 		spellMap.emplace(SpellType::AIR | SpellType::AIR, pCombinedSpell);
 
-		pCombinedSpell = new Magic::SpellData{ "Earth + Earth", "Spells/EarthEarth", COMBINED, 0.0f, 0.0f, "", 3.0f, glm::vec3(0.0f), "Resources/Textures/UI/EarthEarth.png" };
+		pCombinedSpell = new Magic::SpellData{ "Earth + Earth", "Spells/EarthEarth", COMBINED, 0.0f, 0.0f, "", 4.0f, glm::vec3(0.0f), "Resources/Textures/UI/EarthEarth.png" };
 		spellMap.emplace(SpellType::EARTH | SpellType::EARTH, pCombinedSpell);
 
-		pCombinedSpell = new Magic::SpellData{ "Water + Water", "Spells/WaterWater", COMBINED, 0.0f, 0.0f, "", 1.0f, glm::vec3(0.0f), "Resources/Textures/UI/WaterWater.png" };
+		pCombinedSpell = new Magic::SpellData{ "Water + Water", "Spells/WaterWater", COMBINED, 0.0f, 0.0f, "", 10.0f, glm::vec3(0.0f), "Resources/Textures/UI/WaterWater.png" };
 		spellMap.emplace(SpellType::WATER | SpellType::WATER, pCombinedSpell);
 
 		pCombinedSpell = new Magic::SpellData{ "Fire + Air", "Spells/FireAir", COMBINED,  0.0f, 0.0f, "", 0.1f, glm::vec3(0.0f), "Resources/Textures/UI/FireAir.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::AIR, pCombinedSpell);
 
-		pCombinedSpell = new Magic::SpellData{ "Fire + Earth", "Spells/FireEarth", COMBINED, 0.0f, 0.0f, "", 5.0f, glm::vec3(0.0f), "Resources/Textures/UI/FireEarth.png" };
+		pCombinedSpell = new Magic::SpellData{ "Fire + Earth", "Spells/FireEarth", COMBINED, 0.0f, 0.0f, "", 12.0f, glm::vec3(0.0f), "Resources/Textures/UI/FireEarth.png" };
 		spellMap.emplace(SpellType::FIRE | SpellType::EARTH, pCombinedSpell);
 
 		pCombinedSpell = new Magic::SpellData{ "Fire + Water", "Spells/FireWater", COMBINED, 0.0f, 0.0f, "", 1.0f, glm::vec3(0.0f), "Resources/Textures/UI/FireWater.png" };
