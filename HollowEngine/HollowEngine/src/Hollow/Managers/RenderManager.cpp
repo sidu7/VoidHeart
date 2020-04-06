@@ -1099,6 +1099,10 @@ namespace Hollow {
 			{
 				particle.emitter->mpComputeShader->SetMat4("RotationMatrix", GraphicsMath::RotationFromTwoVectors(glm::vec3(0.0f,1.0f,0.0f),particle.emitter->mDirection));
 			}
+            else
+            {
+                particle.emitter->mpComputeShader->SetMat4("RotationMatrix", glm::mat4(1.0f));
+            }
 			particle.emitter->mpComputeShader->DispatchCompute(std::ceil((float)particle.emitter->mCount / 128), 1, 1);
 			ShaderStorageBuffer::PutMemoryBarrier();
 			particle.emitter->mpComputeShader->Unbind();

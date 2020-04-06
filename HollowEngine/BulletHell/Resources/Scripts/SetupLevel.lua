@@ -20,6 +20,17 @@ local coords = floor:GetEntrance():GetCoords()
 player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 - 5)
 player:GetBody().velocity = vec3.new(0,0,0) -- this seems to fix the player going below the floor on level load
 player:GetTransform().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 - 5)
+local playerPos = player:GetBody().position 
+local beam = CreatePrefabAtPosition("TeleportBeam",vec3.new(playerPos.x, playerPos.y, playerPos.z))
+
+local particle = beam:GetParticleEmitter()
+if particle ~= nil then
+	--local transform = beam:GetTransform()
+	local playerPos = player:GetTransform().position
+	local position = vec3.new(playerPos.x, playerPos.y + 20, playerPos.z)
+	particle.direction = vec3.new(0,-1,0)--VecNormalize(position - playerPos)
+	particle.center = position
+end
 
 
 -- Generate a spell in front of the player in the entrance room on the first floor

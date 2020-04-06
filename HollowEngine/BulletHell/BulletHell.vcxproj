@@ -493,6 +493,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\SteamTrap.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\TeleportBeam.json" />
     <None Include="Resources\Prefabs\uibody.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -742,6 +743,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\Spells\WaterWater.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Scripts\TeleportBeamLogic.lua" />
     <None Include="Resources\Scripts\test.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>

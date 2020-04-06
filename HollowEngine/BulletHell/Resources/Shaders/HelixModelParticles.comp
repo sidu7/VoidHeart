@@ -78,7 +78,7 @@ void main()
 				//float t1 = 1.0f - each_particle[gid].currentlife / each_particle[gid].life;
 				float t1 = 1.0f - float(gid)/ActiveParticleCount;
 
-				pos = (RotationMatrix * vec4(radius * cos(t), t1 * length, radius * sin(t),1.0f)).xyz;
+				pos = (RotationMatrix * vec4(radius * cos(t), -t1 * length, radius * sin(t),1.0f)).xyz;
 			}
 			else
 			{
