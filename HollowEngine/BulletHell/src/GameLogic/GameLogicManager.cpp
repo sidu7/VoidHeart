@@ -266,15 +266,24 @@ namespace BulletHell
         currentFloor++;
 
 		HW_TRACE("Current Floor: {0}", currentFloor);
-    	
-        lua["currentFloor"] = currentFloor;
-		ClearNonGlobalGameObjects();
-        DungeonManager::Instance().Construct(currentFloor);
 
-        Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
+		// Go back to main menu if end of game is reached
+		if (currentFloor == lua["numFloors"].get<int>())
+		{
+			DungeonManager::Instance().Regenerate();
+			CreateMainMenu();
+		}
+		else
+		{
+			lua["currentFloor"] = currentFloor;
+			ClearNonGlobalGameObjects();
+			DungeonManager::Instance().Construct(currentFloor);
+
+			Hollow::ScriptingManager::Instance().RunScript("SetupLevel");
         
-        BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
-        Hollow::SystemManager::Instance().OnSceneInit();
+			BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
+			Hollow::SystemManager::Instance().OnSceneInit();
+		}
 
 		// Reset player speed to normal
 		mIsChangingFloors = false;

@@ -1,18 +1,8 @@
 {
-	"Enemies": [{"EnemyType": "EnemyBossAir",
-				"Position": [14, 16]}],
-	"Obstacles": [{"ObstacleType": "Enemy/EnemyAir",
-				"Position": [16, 16]},
-				{"ObstacleType": "Enemy/EnemyAir",
-				"Position": [26, 16]},
-				{"ObstacleType": "Enemy/EnemyAir",
-				"Position": [6, 16]},
-				{"ObstacleType": "Enemy/EnemyAir",
-				"Position": [20, 26]},
-				{"ObstacleType": "Enemy/EnemyAir",
-				"Position": [12, 6]},
-				{"ObstacleType": "Enemy/EnemyAir",
-				"Position": [20, 6]},
-				{"ObstacleType": "Enemy/EnemyAir",
-				"Position": [12, 26]}]
+  "Enemies": [
+    {
+      "EnemyType": "EnemyBoss2",
+      "Position": [ 16, 16 ]
+    }
+  ]
 }

@@ -31,7 +31,7 @@ function GetRoomCenterPosition()
 	return pos
 end
 
--- RandomGlobals
+-- Water Boss Globals
 waterBossZOffset = 0
 waterBossTheta = 0
 waterBossTheta2 = 0
@@ -42,3 +42,4 @@ waterBossCircle = 1
 waterBossCircleCenter = vec3.new(0,0,0)
 waterBossCircleSelected = true
 waterBossMoveDirection = true
+waterBossSpawnSpell = false
