@@ -6,6 +6,7 @@
 #include "Hollow/Components/UITransform.h"
 #include "Hollow/Components/UIImage.h"
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/RenderManager.h"
 
 
 namespace BulletHell
@@ -484,10 +485,12 @@ namespace BulletHell
     
     Hollow::GameObject* DungeonFloor::CreateMinimapRoomAt(int roomIndex)
     {
+		glm::ivec2 screenSize = Hollow::RenderManager::Instance().GetWindowSize();
+		
         // calculating room scale
-        const int windowWidth = 1280;
-        const int windowHeight = 720;
-        const int mapScale = 250;
+        const int windowWidth = screenSize.x;
+        const int windowHeight = screenSize.y;
+        const int mapScale = windowWidth * 0.20;
         const int uiScale = mapScale / 10;
         const glm::vec2 roomScale = glm::vec2(uiScale, uiScale);
         const float pi = static_cast<float>(M_PI);
@@ -596,9 +599,12 @@ namespace BulletHell
         SetUIRoomTexture(mRooms[oldIndex].mMinimapTexturePath, oldIndex, true);
         Hollow::UITransform* uiTransform = mpMinimapPlayer->GetComponent<Hollow::UITransform>();
 
-        const int windowWidth = 1280;
-        const int windowHeight = 720;
-        const int mapScale = 250;
+		glm::ivec2 screenSize = Hollow::RenderManager::Instance().GetWindowSize();
+
+		// calculating room scale
+		const int windowWidth = screenSize.x;
+		const int windowHeight = screenSize.y;
+		const int mapScale = windowWidth * 0.20;
         const int uiScale = mapScale / 10;
         const glm::vec2 topLeftConrer = glm::vec2(windowWidth - 9.5f * uiScale - 5, windowHeight - 0.5f * uiScale - 5);
         int row, col;

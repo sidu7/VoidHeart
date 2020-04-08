@@ -53,7 +53,7 @@
     {
       "Type": "Attack",
       "Script": "ShootInTheLookDir",
-      "BaseAttackTime": 0.7
+      "BaseAttackTime": 1.4
     },
     {
       "Type": "Health",

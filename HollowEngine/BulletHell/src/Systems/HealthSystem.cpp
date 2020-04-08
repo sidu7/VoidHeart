@@ -7,6 +7,7 @@
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/LocalizationManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/ScriptingManager.h"
@@ -391,14 +392,17 @@ namespace BulletHell
 
 	void HealthSystem::CreateHPUIIcon(int index)
 	{
+		const int size = 80;
+		glm::ivec2 screenSize = Hollow::RenderManager::Instance().GetWindowSize();
+		
 		Hollow::GameObject* pUIObj = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources/Prefabs/UIIcon.json");
 		Hollow::UIImage* pUIImg = pUIObj->GetComponent<Hollow::UIImage>();
 		pUIImg->TexturePath = "Resources/Textures/UI/HPIcon.png";
 		pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pUIImg->TexturePath);
 
 		Hollow::UITransform* pUITr = pUIObj->GetComponent<Hollow::UITransform>();
-		pUITr->mScale = glm::vec2(64, 64);
-		pUITr->mPosition = glm::vec2(64 * (index + 1), 660);
+		pUITr->mScale = glm::vec2(size, size);
+		pUITr->mPosition = glm::vec2(size * (index + 1), screenSize.y * 0.95);
 		mPlayerHPUIIcons.push_back(pUIObj);
 	}
 

@@ -34,7 +34,7 @@
     {
       "Type": "Attack",
       "Script": "ShootInDiagonalDirections",
-      "BaseAttackTime": 0.7
+      "BaseAttackTime": 1.4
     },
     {
       "Type": "Health",
