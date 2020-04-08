@@ -1,0 +1,24 @@
+{
+    "Type": "UIICON",
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 1.0, 1.0, 1.0 ],
+            "Scale": [ 12.0, 9.0, 1.0 ],
+            "Rotation": [ 90.0, 0.0, 0.0 ]
+        },
+        {
+            "Type": "Model",
+            "Shape": "QUAD",
+            "CastShadow": false
+        },
+        {
+            "Type": "Material",
+            "Shininess": 0.0,
+            "AlphaValue": 100.0,
+            "MaterialTextures": 1,
+            "DiffuseTexture": "Resources/Textures/Controls.png",
+            "HeightScale": 0.1
+        }
+    ]
+}
