@@ -1,72 +1,88 @@
 {
     "Type": "ENEMY",
     "Tag": "Boss",
-  "Components": [
-    {
-      "Type": "Transform",
-      "Position": [ 10.0, 10.0, 10.0 ],
-      "Scale": [ 4.0, 4.0, 4.0 ]
-    },
-    {
-      "Type": "Body",
-      "Mass": 10000.0,
-      "isFrictionLess": true,
-      "RigidbodyType": "DYNAMIC"
-    },
-    {
-      "Type": "Collider",
-      "Shape": "BOX"
-    },
-    {
-      "Type": "Model",
-      "Model": "Resources/Models/Boss1.fbx",
-      "ModelHasOffset": true,
-      "CastShadow": true
-    },
-    {
-      "Type": "Material",
-      "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Boss1.fbx"
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Boss1.fbx",
-      "Animations": [
-        [
-          "Walking",
-          "Resources/Models/Boss1.fbx"
-        ]
-      ],
-      "BlendFactor": 1.0
-    },
-    {
-      "Type": "StateMachine",
-      "StateFile": "Resources/State data/npcstate.json",
-      "StartState": "Walking"
-    },
-    {
-      "Type": "Script",
-      "Scripts": [
-        "EnemyBoss1Movement",
-        "OnTakeDamage"
-      ],
-      "DestroyScripts": [ "Destroy/SpawnFireSpell" ]
-    },
-    {
-      "Type": "Attack",
-      "Script": "EnemyBoss1Fire",
-      "BaseAttackTime": 0.4
-    },
-    {
-      "Type": "Health",
-      "HitPoints": 200,
-      "IsAlive": true,
-      "Invincible": false,
-      "InvincibleTime": 0.5,
-      "IsHit": false,
-      "HitReactinTime": 0.5,
-      "DeathTime": 2.0,
-      "IsDying": false
-    }
-  ]
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 10.0, 10.0, 10.0 ],
+            "Scale": [ 4.0, 4.0, 4.0 ]
+        },
+        {
+            "Type": "Body",
+            "Mass": 10000.0,
+            "isFrictionLess": true,
+            "RigidbodyType": "DYNAMIC"
+        },
+        {
+            "Type": "Collider",
+            "Shape": "BOX"
+        },
+        {
+            "Type": "Model",
+            "Model": "Resources/Models/Boss1.fbx",
+            "ModelHasOffset": true,
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Shininess": 1.0,
+            "MaterialData": "Resources/Models/Boss1.fbx"
+        },
+        {
+            "Type": "Animator",
+            "BoneData": "Resources/Models/Boss1.fbx",
+            "Animations": [
+                [
+                    "Walking",
+                    "Resources/Models/Boss1.fbx"
+                ]
+            ],
+            "BlendFactor": 1.0
+        },
+        {
+            "Type": "StateMachine",
+            "StateFile": "Resources/State data/npcstate.json",
+            "StartState": "Walking"
+        },
+        {
+            "Type": "Script",
+            "Scripts": [
+                "EnemyBoss1Movement",
+                "OnTakeDamage"
+            ],
+            "DestroyScripts": [ "Destroy/SpawnFireSpell" ]
+        },
+        {
+            "Type": "Attack",
+            "Script": "EnemyBoss1Fire",
+            "BaseAttackTime": 0.4
+        },
+        {
+            "Type": "ParticleEmitter",
+            "MaxCount": 10000,
+            "EmissionRate": 10,
+            "Shape": 1,
+            "Life": [ 1.0, 1.0 ],
+            "Speed": [ 1.0, 1.0 ],
+            "Size": [ 0.05, 0.1 ],
+            "ModelShape": "CUBE",
+            "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+            "MinColor": [ 0.5, 0.5, 0.5 ],
+            "MaxColor": [ 1.0, 1.0, 1.0 ],
+            "ExtraData": [ 2.0, 0.0, 0.0, 0.0 ],
+            "Active": false,
+            "FadeSpeed": 5.0
+        },
+        {
+            "Type": "Health",
+            "HitPoints": 200,
+            "IsAlive": true,
+            "Invincible": false,
+            "InvincibleTime": 0.5,
+            "IsHit": false,
+            "HitReactinTime": 0.5,
+            "DeathTime": 2.0,
+            "IsDying": false
+        }
+    ]
 }

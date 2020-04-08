@@ -17,9 +17,9 @@ local coords = floor:GetEntrance():GetCoords()
 -- generate player in the entrance room
 --player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
 --player = CreatePrefabAtPosition("Player", vec3.new(coords.y * roomSize + roomSize/2, 0.5, coords.x * roomSize + roomSize/2))
-player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 - 5)
+player:GetBody().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 + 5)
 player:GetBody().velocity = vec3.new(0,0,0) -- this seems to fix the player going below the floor on level load
-player:GetTransform().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 - 5)
+player:GetTransform().position = vec3.new(coords.y * roomSize + roomSize/2, 1.5, coords.x * roomSize + roomSize/2 + 5)
 local playerPos = player:GetBody().position 
 local beam = CreatePrefabAtPosition("TeleportBeam",vec3.new(playerPos.x, playerPos.y, playerPos.z))
 
@@ -32,6 +32,8 @@ if particle ~= nil then
 	particle.center = position
 end
 
+-- generate Controls screen on the entrance room floor
+CreatePrefabAtPosition("Controls", GetRoomCenterPosition() - vec3.new(0,0.49,-5))
 
 -- Generate a spell in front of the player in the entrance room on the first floor
 if(currentFloor == 0) then
@@ -48,7 +50,7 @@ if(currentFloor == 0) then
 	else
 		spellString = "WaterSpell"
 	end
-    local spell = CreatePrefabAtPosition(spellString, vec3.new(coords.y * roomSize + roomSize/2, 1.0, coords.x * roomSize + roomSize/2+5))
+    local spell = CreatePrefabAtPosition(spellString, vec3.new(coords.y * roomSize + roomSize/2, 1.0, coords.x * roomSize + roomSize/2-3))
 
 	-- Lockdown the room until the spell is collected
 	GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom):LockDownRoom()

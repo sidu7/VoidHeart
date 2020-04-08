@@ -1,7 +1,7 @@
 function Shoot()
     -----------------------------------------
     -- playtesting vars
-	local bulletSpeed = 10.0
+	local bulletSpeed = 6.0
     -----------------------------------------
 	 local body = gameObject:GetBody()    
     local transform = gameObject:GetTransform()

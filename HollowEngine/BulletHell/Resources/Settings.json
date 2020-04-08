@@ -2,9 +2,9 @@
   "FrameRate": 60,
   "Window": {
     "Name": "Hollow Engine",
-    "Width": 1280,
-    "Height": 720,
-    "Fullscreen": false,
+    "Width": 1920,
+    "Height": 1080,
+    "Fullscreen": true,
     "OpenglMajorVersion": 4,
     "OpenglMinorVersion": 3,
     "VSync": false

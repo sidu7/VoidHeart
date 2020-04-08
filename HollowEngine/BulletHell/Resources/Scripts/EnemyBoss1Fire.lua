@@ -104,6 +104,23 @@ function FlameThrower()
 	body.velocity = enemyVelocity + attackSpeed * vec3.new(xDirNorm, yDirNorm, zDirNorm)
 	-- Add player velocity
 
+    
+	local particle = gameObject:GetParticleEmitter()
+	if particle.active ~= true then
+		particle.active = true
+		particle.count = 0
+		ChangeParticleShader(gameObject,"Resources/Shaders/DirectionalConeParticles.comp")
+		particle.extraData.x = 20.0
+		particle.scaleRange = vec2.new(0.2, 0.2)
+		particle.speedRange = vec2.new(4.0,5.0)
+		particle.lifeRange = vec2.new(0.2,0.5)
+		particle.minColor = vec3.new(1.0, 1.0, 0.0)
+		particle.maxColor = vec3.new(1.0, 0.0, 0.0)
+		particle.maxCount = 1000
+	end
+	particle.direction = VecNormalize(vec3.new(xDir,0,zDir));
+
+
 	transform = go:GetTransform()
 	transform.position = body.position
 

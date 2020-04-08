@@ -1,7 +1,7 @@
 function ShootInDirection(dirX, dirY, dirZ)
     -----------------------------------------
     -- playtesting vars
-	local bulletSpeed = 15.0
+	local bulletSpeed = 10.0
     -----------------------------------------
     local transform = gameObject:GetTransform()
 	local spawnPos = transform.position

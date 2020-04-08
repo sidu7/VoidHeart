@@ -17,6 +17,7 @@
 #include "Hollow/Components/Light.h"
 
 #include "Hollow/Managers/ResourceManager.h"
+#include "Hollow/Managers/RenderManager.h"
 #include "Hollow/Managers/EventManager.h"
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/GameObjectManager.h"
@@ -27,8 +28,10 @@
 #include "GameMetaData/GameEventType.h"
 #include "GameMetaData/GameObjectType.h"
 
+
 namespace BulletHell
 {
+
 	HandSystem HandSystem::instance;
 
 	void HandSystem::Init()
@@ -169,26 +172,33 @@ namespace BulletHell
 
 	void HandSystem::CreateUIObjects()
 	{
-		const int UIScale = 128;
+		const int UIScale = 192;
+
+		glm::ivec2 screenSize = Hollow::RenderManager::Instance().GetWindowSize();
+
+		float leftXOffset = 0.1f;
+		float yOffset = 0.12f;
+		float rightXOffset = 0.9f;
+		
 		// Create right/left hand hightlight UI
-		mpRightHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(1150, 128), 0, "Resources/Textures/UI/Hightlight.png");
-		mpLeftHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(128, 128), 0, "Resources/Textures/UI/Hightlight.png");
+		mpRightHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * rightXOffset, screenSize.y * yOffset), 0, "Resources/Textures/UI/Hightlight.png");
+		mpLeftHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * leftXOffset, screenSize.y * yOffset), 0, "Resources/Textures/UI/Hightlight.png");
 
 		// Create combined hand image and cooldown UI
-		mpCombinedHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(600, 128), 0, "Resources/Textures/UI/Combined.png");
-		mpCombinedCooldownUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(600, 128), 1, "Resources/Textures/UI/CombinedCooldown.png", "Resources/Prefabs/UICooldownIcon.json");
+		mpCombinedHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * 0.5, screenSize.y * yOffset), 0, "Resources/Textures/UI/Combined.png");
+		mpCombinedCooldownUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * 0.5, screenSize.y * yOffset), 1, "Resources/Textures/UI/CombinedCooldown.png", "Resources/Prefabs/UICooldownIcon.json");
 
 		// Create left hand spell UI
-		mLeftHandUI[0] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(128, 128), 1, "Resources/Textures/UI/Fire.png");
-		mLeftHandUI[1] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(128, 128), 1, "Resources/Textures/UI/Air.png");
-		mLeftHandUI[2] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(128, 128), 1, "Resources/Textures/UI/Earth.png");
-		mLeftHandUI[3] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(128, 128), 1, "Resources/Textures/UI/Water.png");
+		mLeftHandUI[0] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * leftXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Fire.png");
+		mLeftHandUI[1] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * leftXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Air.png");
+		mLeftHandUI[2] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * leftXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Earth.png");
+		mLeftHandUI[3] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * leftXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Water.png");
 
 		// Create right hand spell UI
-		mRightHandUI[0] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(1150, 128), 1, "Resources/Textures/UI/Fire.png");
-		mRightHandUI[1] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(1150, 128), 1, "Resources/Textures/UI/Air.png");
-		mRightHandUI[2] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(1150, 128), 1, "Resources/Textures/UI/Earth.png");
-		mRightHandUI[3] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(1150, 128), 1, "Resources/Textures/UI/Water.png");
+		mRightHandUI[0] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * rightXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Fire.png");
+		mRightHandUI[1] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * rightXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Air.png");
+		mRightHandUI[2] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * rightXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Earth.png");
+		mRightHandUI[3] = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * rightXOffset, screenSize.y * yOffset), 1, "Resources/Textures/UI/Water.png");
 
 	}
 
