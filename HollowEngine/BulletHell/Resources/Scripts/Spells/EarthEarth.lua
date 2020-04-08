@@ -87,12 +87,13 @@ function CheckValidAttack()
 		-- Release Rock, done when trigger is released
 		if IsControllerTriggerReleased(CONTROLLER["LT"]) or IsControllerTriggerReleased(CONTROLLER["RT"]) then
 			ReleaseRock()
-		end		
+		end
+		attack.shouldAttack = false
 	end
 	
 	if attack.shouldAttack then
 		-- Create Rock, only done once
-		if not rockObject then
+		if rockObject == nil then
 			CreateRock()
 		end
 	end

@@ -50,7 +50,8 @@
       },
       {
         "Type": "Script",
-        "Scripts":  ["SlowRotateXYZ"]
+        "Scripts": [ "SlowRotateXYZ" ],
+        "DestroyScripts": ["SetRockNil"]
       }
     ]
 }
