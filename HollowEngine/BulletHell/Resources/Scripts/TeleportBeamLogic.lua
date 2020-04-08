@@ -6,7 +6,7 @@ function Update()
 	-----------------------------------------
     -- playtesting vars
     -----------------------------------------
-    local beamHeight = 8
+    local beamHeight = 9
     -----------------------------------------
 
     local destroyTimer = gameObject:GetDestroyTimer()
@@ -34,7 +34,9 @@ function Update()
     --]]
     end
 	particle.extraData.z = particle.extraData.z + GetFrameTime()
-    player:GetBody().velocity = vec3.new(0.0, 0.0, 0.0)
+    if (destroyTimer.currentTime < destroyTimer.maxTime * 9 / 10) then
+        player:GetBody().velocity = vec3.new(0.0, 0.0, 0.0)
+    end
 end
 
 Update()

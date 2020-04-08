@@ -137,6 +137,7 @@ function LookAtThePlayer()
     local tangent = xDirNorm / zDirNorm
     local radians = math.atan(tangent)
     local degree = radians * 180 / math.pi
+	local body = gameObject:GetBody()
     if zDirNorm >= 0 then  
 	    rot = vec3.new(0.0, degree, 0.0)
         body:RotateBody(rot)

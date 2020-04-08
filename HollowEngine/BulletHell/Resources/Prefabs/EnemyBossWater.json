@@ -48,7 +48,8 @@
       "Type": "Script",
       "Scripts": [
         "Boss/WaterMovement"
-      ]
+      ],
+      "DestroyScripts": [ "Destroy/SpawnWaterSpell" ]
     },
     {
       "Type": "Attack",
