@@ -66,6 +66,10 @@ namespace Hollow {
 		// Adjust channel volume
 		SetVolume();
 		mpMasterChannel->setVolume(mMasterVolume);
+
+		MuteChannel(SOUND_BACKGROUND);
+		MuteChannel(SOUND_EFFECT);
+		MuteChannel(SOUND_UI);
 		
 		// Update FMOD audio system
 		mpSystem->update();
