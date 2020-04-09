@@ -42,6 +42,10 @@ namespace BulletHell
 		{
 			mLightColor = Hollow::JSONHelper::GetVec3F(data["LightColor"].GetArray());
 		}
+		if (data.HasMember("GoingUp"))
+		{
+			mIsGoingUp = data["GoingUp"].GetBool();
+		}
 	}
 
 	void Spell::DeSerialize(rapidjson::Writer<rapidjson::StringBuffer>& writer)
