@@ -132,7 +132,7 @@ namespace Hollow {
 		SDL_memset(mPrevControllerState, 0, 15 * sizeof(bool));
 		mpController = SDL_GameControllerOpen(0);
 
-		HideMouseCursor();
+		//HideMouseCursor();
 	}
 
 	void InputManager::HandleWindowEvents(const SDL_Event& e)

@@ -4,7 +4,7 @@
     "Name": "Hollow Engine",
     "Width": 1920,
     "Height": 1080,
-    "Fullscreen": true,
+    "Fullscreen": false,
     "OpenglMajorVersion": 4,
     "OpenglMinorVersion": 3,
     "VSync": false
