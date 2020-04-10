@@ -3,7 +3,7 @@
   "Components": [
     {
       "Type": "Transform",
-      "Position": [ 0.5, 10.0, 0.0 ],
+      "Position": [ 0.0, 0.0, 0.0 ],
       "Scale": [ 0.75, 0.75, 0.75 ]
     },
     {
@@ -26,8 +26,8 @@
       "Texture": "Resources/Textures/FireSpell.png",
       "Specular": [
         1.0,
-        1.0,
-        1.0
+        0.0,
+        0.0
       ],
       "Shininess": 10.0,
       "MaterialTextures": false
