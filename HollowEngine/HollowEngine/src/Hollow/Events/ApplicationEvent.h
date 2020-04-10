@@ -26,6 +26,22 @@ namespace Hollow {
 		unsigned int mWidth, mHeight;
 	};
 
+	class HOLLOW_API WindowFullScreenEvent : public Event
+	{
+	public:
+		WindowFullScreenEvent() {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "WindowFullScreenEvent";
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(WindowFullScreen)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
 	class HOLLOW_API WindowCloseEvent : public Event
 	{
 	public:

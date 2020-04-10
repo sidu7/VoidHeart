@@ -23,6 +23,8 @@
 #include "Components/Health.h"
 #include "Components/CharacterStats.h"
 
+#include "Hollow/Events/GameEvent.h"
+
 #include "Events/PickupTimedEvent.h"
 #include "Events/DeathEvent.h"
 
@@ -33,6 +35,7 @@
 #include "GameMetaData/GameObjectType.h"
 
 #include "Hollow/Utils/UniqueID.h"
+#include "Hollow/Managers/InputManager.h"
 
 #define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 4
@@ -71,6 +74,8 @@ namespace BulletHell
 		mWindowFlags |= ImGuiWindowFlags_NoCollapse;
 		mWindowFlags |= ImGuiWindowFlags_NoBackground;
 
+		isFullScreen = true;
+    	
 		InitGlobalGameObjects();
 
 		SubscribeToEvents();
@@ -149,12 +154,29 @@ namespace BulletHell
 		return false;
 
     }
+	bool fullscreen = true;
+	void GameLogicManager::FireToggleFullScreenEvent()
+	{
+		Hollow::GameEvent ge((int)GameEventType::TOGGLE_FULLSCREEN);
+		Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
+		isFullScreen ? Hollow::InputManager::Instance().ShowMouseCursor() :
+			Hollow::InputManager::Instance().HideMouseCursor();
+	}
+
 	
 	void GameLogicManager::Update()
 	{
 		CheckCheatCodes();
 		CheckKillPlane();
-    	if(hasGameStarted)
+
+		if(Hollow::InputManager::Instance().IsKeyTriggered("F11"))
+		{
+			FireToggleFullScreenEvent();
+			isFullScreen = !isFullScreen;
+			fullscreen = isFullScreen;
+		}
+    	
+		if(hasGameStarted)
     	{
 			return;
     	}
@@ -303,6 +325,7 @@ namespace BulletHell
 
 	void GameLogicManager::CreateOptionsUI()
 	{
+    	
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 		ImGui::SetNextWindowPosCenter(ImGuiCond_Once);
@@ -312,8 +335,15 @@ namespace BulletHell
 		ImGui::SliderFloat("Song Volume", &Hollow::AudioManager::Instance().mVolume[Hollow::SOUND_BACKGROUND], 0.0f, 1.0f);
 		ImGui::Checkbox("Mute SFX", &Hollow::AudioManager::Instance().mMute[Hollow::SOUND_EFFECT]);
 		ImGui::SliderFloat("SFX Volume", &Hollow::AudioManager::Instance().mVolume[Hollow::SOUND_EFFECT], 0.0f, 1.0f);
+		ImGui::Checkbox("FullScreen", &fullscreen);
 		//ImGui::Button("Back", ImVec2(100, 50));
 		ImGui::End();
+
+    	if(fullscreen != isFullScreen)
+    	{
+			FireToggleFullScreenEvent();
+			isFullScreen = fullscreen;
+    	}
 	}
 
 	void GameLogicManager::CreateCreditsUI()

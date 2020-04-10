@@ -64,9 +64,15 @@ public:
 
 		PushLayer(new GameLayer());
 		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::ON_EXIT_GAME, EVENT_CALLBACK(BulletHellGame::ExitGame));
+		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::TOGGLE_FULLSCREEN, EVENT_CALLBACK(BulletHellGame::ToggleFullScreenInGame));
 		BulletHell::GameLogicManager::Instance().Init();
 	}
 
+	void ToggleFullScreenInGame(Hollow::GameEvent& ge)
+	{
+		ToggleFullScreen();
+	}
+	
 	void ExitGame(Hollow::GameEvent& ge)
 	{
 		ExitApplication();

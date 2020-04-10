@@ -84,8 +84,9 @@ namespace BulletHell
 		void AddBuffs(Hollow::GameObject* pGo, Pickup* pPickup);
 		void LoadRoomJsons(std::string roomPrefix, int count);
 		void OnBulletHitShield(Hollow::GameEvent& event);
-
+		void FireToggleFullScreenEvent();
 	private:
+		bool isFullScreen;
 		ImGuiWindowFlags mWindowFlags;
 		std::vector<Hollow::GameObject*> mGlobalGameObjects;
 		Hollow::GameObject* mCreditsUIObject;
