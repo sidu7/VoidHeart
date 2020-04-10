@@ -78,7 +78,7 @@ namespace BulletHell
 	private: 
 		// Cheat codes
 		void CheckCheatCodes();
-
+		void UpdateSplashScreen();
 		void CheckKillPlane();
 		void InitializeRoomsMap();
 		void AddBuffs(Hollow::GameObject* pGo, Pickup* pPickup);
@@ -89,6 +89,7 @@ namespace BulletHell
 		bool isFullScreen;
 		ImGuiWindowFlags mWindowFlags;
 		std::vector<Hollow::GameObject*> mGlobalGameObjects;
+		Hollow::GameObject* mpSplashScreen;
 		Hollow::GameObject* mCreditsUIObject;
 		Hollow::GameObject* mpPlayerGO;
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
@@ -98,5 +99,7 @@ namespace BulletHell
 		std::vector<int> mSpellOrder;
 		bool mIsChangingFloors;
 		float mPreviousPlayerSpeed;
+
+		float splashTime;
     };
 }

@@ -36,6 +36,7 @@
 
 #include "Hollow/Utils/UniqueID.h"
 #include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 #define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 4
@@ -65,7 +66,7 @@ namespace BulletHell
     void GameLogicManager::Init()
     {
 		RegisterLuaBindings();
-
+    	
     	// Init UI Window Flags
 		mWindowFlags = 0;
 		mWindowFlags |= ImGuiWindowFlags_NoTitleBar;
@@ -82,13 +83,17 @@ namespace BulletHell
 		
 		CreateMainMenu();
     }
-
+	
 	void GameLogicManager::InitGlobalGameObjects()
 	{
 		Hollow::ScriptingManager::Instance().RunScript("InitGlobalObjects");
 		sol::state& smLua = Hollow::ScriptingManager::Instance().lua;
 		mpPlayerGO = smLua["player"];
+
+		mpSplashScreen = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources\\Prefabs\\SplashScreen.json");
+    	
 		AddGlobalGameObject(mpPlayerGO);
+		AddGlobalGameObject(mpSplashScreen);
 		AddGlobalGameObject(smLua["camera"]);
 		AddGlobalGameObject(smLua["UICamera"]);
 		AddGlobalGameObject(smLua["globalLight"]);
@@ -175,12 +180,14 @@ namespace BulletHell
 			isFullScreen = !isFullScreen;
 			fullscreen = isFullScreen;
 		}
-    	
+
+		UpdateSplashScreen();
+		
 		if(hasGameStarted)
     	{
 			return;
     	}
-		glm::vec3 playerPos = DungeonManager::Instance().mpPlayerGo->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 playerPos = mpPlayerGO->GetComponent<Hollow::Transform>()->mPosition;
 		mCreditsUIObject->mActive = false;
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags = 0;
@@ -513,6 +520,24 @@ namespace BulletHell
 	void GameLogicManager::CheckCheatCodes()
 	{
 		Hollow::ScriptingManager::Instance().RunScript("CheatCodes");
+	}
+
+	void GameLogicManager::UpdateSplashScreen()
+	{
+		float dt = Hollow::FrameRateController::Instance().GetFrameTime();
+
+		splashTime += dt;
+
+		if (splashTime > 3.0f)
+		{
+			Hollow::UIImage* image = mpSplashScreen->GetComponent<Hollow::UIImage>();
+			image->mAlpha -= 0.01f;
+
+			if(image->mAlpha < -1.0f)
+			{
+				mpSplashScreen->mActive = false;
+			}
+		}
 	}
 
 	void GameLogicManager::CheckKillPlane()
