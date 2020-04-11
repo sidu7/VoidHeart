@@ -1,6 +1,6 @@
 {
-    "Type": "ENEMY",
-    "Tag": "Boss",
+  "Type": "ENEMY",
+  "Tag": "Boss",
   "Components": [
     {
       "Type": "Transform",
@@ -16,37 +16,21 @@
     {
       "Type": "Collider",
       "Shape": "BOX",
-	  "HasCustomScale": true,
-      "MinBounds": [ -0.9, -1.5, -0.9],
-      "MaxBounds": [ 0.9, 4.5, 0.9]
+      "HasCustomScale": true,
+      "MinBounds": [ -0.9, -1.5, -0.9 ],
+      "MaxBounds": [ 0.9, 4.5, 0.9 ]
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Boss1.fbx",
-      "ModelHasOffset": true,
+      "Model": "Resources/Models/AirBoss.obj",
+      "ModelHasOffset": false,
       "CastShadow": true
     },
     {
       "Type": "Material",
-	  "Diffuse": [1.0, 1.0, 1.0],
-      "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Boss1.fbx"
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Boss1.fbx",
-      "Animations": [
-        [
-          "Walking",
-          "Resources/Models/Boss1.fbx"
-        ]
-      ],
-      "BlendFactor": 1.0
-    },
-    {
-      "Type": "StateMachine",
-      "StateFile": "Resources/State data/npcstate.json",
-      "StartState": "Walking"
+      "Texture": "Resources/Textures/AirBoss.png",
+      "Shininess": 10.0,
+      "Specular": [ 0.3, 0.3, 0.3 ]
     },
     {
       "Type": "Script",
@@ -54,7 +38,7 @@
         "Boss/AirMovement",
         "OnTakeDamage"
       ],
-	  "DestroyScripts" : ["Destroy/SpawnAirSpell"]
+      "DestroyScripts": [ "Destroy/SpawnAirSpell" ]
     },
     {
       "Type": "Attack",
@@ -71,6 +55,21 @@
       "HitReactinTime": 0.5,
       "DeathTime": 2.0,
       "IsDying": false
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 1000,
+      "EmissionRate": 20,
+      "Shape": 1,
+      "Life": [ 1.2, 0.7 ],
+      "Speed": [ 0.9, 1.5 ],
+      "Size": [ 0.05, 0.1 ],
+      "ModelShape": "CUBE",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 0.5, 0.5, 0.5 ],
+      "MaxColor": [ 1.0, 1.0, 1.0 ],
+      "Active": true,
+      "FadeSpeed": 5.0
     }
   ]
 }
