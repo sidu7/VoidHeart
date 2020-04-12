@@ -206,7 +206,7 @@ function Update()
     -- playtesting vars
 	local maxHealth = 180
     -----------------------------------------
-	print(gameObject.id)
+	--print(gameObject.id)
     local health = gameObject:GetHealth()
     local hitPoints = health.hitPoints
 	
