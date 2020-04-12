@@ -220,18 +220,26 @@ namespace BulletHell
 
 	void HealthSystem::OnBulletHitWall(Hollow::GameEvent& event)
 	{
+		// Get bullet and wall object
+		Hollow::GameObject* pWall = nullptr;
+		Hollow::GameObject* pBullet = nullptr;
 		if (event.mpObject1->mType == (int)GameObjectType::WALL)
 		{
-			// Don't destroy bullets that hit pillar
-			if(event.mpObject1->mTag != "Pillar")
-			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
+			pWall = event.mpObject1;
+			pBullet = event.mpObject2;
 		}
 		else
 		{
-			// Don't destroy bullets that hit pillar
-			if (event.mpObject2->mTag != "Pillar")
-			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
+			pWall = event.mpObject2;
+			pBullet = event.mpObject1;
 		}
+
+		if (pBullet->mTag == "FIRE")
+		{
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/FireSpellDestroy.wav");
+		}
+		Hollow::GameObjectManager::Instance().DeleteGameObject(pBullet);
+
 	}
 
     void HealthSystem::OnBulletHitDoor(Hollow::GameEvent& event)
@@ -299,7 +307,7 @@ namespace BulletHell
             glm::vec3 aoe_pos = aoe->GetComponent<Hollow::Transform>()->mPosition;
             glm::vec3 player_pos = gameobject->GetComponent<Hollow::Transform>()->mPosition;
             glm::vec3 direction = glm::normalize(player_pos - aoe_pos);
-            impulse = direction * 10000.0f;
+            impulse = direction * 100.0f;
             Hollow::PhysicsManager::Instance().ApplyLinearImpulse(gameobject, impulse);
         }
 	}

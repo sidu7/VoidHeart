@@ -35,7 +35,7 @@ function CreateWater()
 	if closestEnemyIndex > 0 then
 		go:GetAttack().target = enemies[closestEnemyIndex]
 	end
-	--PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
+	PlaySFX("Resources/Audio/SFX/WaterWaterSpellAttack.wav")
 end
 
 CreateWater()

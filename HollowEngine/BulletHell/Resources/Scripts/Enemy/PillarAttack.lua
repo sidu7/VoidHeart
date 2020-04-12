@@ -45,7 +45,7 @@ function Shoot()
 	    local bulletBody = bullet:GetBody()
    
         -- Setting position
-        bulletBody.position = spawnPos + 0.6 * transform:forward()
+        bulletBody.position = spawnPos + 0.7 * transform:forward()
 		bulletBody.position.y = 2.6
         bulletTransform.position = spawnPos
 
