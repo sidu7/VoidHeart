@@ -5,7 +5,7 @@
     {
       "Type": "Transform",
       "Position": [ 0.0, 0.0, 0.0 ],
-      "Scale": [ 1.0, 1.0, 1.0 ]
+      "Scale": [ 2.0, 2.0, 2.0 ]
     },
     {
       "Type": "Body",
@@ -15,7 +15,10 @@
     },
     {
       "Type": "Collider",
-      "Shape": "BOX"
+      "Shape": "BOX",
+      "HasCustomScale": true,
+      "MinBounds": [ -0.5, -1.0, -0.5 ],
+      "MaxBounds": [ 0.5, 3.0, 0.5 ]
     },
     {
       "Type": "Model",

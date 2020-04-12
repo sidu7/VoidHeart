@@ -19,30 +19,15 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Boss1.fbx",
-      "ModelHasOffset": true,
+      "Model": "Resources/Models/waterboss.obj",
+      "ModelHasOffset": false,
       "CastShadow": true
     },
     {
-      "Type": "Material",
-      "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Boss1.fbx"
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Boss1.fbx",
-      "Animations": [
-        [
-          "Walking",
-          "Resources/Models/Boss1.fbx"
-        ]
-      ],
-      "BlendFactor": 1.0
-    },
-    {
-      "Type": "StateMachine",
-      "StateFile": "Resources/State data/npcstate.json",
-      "StartState": "Walking"
+        "Type": "Material",
+        "Texture": "Resources/Textures/waterBossMaterial.png",
+        "Shininess": 1.0,
+        "MaterialTextures": false
     },
     {
       "Type": "Script",

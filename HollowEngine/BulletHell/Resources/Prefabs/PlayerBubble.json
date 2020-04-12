@@ -37,9 +37,13 @@
             "Offset": [ 0.0, 0.0, 0.0 ],
             "Tag": "Shield"
         },
-        {
-            "Type": "DestroyTimer",
-            "MaxTime": 4
-        }
+      {
+        "Type": "DestroyTimer",
+        "MaxTime": 4
+      },
+      {
+        "Type": "Script",
+        "DestroyScripts":  ["Destroy/PlaySoundEffect"]
+      }
     ]
 }

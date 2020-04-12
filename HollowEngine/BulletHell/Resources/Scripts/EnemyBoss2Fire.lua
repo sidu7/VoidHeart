@@ -28,6 +28,10 @@ function SpawnRock(dirX, dirY, dirZ)
     rockBody.position = spawnPos + direction * distanceFromBoss
     rockTransform.position = spawnPos + direction * distanceFromBoss
 
+	-- Add to list of enemies in the room
+	local enemies = GetDungeonFloor(currentFloor):GetRoomFromIndex(currentRoom).Enemies
+	enemies[#enemies + 1] = rock -- recommended idiom for push_back in lua
+
 end
 
 function SpawnRocks()

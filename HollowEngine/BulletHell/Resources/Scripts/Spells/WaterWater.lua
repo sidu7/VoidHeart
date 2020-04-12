@@ -3,7 +3,7 @@ function CreateBubbleShield()
     -- playtesting vars
 	-----------------------------------------
 	local go = CreatePrefabAtPosition("PlayerBubble", gameObject:GetTransform().position)	
-	--PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
+	PlaySFX("Resources/Audio/SFX/WaterWaterSpellCreate.wav")
 end
 
 function CheckValidAttack()

@@ -3,7 +3,7 @@
   "Components": [
     {
       "Type": "Transform",
-      "Position": [ 0.5, 10.0, 0.0 ],
+      "Position": [ 0.0, 0.0, 0.0 ],
       "Scale": [ 0.75, 0.75, 0.75 ]
     },
     {
@@ -18,15 +18,45 @@
     },
     {
       "Type": "Model",
-      "Shape": "BALL",
+      "Model": "Resources/Models/FireSpell.obj",
       "CastShadow": true
     },
     {
       "Type": "Material",
-      "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 30.0, 0.0, 0.0 ],
-      "Shininess": 1000.0,
-      "Texture": "Resources/Textures/cracks.png"
+      "Texture": "Resources/Textures/FireSpell.png",
+      "Specular": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "Shininess": 10.0,
+      "MaterialTextures": false
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "SpellPickup" ],
+      "DestroyScripts":  ["Destroy/SpellCollected"]
+    },
+    {
+      "Type": "Light",
+      "Color": [ 1.0, 0.0, 0.0 ],
+      "Radius": 4,
+      "CastShadow": false
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 100,
+      "EmissionRate": 5,
+      "Shape": 1,
+      "Life": [ 1.2, 0.7 ],
+      "Speed": [ 1.0, 1.0 ],
+      "Size": [ 0.05, 0.1 ],
+      "ModelShape": "CUBE",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 0.5, 0.5, 0.0 ],
+      "MaxColor": [ 1.0, 0.0, 0.0 ],
+      "Active": true,
+      "FadeSpeed": 5.0
     },
     {
       "Type": "Spell",
@@ -37,7 +67,8 @@
       "ParticleSize": 0.0,
       "ParticleTexture": "Resources/Textures/star.png",
       "Cooldown": 0.5,
-      "LightColor": [0.6, 0.1, 0.1]
+      "LightColor": [ 0.6, 0.1, 0.1 ],
+      "GoingUp": true
     }
   ]
 }

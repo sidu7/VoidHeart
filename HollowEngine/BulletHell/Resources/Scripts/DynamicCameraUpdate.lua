@@ -14,7 +14,6 @@ function SetCameraPosition()
 	local floor = GetDungeonFloor(currentFloor)
 	local currentRoomObj = floor:GetRoomFromIndex(currentRoom)
 	local enemies = currentRoomObj.Enemies
-	
 	local i = 0
 	for k=1,#enemies do
 		camera.FocusPositions[k] = (enemies[k]:GetTransform())

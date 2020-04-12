@@ -34,8 +34,16 @@ namespace BulletHell
 			"combinedSpell", &Magic::mCombinedSpell
 			);
 
+		// Tell lua about spell component
+		lua.new_usertype<Spell>("Spell",
+			sol::constructors<Spell()>(),
+			"goingUp", &Spell::mIsGoingUp,
+			"spellType", &Spell::mSpellType
+			);
+
 		// Add get magic component to lua
 		Hollow::ScriptingManager::Instance().mGameObjectType["GetMagic"] = &Hollow::GameObject::GetComponent<Magic>;
+		Hollow::ScriptingManager::Instance().mGameObjectType["GetSpell"] = &Hollow::GameObject::GetComponent<Spell>;
 
 		// Set event callback functions
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_SPELL_COLLECT, EVENT_CALLBACK(MagicSystem::OnSpellCollect));

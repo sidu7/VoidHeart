@@ -28,7 +28,7 @@ function PlayerAttack ()
 	local particle = go:GetParticleEmitter()
 	particle.direction = vec3.new(-xDir, 0.0, -zDir);
 
-	PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
+	PlaySFX("Resources/Audio/SFX/FireSpellAttack.wav")
 end
 
 function CheckValidAttack()

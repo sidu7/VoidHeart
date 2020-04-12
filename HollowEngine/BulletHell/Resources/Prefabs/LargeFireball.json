@@ -31,7 +31,7 @@
     },
     {
       "Type": "Script",
-      "DestroyScripts": [ "Destroy/CreateFireballs" ]
+      "DestroyScripts": [ "Destroy/CreateFireballs", "Destroy/PlaySoundEffect" ]
     },
     {
       "Type": "ParticleEmitter",
