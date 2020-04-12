@@ -8,6 +8,7 @@
 #include "Hollow/Managers/GameObjectManager.h"
 #include "Hollow/Managers/AudioManager.h"
 #include "Hollow/Managers/PhysicsManager.h"
+#include "Hollow/Managers/RenderManager.h"
 
 #include "Hollow/Components/Script.h"
 #include "Hollow/Components/Transform.h"
@@ -304,7 +305,7 @@ namespace BulletHell
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-    	
+		ImGui::SetNextWindowPosCenter(ImGuiCond_Once);
 		ImGui::Begin("Audio", nullptr, mWindowFlags);
 		ImGui::SliderFloat("Master Volume", &Hollow::AudioManager::Instance().mMasterVolume, 0.0f, 1.0f);
 		ImGui::Checkbox("Mute Songs", &Hollow::AudioManager::Instance().mMute[Hollow::SOUND_BACKGROUND]);
@@ -325,16 +326,19 @@ namespace BulletHell
 
 	void GameLogicManager::CreateExitConfirmationUI()
 	{
+		glm::ivec2 screenSize = Hollow::RenderManager::Instance().GetWindowSize();
+    	
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+		ImGui::SetNextWindowPosCenter(ImGuiCond_Once);
 		ImGui::Begin("Exit", nullptr, mWindowFlags);
 		ImGui::Text("Are You Sure?");
-    	if(ImGui::Button("Yes", ImVec2(100, 50)))
+    	if(ImGui::Button("Totally", ImVec2(100, 50)))
     	{
 			Hollow::GameEvent ge((int)GameEventType::ON_EXIT_GAME);
 			Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
     	}
-		ImGui::Button("No", ImVec2(100, 50));
+		//ImGui::Button("No", ImVec2(100, 50));
 		ImGui::End();
 	}
 
