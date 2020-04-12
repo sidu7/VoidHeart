@@ -1,31 +1,30 @@
 {
   "Type": "FLOOR",
   "Tag": "Floor",
-  "Components": [
-    {
-      "Type": "Transform",
-      "Position": [ 1.0, 0.0, 1.0 ],
-      "Scale": [ 15.0, 1.0, 15.0 ]
-    },
-    {
-      "Type": "Body",
-      "RigidbodyType": "STATIC",
-      "AngularVelocity": [0.0, 0.0, 0.0]
-    },
-    {
-      "Type": "Collider",
-      "Shape": "BOX"
-    },
-    {
-      "Type": "Model",
-      "Shape": "CUBE",
-      "CastShadow": true
-    },
-    {
-      "Type": "Material",
-      "Diffuse": [ 1.0, 0.0, 0.0 ],
-      "Specular": [ 0.5, 0.5, 0.5 ],
-      "Shininess": 1.0
-    }
-  ]
+    "Components": [
+        {
+            "Type": "Transform",
+            "Position": [ 1.0, 0.0, 1.0 ],
+            "Scale": [ 15.0, 1.0, 15.0 ]
+        },
+        {
+            "Type": "Body",
+            "RigidbodyType": "STATIC",
+            "AngularVelocity": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+            "Type": "Collider",
+            "Shape": "BOX"
+        },
+        {
+            "Type": "Model",
+            "Shape": "CUBE",
+            "CastShadow": true
+        },
+        {
+            "Type": "Material",
+            "Shininess": 1.0,
+            "Texture": "Resources/Textures/floor.png"
+        }
+    ]
 }

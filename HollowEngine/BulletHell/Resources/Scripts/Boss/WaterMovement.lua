@@ -237,6 +237,9 @@ function Update()
 	local health = gameObject:GetHealth()
     local hitPoints = health.hitPoints
 	
+	-- set vertical velocity to zero
+	gameObject:GetBody().velocity.y = 0
+
 	if(hitPoints >= maxHealth * 2.0 / 3.0) then
 		-- First phase
 		PhaseOneMovement()
