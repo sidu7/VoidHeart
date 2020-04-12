@@ -4,6 +4,7 @@
 #include "LayerStack.h"
 
 namespace Hollow {
+	class WindowFullScreenEvent;
 	class WindowCloseEvent;
 	class Event;
 
@@ -54,8 +55,11 @@ namespace Hollow {
 		HOLLOW_API void PushOverlay(Layer* layer);
 
 		HOLLOW_API void ExitApplication();
+
+		HOLLOW_API void ToggleFullScreen();
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowFullScreen(WindowFullScreenEvent& e);
 
 		GameWindow* mpWindow;
 		bool mIsRunning;

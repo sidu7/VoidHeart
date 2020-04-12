@@ -15,15 +15,14 @@ Right Bumper + A/B/X/Y - Hold Bumper and Press Button to
 Left + Right Trigger   - Shoot Combined Spell
 
 ==HOW TO RUN==
-Run Setup.exe
+Run Amalgamage_Setup.exe
 Select Install Location
 Complete Installation
 Executable is located in Start Menu
 It can also be found in your install location
-Defualt location is ProgramFiles\VoidHeart\BulletHell.exe
+Default location is ProgramFiles(x86)\Digipen\Amalgamage\Amalgamage.exe
 
 ==NOTES==
-Many features are unstable
 Please be patient and restart the game
 
 ============================================================

@@ -50,7 +50,8 @@ namespace Hollow {
 
 		rapidjson::Value::Object data = root.GetObject();
 		mpWindow = new GameWindow(JSONHelper::GetSettings(data, "Window"));
-
+		SDL_ShowCursor(0);
+		
 		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
 
 		mIsRunning = true;
@@ -80,6 +81,7 @@ namespace Hollow {
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowFullScreenEvent>(BIND_EVENT_FN(OnWindowFullScreen));
 		//RenderManager::Instance().GetCamera()->OnEvent(e);
 
 		//HW_CORE_TRACE("{0}", e);
@@ -119,7 +121,7 @@ namespace Hollow {
 			GameObjectManager::Instance().ClearDeletionList();
 
 			FrameRateController::Instance().FrameEnd();
-
+			
 			if (InputManager::Instance().IsKeyPressed("Escape"))
 				mIsRunning = false;
 		}
@@ -141,9 +143,23 @@ namespace Hollow {
 		mIsRunning = false;
 	}
 
+	void Application::ToggleFullScreen()
+	{
+		Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
+		bool IsFullscreen = SDL_GetWindowFlags(mpWindow->GetWindow()) & FullscreenFlag;
+		SDL_SetWindowFullscreen(mpWindow->GetWindow(), IsFullscreen ? 0 : FullscreenFlag);
+		IsFullscreen ? SDL_ShowCursor(0) : SDL_ShowCursor(1);
+	}
+
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		mIsRunning = false;
+		return true;
+	}
+
+	bool Application::OnWindowFullScreen(WindowFullScreenEvent& e)
+	{
+		// Do something when the screen turns fullscreen
 		return true;
 	}
 }

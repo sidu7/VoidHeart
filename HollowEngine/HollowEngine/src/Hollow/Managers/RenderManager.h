@@ -51,6 +51,8 @@ namespace Hollow {
 		/// </summary>
 		/// <returns>glm.vec2.</returns>
 		HOLLOW_API inline glm::vec2 GetWindowSize();
+
+		HOLLOW_API SDL_Window* GetSDLWindow();
 		
 		/// <summary>
 		/// Display debug window.

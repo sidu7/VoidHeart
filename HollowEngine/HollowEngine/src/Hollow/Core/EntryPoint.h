@@ -4,12 +4,14 @@
 
 extern Hollow::Application* Hollow::CreateApplication();
 #undef main
+
 int main(int argc, char** argv)
 //int WINAPI WinMain(
 //	HINSTANCE hInstance,
 //	HINSTANCE hPrevInstance,
 //	LPSTR lpCmdLine,
 //	int nCmdShow)
+int main(int argc, char** argv)
 {
 	
 	//This has to be moved out of the main as well later.
