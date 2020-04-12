@@ -23,6 +23,8 @@
 #include "Components/Health.h"
 #include "Components/CharacterStats.h"
 
+#include "Hollow/Events/GameEvent.h"
+
 #include "Events/PickupTimedEvent.h"
 #include "Events/DeathEvent.h"
 
@@ -33,6 +35,8 @@
 #include "GameMetaData/GameObjectType.h"
 
 #include "Hollow/Utils/UniqueID.h"
+#include "Hollow/Managers/InputManager.h"
+#include "Hollow/Managers/FrameRateController.h"
 
 #define MAX_REGULAR_ROOMS 8
 #define MAX_BOSS_ROOMS 4
@@ -62,7 +66,7 @@ namespace BulletHell
     void GameLogicManager::Init()
     {
 		RegisterLuaBindings();
-
+    	
     	// Init UI Window Flags
 		mWindowFlags = 0;
 		mWindowFlags |= ImGuiWindowFlags_NoTitleBar;
@@ -71,19 +75,25 @@ namespace BulletHell
 		mWindowFlags |= ImGuiWindowFlags_NoCollapse;
 		mWindowFlags |= ImGuiWindowFlags_NoBackground;
 
+		isFullScreen = true;
+    	
 		InitGlobalGameObjects();
 
 		SubscribeToEvents();
 		
 		CreateMainMenu();
     }
-
+	
 	void GameLogicManager::InitGlobalGameObjects()
 	{
 		Hollow::ScriptingManager::Instance().RunScript("InitGlobalObjects");
 		sol::state& smLua = Hollow::ScriptingManager::Instance().lua;
 		mpPlayerGO = smLua["player"];
+
+		mpSplashScreen = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources\\Prefabs\\SplashScreen.json");
+    	
 		AddGlobalGameObject(mpPlayerGO);
+		AddGlobalGameObject(mpSplashScreen);
 		AddGlobalGameObject(smLua["camera"]);
 		AddGlobalGameObject(smLua["UICamera"]);
 		AddGlobalGameObject(smLua["globalLight"]);
@@ -149,16 +159,35 @@ namespace BulletHell
 		return false;
 
     }
+	bool fullscreen = true;
+	void GameLogicManager::FireToggleFullScreenEvent()
+	{
+		Hollow::GameEvent ge((int)GameEventType::TOGGLE_FULLSCREEN);
+		Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
+		isFullScreen ? Hollow::InputManager::Instance().ShowMouseCursor() :
+			Hollow::InputManager::Instance().HideMouseCursor();
+	}
+
 	
 	void GameLogicManager::Update()
 	{
 		CheckCheatCodes();
 		CheckKillPlane();
-    	if(hasGameStarted)
+
+		if(Hollow::InputManager::Instance().IsKeyTriggered("F11"))
+		{
+			FireToggleFullScreenEvent();
+			isFullScreen = !isFullScreen;
+			fullscreen = isFullScreen;
+		}
+
+		UpdateSplashScreen();
+		
+		if(hasGameStarted)
     	{
 			return;
     	}
-		glm::vec3 playerPos = DungeonManager::Instance().mpPlayerGo->GetComponent<Hollow::Transform>()->mPosition;
+		glm::vec3 playerPos = mpPlayerGO->GetComponent<Hollow::Transform>()->mPosition;
 		mCreditsUIObject->mActive = false;
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags = 0;
@@ -302,6 +331,7 @@ namespace BulletHell
 
 	void GameLogicManager::CreateOptionsUI()
 	{
+    	
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 		ImGui::SetNextWindowPosCenter(ImGuiCond_Once);
@@ -311,8 +341,15 @@ namespace BulletHell
 		ImGui::SliderFloat("Song Volume", &Hollow::AudioManager::Instance().mVolume[Hollow::SOUND_BACKGROUND], 0.0f, 1.0f);
 		ImGui::Checkbox("Mute SFX", &Hollow::AudioManager::Instance().mMute[Hollow::SOUND_EFFECT]);
 		ImGui::SliderFloat("SFX Volume", &Hollow::AudioManager::Instance().mVolume[Hollow::SOUND_EFFECT], 0.0f, 1.0f);
+		ImGui::Checkbox("FullScreen", &fullscreen);
 		//ImGui::Button("Back", ImVec2(100, 50));
 		ImGui::End();
+
+    	if(fullscreen != isFullScreen)
+    	{
+			FireToggleFullScreenEvent();
+			isFullScreen = fullscreen;
+    	}
 	}
 
 	void GameLogicManager::CreateCreditsUI()
@@ -482,6 +519,24 @@ namespace BulletHell
 	void GameLogicManager::CheckCheatCodes()
 	{
 		Hollow::ScriptingManager::Instance().RunScript("CheatCodes");
+	}
+
+	void GameLogicManager::UpdateSplashScreen()
+	{
+		float dt = Hollow::FrameRateController::Instance().GetFrameTime();
+
+		splashTime += dt;
+
+		if (splashTime > 3.0f)
+		{
+			Hollow::UIImage* image = mpSplashScreen->GetComponent<Hollow::UIImage>();
+			image->mAlpha -= 0.01f;
+
+			if(image->mAlpha < -1.0f)
+			{
+				mpSplashScreen->mActive = false;
+			}
+		}
 	}
 
 	void GameLogicManager::CheckKillPlane()

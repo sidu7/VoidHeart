@@ -377,6 +377,11 @@ namespace Hollow {
 		return glm::vec2(mpWindow->GetWidth(), mpWindow->GetHeight());
 	}
 
+	SDL_Window* RenderManager::GetSDLWindow()
+	{
+		return mpWindow->GetWindow();
+	}
+
 	void RenderManager::InitializeGBuffer(rapidjson::Value::Object& data)
 	{
 		// Compile G-Buffer shader and deferred shader
