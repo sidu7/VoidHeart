@@ -7,8 +7,8 @@ currentRoom = floor:GetEntranceIndex()
 
 local coords = floor:GetEntrance():GetCoords()
 
---CreatePrefabAtPosition("EnemyBossWater", vec3.new(coords.y * roomSize + roomSize/2, 10, coords.x * roomSize + roomSize/2))
---CreatePrefabAtPosition("EnemyTurretAOE", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2 - 3))
+--CreatePrefabAtPosition("EnemyBoss1", vec3.new(coords.y * roomSize + roomSize/2, 10, coords.x * roomSize + roomSize/2))
+--CreatePrefabAtPosition("EnemyBoss1", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2 - 3))
 --CreatePrefabAtPosition("EnemyFollowLookdir", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2))
 --CreatePrefabAtPosition("EnemyTurretTarget", vec3.new(coords.y * roomSize + roomSize/2 - 3, 0.5, coords.x * roomSize + roomSize/2))
 --CreatePrefabAtPosition("EnemyTurretCardinal", vec3.new(coords.y * roomSize + roomSize/2 + 3, 0.5, coords.x * roomSize + roomSize/2 + 3))

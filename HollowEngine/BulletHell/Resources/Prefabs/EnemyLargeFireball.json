@@ -5,7 +5,7 @@
     {
       "Type": "Transform",
       "Position": [ 0.0, 0.0, 0.0 ],
-      "Scale": [ 3.0, 3.0, 3.0 ]
+      "Scale": [ 1.0, 1.0, 1.0 ]
     },
     {
       "Type": "Body",
@@ -19,13 +19,14 @@
     },
     {
       "Type": "Model",
-      "Shape": "BALL",
+      "Model": "Resources/Models/Meteor.obj",
+      "ModelHasOffset": false,
       "CastShadow": true
     },
     {
       "Type": "Material",
       "Specular": [ 1.0, 1.0, 1.0 ],
-      "Diffuse": [ 0.0, 5.0, 0.0 ],
+      "Diffuse": [ 0.0, 0.0, 0.0 ],
       "Shininess": 10.0,
       "Texture": "Resources/Textures/cracks.png"
     },
@@ -43,9 +44,9 @@
       "Size": [ 0.01, 0.05 ],
       "ModelShape": "CUBE",
       "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
-      "MinColor": [ 1.0, 1.0, 0.0 ],
-      "MaxColor": [ 1.0, 0.0, 0.0 ],
-      "Area": [ 3.0, 3.0, 3.0 ],
+      "MinColor": [ 1.17, 0.08, 0.3 ],
+      "MaxColor": [ 0.45, 0.24, 0.77 ],
+      "Area": [ 1.2, 1.2, 1.2 ],
       "MoveWithObject": false
     }
   ]

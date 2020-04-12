@@ -4,7 +4,8 @@ function ShootInDirection(dirX, dirY, dirZ)
 	local bulletSpeed = 10.0
     -----------------------------------------
     local transform = gameObject:GetTransform()
-	local spawnPos = transform.position
+	local spawnPos = vec3.new(transform.position.x, transform.position.y + 0.5, transform.position.z)
+    
 
 	local bulletPrefabPath = "Resources/Json data/Bullet.json"
 	local bullet = CreateGameObject(bulletPrefabPath)

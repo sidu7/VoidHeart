@@ -27,8 +27,9 @@
     {
       "Type": "Material",
       "Shininess": 1000.0,
-      "Diffuse": [ 1.0, 0.0, 0.0, 1.0 ],
-      "Specular": [ 0.5, 0.5, 0.5, 1.0 ]
+      "Diffuse": [ 0.0, 0.0, 0.0, 1.0 ],
+      "Specular": [ 0.5, 0.5, 0.5, 1.0 ],
+      "Texture": "Resources/Textures/RockBoss.png"
     },
     {
       "Type": "StateMachine",
