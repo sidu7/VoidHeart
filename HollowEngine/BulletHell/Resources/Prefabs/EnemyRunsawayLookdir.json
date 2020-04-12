@@ -18,14 +18,16 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Warlock.fbx",
+      "Model": "Resources/Models/EnemyRunsawayLookdir.obj",
       "ModelHasOffset": true,
       "CastShadow": true
     },
     {
       "Type": "Material",
       "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Warlock.fbx"
+      "Diffuse": [ 0.0, 0.0, 0.0, 1.0 ],
+      "Specular": [ 0.5, 0.5, 0.5, 1.0 ],
+      "Texture": "Resources/Textures/EnemyRunsawayLookdir.png"
     },
     {
       "Type": "Script",
@@ -33,22 +35,6 @@
         "EnemyRunsAway",
         "OnTakeDamage"
       ]
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Walking.fbx",
-      "Animations": [
-        [
-          "Walking",
-          "Resources/Models/Goblin.fbx"
-        ]
-      ],
-      "BlendFactor": 1.0
-    },
-    {
-      "Type": "StateMachine",
-      "StateFile": "Resources/State data/npcstate.json",
-      "StartState": "Walking"
     },
     {
       "Type": "Attack",

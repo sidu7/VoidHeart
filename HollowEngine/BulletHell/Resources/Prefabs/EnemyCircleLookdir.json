@@ -18,14 +18,16 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Walking.fbx",
+      "Model": "Resources/Models/EnemyCircleLookdir.obj",
       "ModelHasOffset": true,
       "CastShadow": true
     },
     {
       "Type": "Material",
       "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Walking.fbx"
+      "Diffuse": [ 0.0, 0.0, 0.0, 1.0 ],
+      "Specular": [ 0.5, 0.5, 0.5, 1.0 ],
+      "Texture": "Resources/Textures/EnemyCircleLookDir.png"
     },
     {
       "Type": "Script",

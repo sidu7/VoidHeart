@@ -4,7 +4,7 @@
     {
       "Type": "Transform",
       "Position": [ 10.0, 10.0, 10.0 ],
-      "Scale": [ 2.0, 2.0, 2.0 ]
+      "Scale": [ 1.5, 1.5, 1.5 ]
     },
     {
       "Type": "Body",
@@ -18,25 +18,16 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Turret.fbx",
-      "ModelHasOffset": true,
+      "Model": "Resources/Models/Turret.obj",
+      "ModelHasOffset": false,
       "CastShadow": true
     },
     {
       "Type": "Material",
       "Shininess": 1.0,
-      "MaterialData": "Resources/Models/Turret.fbx"
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Turret.fbx",
-      "Animations": [
-        [
-          "Walking",
-          "Resources/Models/Turret.fbx"
-        ]
-      ],
-      "BlendFactor": 1.0
+      "Diffuse": [ 0.0, 0.0, 0.0, 1.0 ],
+      "Specular": [ 0.5, 0.5, 0.5, 1.0 ],
+      "Texture": "Resources/Textures/Turret.png"
     },
     {
       "Type": "StateMachine",

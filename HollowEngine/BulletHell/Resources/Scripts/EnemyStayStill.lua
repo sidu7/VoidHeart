@@ -25,9 +25,6 @@ function Update()
         impulse  = impulse * impulseStrength
         ApplyLinearImpulse(player, impulse)
 
-        local impulseReverse = vec3.new(-xDirNorm, 0.0, -zDirNorm)
-        impulseReverse = impulseReverse * impulseStrength
-        ApplyLinearImpulse(gameObject, impulseReverse)
     end
 end
 

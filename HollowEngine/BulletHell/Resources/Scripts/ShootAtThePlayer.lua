@@ -46,6 +46,7 @@ function Shoot()
    
         -- Setting position
         bulletBody.position = spawnPos
+        bulletBody.position.y = bulletBody.position.y + 0.8 
         bulletTransform.position = spawnPos
 
         -- Setting velocity
