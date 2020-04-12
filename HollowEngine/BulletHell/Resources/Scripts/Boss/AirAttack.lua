@@ -131,7 +131,6 @@ function PhaseTwoBehavior()
 		attack.baseAttackTime = jumpDelayTime
 		dashFlag = true
 	end
-	
 	-- After countdown is reached, find pillar to jump to
 	if dashFlag and attack.currentAttackTime > attack.baseAttackTime then
 		SetPillarNearestPlayer()
@@ -188,6 +187,9 @@ function PhaseThreeBehavior()
 	elseif attack.currentAttackTime > moveToPillarTime then
 		-- Check if close enough to pillar to give life and transition back into dash attack, reset pillar and current attack timer
 		local position = gameObject:GetBody().position
+		if closestPillar == nil then
+			SetPillarFurthestPlayer()
+		end
 		local pillarPosition = closestPillar:GetBody().position
 		local distance = VecLength(pillarPosition - position)
 		if(distance < minDistanceToPillar) then
@@ -202,9 +204,9 @@ end
 function Update()
 	-----------------------------------------
     -- playtesting vars
-	local maxHealth = 200
+	local maxHealth = 180
     -----------------------------------------
-	
+	print(gameObject.id)
     local health = gameObject:GetHealth()
     local hitPoints = health.hitPoints
 	

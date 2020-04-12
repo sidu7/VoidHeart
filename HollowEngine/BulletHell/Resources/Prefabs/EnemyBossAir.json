@@ -17,8 +17,8 @@
       "Type": "Collider",
       "Shape": "BOX",
       "HasCustomScale": true,
-      "MinBounds": [ -0.9, -1.5, -0.9 ],
-      "MaxBounds": [ 0.9, 4.5, 0.9 ]
+      "MinBounds": [ -0.9, -0.0, -0.9 ],
+      "MaxBounds": [ 0.9, 3.0, 0.9 ]
     },
     {
       "Type": "Model",
@@ -47,10 +47,10 @@
     },
     {
       "Type": "Health",
-      "HitPoints": 200,
+      "HitPoints": 180,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 0.5,
+      "InvincibleTime": 0.1,
       "IsHit": false,
       "HitReactinTime": 0.5,
       "DeathTime": 2.0,

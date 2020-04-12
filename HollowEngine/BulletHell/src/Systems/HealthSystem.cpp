@@ -222,10 +222,14 @@ namespace BulletHell
 	{
 		if (event.mpObject1->mType == (int)GameObjectType::WALL)
 		{
+			// Don't destroy bullets that hit pillar
+			if(event.mpObject1->mTag != "Pillar")
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject2);
 		}
 		else
 		{
+			// Don't destroy bullets that hit pillar
+			if (event.mpObject2->mTag != "Pillar")
 			Hollow::GameObjectManager::Instance().DeleteGameObject(event.mpObject1);
 		}
 	}

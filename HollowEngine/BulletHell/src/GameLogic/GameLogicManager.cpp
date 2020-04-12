@@ -287,9 +287,8 @@ namespace BulletHell
 		}
 
 		// Reset player speed to normal
+		// Instead of messing with stats, just set velocity to zero ya goob
 		mIsChangingFloors = false;
-		CharacterStats* pStats = mpPlayerGO->GetComponent<CharacterStats>();
-		pStats->mMovementSpeed = mPreviousPlayerSpeed;
     }
 
 	void GameLogicManager::CreateRoomLabels()
@@ -719,9 +718,8 @@ namespace BulletHell
 
 			// Save old player speed
 			// Stop player from moving
-			CharacterStats* pStats = mpPlayerGO->GetComponent<CharacterStats>();
-			mPreviousPlayerSpeed = pStats->mMovementSpeed;
-			pStats->mMovementSpeed = 0.0f;
+			Hollow::Body* pBody = mpPlayerGO->GetComponent<Hollow::Body>();
+			pBody->mVelocity = glm::vec3(0.0f);
 
 			mIsChangingFloors = true;
 		}
