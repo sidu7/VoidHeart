@@ -11,7 +11,6 @@ int main(int argc, char** argv)
 //	HINSTANCE hPrevInstance,
 //	LPSTR lpCmdLine,
 //	int nCmdShow)
-int main(int argc, char** argv)
 {
 	
 	//This has to be moved out of the main as well later.
