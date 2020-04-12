@@ -129,7 +129,7 @@ end
 function Update()
     -----------------------------------------
     -- playtesting vars
-	local maxHealth = 200
+	local maxHealth = 180
     -----------------------------------------
 	
 	local health = gameObject:GetHealth()

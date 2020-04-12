@@ -1,8 +1,8 @@
 {
-    
-    "Type": "PICKUP",
-    "Active": true,
-    "Components": [
+
+  "Type": "PICKUP",
+  "Active": true,
+  "Components": [
     {
       "Type": "Transform",
       "Scale": [ 1.0, 1.0, 1.0 ]
@@ -27,25 +27,25 @@
     },
     {
       "Type": "Material",
+      "Texture": "Resources/Textures/Heart.png",
       "Shininess": 1000.0,
-        "Diffuse": [ 1.0, 0.0, 0.0, 1.0 ],
-        "Specular": [0.5,0.5,0.5,1.0]
+      "Specular": [ 0.5, 0.5, 0.5, 1.0 ]
     },
-      {
-        "Type": "Pickup",
-        "PickupType": 0,
-        "BuffValue": 2.0,
-        "EffectTime": 0.0
-      },
-      {
-        "Type": "Script",
-        "Scripts": [ "SlowRotate" ]
-      },
-      {
-        "Type": "Light",
-        "Color": [ 1.0, 0.3, 0.3 ],
-        "Radius": 3,
-        "CastShadow": false
-      }
+    {
+      "Type": "Pickup",
+      "PickupType": 0,
+      "BuffValue": 2.0,
+      "EffectTime": 0.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "SlowRotate" ]
+    },
+    {
+      "Type": "Light",
+      "Color": [ 1.0, 0.3, 0.3 ],
+      "Radius": 3,
+      "CastShadow": false
+    }
   ]
 }

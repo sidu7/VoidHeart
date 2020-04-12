@@ -34,7 +34,7 @@ end
 function PlayerAttack ()
 	-- Create a large fireball
 	CreateLargeFireball()
-	PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
+	PlaySFX("Resources/Audio/SFX/FireFireSpellAttack.wav")
 end
 
 function CheckValidAttack()

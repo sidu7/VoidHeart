@@ -34,6 +34,6 @@ namespace BulletHell
 		std::string mParticleTexturePath;
 		float mCooldown;
 		glm::vec3 mLightColor;
-
+		bool mIsGoingUp;
 	};
 }

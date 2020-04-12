@@ -195,7 +195,8 @@ namespace Hollow
 			"GetLight", &GameObject::GetComponent<Light>,
 			"GetUITransform", &GameObject::GetComponent<UITransform>,
 			"tag", &GameObject::mTag,
-            "type", &GameObject::mType
+            "type", &GameObject::mType,
+			"id", &GameObject::mID
 			);
 
 		lua.set_function("CreateGameObject", &ResourceManager::LoadGameObjectFromFile, std::ref(ResourceManager::Instance()));

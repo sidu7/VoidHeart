@@ -1,11 +1,11 @@
 {
-    
-    "Type": "PICKUP",
-    "Active": true,
-    "Components": [
+
+  "Type": "PICKUP",
+  "Active": true,
+  "Components": [
     {
       "Type": "Transform",
-      "Scale": [ 1.0, 1.0, 1.0 ]
+      "Scale": [ 1.2, 1.2, 1.2 ]
     },
     {
       "Type": "Body",
@@ -21,25 +21,31 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Heart.obj",
+      "Model": "Resources/Models/DamagePotion.obj",
       "ModelHasOffset": false,
       "CastShadow": true
     },
     {
       "Type": "Material",
-      "Shininess": 1000.0,
-        "Diffuse": [ 0.0, 0.0, 1.0, 1.0 ],
-        "Specular": [0.5,0.5,0.5,1.0]
+      "Texture": "Resources/Textures/DamagePotion.png",
+      "Shininess": 10.0,
+      "Specular": [ 0.3, 0.3, 0.3 ]
     },
-      {
-        "Type": "Pickup",
-        "PickupType": 3,
-        "BuffValue": 2.0,
-        "EffectTime": 0.0
-      },
-      {
-        "Type": "Script",
-        "Scripts": ["SlowRotate"]
-      }
+    {
+      "Type": "Pickup",
+      "PickupType": 3,
+      "BuffValue": 2.0,
+      "EffectTime": 0.0
+    },
+    {
+      "Type": "Script",
+      "Scripts": [ "SlowRotate" ]
+    },
+    {
+      "Type": "Light",
+      "Color": [ 0.8, 0.3, 1.0 ],
+      "Radius": 3,
+      "CastShadow": false
+    }
   ]
 }
