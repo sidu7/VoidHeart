@@ -15,9 +15,9 @@
         0.0
       ],
       "Scale": [
-        2.0,
-        2.0,
-        2.0
+        2.5,
+        2.5,
+        2.5
       ]
     },
     {
@@ -39,43 +39,16 @@
     },
     {
       "Type": "Model",
-      "Model": "Resources/Models/Walking.fbx",
+      "Model": "Resources/Models/Player.obj",
       "CastShadow": true,
       "ModelHasOffset": true
     },
     {
       "Type": "Material",
       "Shininess": 1.0,
-      "MaterialTextures": true,
-      "MaterialData": "Resources/Models/Walking.fbx"
-    },
-    {
-      "Type": "Animator",
-      "BoneData": "Resources/Models/Walking.fbx",
-      "Animations": [
-        [
-          "Walking",
-          "Resources/Models/Walking.fbx"
-        ],
-        [
-          "Idle",
-          "Resources/Models/Idle.fbx"
-        ],
-        [
-          "Running",
-          "Resources/Models/Running.fbx"
-        ],
-        [
-          "Jump",
-          "Resources/Models/Jump.fbx"
-        ]
-      ],
-      "BlendFactor": 1.0
-    },
-    {
-      "Type": "StateMachine",
-      "StateFile": "Resources/State data/playerstate.json",
-      "StartState": "Walking"
+      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Diffuse": [ 0.0, 0.0, 0.0 ],
+      "Texture": "Resources/Textures/Player.png"
     },
     {
       "Type": "Script",
