@@ -1,8 +1,7 @@
 function MeleeAttack ()
 	-- Create melee collision object
-	
 	local melee = CreatePrefabAtPosition("MeleeCollider", gameObject:GetTransform().position)
-
+	PlaySFX("Resources/Audio/SFX/EarthMelee.wav")
 end
 
 function ShortDash()
@@ -18,7 +17,6 @@ function ShortDash()
 		direction.z = direction.z / magnitude
 		impulse = impulse + direction * dashSpeed
 		impulse.y = 0.0
-		PlaySFX("Resources/Audio/SFX/EarthMelee.wav")
 		ApplyLinearImpulse(gameObject, impulse)
 	end
 end

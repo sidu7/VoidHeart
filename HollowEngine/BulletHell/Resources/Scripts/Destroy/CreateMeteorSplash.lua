@@ -11,6 +11,7 @@ function CreateFireballs ()
 		local transform = go:GetTransform()
 		transform.position = body.position
 	end
+	PlaySFX("Resources/Audio/SFX/FireEarthSpellDestroy.wav")
 end
 
 CreateFireballs()

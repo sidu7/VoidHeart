@@ -1,6 +1,6 @@
 {
-    "Type": "ENEMY",
-    "Tag": "Boss",
+  "Type": "ENEMY",
+  "Tag": "Boss",
   "Components": [
     {
       "Type": "Transform",
@@ -24,15 +24,15 @@
       "CastShadow": true
     },
     {
-        "Type": "Material",
-        "Texture": "Resources/Textures/waterBossMaterial.png",
-        "Shininess": 1.0,
-        "MaterialTextures": false
+      "Type": "Material",
+      "Texture": "Resources/Textures/waterBossMaterial.png",
+      "Shininess": 10.0
     },
     {
       "Type": "Script",
       "Scripts": [
-        "Boss/WaterMovement"
+        "Boss/WaterMovement",
+        "OnTakeDamage"
       ],
       "DestroyScripts": [ "Destroy/SpawnWaterSpell" ]
     },
@@ -47,7 +47,26 @@
       "HitPoints": 150,
       "IsAlive": true,
       "Invincible": false,
-      "InvincibleTime": 0.3
+      "InvincibleTime": 0.3,
+      "IsHit": false,
+      "HitReactinTime": 0.3,
+      "DeathTime": 1.0,
+      "IsDying": false
+    },
+    {
+      "Type": "ParticleEmitter",
+      "MaxCount": 1000,
+      "EmissionRate": 30,
+      "Shape": 1,
+      "Life": [ 1.5, 1.0 ],
+      "Speed": [ 0.7, 1.0 ],
+      "Size": [ 0.03, 0.15 ],
+      "ModelShape": "SPHERE",
+      "ComputeShader": "Resources/Shaders/TrailingModelParticles.comp",
+      "MinColor": [ 0.1, 0.1, 0.5 ],
+      "MaxColor": [ 0.2, 0.2, 1.0 ],
+      "Active": true,
+      "FadeSpeed": 5.0
     }
   ]
 }

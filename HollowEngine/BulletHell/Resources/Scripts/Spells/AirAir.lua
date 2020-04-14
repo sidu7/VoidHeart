@@ -4,6 +4,7 @@ function FireAttack()
 	if particle then
 		particle.active = false
 	end
+	PlaySFX("Resources/Audio/SFX/AirAirSpellAttack.wav")
 end
 
 function CheckValidAttack()
