@@ -1,5 +1,6 @@
 {
   "Type": "ENEMY",
+  "Tag": "ECircleLookdir",
   "Components": [
     {
       "Type": "Transform",
@@ -34,7 +35,8 @@
       "Scripts": [
         "CirclePlayer",
         "OnTakeDamage"
-      ]
+      ],
+      "DestroyScripts":  ["PlaySoundEffectEnemy"]
     },
     {
       "Type": "Attack",
