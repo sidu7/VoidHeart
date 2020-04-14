@@ -1,5 +1,6 @@
 #pragma once
 #include "Hollow/Systems/System.h"
+#include "Components/Magic.h"
 
 namespace BulletHell
 {
@@ -28,6 +29,7 @@ namespace BulletHell
 		void UpdateSpellUI();
 		void UpdateHandSpellUI(const std::string& handString);
 		void UpdateCombinedSpellUI();
+		void UpdateCombinedSpellHandUI(Magic::SpellData* handSpell, const std::string& handString);
 
 		// Event handling
 		void CycleSpell(Hollow::GameEvent& event);
@@ -40,7 +42,9 @@ namespace BulletHell
 		bool mGlobalObjectsInit;
 		Hollow::GameObject* mpLeftHandUI;
 		Hollow::GameObject* mpRightHandUI;
-		Hollow::GameObject* mpCombinedHandUI;
+		Hollow::GameObject* mpCombinedRingUI;
+		Hollow::GameObject* mpCombinedLeftUI;
+		Hollow::GameObject* mpCombinedRightUI;
 		Hollow::GameObject* mpCombinedCooldownUI;
 
 		Hollow::GameObject* mpLeftHand;

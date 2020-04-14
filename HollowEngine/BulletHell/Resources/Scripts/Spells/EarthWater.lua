@@ -9,7 +9,7 @@ function CreateBarrier()
 	body.position = spawnPosition + forward
 	transform.position = body.position
 	body:RotateBody(gameObject:GetTransform().rotation)
-
+	PlaySFX("Resources/Audio/SFX/EarthWaterSpellAttack.wav")
 end
 
 function CheckValidAttack()

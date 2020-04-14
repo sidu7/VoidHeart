@@ -1,5 +1,6 @@
 {
   "Type": "PLAYER_BULLET",
+  "Tag": "FIREWATER",
   "Components": [
     {
       "Type": "Transform",
@@ -25,7 +26,7 @@
     },
     {
       "Type": "Script",
-      "DestroyScripts": [ "Destroy/CreateFireballs" ]
+      "DestroyScripts": [ "Destroy/CreateFireballs", "Destroy/PlaySoundEffect" ]
     },
     {
       "Type": "DestroyTimer",

@@ -418,7 +418,7 @@ namespace BulletHell
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
 
 		// Play a nice sound effect
-		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/OnPickup.wav");
+		//Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/OnPickup.wav");
 	}
 
 	void GameLogicManager::OnPickupEffectEnd(Hollow::GameEvent& event)

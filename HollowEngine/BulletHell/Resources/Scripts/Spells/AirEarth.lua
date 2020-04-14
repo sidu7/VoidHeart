@@ -4,6 +4,7 @@ function CreateBeam()
 	if particle then
 		particle.active = false
 	end
+	PlaySFX("Resources/Audio/SFX/AirEarthSpellAttack.wav")
 end
 
 function CheckValidAttack()

@@ -51,7 +51,7 @@
       {
         "Type": "Script",
         "Scripts": [ "SlowRotateXYZ" ],
-        "DestroyScripts": ["SetRockNil"]
+        "DestroyScripts": ["SetRockNil", "Destroy/PlaySoundEffect"]
       }
     ]
 }

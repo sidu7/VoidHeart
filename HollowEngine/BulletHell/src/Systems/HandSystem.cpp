@@ -130,7 +130,9 @@ namespace BulletHell
 	void HandSystem::OnDeleteAllGameObjects()
 	{
 		HW_ERROR("DELETING ALL GAME OBJECTS");
-		mpCombinedHandUI = nullptr;
+		mpCombinedRingUI = nullptr;
+		mpCombinedLeftUI = nullptr;
+		mpCombinedRightUI = nullptr;
 		mpLeftHandUI = nullptr;
 		mpRightHandUI = nullptr;
 		mpCombinedCooldownUI = nullptr;
@@ -185,7 +187,12 @@ namespace BulletHell
 		mpLeftHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * leftXOffset, screenSize.y * yOffset), 0, "Resources/Textures/UI/Hightlight.png");
 
 		// Create combined hand image and cooldown UI
-		mpCombinedHandUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * 0.5, screenSize.y * yOffset), 0, "Resources/Textures/UI/Combined.png");
+		mpCombinedRingUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * 0.5, screenSize.y * yOffset), 0, "Resources/Textures/UI/Circle.png");
+		mpCombinedRightUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * 0.5, screenSize.y * yOffset), 0, "Resources/Textures/UI/Circle.png");
+		// Rotate combined hand UI
+		Hollow::UITransform* pUITr = mpCombinedRightUI->GetComponent<Hollow::UITransform>();
+		pUITr->mRotation = 3.141592f;
+		mpCombinedLeftUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * 0.5, screenSize.y * yOffset), 0, "Resources/Textures/UI/Circle.png");
 		mpCombinedCooldownUI = CreateUIObject(glm::vec2(UIScale, UIScale), glm::vec2(screenSize.x * 0.5, screenSize.y * yOffset), 1, "Resources/Textures/UI/CombinedCooldown.png", "Resources/Prefabs/UICooldownIcon.json");
 
 		// Create left hand spell UI
@@ -210,7 +217,10 @@ namespace BulletHell
 		GameLogicManager::Instance().AddGlobalGameObject(mpRightHandUI);
 		GameLogicManager::Instance().AddGlobalGameObject(mpLeftHandUI);
 		
-		GameLogicManager::Instance().AddGlobalGameObject(mpCombinedHandUI);
+		// Added combined hand UI to global objects
+		GameLogicManager::Instance().AddGlobalGameObject(mpCombinedRingUI);
+		GameLogicManager::Instance().AddGlobalGameObject(mpCombinedLeftUI);
+		GameLogicManager::Instance().AddGlobalGameObject(mpCombinedRightUI);
 		GameLogicManager::Instance().AddGlobalGameObject(mpCombinedCooldownUI);
 
 		for (Hollow::GameObject* pGO : mLeftHandUI)
@@ -342,11 +352,41 @@ namespace BulletHell
 			mpPlayerObject = nullptr;
 			return;
 		}
-		if (pMagic->mCombinedSpell != nullptr)
+
+		// Check right hand
+		UpdateCombinedSpellHandUI(pMagic->mRightHandSpell, "right");
+		UpdateCombinedSpellHandUI(pMagic->mLeftHandSpell, "left");
+
+		/*if (pMagic->mCombinedSpell != nullptr)
 		{
-			Hollow::UIImage* pUIImg = mpCombinedHandUI->GetComponent<Hollow::UIImage>();
+			
 			pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture(pMagic->mCombinedSpell->mUITexturePath);
 			pUIImg->TexturePath = pMagic->mCombinedSpell->mUITexturePath;
+		}*/
+	}
+
+	void HandSystem::UpdateCombinedSpellHandUI(Magic::SpellData* handSpell, const std::string& handString)
+	{
+		if (handSpell != nullptr)
+		{
+			Hollow::UIImage* pUIImg = handString == "left" ? mpCombinedLeftUI->GetComponent<Hollow::UIImage>() :
+															 mpCombinedRightUI->GetComponent<Hollow::UIImage>();
+			if (handSpell->mSpellType == SpellType::FIRE)
+			{
+				pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/fireIcon.png");
+			}
+			else if (handSpell->mSpellType == SpellType::AIR)
+			{
+				pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/airIcon.png");
+			}
+			else if (handSpell->mSpellType == SpellType::EARTH)
+			{
+				pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/earthIcon.png");
+			}
+			else if (handSpell->mSpellType == SpellType::WATER)
+			{
+				pUIImg->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/waterIcon.png");
+			}
 		}
 	}
 
@@ -400,7 +440,8 @@ namespace BulletHell
 	void HandSystem::OnPlayerDeath(Hollow::GameEvent& event)
 	{
 		// Reset hand UI images
-		mpCombinedHandUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Combined.png");
+		mpCombinedLeftUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Circle.png");
+		mpCombinedRightUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Circle.png");
 		SetHighlightUIActive(false);
 	}
 

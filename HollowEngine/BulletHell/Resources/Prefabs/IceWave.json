@@ -33,7 +33,8 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "RotateMove" ]
+      "Scripts": [ "RotateMove" ],
+      "DestroyScripts": ["Destroy/PlaySoundEffect"]
     },
     {
       "Type": "DestroyTimer",

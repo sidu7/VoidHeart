@@ -1,6 +1,6 @@
 {
-
   "Type": "PICKUP",
+  "Tag": "RATEOFFIREPICKUP",
   "Active": true,
   "Components": [
     {
@@ -44,7 +44,8 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "SlowRotate" ]
+      "Scripts": [ "SlowRotate" ],
+      "DestroyScripts": ["Destroy/PlaySoundEffectPickup"]
     },
     {
       "Type": "Light",

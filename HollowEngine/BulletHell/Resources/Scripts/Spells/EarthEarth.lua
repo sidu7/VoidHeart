@@ -7,6 +7,8 @@ function CreateRock()
 	local spawnPosition = gameObject:GetTransform().position
 	body.position = spawnPosition
 
+	PlaySFX("Resources/Audio/SFX/EarthEarthSpellAttack.wav")
+
 end
 
 function ChargeRock()
@@ -35,6 +37,14 @@ function ChargeRock()
 	-- Update shape radius for physics
 	if body then
 		ChangeRadius(rockObject)
+	end
+	
+	-- Play SFX every now and then
+	local soundTimer = 0.8
+	if attack.chargeTime < 2.9 then
+		if (attack.chargeTime % soundTimer) < 0.05 then
+			PlaySFX("Resources/Audio/SFX/EarthEarthSpellAttack.wav")
+		end
 	end
 end
 
@@ -75,6 +85,7 @@ function ReleaseRock()
 	
 	local attack = gameObject:GetAttack()
 	attack.chargeTime = 0.0
+	PlaySFX("Resources/Audio/SFX/EarthEarthSpellRelease.wav")
 end
 
 function CheckValidAttack()
