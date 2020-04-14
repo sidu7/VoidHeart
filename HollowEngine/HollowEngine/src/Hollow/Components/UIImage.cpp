@@ -61,4 +61,10 @@ namespace Hollow
 		// TODO: Find better place to update UI image
 		mpTexture = ResourceManager::Instance().LoadTexture(TexturePath);
 	}
+
+	void UIImage::SetTexture(std::string path)
+	{
+		TexturePath = path;
+		mpTexture = ResourceManager::Instance().LoadTexture(TexturePath);
+	}
 }

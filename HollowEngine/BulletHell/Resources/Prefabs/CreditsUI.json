@@ -9,10 +9,10 @@
     },
     {
       "Type": "UIImage",
-      "Image": "Resources/Textures/UI/Credits.png",
+      "Image": "Resources/Textures/UI/Credits/1.png",
       "Shape": "QUAD",
       "Color": [ 0.0, 0.0, 0.0 ],
-      "Alpha":  0.0
+      "Alpha":  -0.2
     }
   ]
 }
