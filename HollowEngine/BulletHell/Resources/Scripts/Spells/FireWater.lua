@@ -9,6 +9,7 @@ function CreateSteamTrap()
 	if particle then
 		particle.extraData.x = transform.scale.x;
 	end
+	PlaySFX("Resources/Audio/SFX/FireWaterSpellAttack.wav")
 end
 
 function CheckValidAttack()

@@ -51,7 +51,7 @@ function PlayerAttack ()
 	for i=1,3 do
 		CreateFireball(i, i)
 	end
-	--PlaySFX("Resources/Audio/SFX/PlayerAttack.wav")
+	PlaySFX("Resources/Audio/SFX/FireAirSpellAttack.wav")
 end
 
 function CheckValidAttack()

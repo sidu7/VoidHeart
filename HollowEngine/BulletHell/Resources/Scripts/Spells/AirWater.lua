@@ -25,6 +25,8 @@ function CreateIceWave()
 	transform.position = body.position
 	transform = rhWave:GetTransform()
 	transform.position = body.position
+
+	PlaySFX("Resources/Audio/SFX/AirWaterSpellAttack.wav")
 end
 
 function CheckValidAttack()
