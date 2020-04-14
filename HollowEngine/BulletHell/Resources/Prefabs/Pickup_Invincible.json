@@ -1,6 +1,7 @@
 {
 
   "Type": "PICKUP",
+  "Tag": "INVINCIBLEPICKUP",
   "Active": true,
   "Components": [
     {
@@ -44,7 +45,8 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "SlowRotate" ]
+      "Scripts": [ "SlowRotate" ],
+      "DestroyScripts": ["Destroy/PlaySoundEffectPickup"]
     },
     {
       "Type": "Light",
