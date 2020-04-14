@@ -19,6 +19,7 @@
 #include "Hollow/Managers/FrameRateController.h"
 #include "Hollow/Systems/ParticleSystem.h"
 #include "Hollow/Managers/RenderManager.h"
+#include "Hollow/Components/UIImage.h"
 
 namespace Hollow
 {
@@ -182,6 +183,15 @@ namespace Hollow
 			"tilt", &UITransform::mTilt
 			);
 
+		lua.new_usertype<UIImage>("UIImage",
+			sol::constructors<UIImage()>(),
+			"imagePath", &UIImage::TexturePath,
+			"alpha", &UIImage::mAlpha,
+			"color", &UIImage::mColor,
+			"isVisible", &UIImage::mIsVisible,
+			"SetTexture", &UIImage::SetTexture
+			);
+
 		// GAMEOBJECT
         mGameObjectType = lua.new_usertype<GameObject>("GameObject",
             sol::constructors<GameObject()>(),
@@ -194,6 +204,7 @@ namespace Hollow
 			"GetCamera", &GameObject::GetComponent<Camera>,
 			"GetLight", &GameObject::GetComponent<Light>,
 			"GetUITransform", &GameObject::GetComponent<UITransform>,
+			"GetUIImage", &GameObject::GetComponent<UIImage>,
 			"tag", &GameObject::mTag,
             "type", &GameObject::mType,
 			"id", &GameObject::mID
