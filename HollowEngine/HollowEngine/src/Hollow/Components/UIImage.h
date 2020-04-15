@@ -37,6 +37,8 @@ namespace Hollow
 		/// To set the Debug Display for the UIImage Component.
 		/// </summary>
 		HOLLOW_API void DebugDisplay() override;
+
+		HOLLOW_API void SetTexture(std::string path);
 		
 	private:
 		std::string mShapeType;
