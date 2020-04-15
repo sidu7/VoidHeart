@@ -512,6 +512,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\WaterSpell.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Prefabs\YouLose.json" />
     <None Include="Resources\Prefabs\YouWin.json" />
     <None Include="Resources\Scripts\Boss2LaserLogic.lua">
       <DeploymentContent>true</DeploymentContent>
