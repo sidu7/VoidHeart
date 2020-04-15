@@ -144,6 +144,8 @@ namespace BulletHell
 
 		//Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
 		Hollow::PhysicsManager::Instance().isPaused = false;
+
+		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/MainMenu.ogg");
 	}
 	
 	bool CheckRoomBounds(glm::vec3 playerPos, glm::vec2 coords)
@@ -168,11 +170,22 @@ namespace BulletHell
 			Hollow::InputManager::Instance().HideMouseCursor();
 	}
 
+	void GameLogicManager::CheckIfPlayerInBossRoom()
+	{
+		DungeonRoom& curRoom = DungeonManager::Instance().GetCurrentRoom();
+		if (curRoom.mEnemies.size() > 0 &&
+			curRoom.mRoomType == DungeonRoomType::BOSS)
+		{
+			// Play boss theme
+			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/BossTheme.wav");
+		}
+	}
 	
 	void GameLogicManager::Update()
 	{
 		CheckCheatCodes();
 		CheckKillPlane();
+		CheckIfPlayerInBossRoom();
 
 		if(Hollow::InputManager::Instance().IsKeyTriggered("F11"))
 		{
@@ -243,6 +256,9 @@ namespace BulletHell
     	
 		Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
 		Hollow::PhysicsManager::Instance().isPaused = false;
+
+		// Start playing ambient dungeon theme
+		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
     }
 
 	void GameLogicManager::RegisterLuaBindings()
@@ -313,6 +329,8 @@ namespace BulletHell
         
 			BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
 			Hollow::SystemManager::Instance().OnSceneInit();
+			// Start playing ambient dungeon theme
+			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
 		}
 
 		// Reset player speed to normal
@@ -735,6 +753,11 @@ namespace BulletHell
 			if (pDeathEvent.mpObject1->mTag != "Boss")
 			{
 				DropRandomPickup(pDeathEvent.mpObject1);
+			}
+			else
+			{
+				// Change music back
+				Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
 			}
 		}
 	}

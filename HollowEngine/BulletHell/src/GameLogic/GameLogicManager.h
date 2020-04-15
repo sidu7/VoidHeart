@@ -85,6 +85,7 @@ namespace BulletHell
 		void LoadRoomJsons(std::string roomPrefix, int count);
 		void OnBulletHitShield(Hollow::GameEvent& event);
 		void FireToggleFullScreenEvent();
+		void CheckIfPlayerInBossRoom();
 	private:
 		bool isFullScreen;
 		ImGuiWindowFlags mWindowFlags;

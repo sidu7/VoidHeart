@@ -82,6 +82,11 @@ namespace Hollow {
 		{
 			HW_CORE_WARN("Unable to load song {0}", songName);
 		}
+		if (songName == mCurrentSongPath)
+		{
+			return;
+		}
+		mpCurrentSong->setVolume(0.0f);
 		// Set current song
 		mCurrentSongPath = songName;
 		mpSystem->playSound(song, 0, true, &mpCurrentSong);

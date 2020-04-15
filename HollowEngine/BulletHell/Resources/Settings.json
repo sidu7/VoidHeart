@@ -45,7 +45,7 @@
       "Music": 0.2,
       "SFX": 1.0
     },
-    "Background": "Resources/Audio/Songs/BossTheme.wav"
+    "Background": "Resources/Audio/Songs/MainMenu.ogg"
   },
   "Memory": {
     "GameobjectsPool": 500,
