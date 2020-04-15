@@ -317,6 +317,7 @@
     <None Include="Resources\Prefabs\TeleportBeam.json" />
     <None Include="Resources\Scripts\TeleportBeamLogic.lua" />
     <None Include="Resources\Prefabs\YouWin.json" />
+    <None Include="Resources\Prefabs\YouLose.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

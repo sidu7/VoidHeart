@@ -768,7 +768,9 @@ namespace BulletHell
 
 		// Kick back to main menu
 		DungeonManager::Instance().Regenerate();
-		CreateMainMenu();
+		CreateMainMenu();    
+        Hollow::ResourceManager::Instance().LoadPrefabAtPosition("YouLose", glm::vec3(30.0f, 0.6f, 30.0f));
+
 
 		// Reset player health
 		Health* pPlayerHealth = mpPlayerGO->GetComponent<Health>();
