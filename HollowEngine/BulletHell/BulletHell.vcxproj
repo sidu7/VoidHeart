@@ -270,6 +270,10 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\Rooms\Room1.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Json data\Rooms\Room10.json" />
+    <None Include="Resources\Json data\Rooms\Room11.json" />
+    <None Include="Resources\Json data\Rooms\Room12.json" />
+    <None Include="Resources\Json data\Rooms\Room13.json" />
     <None Include="Resources\Json data\Rooms\Room2.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -291,6 +295,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Json data\Rooms\Room8.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Resources\Json data\Rooms\Room9.json" />
     <None Include="Resources\Json data\Shuriken.json">
       <DeploymentContent>true</DeploymentContent>
     </None>

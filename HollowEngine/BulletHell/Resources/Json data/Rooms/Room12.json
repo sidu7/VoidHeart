@@ -1,0 +1,58 @@
+{
+  "Enemies": [
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 2, 2 ]
+    },
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 2, 30 ]
+    },
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 30, 2 ]
+    },
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 30, 30 ]
+    },
+    {
+      "EnemyType": "EnemyFollowLookdir",
+      "Position": [ 15, 15 ]
+    }
+  ],
+  "Obstacles": [
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 1, 4 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 1, 28 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 4, 1 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 4, 31 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 28, 1 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 28, 31 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 31, 4 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 31, 28 ]
+    }
+  ]
+}
