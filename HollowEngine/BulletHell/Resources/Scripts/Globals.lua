@@ -47,3 +47,6 @@ waterBossCircleCenter = vec3.new(0,0,0)
 waterBossCircleSelected = true
 waterBossMoveDirection = true
 waterBossSpawnSpell = false
+
+-- AirAir Globals
+isScaled = false

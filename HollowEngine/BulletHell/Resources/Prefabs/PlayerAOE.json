@@ -32,11 +32,11 @@
         },
         {
             "Type": "DestroyTimer",
-            "MaxTime": 2
+            "MaxTime": 0.8
         },
         {
             "Type": "Script",
-            "Scripts": [ "Grow" ]
+            "Scripts": [ "WrathOfTheGods" ]
         },
         {
             "Type": "ParticleEmitter",
