@@ -1,0 +1,22 @@
+{
+  "Enemies": [
+    {
+      "EnemyType": "EnemyTurretdiagonal",
+      "Position": [ 7, 15 ]
+    },
+    {
+      "EnemyType": "EnemyTurretdiagonal",
+      "Position": [ 15, 7 ]
+    },
+    {
+      "EnemyType": "EnemyTurretdiagonal",
+      "Position": [ 15, 23 ]
+    },
+    {
+      "EnemyType": "EnemyTurretdiagonal",
+      "Position": [ 23, 15 ]
+    }
+  ],
+  "Obstacles": [
+  ]
+}

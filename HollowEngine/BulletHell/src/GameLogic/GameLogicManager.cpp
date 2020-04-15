@@ -39,7 +39,7 @@
 #include "Hollow/Managers/FrameRateController.h"
 #include "Systems/HealthSystem.h"
 
-#define MAX_REGULAR_ROOMS 8
+#define MAX_REGULAR_ROOMS 13
 #define MAX_BOSS_ROOMS 4
 
 namespace BulletHell
@@ -178,7 +178,7 @@ namespace BulletHell
 			curRoom.mRoomType == DungeonRoomType::BOSS)
 		{
 			// Play boss theme
-			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/BossTheme.wav");
+			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/BossTheme.ogg");
 		}
 	}
 	
@@ -266,7 +266,7 @@ namespace BulletHell
 		Hollow::PhysicsManager::Instance().isPaused = false;
 
 		// Start playing ambient dungeon theme
-		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.ogg");
 		// Play teleport sounds
 		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Teleport.wav");
     }
@@ -344,7 +344,7 @@ namespace BulletHell
 			BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
 			Hollow::SystemManager::Instance().OnSceneInit();
 			// Start playing ambient dungeon theme
-			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.ogg");
 			// Play teleport sounds
 			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Teleport.wav");
 
@@ -704,7 +704,7 @@ namespace BulletHell
 		else
 		{
 			roomNum = Random::RangeSeeded(1, MAX_REGULAR_ROOMS);
-			roomName = "Room" + std::to_string(roomNum);
+            roomName = "Room" + std::to_string(roomNum);
 		}
 		
 		rapidjson::Document root;
@@ -792,7 +792,7 @@ namespace BulletHell
 			else
 			{
 				// Change music back
-				Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+				Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.ogg");
 			}
 			// Play a nice sound effect
 			Hollow::ScriptingManager::Instance().RunScript("Destroy/PlaySoundEffectEnemy", pDeathEvent.mpObject1);

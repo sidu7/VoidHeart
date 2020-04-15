@@ -318,6 +318,11 @@
     <None Include="Resources\Scripts\TeleportBeamLogic.lua" />
     <None Include="Resources\Prefabs\YouWin.json" />
     <None Include="Resources\Prefabs\YouLose.json" />
+    <None Include="Resources\Json data\Rooms\Room9.json" />
+    <None Include="Resources\Json data\Rooms\Room10.json" />
+    <None Include="Resources\Json data\Rooms\Room11.json" />
+    <None Include="Resources\Json data\Rooms\Room12.json" />
+    <None Include="Resources\Json data\Rooms\Room13.json" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Audio\SFX\1Up.wav" />

@@ -9,6 +9,7 @@ function PhaseOneBehavior()
     -- Setting position
     bulletBody.position = spawnPos
     bulletTransform.position = spawnPos
+	PlaySFX("Resources/Audio/SFX/BossWaterBullet.wav")
 end
 
 function CreateSteamTrap()
@@ -28,6 +29,7 @@ function CreateSteamTrap()
 	if particle then
 		particle.extraData.x = trapTransform.scale.x;
 	end
+	PlaySFX("Resources/Audio/SFX/BossWaterSteamTrap.wav")
 end
 
 function PhaseTwoBehavior()

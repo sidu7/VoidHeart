@@ -1,0 +1,26 @@
+{
+  "Enemies": [
+    {
+      "EnemyType": "EnemyTurretCardinal",
+      "Position": [ 7, 7 ]
+    },
+    {
+      "EnemyType": "EnemyTurretCardinal",
+      "Position": [ 7, 23 ]
+    },
+    {
+      "EnemyType": "EnemyTurretdiagonal",
+      "Position": [ 15, 15 ]
+    },
+    {
+      "EnemyType": "EnemyTurretCardinal",
+      "Position": [ 23, 7 ]
+    },
+    {
+      "EnemyType": "EnemyTurretCardinal",
+      "Position": [ 23, 23 ]
+    }
+  ],
+  "Obstacles": [
+  ]
+}

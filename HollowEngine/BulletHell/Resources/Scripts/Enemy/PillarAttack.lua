@@ -56,6 +56,7 @@ function Shoot()
         bulletBody:RotateBody(rot);
 
         attack.currentAttackTime = 0
+		PlaySFX("Resources/Audio/SFX/EnemyAttackShootAtPlayer.wav")
     end
 
 end

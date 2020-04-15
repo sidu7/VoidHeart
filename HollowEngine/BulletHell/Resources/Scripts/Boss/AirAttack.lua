@@ -41,6 +41,7 @@ function AreaDamage()
     AOEBody.position = spawnPos
     AOETransform.position = spawnPos
 	dashFlag = false
+	PlaySFX("Resources/Audio/SFX/BossAirAOE.wav")
 end
 
 function SetPillarNearestPlayer()
@@ -197,6 +198,7 @@ function PhaseThreeBehavior()
 			closestPillar:GetAttack().isActive = true
 			closestPillar = nil
 			attack.currentAttackTime = 0.0
+			PlaySFX("Resources/Audio/SFX/BossAirActivatePillar.wav")
 		end
 	end	
 end

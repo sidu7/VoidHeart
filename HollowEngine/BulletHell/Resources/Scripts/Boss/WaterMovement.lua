@@ -215,6 +215,7 @@ function SetupPhaseThree()
 	gameObject:GetBody().position = GetRoomCenterPosition() + vec3.new(-2,2.5,0)
 
 	attack.shouldAttack = false
+	PlaySFX("Resources/Audio/SFX/BossWaterSplit.wav")
 end
 
 function PhaseThreeMovement()

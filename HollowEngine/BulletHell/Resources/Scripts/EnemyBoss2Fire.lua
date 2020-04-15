@@ -41,6 +41,7 @@ function SpawnRocks()
 	    local theta = (i / numRocks * math.pi * 2) + math.rad(offset)
         SpawnRock(math.cos(theta), 0.5, math.sin(theta))
     end
+	PlaySFX("Resources/Audio/SFX/BossEarthSpawnRocks.wav")
 end
 
 function SpawnLaser(dirX, dirY, dirZ)
@@ -76,6 +77,7 @@ function SpawnLasers()
 	    local theta = (i / numLasers * math.pi * 2) + math.rad(offset)
         SpawnLaser(math.cos(theta), 0.5, math.sin(theta))
     end
+	PlaySFX("Resources/Audio/SFX/BossEarthSpawnLasers.wav")
 end
 
 function MeteorShower()

@@ -59,6 +59,8 @@ function CreateLargeFireball()
 	-- Change Color
 	material = bullet:GetMaterial()
 	material.diffuse = vec3.new(4.0, 0.0, 0.0)
+
+	PlaySFX("Resources/Audio/SFX/BossFireLargeFireball.wav")
 end
 
 function ShootInAllDirections()
@@ -69,6 +71,7 @@ function ShootInAllDirections()
 	    local theta = (i / numBullets * math.pi * 2) + math.rad(offset)
         ShootInDirection(math.cos(theta), 0.5, math.sin(theta))
     end
+	PlaySFX("Resources/Audio/SFX/BossFireShootInAllDirections.wav")
 end
 
 function FlameThrower()
@@ -145,6 +148,12 @@ function Shoot()
     else
         FlameThrower()
         attack.baseAttackTime = 0.1
+		-- Should use actual delta time here
+		fireBossFlamethowerTimer = fireBossFlamethowerTimer + 0.16
+		if fireBossFlamethowerTimer > 4.4 then
+			PlaySFX("Resources/Audio/SFX/BossFireFlamethrower.wav")
+			fireBossFlamethowerTimer = 0.0
+		end
     end
 end
 

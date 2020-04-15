@@ -48,5 +48,12 @@ waterBossCircleSelected = true
 waterBossMoveDirection = true
 waterBossSpawnSpell = false
 
+
 -- AirAir Globals
 isScaled = false
+
+-- Earth Boss Globals
+earthBossCharging = false
+
+-- Fire Boss Globals
+fireBossFlamethowerTimer = 0.0
