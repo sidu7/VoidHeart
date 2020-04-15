@@ -144,6 +144,8 @@ namespace BulletHell
 
 		//Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
 		Hollow::PhysicsManager::Instance().isPaused = false;
+
+		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/MainMenu.ogg");
 	}
 	
 	bool CheckRoomBounds(glm::vec3 playerPos, glm::vec2 coords)
@@ -168,11 +170,22 @@ namespace BulletHell
 			Hollow::InputManager::Instance().HideMouseCursor();
 	}
 
+	void GameLogicManager::CheckIfPlayerInBossRoom()
+	{
+		DungeonRoom& curRoom = DungeonManager::Instance().GetCurrentRoom();
+		if (curRoom.mEnemies.size() > 0 &&
+			curRoom.mRoomType == DungeonRoomType::BOSS)
+		{
+			// Play boss theme
+			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/BossTheme.wav");
+		}
+	}
 	
 	void GameLogicManager::Update()
 	{
 		CheckCheatCodes();
 		CheckKillPlane();
+		CheckIfPlayerInBossRoom();
 
 		if(Hollow::InputManager::Instance().IsKeyTriggered("F11"))
 		{
@@ -250,6 +263,11 @@ namespace BulletHell
     	
 		Hollow::SystemManager::Instance().GetSystem<Hollow::PhysicsSystem>()->UpdateTree();
 		Hollow::PhysicsManager::Instance().isPaused = false;
+
+		// Start playing ambient dungeon theme
+		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+		// Play teleport sounds
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Teleport.wav");
     }
 
 	void GameLogicManager::RegisterLuaBindings()
@@ -309,6 +327,7 @@ namespace BulletHell
 		{
 			DungeonManager::Instance().Regenerate();
             // play sound "Congratulaition! You win!"or somthing like that
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Win.wav");
 			CreateMainMenu();
             Hollow::ResourceManager::Instance().LoadPrefabAtPosition("YouWin", glm::vec3(30.0f, 0.6f, 30.0f));
 		}
@@ -322,6 +341,11 @@ namespace BulletHell
         
 			BulletHell::DungeonManager::Instance().mpPlayerGo = mpPlayerGO;
 			Hollow::SystemManager::Instance().OnSceneInit();
+			// Start playing ambient dungeon theme
+			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+			// Play teleport sounds
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Teleport.wav");
+
 		}
 
 		// Reset player speed to normal
@@ -423,6 +447,9 @@ namespace BulletHell
 		Pickup* pPickup = pPickupObject->GetComponent<Pickup>();
 		AddBuffs(pPlayer, pPickup);
 
+		// Play a nice sound effect
+		Hollow::ScriptingManager::Instance().RunScript("Destroy/PlaySoundEffectPickup", pPickupObject);
+
 		if (pPickup->mEffectTime > 0.0f)
 		{
 			float effectTime = pPickup->mEffectTime;
@@ -436,11 +463,10 @@ namespace BulletHell
 			pEvent->mpObject1 = pPlayer;
 
 			Hollow::EventManager::Instance().AddDelayedEvent(pEvent, effectTime);
-
+			
 		}
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
-
-		// Play a nice sound effect
+		
 		//Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/OnPickup.wav");
 	}
 
@@ -511,8 +537,6 @@ namespace BulletHell
 				pA->mIsActive = true;
 			}
 		}
-
-		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorLock.wav");
     }
 
 	void GameLogicManager::OnSpellCollect(Hollow::GameEvent& event)
@@ -521,6 +545,10 @@ namespace BulletHell
 
 		// Mainly used for unlocking starting room
 		currentRoom.UnlockRoom();
+
+		// Play a nice sound effect
+		Hollow::GameObject* pSpellObject = event.mpObject1->mType == (int)GameObjectType::SPELL ? event.mpObject1 : event.mpObject2;
+		Hollow::ScriptingManager::Instance().RunScript("Destroy/SpellCollected", pSpellObject);
 
 		// Spawn portal to next floor if not in starting room
 		if (currentRoom.mRoomType == DungeonRoomType::BOSS)
@@ -759,6 +787,13 @@ namespace BulletHell
 			{
 				DropRandomPickup(pDeathEvent.mpObject1);
 			}
+			else
+			{
+				// Change music back
+				Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+			}
+			// Play a nice sound effect
+			Hollow::ScriptingManager::Instance().RunScript("Destroy/PlaySoundEffectEnemy", pDeathEvent.mpObject1);
 		}
 	}
 

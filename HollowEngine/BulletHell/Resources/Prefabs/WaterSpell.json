@@ -35,8 +35,7 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "SpellPickup" ],
-      "DestroyScripts": [ "Destroy/SpellCollected" ]
+      "Scripts": [ "SpellPickup" ]
     },
     {
       "Type": "Light",

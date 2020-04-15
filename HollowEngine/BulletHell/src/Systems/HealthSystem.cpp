@@ -107,11 +107,7 @@ namespace BulletHell
 					Hollow::EventManager::Instance().BroadcastToSubscribers(PlayerDeathEvent());
 					return;
 				}
-				if (mGameObjects[i]->mType == (int)GameObjectType::ENEMY)
-				{
-					//YOU WIN
-					Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/win.wav");
-				}
+
 				// Send event to destroy object
 				DeathEvent death(mGameObjects[i]->mType);
 				death.mpObject1 = mGameObjects[i];
