@@ -188,7 +188,7 @@ namespace BulletHell
 			return;
     	}
 		glm::vec3 playerPos = mpPlayerGO->GetComponent<Hollow::Transform>()->mPosition;
-		mCreditsUIObject->mActive = false;
+		
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags = 0;
     	
@@ -206,7 +206,14 @@ namespace BulletHell
 		}
 		else if (CheckRoomBounds(playerPos, glm::vec2(1, 2)))
 		{
-			CreateCreditsUI();
+			if(!mCreditsUIObject->mActive)
+				CreateCreditsUI();
+
+			Hollow::ScriptingManager::Instance().RunScript("slideshow", mCreditsUIObject);
+		}
+		else
+		{
+			mCreditsUIObject->mActive = false;
 		}
 	}
 
@@ -355,11 +362,25 @@ namespace BulletHell
 	}
 
 	void GameLogicManager::CreateCreditsUI()
-	{    	
-		mCreditsUIObject->mActive = true;
-		//ImGui::Begin("Credits", nullptr, mWindowFlags);
-		//ImGui::Button("Back", ImVec2(200, 100));
-		//ImGui::End();
+	{
+		if (!mCreditsUIObject->mActive)
+		{
+			std::string creditsPath = "Resources/Textures/UI/Credits/";
+
+			std::vector<std::string> paths;
+			for (int i = 1; i <= 7; ++i)
+			{
+				paths.push_back(creditsPath + std::to_string(i) + ".png");
+			}
+
+			mCreditsUIObject->GetComponent<Hollow::UIImage>()->SetTexture("Resources/Textures/UI/Credits/1.png");
+			
+			Hollow::ScriptingManager::Instance().lua["CreditsPaths"] = paths;
+			Hollow::ScriptingManager::Instance().lua["slideNum"] = 2;
+
+			mCreditsUIObject->mActive = true;
+		}
+		
 	}
 
 	void GameLogicManager::CreateExitConfirmationUI()

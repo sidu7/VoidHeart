@@ -31,6 +31,10 @@ function GetRoomCenterPosition()
 	return pos
 end
 
+-- Slideshow Global
+slideShowTimer = 0
+slideNum = 1
+
 -- Water Boss Globals
 waterBossZOffset = 0
 waterBossTheta = 0
