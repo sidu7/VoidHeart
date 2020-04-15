@@ -1,0 +1,25 @@
+{
+  "Type": "UIICON",
+  "Tag": "YouWin",
+  "Components": [
+    {
+      "Type": "Transform",
+      "Position": [ 0.0, 0.5, 0.0 ],
+      "Scale": [ 19.0, 19.0, 1.0 ],
+      "Rotation": [ 90.0, 0.0, 0.0 ]
+    },
+    {
+      "Type": "Model",
+      "Shape": "QUAD",
+      "CastShadow": false
+    },
+    {
+      "Type": "Material",
+      "Shininess": 1.0,
+      "AlphaValue": 30.0,
+      "MaterialTextures": 1,
+      "Diffuse": [ -0.2, -0.2, -0.2, 1.0 ],
+      "Texture": "Resources/Textures/YouWin.png"
+    }
+  ]
+}
