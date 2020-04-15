@@ -18,6 +18,7 @@ function CreateFireballs ()
 		bulletBody.velocity = vec3.new(attackSpeed*math.cos(theta), 0.0, attackSpeed*math.sin(theta))
 		bulletTransform.position = bulletBody.position
 	end
+	PlaySFX("Resources/Audio/SFX/FireEarthSpellDestroy.wav")
 end
 
 CreateFireballs()
