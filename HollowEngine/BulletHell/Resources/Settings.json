@@ -41,9 +41,9 @@
   },
   "Audio": {
     "Volumes": {
-      "Master": 0.3,
-      "Music": 0.2,
-      "SFX": 1.0
+      "Master": 0.5,
+      "Music": 0.5,
+      "SFX": 0.5
     },
     "Background": "Resources/Audio/Songs/MainMenu.ogg"
   },
