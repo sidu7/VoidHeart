@@ -308,7 +308,9 @@ namespace BulletHell
 		if (currentFloor == lua["numFloors"].get<int>())
 		{
 			DungeonManager::Instance().Regenerate();
+            // play sound "Congratulaition! You win!"or somthing like that
 			CreateMainMenu();
+            Hollow::ResourceManager::Instance().LoadPrefabAtPosition("YouWin", glm::vec3(30.0f, 0.6f, 30.0f));
 		}
 		else
 		{

@@ -46,7 +46,7 @@
     {
       "Type": "Material",
       "Shininess": 1.0,
-      "Specular": [ 1.0, 1.0, 1.0 ],
+      "Specular": [ 0.1, 0.1, 0.1 ],
       "Diffuse": [ 0.0, 0.0, 0.0 ],
       "Texture": "Resources/Textures/Player.png"
     },
