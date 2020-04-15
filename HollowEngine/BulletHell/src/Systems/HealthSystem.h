@@ -40,6 +40,7 @@ namespace BulletHell
 
 		void SubscribeToEvents();
 
+		void HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet, bool isBulletDestructible = true);
 	private:
 		void OnBulletHitPlayer(Hollow::GameEvent& event);
 		void OnBulletHitWall(Hollow::GameEvent& event);
@@ -52,7 +53,6 @@ namespace BulletHell
 		void OnBulletHitDestructibleWall(Hollow::GameEvent& event);
 		void OnEnemyAoeHitPlayer(Hollow::GameEvent& event);
         
-		void HandleBulletDamage(Hollow::GameObject* pObjectHit, Hollow::GameObject* pBullet, bool isBulletDestructible = true);
 
 		void CreateHPUIIcon(int index);
         void TakeDamage(Health* target, int damageTaken, float invincibilityTime);

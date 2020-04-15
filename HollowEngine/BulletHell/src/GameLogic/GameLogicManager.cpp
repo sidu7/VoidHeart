@@ -37,6 +37,7 @@
 #include "Hollow/Utils/UniqueID.h"
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/FrameRateController.h"
+#include "Systems/HealthSystem.h"
 
 #define MAX_REGULAR_ROOMS 13
 #define MAX_BOSS_ROOMS 4
@@ -303,6 +304,7 @@ namespace BulletHell
 			"roomType", &DungeonRoom::mRoomType
 			);
 
+		lua.set_function("HandleBulletDamage", &HealthSystem::HandleBulletDamage, std::ref(*Hollow::SystemManager::Instance().GetSystem<HealthSystem>()));
 		lua.set_function("GetDungeonFloor", &DungeonManager::GetFloor, std::ref(DungeonManager::Instance()));
 		lua.set_function("PopulateRoom", &GameLogicManager::PopulateRoom, std::ref(GameLogicManager::Instance()));
 		lua.set_function("CreatePickUpInRoom", &GameLogicManager::CreatePickUpInRoom, std::ref(GameLogicManager::Instance()));
