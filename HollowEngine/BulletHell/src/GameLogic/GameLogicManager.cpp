@@ -38,7 +38,7 @@
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 
-#define MAX_REGULAR_ROOMS 8
+#define MAX_REGULAR_ROOMS 13
 #define MAX_BOSS_ROOMS 4
 
 namespace BulletHell
@@ -702,7 +702,7 @@ namespace BulletHell
 		else
 		{
 			roomNum = Random::RangeSeeded(1, MAX_REGULAR_ROOMS);
-			roomName = "Room" + std::to_string(roomNum);
+            roomName = "Room" + std::to_string(roomNum);
 		}
 		
 		rapidjson::Document root;

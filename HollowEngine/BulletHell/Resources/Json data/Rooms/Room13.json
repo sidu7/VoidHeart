@@ -1,0 +1,144 @@
+{
+  "Enemies": [
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 15, 18 ]
+    },
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 15, 12 ]
+    },
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 12, 15 ]
+    },
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 18, 15 ]
+    },
+    {
+      "EnemyType": "EnemyTurretTarget",
+      "Position": [ 15, 15 ]
+    }
+  ],
+  "Obstacles": [
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 7, 12 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 7, 13 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 7, 14 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 7, 15 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 7, 16 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 7, 17 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 7, 18 ]
+    },
+
+
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 25, 12 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 25, 13 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 25, 14 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 25, 15 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 25, 16 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 25, 17 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 25, 18 ]
+    },
+
+
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 12, 7 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 13, 7 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 14, 7 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 15, 7 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 16, 7 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 17, 7 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 18, 7 ]
+    },
+
+
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 12, 25 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 13, 25 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 14, 25 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 15, 25 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 16, 25 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 17, 25 ]
+    },
+    {
+      "ObstacleType": "Wall",
+      "Position": [ 18, 25 ]
+    }
+  ]
+}
