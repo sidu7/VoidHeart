@@ -4,19 +4,22 @@ function PlaySoundEffect ()
 	local audioPath = ""
 	if tag == "ECircleLookdir" then
 		audioPath = 
-		"Resources/Audio/SFX/ECircleLookdirDeath.wav"
-	elseif tag == "SPEEDPICKUP" then
+		"Resources/Audio/SFX/EnemyDeathCircleLookdir.wav"
+	elseif tag == "EFollowLookdir" then
 		audioPath = 
-		"Resources/Audio/SFX/SpeedPickup.wav"
-	elseif tag == "INVINCIBLEPICKUP" then
+		"Resources/Audio/SFX/EnemyDeathFollowLookdir.wav"
+	elseif tag == "ETurretTarget" then
 		audioPath = 
-		"Resources/Audio/SFX/InvinciblePickup.wav"
-	elseif tag == "DAMAGEPICKUP" then
+		"Resources/Audio/SFX/EnemyDeathTurretTarget.wav"
+	elseif tag == "ETurretdiagonal" then
 		audioPath = 
-		"Resources/Audio/SFX/DamagePickup.wav"
-	elseif tag == "RATEOFFIREPICKUP" then
+		"Resources/Audio/SFX/EnemyDeathTurretdiagonal.wav"
+	elseif tag == "ETurretCardinal" then
 		audioPath = 
-		"Resources/Audio/SFX/RateOfFirePickup.wav"
+		"Resources/Audio/SFX/EnemyDeathTurretCardinal.wav"
+	elseif tag == "ERunsawayLookdir" then
+	audioPath = 
+		"Resources/Audio/SFX/EnemyDeathRunsawayLookdir.wav"
 	else
 		audioPath = ""
 	end

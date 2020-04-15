@@ -24,6 +24,7 @@ function Shoot()
     local shootDir = transform:forward()
 
     ShootInDirection(shootDir.x, shootDir.y, shootDir.z)
+	PlaySFX("Resources/Audio/SFX/EnemyAttack.wav")
 end
 
 function Update()

@@ -45,8 +45,7 @@
     },
     {
       "Type": "Script",
-      "Scripts": [ "SlowRotate" ],
-      "DestroyScripts": ["Destroy/PlaySoundEffectPickup"]
+      "Scripts": [ "SlowRotate" ]
     },
     {
       "Type": "Light",

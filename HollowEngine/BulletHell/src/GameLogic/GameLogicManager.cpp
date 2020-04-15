@@ -441,6 +441,9 @@ namespace BulletHell
 		Pickup* pPickup = pPickupObject->GetComponent<Pickup>();
 		AddBuffs(pPlayer, pPickup);
 
+		// Play a nice sound effect
+		Hollow::ScriptingManager::Instance().RunScript("Destroy/PlaySoundEffectPickup", pPickupObject);
+
 		if (pPickup->mEffectTime > 0.0f)
 		{
 			float effectTime = pPickup->mEffectTime;
@@ -454,11 +457,10 @@ namespace BulletHell
 			pEvent->mpObject1 = pPlayer;
 
 			Hollow::EventManager::Instance().AddDelayedEvent(pEvent, effectTime);
-
+			
 		}
 		Hollow::GameObjectManager::Instance().DeleteGameObject(pPickupObject);
-
-		// Play a nice sound effect
+		
 		//Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/OnPickup.wav");
 	}
 
@@ -529,8 +531,6 @@ namespace BulletHell
 				pA->mIsActive = true;
 			}
 		}
-
-		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorLock.wav");
     }
 
 	void GameLogicManager::OnSpellCollect(Hollow::GameEvent& event)
@@ -539,6 +539,10 @@ namespace BulletHell
 
 		// Mainly used for unlocking starting room
 		currentRoom.UnlockRoom();
+
+		// Play a nice sound effect
+		Hollow::GameObject* pSpellObject = event.mpObject1->mType == (int)GameObjectType::SPELL ? event.mpObject1 : event.mpObject2;
+		Hollow::ScriptingManager::Instance().RunScript("Destroy/SpellCollected", pSpellObject);
 
 		// Spawn portal to next floor if not in starting room
 		if (currentRoom.mRoomType == DungeonRoomType::BOSS)
@@ -782,6 +786,8 @@ namespace BulletHell
 				// Change music back
 				Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
 			}
+			// Play a nice sound effect
+			Hollow::ScriptingManager::Instance().RunScript("Destroy/PlaySoundEffectEnemy", pDeathEvent.mpObject1);
 		}
 	}
 

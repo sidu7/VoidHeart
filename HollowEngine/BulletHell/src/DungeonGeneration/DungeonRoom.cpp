@@ -13,6 +13,7 @@
 #include "GameMetaData/GameEventType.h"
 #include "Hollow/Events/GameEvent.h"
 #include "Hollow/Managers/EventManager.h"
+#include "Hollow/Managers/AudioManager.h"
 
 namespace BulletHell
 {
@@ -255,6 +256,7 @@ namespace BulletHell
                 }
             }
             mIsUnlocked = true;
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorUnlock.wav");
         }
 	}
 	void DungeonRoom::LockDownRoom()
@@ -276,6 +278,8 @@ namespace BulletHell
             Hollow::EventManager::Instance().AddDelayedEvent(lde, 1.0f);
 
             mIsLockedFirstTime = true;
+
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/DoorLock.wav");
         }
 	}
 

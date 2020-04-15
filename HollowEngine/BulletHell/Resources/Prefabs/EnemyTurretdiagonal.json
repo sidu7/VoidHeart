@@ -1,5 +1,6 @@
 {
-  "Type" :  "ENEMY",
+  "Type": "ENEMY",
+  "Tag":  "ETurretdiagonal",
   "Components": [
     {
       "Type": "Transform",

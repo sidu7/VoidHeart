@@ -24,6 +24,7 @@ function Shoot()
     ShootInDirection(1, 0, 0)
     ShootInDirection(0, 0, -1)
     ShootInDirection(0, 0, 1)
+	PlaySFX("Resources/Audio/SFX/EnemyAttackShootInCardinalDirections.wav")
 end
 
 function Update()

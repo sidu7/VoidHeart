@@ -1,5 +1,6 @@
 {
-  "Type" :  "ENEMY",
+  "Type": "ENEMY",
+  "Tag": "ETurretCardinal",
   "Components": [
     {
       "Type": "Transform",

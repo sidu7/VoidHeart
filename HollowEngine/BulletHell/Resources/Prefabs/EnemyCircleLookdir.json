@@ -35,8 +35,7 @@
       "Scripts": [
         "CirclePlayer",
         "OnTakeDamage"
-      ],
-      "DestroyScripts":  ["Destroy/PlaySoundEffectEnemy"]
+      ]
     },
     {
       "Type": "Attack",
