@@ -266,6 +266,8 @@ namespace BulletHell
 
 		// Start playing ambient dungeon theme
 		Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+		// Play teleport sounds
+		Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Teleport.wav");
     }
 
 	void GameLogicManager::RegisterLuaBindings()
@@ -325,6 +327,7 @@ namespace BulletHell
 		{
 			DungeonManager::Instance().Regenerate();
             // play sound "Congratulaition! You win!"or somthing like that
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Win.wav");
 			CreateMainMenu();
             Hollow::ResourceManager::Instance().LoadPrefabAtPosition("YouWin", glm::vec3(30.0f, 0.6f, 30.0f));
 		}
@@ -340,6 +343,9 @@ namespace BulletHell
 			Hollow::SystemManager::Instance().OnSceneInit();
 			// Start playing ambient dungeon theme
 			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/AmbientDungeonTheme.wav");
+			// Play teleport sounds
+			Hollow::AudioManager::Instance().PlayEffect("Resources/Audio/SFX/Teleport.wav");
+
 		}
 
 		// Reset player speed to normal
