@@ -32,6 +32,7 @@ function ShootInAllDirections()
 	    local theta = (i / numBullets * math.pi * 2) + math.rad(offset)
         ShootInDirection(math.cos(theta), 0.5, math.sin(theta))
     end
+	PlaySFX("Resources/Audio/SFX/FireFireSpellDestroy.wav")
 end
 
 local function CreateFireballs ()

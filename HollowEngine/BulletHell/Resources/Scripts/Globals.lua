@@ -47,3 +47,9 @@ waterBossCircleCenter = vec3.new(0,0,0)
 waterBossCircleSelected = true
 waterBossMoveDirection = true
 waterBossSpawnSpell = false
+
+-- Earth Boss Globals
+earthBossCharging = false
+
+-- Fire Boss Globals
+fireBossFlamethowerTimer = 0.0

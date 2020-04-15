@@ -331,13 +331,17 @@ function Update()
             end
 
             MeleeAttack()
+			earthBossCharging = false
         else
             LookAtThePlayer()
 	        local body = gameObject:GetBody()
             body.velocity = vec3.new(0.0, 0.0, 0.0)
             Charge(attack.currentAttackTime, 0, attack.baseAttackTime / 3)
             ChangeParticles()
-            --PlaySFX("Resources/Audio/SFX/BossCharging.wav")
+			if not earthBossCharging then
+				PlaySFX("Resources/Audio/SFX/BossEarthChargeUp.wav")
+				earthBossCharging = true
+			end
         end
         -- Handled By EnemyBoss2Fire.lua, considering cooldown for each charge
     end
