@@ -5,7 +5,7 @@
 extern Hollow::Application* Hollow::CreateApplication();
 #undef main
 
-//int main(int argc, char** argv)
+int main(int argc, char** argv)
 //int WINAPI WinMain(
 //	HINSTANCE hInstance,
 //	HINSTANCE hPrevInstance,
