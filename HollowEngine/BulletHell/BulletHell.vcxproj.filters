@@ -162,8 +162,6 @@
     <None Include="Resources\Prefabs\EnemyFollowLookdir.json" />
     <None Include="Resources\Prefabs\EnemyLargeFireball.json" />
     <None Include="Resources\Prefabs\EnemyRunsawayLookdir.json" />
-    <None Include="Resources\Prefabs\EnemyTurretAOE.json" />
-    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json" />
     <None Include="Resources\Prefabs\EnemyTurretCardinal.json" />
     <None Include="Resources\Prefabs\EnemyTurretdiagonal.json" />
     <None Include="Resources\Prefabs\EnemyTurretTarget.json" />
@@ -171,7 +169,6 @@
     <None Include="Resources\Prefabs\Floor.json" />
     <None Include="Resources\Prefabs\Hand.json" />
     <None Include="Resources\Prefabs\IceWave.json" />
-    <None Include="Resources\Prefabs\joker.json" />
     <None Include="Resources\Prefabs\LargeFireball.json" />
     <None Include="Resources\Prefabs\MeleeCollider.json" />
     <None Include="Resources\Prefabs\Meteor.json" />
@@ -188,7 +185,6 @@
     <None Include="Resources\Prefabs\PlayerFire.json" />
     <None Include="Resources\Prefabs\PlayerFlames.json" />
     <None Include="Resources\Prefabs\PlayerRock.json" />
-    <None Include="Resources\Prefabs\PlayerTest.json" />
     <None Include="Resources\Prefabs\PlayerWall.json" />
     <None Include="Resources\Prefabs\PlayerWater.json" />
     <None Include="Resources\Prefabs\SteamTrap.json" />

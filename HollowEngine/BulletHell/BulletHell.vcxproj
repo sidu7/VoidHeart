@@ -293,12 +293,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Prefabs\EnemyRunsawayLookdir.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Prefabs\EnemyTurretAOE.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Prefabs\EnemyTurretAOESlow.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Resources\Prefabs\EnemyTurretCardinal.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -325,9 +319,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Prefabs\IceWave.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Prefabs\joker.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Prefabs\LargeFireball.json">
@@ -382,9 +373,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Prefabs\PlayerRock.json">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Prefabs\PlayerTest.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Prefabs\PlayerWall.json">
