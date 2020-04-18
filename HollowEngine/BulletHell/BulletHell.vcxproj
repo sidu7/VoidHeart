@@ -424,12 +424,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\CirclingAroundRoomCenter.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Scripts\Combine.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\CreateObject.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Resources\Scripts\CreateWater.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -449,9 +443,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\DynamicScaleZ.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\EnemyAttack.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\EnemyBoss1Fire.lua">
@@ -481,13 +472,7 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\GrowWall.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Scripts\HomingBulletAttack.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Resources\Scripts\InitGlobalObjects.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\Left.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\LightFollow.lua">
@@ -496,9 +481,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\OnDeath.lua" />
     <None Include="Resources\Scripts\OnTakeDamage.lua" />
     <None Include="Resources\Scripts\QuickGrow.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\Right.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\RoomLogic.lua">
@@ -516,9 +498,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Scripts\ShootInDiagonalDirections.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Scripts\AreaSlow.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Resources\Scripts\EnemyGrowSlow.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -534,18 +513,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
     <None Include="Resources\Localization\Japanese.json">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="Resources\Scripts\BossAngry.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\BossHappy.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\BossPist.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\BossSad.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
     <None Include="Resources\Scripts\CirclePlayer.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -559,9 +526,6 @@ copy /y "HollowEngine\*.dll" "$(ProjectName)"</Command>
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\GameConfig.lua">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Resources\Scripts\PlayerAttack.lua">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="Resources\Scripts\PlayerMovement.lua">
