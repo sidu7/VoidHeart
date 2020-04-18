@@ -15,7 +15,7 @@
         {
             "Type": "Material",
             "Shininess": 0.0,
-            "AlphaValue": 100.0,
+            "AlphaValue": 30.0,
             "MaterialTextures": 1,
             "DiffuseTexture": "Resources/Textures/Controls.png",
             "HeightScale": 0.1

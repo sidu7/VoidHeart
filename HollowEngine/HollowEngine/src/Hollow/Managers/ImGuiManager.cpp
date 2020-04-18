@@ -49,86 +49,86 @@ namespace Hollow {
 
 	void ImGuiManager::Update()
 	{
-		//if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
-		//{
-		//	ImGui::Begin("Game Objects", NULL, ImGuiWindowFlags_NoScrollWithMouse);
-		//}
-		//else
-		//{
-		//	ImGui::Begin("Game Objects");
-		//}
+		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		{
+			ImGui::Begin("Game Objects", NULL, ImGuiWindowFlags_NoScrollWithMouse);
+		}
+		else
+		{
+			ImGui::Begin("Game Objects");
+		}
 
-		//ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
-		//ImGui::Text("Number Of Active Objects: %i", GameObjectManager::Instance().GetGameObjects().size());
-		//if(ImGui::Button("Delete GameObject"))
-		//{
-		//	GameObjectManager::Instance().DeleteGameObject(mpSelectedGameObject);
-		//}
-		//// Get selected object 
-		//ImGui::BeginChild("Left Side", ImVec2(150, 0), true);
-		//for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
-		//{
-		//	unsigned int ID = pGameObject->mID;
-		//	std::string name = "Object " + std::to_string(ID);
-		//	if (ImGui::Selectable(name.c_str(), ID == mSelectedGameObjectID))
-		//	{
-		//		mpSelectedGameObject = pGameObject;
-		//		mSelectedGameObjectID = ID;
-		//	}
-		//}
-		//ImGui::EndChild();
-		//ImGui::SameLine();
+		ImGui::Text("FPS: %.2f FPS", ImGui::GetIO().Framerate);
+		ImGui::Text("Number Of Active Objects: %i", GameObjectManager::Instance().GetGameObjects().size());
+		if(ImGui::Button("Delete GameObject"))
+		{
+			GameObjectManager::Instance().DeleteGameObject(mpSelectedGameObject);
+		}
+		// Get selected object 
+		ImGui::BeginChild("Left Side", ImVec2(150, 0), true);
+		for (GameObject* pGameObject : GameObjectManager::Instance().GetGameObjects())
+		{
+			unsigned int ID = pGameObject->mID;
+			std::string name = "Object " + std::to_string(ID);
+			if (ImGui::Selectable(name.c_str(), ID == mSelectedGameObjectID))
+			{
+				mpSelectedGameObject = pGameObject;
+				mSelectedGameObjectID = ID;
+			}
+		}
+		ImGui::EndChild();
+		ImGui::SameLine();
 
-		//// Display game object information
-		//ImGui::BeginGroup();
-		//ImGui::BeginChild("Item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
-		//ImGui::Text("Object: %d", mSelectedGameObjectID);
-		//ImGui::Separator();
-		//if (mpSelectedGameObject)
-		//{
-		//	mpSelectedGameObject->DebugDisplay();
-		//}
-		//ImGui::EndChild();
-		//ImGui::EndGroup();
+		// Display game object information
+		ImGui::BeginGroup();
+		ImGui::BeginChild("Item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+		ImGui::Text("Object: %d", mSelectedGameObjectID);
+		ImGui::Separator();
+		if (mpSelectedGameObject)
+		{
+			mpSelectedGameObject->DebugDisplay();
+		}
+		ImGui::EndChild();
+		ImGui::EndGroup();
 
-		//ImGui::End();
+		ImGui::End();
 
-		//// Tabs for larger sytems
-		//ImGui::Begin("Managers");
-		//if (ImGui::BeginTabBar("Manager Tab Bar"))
-		//{
-		//	for (auto display : mDisplayFunctions)
-		//	{
-		//		if (ImGui::BeginTabItem(display.first.c_str()))
-		//		{
-		//			display.second();
-		//			ImGui::EndTabItem();
-		//		}
-		//	}
-		//	if(ImGui::BeginTabItem("Localization"))
-		//	{
-		//		if(ImGui::Button("English"))
-		//		{
-		//			LocalizationManager::Instance().ChangeLanguage("English");
-		//		}
-		//		if(ImGui::Button("Hindi"))
-		//		{
-		//			LocalizationManager::Instance().ChangeLanguage("Hindi");
-		//		}
-		//		if (ImGui::Button("Japanese"))
-		//		{
-		//			LocalizationManager::Instance().ChangeLanguage("Japanese");
-		//		}
-		//		ImGui::EndTabItem();
-		//	}
-		//	if (ImGui::BeginTabItem("Testing"))
-		//	{
-		//		TestingDisplay();
-		//		ImGui::EndTabItem();
-		//	}
-		//	ImGui::EndTabBar();
-		//}
-		//ImGui::End();
+		// Tabs for larger sytems
+		ImGui::Begin("Managers");
+		if (ImGui::BeginTabBar("Manager Tab Bar"))
+		{
+			for (auto display : mDisplayFunctions)
+			{
+				if (ImGui::BeginTabItem(display.first.c_str()))
+				{
+					display.second();
+					ImGui::EndTabItem();
+				}
+			}
+			if(ImGui::BeginTabItem("Localization"))
+			{
+				if(ImGui::Button("English"))
+				{
+					LocalizationManager::Instance().ChangeLanguage("English");
+				}
+				if(ImGui::Button("Hindi"))
+				{
+					LocalizationManager::Instance().ChangeLanguage("Hindi");
+				}
+				if (ImGui::Button("Japanese"))
+				{
+					LocalizationManager::Instance().ChangeLanguage("Japanese");
+				}
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Testing"))
+			{
+				TestingDisplay();
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();
+		}
+		ImGui::End();
 
 		// Show demo window for now
 		//ImGui::ShowDemoWindow();
