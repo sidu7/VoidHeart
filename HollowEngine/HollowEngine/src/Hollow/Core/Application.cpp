@@ -63,7 +63,7 @@ namespace Hollow {
 		RenderManager::Instance().Init(JSONHelper::GetSettings(data, "Renderer"), mpWindow);
 		ScriptingManager::Instance().Init(JSONHelper::GetSettings(data, "Scripting"));
 		ImGuiManager::Instance().Init(mpWindow);
-		LocalizationManager::Instance().Init(JSONHelper::GetSettings(data, "Localization"));
+		//LocalizationManager::Instance().Init(JSONHelper::GetSettings(data, "Localization"));
 		EventManager::Instance().Init(JSONHelper::GetSettings(data, "Events"));
 		ResourceManager::Instance().Init();
 		AudioManager::Instance().Init(JSONHelper::GetSettings(data, "Audio"));

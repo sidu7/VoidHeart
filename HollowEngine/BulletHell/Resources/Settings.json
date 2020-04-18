@@ -15,10 +15,6 @@
   "Events": {
     "EventData": "src/GameMetaData/GameEventsMap.data"
   },
-  "Localization": {
-    "LanguageFiles": "Resources/Localization",
-    "DefaultLanguage": "English"
-  },
   "Scripting": {
     "FilePath": "Resources/Scripts/",
     "FileExtension": ".lua"

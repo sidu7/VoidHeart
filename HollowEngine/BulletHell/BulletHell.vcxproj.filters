@@ -133,30 +133,9 @@
     <None Include="Resources\Shaders\UIShader.frag" />
     <None Include="Resources\Shaders\UIShader.vert" />
     <None Include="Resources\Shaders\VerticalBlur.comp" />
-    <None Include="Resources\State data\npcstate.json" />
-    <None Include="Resources\State data\playerstate.json" />
     <None Include="src\GameMetaData\CollisionMask.data" />
     <None Include="Resources\Scripts\CirclingAroundRoomCenter.lua" />
-    <None Include="Resources\Audio\SFX\PlayerHit.m4a" />
     <None Include="Resources\GameData\BulletDamageValues.data" />
-    <None Include="Resources\Json data\Bullet.json" />
-    <None Include="Resources\Json data\BulletBoss.json" />
-    <None Include="Resources\Json data\Camera.json" />
-    <None Include="Resources\Json data\CirclingBullet.json" />
-    <None Include="Resources\Json data\Cloud.json" />
-    <None Include="Resources\Json data\Enemy.json" />
-    <None Include="Resources\Json data\EnemyAOE.json" />
-    <None Include="Resources\Json data\EnemyAOESlow.json" />
-    <None Include="Resources\Json data\EnemyBeam.json" />
-    <None Include="Resources\Json data\FollowBullet.json" />
-    <None Include="Resources\Json data\HomingBullet.json" />
-    <None Include="Resources\Json data\Light.json" />
-    <None Include="Resources\Json data\LocalLight.json" />
-    <None Include="Resources\Json data\PlayerBullet.json" />
-    <None Include="Resources\Json data\Quad.json" />
-    <None Include="Resources\Json data\Shuriken.json" />
-    <None Include="Resources\Json data\UIElement.json" />
-    <None Include="Resources\Json data\Wall.json" />
     <None Include="Resources\Json data\Rooms\Room1.json" />
     <None Include="Resources\Json data\Rooms\Room2.json" />
     <None Include="Resources\Json data\Rooms\Room3.json" />
@@ -170,20 +149,6 @@
     <None Include="Resources\Json data\Rooms\Boss\Room3.json" />
     <None Include="Resources\Json data\Rooms\Boss\Room4.json" />
     <None Include="Resources\Localization\English.json" />
-    <None Include="Resources\Models\ArcherWalking.fbx" />
-    <None Include="Resources\Models\Boss1.fbx" />
-    <None Include="Resources\Models\bunny.ply" />
-    <None Include="Resources\Models\Cloud.fbx" />
-    <None Include="Resources\Models\Goblin.fbx" />
-    <None Include="Resources\Models\Idle.fbx" />
-    <None Include="Resources\Models\Jump.fbx" />
-    <None Include="Resources\Models\NarutoRun.fbx" />
-    <None Include="Resources\Models\Plane.fbx" />
-    <None Include="Resources\Models\Running.fbx" />
-    <None Include="Resources\Models\scene.fbx" />
-    <None Include="Resources\Models\Turret.fbx" />
-    <None Include="Resources\Models\Walking.fbx" />
-    <None Include="Resources\Models\Warlock.fbx" />
     <None Include="Resources\Prefabs\WaterSpell.json" />
     <None Include="Resources\Prefabs\AirSpell.json" />
     <None Include="Resources\Prefabs\Door.json" />
@@ -284,12 +249,6 @@
     <None Include="Resources\Scripts\Destroy\CreateMeteorSplash.lua" />
     <None Include="Resources\Scripts\Boss\AirAttack.lua" />
     <None Include="Resources\Scripts\Boss\AirMovement.lua" />
-    <None Include="Resources\Skydomes\Milkyway_Light.hdr" />
-    <None Include="Resources\Skydomes\Milkyway_small.hdr" />
-    <None Include="Resources\Skydomes\Newport_Loft_Ref.hdr" />
-    <None Include="Resources\Skydomes\Newport_Loft_Ref.irr.hdr" />
-    <None Include="Resources\Skydomes\Road_to_MonumentValley_Ref.hdr" />
-    <None Include="Resources\Skydomes\Road_to_MonumentValley_Ref.irr.hdr" />
     <None Include="src\GameMetaData\DungeonRoomType.enum" />
     <None Include="src\GameMetaData\GameEvents.enum" />
     <None Include="src\GameMetaData\GameEventsMap.data" />
@@ -304,7 +263,6 @@
     <None Include="Resources\Shaders\DirectionalConeParticles.comp" />
     <None Include="Resources\Shaders\ModelVerticesTrailing.comp" />
     <None Include="Resources\Shaders\ChargingModelParticles.comp" />
-    <None Include="Resources\Json data\UICamera.json" />
     <None Include="Resources\Scripts\InitGlobalObjects.lua" />
     <None Include="Resources\Audio\Songs\MainMenu.ogg" />
     <None Include="Resources\Scripts\CheatCodes.lua" />
@@ -325,7 +283,6 @@
     <None Include="Resources\Json data\Rooms\Room13.json" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Resources\Audio\SFX\1Up.wav" />
     <Media Include="Resources\Audio\SFX\BossCharging.wav" />
     <Media Include="Resources\Audio\SFX\BossChargingAttack.wav" />
     <Media Include="Resources\Audio\SFX\BossHit.wav" />
@@ -338,9 +295,6 @@
     <Media Include="Resources\Audio\Songs\test.wav" />
     <Media Include="Resources\Audio\SFX\OnPickup.wav" />
     <Media Include="Resources\Audio\SFX\DoorLock.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Resources\Fonts\arial.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Resources\Models\AirPillar.obj" />
@@ -359,9 +313,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\AirPillar.png" />
-    <Image Include="Resources\Textures\bricks2.jpg" />
-    <Image Include="Resources\Textures\bricks2_height.jpg" />
-    <Image Include="Resources\Textures\bricks2_normal.jpg" />
     <Image Include="Resources\Textures\cracks.png" />
     <Image Include="Resources\Textures\fire.png" />
     <Image Include="Resources\Textures\HUD.png" />
@@ -373,26 +324,14 @@
     <Image Include="Resources\Textures\star.png" />
     <Image Include="Resources\Textures\water.png" />
     <Image Include="Resources\Textures\UI\Air.png" />
-    <Image Include="Resources\Textures\UI\AirAir.png" />
-    <Image Include="Resources\Textures\UI\AirEarth.png" />
-    <Image Include="Resources\Textures\UI\AirWater.png" />
-    <Image Include="Resources\Textures\UI\Combined.png" />
     <Image Include="Resources\Textures\UI\CombinedCooldown.png" />
     <Image Include="Resources\Textures\UI\Earth.png" />
-    <Image Include="Resources\Textures\UI\EarthEarth.png" />
-    <Image Include="Resources\Textures\UI\EarthWater.png" />
     <Image Include="Resources\Textures\UI\EmptyHPIcon.png" />
     <Image Include="Resources\Textures\UI\Fire.png" />
-    <Image Include="Resources\Textures\UI\FireAir.png" />
-    <Image Include="Resources\Textures\UI\FireEarth.png" />
-    <Image Include="Resources\Textures\UI\FireFire.png" />
-    <Image Include="Resources\Textures\UI\FireWater.png" />
     <Image Include="Resources\Textures\UI\HalfHPIcon.png" />
     <Image Include="Resources\Textures\UI\Hightlight.png" />
     <Image Include="Resources\Textures\UI\HPIcon.png" />
-    <Image Include="Resources\Textures\UI\Test.png" />
     <Image Include="Resources\Textures\UI\Water.png" />
-    <Image Include="Resources\Textures\UI\WaterWater.png" />
     <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom1.png" />
     <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom2corner.png" />
     <Image Include="Resources\Textures\Minimap\UIMinimapBossRoom2stright.png" />
