@@ -23,6 +23,7 @@
 #include "Hollow/Components/Body.h"
 #include "Hollow/Components/UITransform.h"
 #include "GameLogic/GameLogicManager.h"
+#include "Hollow/Managers/InputManager.h"
 
 void Hollow::GameMetaData::Init()
 {
@@ -56,14 +57,8 @@ class GameLayer : public Hollow::Layer
 	{
 		if(e.GetEventType() == Hollow::EventType::WindowPaused)
 		{
-			TogglePauseInGame();
+			BulletHell::GameLogicManager::Instance().TogglePause();
 		}
-	}
-
-	void TogglePauseInGame()
-	{
-		Hollow::GameEvent ge((int)BulletHell::GameEventType::TOGGLE_PAUSE);
-		Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
 	}
 };
 
@@ -79,8 +74,14 @@ public:
 		PushLayer(new GameLayer());
 		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::ON_EXIT_GAME, EVENT_CALLBACK(BulletHellGame::ExitGame));
 		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::TOGGLE_FULLSCREEN, EVENT_CALLBACK(BulletHellGame::ToggleFullScreenInGame));
+		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::TOGGLE_PAUSE, EVENT_CALLBACK(BulletHellGame::TogglePauseInGame));
 		
 		BulletHell::GameLogicManager::Instance().Init();
+	}
+
+	void TogglePauseInGame(Hollow::GameEvent& ge)
+	{
+		TogglePause();
 	}
 	
 	void ToggleFullScreenInGame(Hollow::GameEvent& ge)

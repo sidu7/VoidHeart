@@ -56,8 +56,6 @@ namespace Hollow {
 
 		mIsRunning = true;
 		mIsPaused = false;
-		mPauseFrameCounter = 0;
-		mPausingFinished = true;
 		
 		// Initalize managers
 		InputManager::Instance().Init();
@@ -86,7 +84,7 @@ namespace Hollow {
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowFullScreenEvent>(BIND_EVENT_FN(OnWindowFullScreen));
 		dispatcher.Dispatch<WindowFocusLostEvent>(BIND_EVENT_FN(OnWindowFocusLost));
-		//dispatcher.Dispatch<WindowFocusGainedEvent>(BIND_EVENT_FN(OnWindowFocusGained));
+		dispatcher.Dispatch<WindowFocusGainedEvent>(BIND_EVENT_FN(OnWindowFocusGained));
 		//RenderManager::Instance().GetCamera()->OnEvent(e);
 
 		//HW_CORE_TRACE("{0}", e);
@@ -108,18 +106,19 @@ namespace Hollow {
 
 			InputManager::Instance().Update();
 
+			// Start frame functions
+			ImGuiManager::Instance().StartFrame();
 
+			// Update functions
+			for (Layer* layer : mLayerStack)
+			{
+				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
+			}
+			
 			if (!mIsPaused)
 			{
 
-				// Start frame functions
-				ImGuiManager::Instance().StartFrame();
 
-				// Update functions
-				for (Layer* layer : mLayerStack)
-				{
-					layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
-				}
 				
 				EventManager::Instance().Update();
 
@@ -127,21 +126,14 @@ namespace Hollow {
 
 				AudioManager::Instance().Update();
 
-				RenderManager::Instance().Update();
 			}
-
+			
+			RenderManager::Instance().Update(mIsPaused);
 			
 			GameObjectManager::Instance().ClearDeletionList();
 
 			FrameRateController::Instance().FrameEnd();
 
-			if(InputManager::Instance().IsKeyTriggered("Escape") ||
-				InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_START))
-			{
-				TogglePause();
-			}
-
-			CheckForPause();
 		}
 
 	}
@@ -163,26 +155,7 @@ namespace Hollow {
 
 	void Application::TogglePause()
 	{
-		mPauseFrameCounter = 0;
-		mPausingFinished = false;
-	}
-
-	void Application::CheckForPause()
-	{
-		if (!mPausingFinished)
-		{
-			if (mPauseFrameCounter == 0)
-			{
-				WindowPausedEvent wpe;
-				OnEvent(wpe);
-			}
-			else if (mPauseFrameCounter == 1)
-			{
-				mIsPaused = !mIsPaused;
-				mPausingFinished = true;
-			}
-			++mPauseFrameCounter;
-		}
+		mIsPaused = !mIsPaused;
 	}
 
 	void Application::ToggleFullScreen()
@@ -207,17 +180,24 @@ namespace Hollow {
 
 	bool Application::OnWindowFocusLost(WindowFocusLostEvent& e)
 	{
-		if(!mIsPaused)
-			TogglePause();
+		if (!mIsPaused)
+		{
+			WindowPausedEvent wpe;
+			OnEvent(wpe);
+		}
+
+		InputManager::Instance().ShowMouseCursor();
 		
 		return true;
 	}
 
 	bool Application::OnWindowFocusGained(WindowFocusGainedEvent& e)
 	{
-		mIsPaused = false;
-		AudioManager::Instance().Mute(mIsPaused);
+		//mIsPaused = false;
+		//AudioManager::Instance().Mute(mIsPaused);
 
+		InputManager::Instance().HideMouseCursor();
+		
 		return mIsPaused;
 	}
 }

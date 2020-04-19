@@ -23,7 +23,10 @@
 #include "Hollow/Managers/PhysicsManager.h"
 #include "Hollow/Managers/DebugDrawManager.h"
 
+#include "Hollow/Systems/RenderSystem.h"
+
 #include "ResourceManager.h"
+#include "Hollow/Systems/UIRenderSystem.h"
 
 namespace Hollow {
 
@@ -187,8 +190,15 @@ namespace Hollow {
 		}
 		ImGui::End();
 	}
-	void RenderManager::Update()
+	void RenderManager::Update(bool isPaused)
 	{
+
+		if(isPaused)
+		{
+			SystemManager::Instance().GetSystem<RenderSystem>()->Update();
+			SystemManager::Instance().GetSystem<UIRenderSystem>()->Update();
+		}
+		
 		GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
@@ -370,6 +380,7 @@ namespace Hollow {
 		mLightData.clear();
 		mRenderData.clear();
 		mSecondaryCameras.clear();
+		
 	}
 
 	inline glm::vec2 RenderManager::GetWindowSize()
