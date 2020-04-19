@@ -16,6 +16,8 @@ namespace BulletHell
         void OnDeleteAllGameObjects() override;
 		void HandleBroadcastEvent(Hollow::GameEvent& event) override;
         static Hollow::GameObject* CreateUIObject(const glm::vec2& scale, const glm::vec2& position, const int layer, const std::string& texturePath, const std::string& objectFilePath = "Resources/Prefabs/UIIcon.json");
+
+		static void ResetHands();
 	    
 	private:
 		// Init functions

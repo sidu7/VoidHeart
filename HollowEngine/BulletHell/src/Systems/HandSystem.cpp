@@ -258,6 +258,13 @@ namespace BulletHell
 		return UIObject;
 	}
 
+	void HandSystem::ResetHands()
+	{
+		instance.mpCombinedLeftUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Circle.png");
+		instance.mpCombinedRightUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Circle.png");
+		instance.SetHighlightUIActive(false);
+	}
+
 	void HandSystem::UpdateSpellUI()
 	{
 		Magic* pMagic = mpPlayerObject->GetComponent<Magic>();
@@ -440,9 +447,7 @@ namespace BulletHell
 	void HandSystem::OnPlayerDeath(Hollow::GameEvent& event)
 	{
 		// Reset hand UI images
-		mpCombinedLeftUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Circle.png");
-		mpCombinedRightUI->GetComponent<Hollow::UIImage>()->mpTexture = Hollow::ResourceManager::Instance().LoadTexture("Resources/Textures/UI/Circle.png");
-		SetHighlightUIActive(false);
+		ResetHands();
 	}
 
 	void HandSystem::SetHighlightUIActive(bool active)
