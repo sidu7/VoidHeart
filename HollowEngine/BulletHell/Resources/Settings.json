@@ -7,7 +7,7 @@
     "Fullscreen": true,
     "OpenglMajorVersion": 4,
     "OpenglMinorVersion": 3,
-    "VSync": false
+    "VSync": true
   },
   "Physics": {
     "CollisionMask": "src/GameMetaData/CollisionMask.data"
