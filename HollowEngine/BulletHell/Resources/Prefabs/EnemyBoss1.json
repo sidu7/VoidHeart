@@ -31,11 +31,6 @@
           "Texture": "Resources/Textures/FireBoss.png"
         },
         {
-            "Type": "StateMachine",
-            "StateFile": "Resources/State data/npcstate.json",
-            "StartState": "Walking"
-        },
-        {
             "Type": "Script",
             "Scripts": [
                 "EnemyBoss1Movement",
