@@ -55,7 +55,10 @@ namespace Hollow {
 		InputManager::Instance().SetEventCallback(BIND_EVENT_FN(OnEvent));
 
 		mIsRunning = true;
-
+		mIsPaused = false;
+		mPauseFrameCounter = 0;
+		mPausingFinished = true;
+		
 		// Initalize managers
 		InputManager::Instance().Init();
 		ThreadManager::Instance().Init();
@@ -82,6 +85,8 @@ namespace Hollow {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowFullScreenEvent>(BIND_EVENT_FN(OnWindowFullScreen));
+		dispatcher.Dispatch<WindowFocusLostEvent>(BIND_EVENT_FN(OnWindowFocusLost));
+		//dispatcher.Dispatch<WindowFocusGainedEvent>(BIND_EVENT_FN(OnWindowFocusGained));
 		//RenderManager::Instance().GetCamera()->OnEvent(e);
 
 		//HW_CORE_TRACE("{0}", e);
@@ -100,30 +105,43 @@ namespace Hollow {
 		while (mIsRunning)
 		{
 			FrameRateController::Instance().FrameStart();
-			// Start frame functions
-			ImGuiManager::Instance().StartFrame();
 
-			// Update functions
-			for (Layer* layer : mLayerStack)
-			{
-				layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
-			}
 			InputManager::Instance().Update();
 
-			EventManager::Instance().Update();
 
-			SystemManager::Instance().Update();
+			if (!mIsPaused)
+			{
 
-			AudioManager::Instance().Update();
+				// Start frame functions
+				ImGuiManager::Instance().StartFrame();
 
-			RenderManager::Instance().Update();
+				// Update functions
+				for (Layer* layer : mLayerStack)
+				{
+					layer->OnUpdate(FrameRateController::Instance().GetFrameTime());
+				}
+				
+				EventManager::Instance().Update();
 
+				SystemManager::Instance().Update();
+
+				AudioManager::Instance().Update();
+
+				RenderManager::Instance().Update();
+			}
+
+			
 			GameObjectManager::Instance().ClearDeletionList();
 
 			FrameRateController::Instance().FrameEnd();
-			
-			if (InputManager::Instance().IsKeyPressed("Escape"))
-				mIsRunning = false;
+
+			if(InputManager::Instance().IsKeyTriggered("Escape") ||
+				InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_START))
+			{
+				TogglePause();
+			}
+
+			CheckForPause();
 		}
 
 	}
@@ -141,6 +159,30 @@ namespace Hollow {
 	void Application::ExitApplication()
 	{
 		mIsRunning = false;
+	}
+
+	void Application::TogglePause()
+	{
+		mPauseFrameCounter = 0;
+		mPausingFinished = false;
+	}
+
+	void Application::CheckForPause()
+	{
+		if (!mPausingFinished)
+		{
+			if (mPauseFrameCounter == 0)
+			{
+				WindowPausedEvent wpe;
+				OnEvent(wpe);
+			}
+			else if (mPauseFrameCounter == 1)
+			{
+				mIsPaused = !mIsPaused;
+				mPausingFinished = true;
+			}
+			++mPauseFrameCounter;
+		}
 	}
 
 	void Application::ToggleFullScreen()
@@ -161,5 +203,21 @@ namespace Hollow {
 	{
 		// Do something when the screen turns fullscreen
 		return true;
+	}
+
+	bool Application::OnWindowFocusLost(WindowFocusLostEvent& e)
+	{
+		if(!mIsPaused)
+			TogglePause();
+		
+		return true;
+	}
+
+	bool Application::OnWindowFocusGained(WindowFocusGainedEvent& e)
+	{
+		mIsPaused = false;
+		AudioManager::Instance().Mute(mIsPaused);
+
+		return mIsPaused;
 	}
 }

@@ -85,14 +85,19 @@ namespace BulletHell
 		void LoadRoomJsons(std::string roomPrefix, int count);
 		void OnBulletHitShield(Hollow::GameEvent& event);
 		void FireToggleFullScreenEvent();
+
+		void TogglePause(Hollow::GameEvent& event);
+		
 		void CheckIfPlayerInBossRoom();
 	private:
-		bool isFullScreen;
+		bool mIsFullScreen;
+		bool mIsPaused;
 		ImGuiWindowFlags mWindowFlags;
 		std::vector<Hollow::GameObject*> mGlobalGameObjects;
 		Hollow::GameObject* mpSplashScreen;
 		Hollow::GameObject* mCreditsUIObject;
 		Hollow::GameObject* mpPlayerGO;
+		Hollow::GameObject* mpPauseGO;
 		std::unordered_map<std::string, std::string> mCachedRoomsMap;
 		std::vector<std::string> mPickupPrefabNames;
 		int mCountDeadEnemies;

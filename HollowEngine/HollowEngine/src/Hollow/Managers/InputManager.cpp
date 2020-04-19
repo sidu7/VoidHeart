@@ -153,6 +153,18 @@ namespace Hollow {
 				EventCallback(wce);
 				break;
 			}
+			case SDL_WINDOWEVENT_FOCUS_LOST:
+			{
+				WindowFocusLostEvent wfle;
+				EventCallback(wfle);
+				break;
+			}
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+			{
+				WindowFocusGainedEvent wfge;
+				EventCallback(wfge);
+				break;
+			}
 			}
 		}
 	}
