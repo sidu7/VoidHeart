@@ -76,7 +76,8 @@ namespace BulletHell
 		mWindowFlags |= ImGuiWindowFlags_NoCollapse;
 		mWindowFlags |= ImGuiWindowFlags_NoBackground;
 
-		isFullScreen = true;
+		mIsFullScreen = true;
+		mIsPaused = false;
     	
 		InitGlobalGameObjects();
 
@@ -91,10 +92,13 @@ namespace BulletHell
 		sol::state& smLua = Hollow::ScriptingManager::Instance().lua;
 		mpPlayerGO = smLua["player"];
 
+    	mpPauseGO = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources\\Prefabs\\PauseScreen.json");
+		mpPauseGO->mActive = false;
 		mpSplashScreen = Hollow::ResourceManager::Instance().LoadGameObjectFromFile("Resources\\Prefabs\\SplashScreen.json");
     	
 		AddGlobalGameObject(mpPlayerGO);
 		AddGlobalGameObject(mpSplashScreen);
+		AddGlobalGameObject(mpPauseGO);
 		AddGlobalGameObject(smLua["camera"]);
 		AddGlobalGameObject(smLua["UICamera"]);
 		AddGlobalGameObject(smLua["globalLight"]);
@@ -167,8 +171,15 @@ namespace BulletHell
 	{
 		Hollow::GameEvent ge((int)GameEventType::TOGGLE_FULLSCREEN);
 		Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
-		isFullScreen ? Hollow::InputManager::Instance().ShowMouseCursor() :
+		mIsFullScreen ? Hollow::InputManager::Instance().ShowMouseCursor() :
 			Hollow::InputManager::Instance().HideMouseCursor();
+	}
+
+	void GameLogicManager::TogglePause(Hollow::GameEvent& ge)
+	{
+		mIsPaused = !mIsPaused;
+		Hollow::AudioManager::Instance().Mute(mIsPaused);
+		mpPauseGO->mActive = mIsPaused;
 	}
 
 	void GameLogicManager::CheckIfPlayerInBossRoom()
@@ -188,11 +199,11 @@ namespace BulletHell
 		CheckKillPlane();
 		CheckIfPlayerInBossRoom();
 
-		if(Hollow::InputManager::Instance().IsKeyTriggered("F11"))
+		if (Hollow::InputManager::Instance().IsKeyTriggered("F11"))
 		{
 			FireToggleFullScreenEvent();
-			isFullScreen = !isFullScreen;
-			fullscreen = isFullScreen;
+			mIsFullScreen = !mIsFullScreen;
+			fullscreen = mIsFullScreen;
 		}
 
 		UpdateSplashScreen();
@@ -380,10 +391,10 @@ namespace BulletHell
 		//ImGui::Button("Back", ImVec2(100, 50));
 		ImGui::End();
 
-    	if(fullscreen != isFullScreen)
+    	if(fullscreen != mIsFullScreen)
     	{
 			FireToggleFullScreenEvent();
-			isFullScreen = fullscreen;
+			mIsFullScreen = fullscreen;
     	}
 	}
 
@@ -429,6 +440,7 @@ namespace BulletHell
 
 	void GameLogicManager::SubscribeToEvents()
     {
+		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::TOGGLE_PAUSE, EVENT_CALLBACK(GameLogicManager::TogglePause));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));

@@ -51,4 +51,31 @@ namespace Hollow {
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
+	class HOLLOW_API WindowFocusLostEvent : public Event
+	{
+	public:
+		WindowFocusLostEvent() {}
+
+		EVENT_CLASS_TYPE(WindowLostFocus)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
+	class HOLLOW_API WindowFocusGainedEvent : public Event
+	{
+	public:
+		WindowFocusGainedEvent() {}
+
+		EVENT_CLASS_TYPE(WindowFocus)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
+	class HOLLOW_API WindowPausedEvent : public Event
+	{
+	public:
+		WindowPausedEvent() {}
+
+		EVENT_CLASS_TYPE(WindowPaused)
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
 }

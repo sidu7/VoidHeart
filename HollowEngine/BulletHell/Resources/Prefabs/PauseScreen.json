@@ -1,0 +1,18 @@
+{
+  "Type": "PAUSE_SCREEN",
+  "Components": [
+    {
+      "Type": "UITransform",
+      "Position": [ 960, 540 ],
+      "Scale": [ 1920, 1080 ],
+      "Layer": 5
+    },
+    {
+      "Type": "UIImage",
+      "Image": "Resources/Textures/UI/Paused.png",
+      "Shape": "QUAD",
+      "Color": [ 0.0, 0.0, 0.0 ],
+      "Alpha": 0.0
+    }
+  ]
+}

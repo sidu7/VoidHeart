@@ -51,6 +51,20 @@ class GameLayer : public Hollow::Layer
 			Hollow::ScriptingManager::Instance().RunScript("RoomLogic");
 		}
 	}
+
+	void OnEvent(Hollow::Event& e)
+	{
+		if(e.GetEventType() == Hollow::EventType::WindowPaused)
+		{
+			TogglePauseInGame();
+		}
+	}
+
+	void TogglePauseInGame()
+	{
+		Hollow::GameEvent ge((int)BulletHell::GameEventType::TOGGLE_PAUSE);
+		Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
+	}
 };
 
 class BulletHellGame : public Hollow::Application
@@ -65,9 +79,10 @@ public:
 		PushLayer(new GameLayer());
 		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::ON_EXIT_GAME, EVENT_CALLBACK(BulletHellGame::ExitGame));
 		Hollow::EventManager::Instance().SubscribeEvent((int)BulletHell::GameEventType::TOGGLE_FULLSCREEN, EVENT_CALLBACK(BulletHellGame::ToggleFullScreenInGame));
+		
 		BulletHell::GameLogicManager::Instance().Init();
 	}
-
+	
 	void ToggleFullScreenInGame(Hollow::GameEvent& ge)
 	{
 		ToggleFullScreen();
