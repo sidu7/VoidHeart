@@ -3,7 +3,7 @@
   "Components": [
     {
       "Type": "UITransform",
-      "Position": [ 960, 540 ],
+      "Position": [ 960, 640 ],
       "Scale": [ 1920, 1080 ],
       "Layer": 5
     },

@@ -78,6 +78,8 @@ namespace BulletHell
 
 		mIsFullScreen = true;
 		mIsPaused = false;
+		mPausingBegins = false;
+		mPausingFinished = false;
     	
 		InitGlobalGameObjects();
 
@@ -175,13 +177,6 @@ namespace BulletHell
 			Hollow::InputManager::Instance().HideMouseCursor();
 	}
 
-	void GameLogicManager::TogglePause(Hollow::GameEvent& ge)
-	{
-		mIsPaused = !mIsPaused;
-		Hollow::AudioManager::Instance().Mute(mIsPaused);
-		mpPauseGO->mActive = mIsPaused;
-	}
-
 	void GameLogicManager::CheckIfPlayerInBossRoom()
 	{
 		DungeonRoom& curRoom = DungeonManager::Instance().GetCurrentRoom();
@@ -190,6 +185,30 @@ namespace BulletHell
 		{
 			// Play boss theme
 			Hollow::AudioManager::Instance().PlaySong("Resources/Audio/Songs/BossTheme.ogg");
+		}
+	}
+
+	void GameLogicManager::TogglePause()
+	{
+		mPausingBegins = true;
+	}
+
+	void GameLogicManager::CheckForPause()
+	{
+		if (mPausingBegins)
+		{
+			mIsPaused = !mIsPaused;
+			Hollow::AudioManager::Instance().Mute(mIsPaused);
+			mpPauseGO->mActive = mIsPaused;
+
+			mPausingBegins = false;
+			mPausingFinished = true;
+		}
+		else if(mPausingFinished)
+		{
+			Hollow::GameEvent ge((int)BulletHell::GameEventType::TOGGLE_PAUSE);
+			Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
+			mPausingFinished = false;
 		}
 	}
 	
@@ -206,16 +225,30 @@ namespace BulletHell
 			fullscreen = mIsFullScreen;
 		}
 
+		if (Hollow::InputManager::Instance().IsKeyTriggered("Escape") ||
+			Hollow::InputManager::Instance().IsControllerButtonTriggered(SDL_CONTROLLER_BUTTON_START))
+		{
+			TogglePause();
+		}
+		
+		CheckForPause();
+		
 		UpdateSplashScreen();
+
+		// Reset ImGUI gamepad controls
+		ImGuiIO& io = ImGui::GetIO();
+		io.ConfigFlags = 0;
+		
+		if (mIsPaused)
+		{
+			CreatePauseUI();
+		}
 		
 		if(hasGameStarted)
     	{
 			return;
     	}
 		glm::vec3 playerPos = mpPlayerGO->GetComponent<Hollow::Transform>()->mPosition;
-		
-		ImGuiIO& io = ImGui::GetIO();
-		io.ConfigFlags = 0;
     	
     	if(CheckRoomBounds(playerPos, glm::vec2(0,1)))
     	{
@@ -420,6 +453,32 @@ namespace BulletHell
 		
 	}
 
+	void GameLogicManager::CreatePauseUI()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+		ImGui::SetNextWindowPosCenter(ImGuiCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(200, 150));
+		ImGui::Begin("Pause", nullptr, mWindowFlags);
+		if (ImGui::Button("Resume", ImVec2(100, 50)))
+		{
+			TogglePause();
+		}
+		if (ImGui::Button("Main Menu", ImVec2(100, 50)))
+		{
+			TogglePause();
+			DungeonManager::Instance().Regenerate();
+			CreateMainMenu();
+		}
+		if(ImGui::IsItemHovered())
+		{
+			ImGui::Text("Progress will not be saved");
+		}
+		//ImGui::Button("No", ImVec2(100, 50));
+		ImGui::End();
+	}
+	
+
 	void GameLogicManager::CreateExitConfirmationUI()
 	{
 		glm::ivec2 screenSize = Hollow::RenderManager::Instance().GetWindowSize();
@@ -429,6 +488,7 @@ namespace BulletHell
 		ImGui::SetNextWindowPosCenter(ImGuiCond_Once);
 		ImGui::Begin("Exit", nullptr, mWindowFlags);
 		ImGui::Text("Are You Sure?");
+		ImGui::Text("Progress will not be saved");
     	if(ImGui::Button("Totally", ImVec2(100, 50)))
     	{
 			Hollow::GameEvent ge((int)GameEventType::ON_EXIT_GAME);
@@ -440,7 +500,6 @@ namespace BulletHell
 
 	void GameLogicManager::SubscribeToEvents()
     {
-		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::TOGGLE_PAUSE, EVENT_CALLBACK(GameLogicManager::TogglePause));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ROOM_LOCKDOWN_DELAYED, EVENT_CALLBACK(GameLogicManager::OnRoomLockDownDelayed));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_COLLECT, EVENT_CALLBACK(GameLogicManager::OnPickupCollected));
 		Hollow::EventManager::Instance().SubscribeEvent((int)GameEventType::ON_PICKUP_EFFECT_END, EVENT_CALLBACK(GameLogicManager::OnPickupEffectEnd));

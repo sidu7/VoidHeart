@@ -64,13 +64,16 @@ namespace BulletHell
 		void StartNewGame();
         void MoveToNextFloor();
 		std::vector<int> GetSpellOrder() { return mSpellOrder; }
-
+		void TogglePause();
+		void CheckForPause();
+		
 		// Main Menu Methods
 		void ConstructMainMenuRoom();
 		void CreateRoomLabels();
 		void CreateOptionsUI();
 		void CreateCreditsUI();
 		void CreateExitConfirmationUI();
+		void CreatePauseUI();
 		
         // Generates Enemy in the room given by roomCoords at the position offset
         Hollow::GameObject* GenerateObjectAtPosition(std::string prefabName, glm::ivec2 roomCoords, glm::vec2 posOffset);
@@ -86,11 +89,13 @@ namespace BulletHell
 		void OnBulletHitShield(Hollow::GameEvent& event);
 		void FireToggleFullScreenEvent();
 
-		void TogglePause(Hollow::GameEvent& event);
+		void HandleTogglePause(Hollow::GameEvent& event);
 		
 		void CheckIfPlayerInBossRoom();
 	private:
 		bool mIsFullScreen;
+		bool mPausingBegins;
+		bool mPausingFinished;
 		bool mIsPaused;
 		ImGuiWindowFlags mWindowFlags;
 		std::vector<Hollow::GameObject*> mGlobalGameObjects;

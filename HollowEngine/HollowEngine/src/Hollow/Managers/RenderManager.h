@@ -44,7 +44,7 @@ namespace Hollow {
 		/// <summary>
 		/// Updates manager data.
 		/// </summary>
-		HOLLOW_API void Update();
+		HOLLOW_API void Update(bool isPaused);
 		
 		/// <summary>
 		/// Gets the size of the window.

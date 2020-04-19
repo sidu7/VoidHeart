@@ -60,7 +60,7 @@ namespace Hollow {
 
 		HOLLOW_API void ToggleFullScreen();
 		HOLLOW_API void TogglePause();
-		HOLLOW_API void CheckForPause();
+		
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowFullScreen(WindowFullScreenEvent& e);
@@ -72,9 +72,6 @@ namespace Hollow {
 		GameWindow* mpWindow;
 		bool mIsRunning;
 		bool mIsPaused;
-		bool mPausingFinished;
-		
-		int mPauseFrameCounter;
 		
 		LayerStack mLayerStack;
 		//static Application* instance;
