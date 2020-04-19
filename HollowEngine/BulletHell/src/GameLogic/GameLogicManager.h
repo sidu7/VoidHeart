@@ -88,6 +88,7 @@ namespace BulletHell
 		void LoadRoomJsons(std::string roomPrefix, int count);
 		void OnBulletHitShield(Hollow::GameEvent& event);
 		void FireToggleFullScreenEvent();
+		void ResetPlayerStats();
 
 		void HandleTogglePause(Hollow::GameEvent& event);
 		

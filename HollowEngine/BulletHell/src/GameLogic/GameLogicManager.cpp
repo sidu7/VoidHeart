@@ -22,6 +22,7 @@
 #include "Components/Pickup.h"
 #include "Components/Health.h"
 #include "Components/CharacterStats.h"
+#include "Components/Magic.h"
 
 #include "Hollow/Events/GameEvent.h"
 
@@ -38,6 +39,7 @@
 #include "Hollow/Managers/InputManager.h"
 #include "Hollow/Managers/FrameRateController.h"
 #include "Systems/HealthSystem.h"
+#include "Systems/HandSystem.h"
 
 #define MAX_REGULAR_ROOMS 13
 #define MAX_BOSS_ROOMS 4
@@ -175,6 +177,41 @@ namespace BulletHell
 		Hollow::EventManager::Instance().BroadcastToSubscribers(ge);
 		mIsFullScreen ? Hollow::InputManager::Instance().ShowMouseCursor() :
 			Hollow::InputManager::Instance().HideMouseCursor();
+	}
+
+	void GameLogicManager::ResetPlayerStats()
+	{
+		// Reset player health
+		Health* pPlayerHealth = mpPlayerGO->GetComponent<Health>();
+		pPlayerHealth->mHitPoints = 10;
+		pPlayerHealth->mIsAlive = true;
+
+		// Reset player stats
+		// TODO: Find some way to parse this from JSON/Lua and store default values
+		CharacterStats* pPlayerStats = mpPlayerGO->GetComponent<CharacterStats>();
+		pPlayerStats->mMovementSpeed = 1000.0f;
+		pPlayerStats->mMovementSpeedFactor = 1.0f;
+		pPlayerStats->mFireRate = 1.0f;
+		pPlayerStats->mDamageFactor = 1.0f;
+		pPlayerStats->mDashSpeed = 1000.0f;
+
+		// Reset collected spells
+		Magic* pPlayerMagic = mpPlayerGO->GetComponent<Magic>();
+		pPlayerMagic->mBasicSpells[1]->mCollected = false;
+		pPlayerMagic->mBasicSpells[2]->mCollected = false;
+		pPlayerMagic->mBasicSpells[4]->mCollected = false;
+		pPlayerMagic->mBasicSpells[8]->mCollected = false;
+
+		// Reset current spells
+		pPlayerMagic->mLeftHandScriptPath = "Spells/Empty";
+		pPlayerMagic->mRightHandScriptPath = "Spells/Empty";
+		pPlayerMagic->mCombineHandScriptPath = "Spells/Empty";
+		pPlayerMagic->mLeftHandSpell = nullptr;
+		pPlayerMagic->mRightHandSpell = nullptr;
+		pPlayerMagic->mCombinedSpell = nullptr;
+
+		// Clear event manager so that any delayed events don't fire
+		Hollow::EventManager::Instance().ClearDelayedEvents();
 	}
 
 	void GameLogicManager::CheckIfPlayerInBossRoom()
@@ -467,6 +504,9 @@ namespace BulletHell
 		if (ImGui::Button("Main Menu", ImVec2(100, 50)))
 		{
 			TogglePause();
+			// Reset player stats
+			ResetPlayerStats();
+			HandSystem::ResetHands();
 			DungeonManager::Instance().Regenerate();
 			CreateMainMenu();
 		}
@@ -879,23 +919,8 @@ namespace BulletHell
 		CreateMainMenu();    
         Hollow::ResourceManager::Instance().LoadPrefabAtPosition("YouLose", glm::vec3(30.0f, 0.6f, 30.0f));
 
-
-		// Reset player health
-		Health* pPlayerHealth = mpPlayerGO->GetComponent<Health>();
-		pPlayerHealth->mHitPoints = 10;
-		pPlayerHealth->mIsAlive = true;
-
 		// Reset player stats
-		// TODO: Find some way to parse this from JSON/Lua and store default values
-		CharacterStats* pPlayerStats = mpPlayerGO->GetComponent<CharacterStats>();
-		pPlayerStats->mMovementSpeed = 1000.0f;
-		pPlayerStats->mMovementSpeedFactor = 1.0f;
-		pPlayerStats->mFireRate = 1.0f;
-		pPlayerStats->mDamageFactor = 1.0f;
-		pPlayerStats->mDashSpeed = 1000.0f;
-
-		// Clear event manager so that any delayed events don't fire
-		Hollow::EventManager::Instance().ClearDelayedEvents();
+		ResetPlayerStats();
 
 		// Reset intial values in any systems/components e.g. Spell Collected flag
 	}
